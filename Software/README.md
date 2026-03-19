@@ -1,3 +1,6 @@
+<div>
+
+  <h1>Taxonomia</h1>
 vision/
 board_state/
 engine/
@@ -46,3 +49,4 @@ Agora algo que pouca gente faz e deveria fazer: versionar calibrações.
 Crie uma pasta:
 
 calibration_data/
+</div>
