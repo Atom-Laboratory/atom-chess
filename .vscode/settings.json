@@ -1,0 +1,10 @@
+{
+    "cmake.sourceDirectory": "${workspaceFolder}/Software/acvision",
+    "cmake.buildDirectory": "${workspaceFolder}/Software/acvision/build",
+    "cmake.configureArgs": [
+        "-DOpenCV_DIR=D:/opencv/build/x64/vc16/lib"
+    ],
+    "cmake.generator": "Ninja",
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "cmake.configureOnOpen": true
+}

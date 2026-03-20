@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(Windows) Launch Capture Test",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Software/acvision/build/bin/capture_test.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/Software/acvision/build/bin",
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "${env:PATH};D:\\opencv\\build\\x64\\vc16\\bin"
+                }
+            ],
+            "console": "integratedTerminal"
+        }
+    ]
+}
