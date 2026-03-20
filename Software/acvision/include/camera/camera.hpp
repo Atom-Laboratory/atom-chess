@@ -21,7 +21,7 @@ namespace ac {
      * @brief High-level wrapper for OpenCV's VideoCapture with RAII semantics.
      * 
      * @details This class maintains a persistent connection to the camera hardware.
-     * In contrat to stateless function calls, this object avoids the overhead of
+     * In contrast to stateless function calls, this object avoids the overhead of
      * re-initializing the camera for each frame capture.
      * 
      * @note This is **not thread-safe**. Concurrent calls to @code capture_frame() @endcode should be externally synchronized.
