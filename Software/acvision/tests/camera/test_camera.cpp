@@ -12,11 +12,9 @@ TEST(CameraInternal, ReturnsMatrixObject) {
     // the function MUST return a cv::Mat (even if empty).
     cv::Mat frame = capture_frame(99); // Likely non-existent ID
     
-    // Technical check: Does it crash? No.
-    // Is it a cv::Mat? Yes.
-    EXPECT_TRUE(frame.empty() || !frame.empty()); 
+    // Technical check: this call should not crash.
+    SUCCEED();
 }
-
 // Test Case: Data Integrity (Only if camera 0 is present)
 TEST(CameraIntegration, ValidatesFrameSpecs) {
     cv::Mat frame = capture_frame(0);
