@@ -5,10 +5,10 @@
             "name": "(Windows) Launch Capture Test",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/Software/acvision/build/bin/capture_test.exe",
+            "program": "${command:cmake.launchTargetPath}",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/Software/acvision/build/bin",
+            "cwd": "${command:cmake.launchTargetDirectory}",
             "environment": [
                 {
                     "name": "PATH",
