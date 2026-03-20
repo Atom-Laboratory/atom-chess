@@ -34,7 +34,7 @@ namespace ac {
          * @param device_id The OS-level index of the camera (default: 0).
          * @throw May log errors to stderr if the device cannot be claimed.
          */
-        explicit Camera(int device_id = 0);
+        explicit Camera(int device_id = 0, int width = 1280, int height = 720);
 
         /**
          * @brief Destructor. Ensures the hardware resource is released to the OS.

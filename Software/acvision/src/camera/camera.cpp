@@ -15,12 +15,22 @@ namespace ac {
  * DirectShow provides faster initialization and more stable frame rates 
  * for USB 2.0/3.0 webcams compared to the Media Foundation (MSMF) backend.
  */
-Camera::Camera(int device_id) : m_id(device_id) {
+Camera::Camera(int device_id, int width, int height) : m_id(device_id) {
     m_cap.open(m_id, cv::CAP_DSHOW);
 
     if (!m_cap.isOpened()) {
         std::cerr << "[ACVISION][CRITICAL]: Failed to claim Camera ID " 
         << m_id << ". Check if another app is using it." << std::endl;
+    }else{
+        // Set resolution if the camera was successfully opened
+        m_cap.set(cv::CAP_PROP_FRAME_WIDTH, width);
+        m_cap.set(cv::CAP_PROP_FRAME_HEIGHT, height);
+
+        double actual_width = m_cap.get(cv::CAP_PROP_FRAME_WIDTH);
+        double actual_height = m_cap.get(cv::CAP_PROP_FRAME_HEIGHT);
+
+        std::cout << "[ACVISION][INFO] Camera " << m_id 
+                  << " initialized at " << actual_width << "x" << actual_height << std::endl;
     }
 }
 
