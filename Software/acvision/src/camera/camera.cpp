@@ -1,59 +1,55 @@
-
 /**
  * @file camera.cpp
- * @brief Logic for synchronous frame acquisition using OpenCv.
- * This Implementation focuses on RAII (Resource Acquisition Is Initialization)
- * for hardware resource management, ensuring that the camera device is properly released when the VideoCapture object goes out of scope. 
- * The function captures a single frame from the specified camera and returns it as a cv::Mat object. 
- * If the camera cannot be opened or the frame cannot be read, an empty cv::Mat will be returned.
+ * @brief Implementation of the ac::Camera class using the DirectShow backend.
  * @author Enzo R. L. D. Ribas - Atom Laboratory Founder and Lead Researcher
+ * @version 1.0.0
  */
 
 #include "camera/camera.hpp"
-#include <opencv2/videoio.hpp>
 #include <iostream>
 
+namespace ac {
+
 /**
- * @brief Captures a single synchronized frame from the specified hardware device.
- * 
- * @details On Windows, this function utilizes the `CAP_DSHOW` (DirectShow) backend.
- * DirectShow is preferred over MSMF for many USB webcams due to faster 
- * initialization and better support for legacy pixel formats.
- * 
- * @param camera_id The system index of the camera (starting at 0).
- * 
- * @return cv::Mat A container representing the captured image.
- * 
- * @retval cv::Mat::empty() returns true if the hardware failed to initialize 
- * or the frame buffer was corrupted/dropped.
- * 
- * @note **Memory Management:** `cv::Mat` acts as a smart pointer. The header 
- * (metadata) is copied, but the pixel data is reference-counted. 
- * Returning it by value is an O(1) operation.
+ * @details Uses `cv::CAP_DSHOW` as the preferred backend on Windows. 
+ * DirectShow provides faster initialization and more stable frame rates 
+ * for USB 2.0/3.0 webcams compared to the Media Foundation (MSMF) backend.
  */
-cv::Mat capture_frame(int camera_id) {
-    // RAII: VideoCapture will automatically release the camera resource when it goes out of scope, preventing hardware deadlocks.
-    cv::VideoCapture cap(camera_id, cv::CAP_DSHOW);
+Camera::Camera(int device_id) : m_id(device_id) {
+    m_cap.open(m_id, cv::CAP_DSHOW);
 
-    if (!cap.isOpened()) {
-        std::cerr << "[ACVISION] Error: Hardware failed to initialize for camera with ID "
-                    << camera_id << " is in use or unavailable." << std::endl;
-        return cv::Mat();
+    if (!m_cap.isOpened()) {
+        std::cerr << "[ACVISION][CRITICAL]: Failed to claim Camera ID " 
+        << m_id << ". Check if another app is using it." << std::endl;
     }
-
-    cv::Mat frame;
-
-    /**
-     * cap.read() is a wrapper for:
-     * 1. cap.grab() - Grabs the next frame from the video file or camera and returns true (non-zero) in the case of success.
-     * 2. cap.retrieve() - Retrieves the grabbed frame and stores it in the provided cv::Mat object.
-    */
-    bool success = cap.read(frame);
-
-    if (!success) {
-        std::cerr << "[ACVISION] Warning: Failed to read frame from camera with ID " << camera_id << std::endl;
-        return cv::Mat();
-    }
-
-    return frame;
 }
+
+/**
+ * @details The release() call is explicit here to ensure that the driver 
+ * closes the stream before the rest of the object members are destroyed.
+ */
+Camera::~Camera() {
+    if (m_cap.isOpened()) {
+        m_cap.release(); // explicit release on destruction
+    }
+}
+
+/**
+ * @details This method wraps `m_cap.read()`. In OpenCV, this is a synchronized 
+ * call to grab() and retrieve(). 
+ * @warning Calling this in a tight loop without a `waitKey` or `sleep` 
+ * may saturate a single CPU core.
+ */
+cv::Mat Camera::capture_frame() {
+    cv::Mat frame;
+    if (!m_cap.read(frame)) {
+    std::cerr << "[ACVISION][WARNING]: Frame dropped from device " << m_id << std::endl;
+}
+return frame;
+}
+
+bool Camera::is_opened() const {
+    return m_cap.isOpened();
+}
+
+} // namespace ac

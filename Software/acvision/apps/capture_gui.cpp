@@ -15,6 +15,8 @@ int main() {
     const std::string window_name = "Atom Chess - Vision Monitor";
     cv::namedWindow(window_name, cv::WINDOW_AUTOSIZE);
 
+    ac::Camera camera(0);
+
     std::cout << "[INFO] Starting Capture GUI. Press 'ESC' or 'Q' to exit." << std::endl;
 
     // Timing variables for FPS calculation
@@ -24,7 +26,7 @@ int main() {
 
     while (true) {
         // 1. Capture Logic
-        cv::Mat frame = capture_frame(0);
+        cv::Mat frame = camera.capture_frame();
 
         if (frame.empty()) {
             std::cerr << "[ERROR] Lost connection to camera." << std::endl;
