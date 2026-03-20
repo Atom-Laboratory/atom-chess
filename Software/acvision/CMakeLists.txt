@@ -28,10 +28,8 @@ add_library(acvision SHARED
 target_include_directories(acvision 
     PUBLIC 
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    PRIVATE
         ${OpenCV_INCLUDE_DIRS}
 )
-
 target_link_libraries(acvision
     PUBLIC 
         ${OpenCV_LIBS}
