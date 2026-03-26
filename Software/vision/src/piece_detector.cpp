@@ -1,9 +1,11 @@
-
 #include "piece_detector.hpp"
 
 namespace ac
 {
 
+/**
+ * @brief Analisa todas as células do tabuleiro.
+ */
 std::array<std::array<CellState,8>,8>
 PieceDetector::analyzeBoard(
     const std::array<std::array<cv::Mat,8>,8>& boardCells) const
@@ -21,6 +23,9 @@ PieceDetector::analyzeBoard(
     return result;
 }
 
+/**
+ * @brief Analisa uma célula individual.
+ */
 CellState PieceDetector::analyzeCell(const cv::Mat& cell) const
 {
     if(cell.empty())
@@ -38,6 +43,9 @@ CellState PieceDetector::analyzeCell(const cv::Mat& cell) const
     return CellState::BLACK;
 }
 
+/**
+ * @brief Extrai a região central da imagem.
+ */
 cv::Mat PieceDetector::extractCenterROI(const cv::Mat& cell) const
 {
     int x = cell.cols * 0.25;
@@ -48,6 +56,9 @@ cv::Mat PieceDetector::extractCenterROI(const cv::Mat& cell) const
     return cell(cv::Rect(x,y,w,h));
 }
 
+/**
+ * @brief Normaliza iluminação usando CLAHE.
+ */
 cv::Mat PieceDetector::normalizeLighting(const cv::Mat& input) const
 {
     cv::Mat gray;
@@ -61,6 +72,9 @@ cv::Mat PieceDetector::normalizeLighting(const cv::Mat& input) const
     return normalized;
 }
 
+/**
+ * @brief Calcula densidade de bordas usando Canny.
+ */
 double PieceDetector::computeEdgeDensity(const cv::Mat& cell) const
 {
     cv::Mat norm = normalizeLighting(cell);
@@ -74,6 +88,9 @@ double PieceDetector::computeEdgeDensity(const cv::Mat& cell) const
     return edgePixels / total;
 }
 
+/**
+ * @brief Determina se a peça é branca.
+ */
 bool PieceDetector::isWhitePiece(const cv::Mat& cell) const
 {
     cv::Mat norm = normalizeLighting(cell);

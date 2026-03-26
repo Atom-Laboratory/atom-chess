@@ -1,9 +1,11 @@
-
 #include "fen_generator.hpp"
 
 namespace ac
 {
 
+/**
+ * @brief Implementação da geração de string FEN.
+ */
 std::string FenGenerator::generate(
     const std::array<std::array<CellState,8>,8>& board)
 {
@@ -38,6 +40,7 @@ std::string FenGenerator::generate(
             fen += "/";
     }
 
+    // Campos adicionais do FEN (fixos)
     fen += " w - - 0 1";
 
     return fen;
