@@ -16,6 +16,12 @@
  */
 namespace ac {
 
+    enum class Backend {
+        AUTO,
+        DSHOW,
+        V4L2
+    };
+
     /**
      * @class Camera
      * @brief High-level wrapper for OpenCV's VideoCapture with RAII semantics.
@@ -32,9 +38,11 @@ namespace ac {
         /**
          * @brief Constructor that initializes the hardware stream.
          * @param device_id The OS-level index of the camera (default: 0).
-         * @throw May log errors to stderr if the device cannot be claimed.
+         * @warning This constructor does not throw on failure; it may log errors to stderr  
+         *          if the device cannot be claimed. Use is_opened() to verify initialization.  
+
          */
-        explicit Camera(int device_id = 0, int width = 1280, int height = 720);
+        explicit Camera(int device_id = 0, int width = 1280, int height = 720, Backend backend = Backend::AUTO);
 
         /**
          * @brief Destructor. Ensures the hardware resource is released to the OS.

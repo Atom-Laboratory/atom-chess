@@ -55,7 +55,7 @@ int main() {
         cv::imshow(window_name, frame);
 
         // 5. Event Handling
-        if (cv::waitKey(1) == 27) break; 
+        if (cv::waitKey(1) == 27 || cv::waitKey(1) == 113) break; 
     }
 
     cv::destroyAllWindows();
