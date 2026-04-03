@@ -1,0 +1,7 @@
+{
+    "cmake.sourceDirectory": "${workspaceFolder}/Software/acvision",
+    "cmake.environmentFile": "${workspaceFolder}/.env",
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "cmake.configureOnOpen": true,
+    "cmake.ignoreCMakeListsCheck": false
+}
