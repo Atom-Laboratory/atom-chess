@@ -3,5 +3,10 @@
     "cmake.environmentFile": "${workspaceFolder}/.env",
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "cmake.configureOnOpen": true,
-    "cmake.ignoreCMakeListsCheck": false
+    "cmake.ignoreCMakeListsCheck": false,
+
+    "cmake.generator": "Ninja",
+    "cmake.configureSettings": {
+        "OpenCV_DIR": "D:/opencv/build/x64/vc16/lib"
+    }
 }
