@@ -1,0 +1,68 @@
+# ==========================================
+# C++ / CMake Standard
+# ==========================================
+# Pastas de build (em qualquer nível do projeto)
+[Bb]uild/
+[Oo]ut/
+[Bb]in/
+[Ll]ib/
+
+# Arquivos gerados pelo CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+
+# ==========================================
+# Visual Studio / MSVC (Artefatos de Compilação)
+# ==========================================
+*.obj
+*.exe
+*.pdb
+*.ilk
+*.lib
+*.dll
+*.exp
+*.sln
+*.vcxproj
+*.filters
+*.user
+*.aps
+*.ncb
+*.opendb
+*.sdf
+*.cache
+*.pch
+*.ipch
+*.tlog
+*.idb
+
+# Diretórios específicos do VS
+.vs/
+ipch/
+
+# ==========================================
+# VS Code
+# ==========================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/extensions.json
+# Ignorar arquivos de estado de usuário (não compartilhar estes!)
+.vscode/cmake-kits.json
+.vscode/ipch/
+
+# ==========================================
+# OS Specific (Windows)
+# ==========================================
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ==========================================
+# OpenCV / External Libraries (Safety)
+# ==========================================
+# Evita que você suba as DLLs do OpenCV por engano
+opencv_world*.dll
