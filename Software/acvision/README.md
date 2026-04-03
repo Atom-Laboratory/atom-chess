@@ -1,84 +1,131 @@
-# 📷 ATOM Chess - Visão Computacional: Teste de Câmera
+# 📷 ATOM Chess - Visão Computacional
 
-## 📋 Conteúdo
-
-- [1. Instalação e Configuração do OpenCV (Windows)](#-1-instalação-e-configuração-do-opencv-windows)
-  - [1.1. Configuração de Variáveis de Ambiente (Runtime)](#11-configuração-de-variáveis-de-ambiente-runtime)
-- [2. Configuração da Toolchain (Visual Studio)](#-2-configuração-da-toolchain-visual-studio)
-  - [2.1. Criação e Setup do Projeto](#21-criação-e-setup-do-projeto)
-  - [2.2. Diretórios VC++ (Headers e Libs)](#22-diretórios-vc-headers-e-libs)
-  - [2.3. Vinculador (Linker)](#23-vinculador-linker)
-- [3. Executando o Teste](#-3-executando-o-teste)
+## 📋 Sumário
+1. [Requisitos de Sistema](#1-requisitos-de-sistema)
+2. [Instalação do OpenCV (sem compilar da fonte)](#2-instalação-do-opencv-sem-compilar-da-fonte)
+3. [Configuração do VSCode (Workspace & CMake Tools)](#3-configuração-do-vscode-workspace--cmake-tools)
+4. [Build e execução via VSCode](#4-build-e-execução-via-vscode)
+5. [Troubleshooting restrito ao VSCode](#5-troubleshooting-restrito-ao-vscode)
 
 ---
 
-## 🛠️ 1. Instalação e Configuração do OpenCV (Windows)
+## 🧩 1. Requisitos de Sistema
 
-A versão homologada para este teste é a **4.13.0**.
+### 🪟 Ambiente Windows (sem a IDE do Visual Studio)
+- **Compilador:** [Build Tools for Visual Studio 2022](https://visualstudio.microsoft.com/pt-br/visual-cpp-build-tools/)  
+   Instale **apenas** o pacote **Desktop development with C++** (MSVC sem a IDE completa).
+- **Editor:** VSCode
+- **Extensões VSCode:**
+   - `C/C++` (Microsoft)
+   - `CMake Tools` (Microsoft)
 
-1. Faça o download do executável (`opencv-4.13.0-windows.exe`) diretamente do [repositório oficial de releases no GitHub](https://github.com/opencv/opencv/releases) ou do site oficial do OpenCV.
-2. Execute o arquivo e extraia o conteúdo para um diretório raiz de fácil acesso, preferencialmente em um SSD para otimizar o tempo de build.
-   > **Recomendação de Path:** `C:\opencv\`
-
-### 1.1. Configuração de Variáveis de Ambiente (Runtime)
-
-Para que o Windows localize as DLLs do OpenCV em tempo de execução (dynamic linking):
-
-1. Pressione `Win`, digite **"Editar as variáveis de ambiente do sistema"** e pressione `Enter`.
-2. Clique em **Variáveis de Ambiente...**.
-3. Em _Variáveis do sistema_, localize `Path`, selecione-a e clique em **Editar**.
-4. Adicione um **Novo** caminho para a pasta `bin`:
-   ```
-   C:\opencv\build\x64\vc16\bin
-   ```
-
-⚠️ **Reinicie o computador** para que a variável seja propagada.
+### 🐧 Ambiente Linux (Ubuntu/Debian)
+```bash
+sudo apt update
+sudo apt install build-essential cmake ninja-build libopencv-dev
+```
 
 ---
 
-## 💻 2. Configuração da Toolchain (Visual Studio)
+## 🛠️ 2. Instalação do OpenCV (sem compilar da fonte)
 
-Certifique-se de ter o **Visual Studio Community** (ou superior) instalado com a carga de trabalho "Desenvolvimento para Desktop com C++".
+### 🪟 Windows (binários MSVC)
+1. Baixe o `.exe` de extração nas [releases do OpenCV](https://github.com/opencv/opencv/releases).
+2. Extraia em um caminho curto, por exemplo: `D:\opencv\`.
+3. Verifique se o arquivo abaixo existe:
+    `D:\opencv\build\x64\vc16\lib\OpenCVConfig.cmake`
 
-### 2.1. Criação e Setup do Projeto
-
-1. Crie um Projeto Vazio (Empty Project) em C++.
-2. Na barra de ferramentas, defina a plataforma como **x64**.
-3. Acesse **Projeto > Propriedades...** (ou `Alt + Enter`).
-
-### 2.2. Diretórios VC++ (Headers e Libs)
-
-Nas Propriedades, navegue até **Diretórios VC++** e configure:
-
-**Diretórios de Inclusão:**
-
+### 🐧 Linux (APT)
+```bash
+sudo apt install libopencv-dev
 ```
-C:\opencv\build\include
-```
-
-**Diretórios de Biblioteca:**
-
-```
-C:\opencv\build\x64\vc16\lib
-```
-
-### 2.3. Vinculador (Linker)
-
-1. Expanda **Vinculador > Entrada**.
-2. Em **Dependências Adicionais**, adicione:
-   ```
-   opencv_world4130d.lib
-   ```
-
-> **Nota:** O sufixo `d` é para Debug. Para Release, use `opencv_world4130.lib`.
 
 ---
 
-## ▶️ 3. Executando o Teste
+## ⚙️ 3. Configuração do VSCode (Workspace & CMake Tools)
 
-1. No Gerenciador de Soluções, clique com o botão direito no projeto e abra a pasta no Gerenciador de Arquivos.
-2. Copie os diretórios `src`, `include` e `examples` para a pasta do projeto.
-3. Adicione os arquivos `.cpp` ao projeto via **Botão direito > Adicionar > Item Existente...**.
-4. Execute com `F5` (Depurador Local do Windows).
+No VSCode, o setup é feito via **CMake Tools** + variável de ambiente.  
+Evite hardcode de caminhos no projeto.
 
-**Troubleshooting:** Se falhar com erro sobre `opencv_world4130d.dll` não encontrada, revise o passo 1.1 e reinicie o computador.
+### 🔧 3.1 Variável de ambiente (obrigatório)
+
+Cada desenvolvedor deve configurar o caminho do OpenCV localmente.
+
+#### 🪟 Windows (CMD)
+```cmd
+setx OpenCV_DIR "D:\opencv\build\x64\vc16\lib"
+```
+
+Adicione manualmente ao PATH do sistema:
+
+D:\opencv\build\x64\vc16\bin
+
+Reinicie o VSCode após executar o comando.
+
+#### 🐧 Linux (bash)
+```bash
+echo 'export OpenCV_DIR=/usr/lib/x86_64-linux-gnu/cmake/opencv4' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### 🧩 3.2 Configuração do VSCode
+
+Crie ou edite `.vscode/settings.json`:
+
+```json
+{
+   "cmake.sourceDirectory": "${workspaceFolder}/Software/acvision",
+   "cmake.generator": "Ninja",
+   "cmake.configureOnOpen": true
+}
+```
+
+### ⚙️ 3.3 Seleção do preset (crítico)
+
+No VSCode:
+
+`Ctrl + Shift + P` → **CMake: Select Configure Preset**
+
+Selecione:
+- **Windows:** `x64 Debug (MSVC)`
+- **Linux:** `default` / `gcc`
+
+### 🔄 3.4 Reconfiguração
+
+Sempre que mudar ambiente ou compilador:
+
+`Ctrl + Shift + P` → **CMake: Delete Cache and Reconfigure**
+
+> **Nota:** O `cmake.configureEnvironment` pode injetar o path do OpenCV no processo de configuração da extensão, dispensando flags no terminal.
+
+### 🧰 3.5 Seleção do compilador (Kits)
+
+1. `Ctrl + Shift + P` → **CMake: Scan for Kits**
+2. `Ctrl + Shift + P` → **CMake: Select a Kit**
+3. Escolha:
+    - **Windows:** `Visual Studio Build Tools 2022 Release - amd64` (ou `x86_amd64`)
+    - **Linux:** `GCC`
+
+---
+
+## 🔨 4. Build e execução via VSCode
+
+1. **Configurar:** `Ctrl + Shift + P` → **CMake: Configure** (gera o diretório `build/`).
+2. **Buildar:** `F7` ou clique em **[Build]** na barra inferior.
+3. **Executar:** `Shift + F5` ou clique em **[Run]** (ícone de play). O executável abre no terminal integrado.
+
+Se preferir build pelo terminal integrado:
+```bash
+cmake --build build
+```
+
+---
+
+## 🧪 5. Troubleshooting restrito ao VSCode
+
+| Sintoma | Causa / Resolução |
+| :--- | :--- |
+| `cl.exe not found` ou erro de Kit | O VSCode não encontrou o MSVC. Confirme a instalação do **Build Tools for C++**, rode **CMake: Scan for Kits** e selecione o kit correto. |
+| `undefined reference to cv::...` no Windows | **Erro de ABI:** foi selecionado kit MinGW/GCC (`gcc.exe`). O OpenCV baixado funciona com MSVC (`cl.exe`). Troque o Kit no VSCode. |
+| `OpenCV_DIR-NOTFOUND` | `OpenCV_DIR` está incorreto. Aponte para a pasta que contém `OpenCVConfig.cmake`. |
+| Erro de DLL (`opencv_world*.dll`) ao clicar em Run | O build ocorreu, mas o Windows não encontra a DLL em runtime. Adicione `D:\opencv\build\x64\vc16\bin` ao **PATH** e reinicie o VSCode. |

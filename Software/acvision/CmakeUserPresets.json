@@ -3,8 +3,7 @@
   "configurePresets": [
     {
       "name": "local-dev",
-      "displayName": "Local Dev (Enzo)",
-      "inherits": "x64-debug",
+      "inherits": "debug",
       "cacheVariables": {
         "OpenCV_DIR": "D:/opencv/build/x64/vc16/lib"
       }
