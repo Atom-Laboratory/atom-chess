@@ -118,9 +118,13 @@ Sempre que mudar ambiente ou compilador:
 
 Se preferir build pelo terminal integrado:
 ```bash
-cmake --build build ou cmake -G Ninja -S . -B build
+cmake -G Ninja -S . -B build -A x64
+cmake --build build
 ```
-
+e dentro da pasta acvision:
+```bash
+./build/acvision
+```
 ---
 
 ## 🧪 5. Troubleshooting restrito ao VSCode
