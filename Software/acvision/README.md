@@ -18,6 +18,8 @@
 - **Extensões VSCode:**
    - `C/C++` (Microsoft)
    - `CMake Tools` (Microsoft)
+- **Ninja Build** (opcional, recomendado para builds mais rápidos):
+   - Baixe o `.exe` de extração nas [releases do Ninja](https://github.com/ninja-build/ninja/releases)
 
 ### 🐧 Ambiente Linux (Ubuntu/Debian)
 ```bash
@@ -116,7 +118,7 @@ Sempre que mudar ambiente ou compilador:
 
 Se preferir build pelo terminal integrado:
 ```bash
-cmake --build build
+cmake --build build ou cmake -G Ninja -S . -B build
 ```
 
 ---
