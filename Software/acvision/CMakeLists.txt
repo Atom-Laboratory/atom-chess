@@ -30,6 +30,7 @@ find_package(OpenCV REQUIRED)
 # ==========================================
 add_library(acvision SHARED
     src/camera/camera.cpp
+    src/vision/board_detector.cpp
 )
 
 target_sources(acvision
@@ -37,7 +38,8 @@ target_sources(acvision
         FILE_SET HEADERS
         BASE_DIRS include
         FILES 
-            include/camera/camera.hpp 
+            include/camera/camera.hpp
+            include/vision/board_detector.hpp
 )
 
 target_include_directories(acvision 
@@ -51,6 +53,7 @@ target_link_libraries(acvision
         opencv_imgproc
         opencv_highgui
         opencv_videoio
+        opencv_calib3d
 )
 
 if(MSVC)
@@ -64,6 +67,7 @@ endif()
 # ==========================================
 set(APP_LIST
     "capture_gui"
+    "board_detection_demo"
 )
 
 foreach(app ${APP_LIST})
