@@ -1,4 +1,4 @@
-#include "fen_generator.hpp"
+#include "fen_generator/fen_generator.hpp"
 
 namespace ac
 {

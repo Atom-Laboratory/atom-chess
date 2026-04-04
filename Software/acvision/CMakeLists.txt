@@ -30,6 +30,8 @@ find_package(OpenCV REQUIRED)
 # ==========================================
 add_library(acvision SHARED
     src/camera/camera.cpp
+    src/piece_detector/piece_detector.cpp
+    src/fen_generator/fen_generator.cpp
 )
 
 target_sources(acvision
@@ -38,6 +40,9 @@ target_sources(acvision
         BASE_DIRS include
         FILES 
             include/camera/camera.hpp 
+            include/piece_detector/piece_detector.hpp
+            include/fen_generator/fen_generator.hpp
+
 )
 
 target_include_directories(acvision 
@@ -105,6 +110,8 @@ FetchContent_MakeAvailable(googletest)
 
 set(TEST_LIST
     "test_camera"
+    "test_piece_detector"
+    "test_fen_generator"
 )
 
 foreach(test_name ${TEST_LIST})

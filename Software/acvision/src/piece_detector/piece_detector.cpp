@@ -1,4 +1,4 @@
-#include "piece_detector.hpp"
+#include "piece_detector/piece_detector.hpp"
 
 namespace ac
 {
@@ -48,10 +48,10 @@ CellState PieceDetector::analyzeCell(const cv::Mat& cell) const
  */
 cv::Mat PieceDetector::extractCenterROI(const cv::Mat& cell) const
 {
-    int x = cell.cols * 0.25;
-    int y = cell.rows * 0.25;
-    int w = cell.cols * 0.5;
-    int h = cell.rows * 0.5;
+    int x = static_cast<int>(cell.cols * 0.25);
+    int y = static_cast<int>(cell.rows * 0.25);
+    int w = static_cast<int>(cell.cols * 0.5);
+    int h = static_cast<int>(cell.rows * 0.5);
 
     return cell(cv::Rect(x,y,w,h));
 }
