@@ -10,24 +10,24 @@ namespace ac
 
 /**
  * @class FenGenerator
- * @brief Responsável por converter o estado do tabuleiro em uma string no formato FEN.
+ * @brief Responsible for converting board state into a FEN formatted string.
  *
- * A classe fornece um método estático para gerar a representação textual
- * de um tabuleiro de xadrez com base em uma matriz 8x8 de CellState.
+ * This class provides a static method to generate the textual representation
+ * of a chessboard based on an 8x8 matrix of CellState values.
  */
 class FenGenerator
 {
 public:
 
     /**
-     * @brief Gera uma string no formato FEN a partir do estado do tabuleiro.
+     * @brief Generates a FEN string from the board state.
      *
-     * @param board Matriz 8x8 contendo o estado de cada célula (EMPTY, WHITE, BLACK).
-     * @return std::string String no formato FEN representando o tabuleiro.
+     * @param board 8x8 matrix containing the state of each cell (EMPTY, WHITE, BLACK).
+     * @return std::string FEN formatted string representing the board.
      *
-     * @note Apenas a ocupação e cor das peças são consideradas.
-     * @note Todas as peças são representadas como peões (P/p).
-     * @note Campos adicionais do FEN são definidos com valores fixos.
+     * @note Only piece occupancy and color are considered.
+     * @note All detected pieces are represented as pawns (P/p).
+     * @note Additional FEN fields are set to fixed values.
      */
     static std::string generate(
         const std::array<std::array<CellState,8>,8>& board

@@ -9,32 +9,31 @@ namespace ac
 
 /**
  * @enum CellState
- * @brief Representa o estado de uma célula do tabuleiro.
+ * @brief Represents the state of a board cell.
  */
 enum class CellState
 {
-    EMPTY,  /**< Casa vazia */
-    WHITE,  /**< Peça branca */
-    BLACK   /**< Peça preta */
+    EMPTY,  /**< Empty square */
+    WHITE,  /**< White piece */
+    BLACK   /**< Black piece */
 };
 
 /**
  * @class PieceDetector
- * @brief Realiza a análise de imagens de células para detectar peças.
+ * @brief Performs image analysis to detect chess pieces.
  *
- * Esta classe implementa um pipeline de visão computacional baseado em
- * heurísticas para determinar se uma célula está vazia ou contém uma peça,
- * além de identificar a cor da peça.
+ * This class implements a heuristic computer vision pipeline to determine
+ * whether a cell is empty or contains a piece, and to identify the piece color.
  */
 class PieceDetector
 {
 public:
 
     /**
-     * @brief Analisa todas as células do tabuleiro.
+     * @brief Analyzes all board cells.
      *
-     * @param boardCells Matriz 8x8 contendo imagens (cv::Mat) das células.
-     * @return Matriz 8x8 contendo o estado de cada célula.
+     * @param boardCells 8x8 matrix containing images (cv::Mat) of the cells.
+     * @return 8x8 matrix containing the state of each cell.
      */
     std::array<std::array<CellState,8>,8> analyzeBoard(
         const std::array<std::array<cv::Mat,8>,8>& boardCells
@@ -43,51 +42,51 @@ public:
 private:
 
     /**
-     * @brief Analisa uma única célula do tabuleiro.
+     * @brief Analyzes a single board cell.
      *
-     * @param cell Imagem da célula.
-     * @return CellState Estado identificado da célula.
+     * @param cell Image of the cell.
+     * @return CellState Detected state of the cell.
      */
     CellState analyzeCell(const cv::Mat& cell) const;
 
     /**
-     * @brief Extrai a região central da célula.
+     * @brief Extracts the central region of the cell image.
      *
-     * Reduz a interferência de bordas e linhas do tabuleiro.
+     * Reduces interference from board edges and grid lines.
      *
-     * @param cell Imagem original da célula.
-     * @return cv::Mat Região central da imagem.
+     * @param cell Original cell image.
+     * @return cv::Mat Central region of the image.
      */
     cv::Mat extractCenterROI(const cv::Mat& cell) const;
 
     /**
-     * @brief Normaliza a iluminação da imagem.
+     * @brief Normalizes lighting in the image.
      *
-     * Utiliza CLAHE para melhorar contraste e reduzir variações de iluminação.
+     * Uses CLAHE to improve contrast and reduce illumination variations.
      *
-     * @param input Imagem de entrada.
-     * @return cv::Mat Imagem normalizada.
+     * @param input Input image.
+     * @return cv::Mat Normalized image.
      */
     cv::Mat normalizeLighting(const cv::Mat& input) const;
 
     /**
-     * @brief Calcula a densidade de bordas na imagem.
+     * @brief Computes the edge density of the image.
      *
-     * Utilizado para detectar a presença de peças.
+     * Used to detect the presence of a piece.
      *
-     * @param cell Imagem da célula.
-     * @return double Proporção de pixels de borda.
+     * @param cell Cell image.
+     * @return double Proportion of edge pixels.
      */
     double computeEdgeDensity(const cv::Mat& cell) const;
 
     /**
-     * @brief Determina se a peça presente é branca.
+     * @brief Determines whether the detected piece is white.
      *
-     * Baseado em análise de brilho médio e variação de intensidade.
+     * Based on mean brightness and intensity variation analysis.
      *
-     * @param cell Imagem da célula.
-     * @return true Se a peça for branca.
-     * @return false Caso contrário (preta).
+     * @param cell Cell image.
+     * @return true if the piece is white.
+     * @return false otherwise (black piece).
      */
     bool isWhitePiece(const cv::Mat& cell) const;
 };

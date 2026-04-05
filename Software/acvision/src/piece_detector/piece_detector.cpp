@@ -4,7 +4,7 @@ namespace ac
 {
 
 /**
- * @brief Analisa todas as células do tabuleiro.
+ * @brief Analyze all board cells.
  */
 std::array<std::array<CellState,8>,8>
 PieceDetector::analyzeBoard(
@@ -24,7 +24,7 @@ PieceDetector::analyzeBoard(
 }
 
 /**
- * @brief Analisa uma célula individual.
+ * @brief Analyze a single cell.
  */
 CellState PieceDetector::analyzeCell(const cv::Mat& cell) const
 {
@@ -44,7 +44,7 @@ CellState PieceDetector::analyzeCell(const cv::Mat& cell) const
 }
 
 /**
- * @brief Extrai a região central da imagem.
+ * @brief Extract the central region of the image.
  */
 cv::Mat PieceDetector::extractCenterROI(const cv::Mat& cell) const
 {
@@ -57,7 +57,7 @@ cv::Mat PieceDetector::extractCenterROI(const cv::Mat& cell) const
 }
 
 /**
- * @brief Normaliza iluminação usando CLAHE.
+ * @brief Normalize lighting using CLAHE.
  */
 cv::Mat PieceDetector::normalizeLighting(const cv::Mat& input) const
 {
@@ -73,7 +73,7 @@ cv::Mat PieceDetector::normalizeLighting(const cv::Mat& input) const
 }
 
 /**
- * @brief Calcula densidade de bordas usando Canny.
+ * @brief Compute edge density using Canny.
  */
 double PieceDetector::computeEdgeDensity(const cv::Mat& cell) const
 {
@@ -89,7 +89,7 @@ double PieceDetector::computeEdgeDensity(const cv::Mat& cell) const
 }
 
 /**
- * @brief Determina se a peça é branca.
+ * @brief Determine if the piece is white.
  */
 bool PieceDetector::isWhitePiece(const cv::Mat& cell) const
 {
