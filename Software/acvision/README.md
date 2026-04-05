@@ -1,6 +1,7 @@
 # 📷 ATOM Chess — Visão Computacional
 
 ## 📋 Sumário
+
 1. [Requisitos de Sistema](#-1-requisitos-de-sistema)  
 2. [OpenCV (Windows)](#️-2-opencv-windows)  
 3. [Configuração do Ambiente (MSVC)](#️-3-configuração-do-ambiente-msvc)  
@@ -13,19 +14,32 @@
 ## 🧩 1. Requisitos de Sistema
 
 ### Windows
+
 - Visual Studio Build Tools 2022 (C++)
 - CMake instalado no `PATH`
 - Ninja (opcional)
 - VSCode como editor
 
 **Extensão recomendada:**
+
 - C/C++ (Microsoft)
 
 ### Linux
+
+#### Debian Distributions:
+
 ```bash
 sudo apt update
 sudo apt install build-essential cmake ninja-build libopencv-dev
 ```
+
+#### Arch:
+
+```bash
+sudo pacman -Syu
+pacman -S --needed base-devel cmake ninja opencv
+```
+
 
 ---
 
@@ -44,6 +58,7 @@ D:\opencv\build\x64\vc16\lib\OpenCVConfig.cmake
 ```
 
 ### Variável de ambiente (`OpenCV_DIR`)
+
 ```bat
 setx OpenCV_DIR "D:\opencv\build\x64\vc16"
 ```
@@ -75,6 +90,7 @@ cl
 Se a versão do compilador aparecer, está correto.
 
 ### 📁 Estrutura do projeto
+
 ```text
 Software/acvision/
 ├── CMakeLists.txt
@@ -135,12 +151,15 @@ build\Debug\nome_do_executavel.exe
 ## 🧪 6. Troubleshooting
 
 ### `cl` não reconhecido
+
 MSVC não foi carregado. Execute `vcvars64.bat`.
 
 ### `OpenCV_DIR` errado
+
 Deve apontar para a pasta que contém `OpenCVConfig.cmake`.
 
 ### Erro de DLL do OpenCV
+
 Adicione ao `PATH`:
 
 ```text
@@ -148,9 +167,11 @@ D:\opencv\build\x64\vc16\bin
 ```
 
 ### Erro `LNK` / `cv::`
+
 Compilador incorreto. Use **MSVC (`cl.exe`)**, nunca MinGW.
 
 ### `cmake` não encontrado
+
 CMake não está no `PATH` do sistema.
 
 ---
