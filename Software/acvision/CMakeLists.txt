@@ -30,6 +30,8 @@ find_package(OpenCV REQUIRED)
 # ==========================================
 add_library(acvision SHARED
     src/camera/camera.cpp
+    src/piece_detector/piece_detector.cpp
+    src/fen_generator/fen_generator.cpp
 )
 
 target_sources(acvision
@@ -38,6 +40,9 @@ target_sources(acvision
         BASE_DIRS include
         FILES 
             include/camera/camera.hpp 
+            include/piece_detector/piece_detector.hpp
+            include/fen_generator/fen_generator.hpp
+
 )
 
 target_include_directories(acvision 
@@ -86,6 +91,34 @@ foreach(app ${APP_LIST})
     endif()
 endforeach()
 
+# ==========================================
+# AUTOMATIC TARGET GENERATION (Simulation Folder)
+# ==========================================
+set(SIM_LIST
+    "simulator"
+)
+
+foreach(sim ${SIM_LIST})
+    set(sim_src "simulation/${sim}.cpp")
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${sim_src})
+        add_executable(${sim} ${sim_src})
+        
+        target_link_libraries(${sim} PRIVATE acvision)
+        set_target_properties(${sim} PROPERTIES FOLDER "Applications")
+        
+        if(WIN32)
+            add_custom_command(TARGET ${sim} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_RUNTIME_DLLS:${sim}>
+                $<TARGET_FILE_DIR:${sim}>
+                COMMAND_EXPAND_LISTS
+                COMMENT "[ACVISION] Copying OpenCV runtime DLLs for ${sim}..."
+            )
+        endif()
+    endif()
+endforeach()
+
+
 
 # ==========================================
 # AUTOMATED TESTS (tests Folder)
@@ -105,6 +138,8 @@ FetchContent_MakeAvailable(googletest)
 
 set(TEST_LIST
     "test_camera"
+    "test_piece_detector"
+    "test_fen_generator"
 )
 
 foreach(test_name ${TEST_LIST})

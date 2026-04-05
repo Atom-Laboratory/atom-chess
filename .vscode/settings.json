@@ -3,6 +3,7 @@
     "cmake.environmentFile": "${workspaceFolder}/.env",
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "cmake.configureOnOpen": true,
+    "cmake.useCMakePresets": "never",
     "cmake.ignoreCMakeListsCheck": false,
 
     "cmake.generator": "Ninja",
