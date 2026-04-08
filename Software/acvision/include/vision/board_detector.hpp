@@ -6,9 +6,9 @@
 
 namespace ac {
 /**
- * @brief Representa os quatro cantos externos estimados do tabuleiro.
+ * @brief Represents the four estimated outer corners of the board.
  *
- * A ordem esperada dos pontos é:
+ * The expected order of points is:
  * 0 - top-left
  * 1 - top-right
  * 2 - bottom-right

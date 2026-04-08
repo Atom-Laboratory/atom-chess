@@ -1,17 +1,17 @@
 /**
  * @file board_detection_demo.cpp
- * @brief Aplicação de demonstração para detecção de tabuleiro em tempo real.
+ * @brief Application for demonstrating real-time chessboard detection.
  *
- * Este executável captura frames da câmera e utiliza o módulo BoardDetector
- * para localizar um tabuleiro de xadrez na imagem.
+ * This executable captures frames from the camera and uses the BoardDetector module
+ * to locate a chessboard in the image.
  *
- * Quando o tabuleiro é encontrado, a aplicação desenha:
- * - os quatro cantos estimados do tabuleiro
- * - as linhas do quadrilátero correspondente
- * - uma mensagem indicando sucesso da detecção
+ * When the board is found, the application draws:
+ * - the four estimated corners of the board
+ * - the lines of the corresponding quadrilateral
+ * - a message indicating successful detection
  *
- * Esta aplicação é voltada para testes e validação visual da pipeline inicial
- * de visão computacional.
+ * This application is intended for testing and visual validation of the initial
+ * computer vision pipeline.
  */
 #include "camera/camera.hpp"
 #include "vision/board_detector.hpp"
@@ -21,12 +21,12 @@
 #include <iostream>
 
 /**
- * @brief Ponto de entrada da aplicação de demonstração.
+ * @brief Main function for the board detection demo application.
  *
- * Inicializa a câmera, captura frames continuamente e tenta detectar o tabuleiro
- * em cada frame capturado.
+ * Initializes the camera, continuously captures frames, and attempts to detect
+ * the chessboard in each captured frame.
  *
- * @return int Código de saída da aplicação.
+ * @return int Application exit code.
  */
 int main() {
     ac::Camera cam(0, 640, 480, ac::Backend::V4L2);

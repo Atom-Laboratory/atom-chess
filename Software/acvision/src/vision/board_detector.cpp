@@ -1,6 +1,6 @@
 /**
  * @file board_detector.cpp
- * @brief Implementação do detector de tabuleiro.
+ * @brief Chessboard detection and corner estimation for camera calibration.
  */    
 #include "vision/board_detector.hpp"
 
@@ -9,16 +9,16 @@
 
 namespace ac {
 /**
- * @brief Detecta o tabuleiro em uma imagem e estima seus quatro cantos externos.
+ * @brief Detects the chessboard in an image and estimates its four outer corners.
  *
- * O algoritmo atual:
- * 1. Converte a imagem para tons de cinza
- * 2. Detecta os cantos internos do padrão xadrez (7x7)
- * 3. Refina os pontos detectados com precisão subpixel
- * 4. Extrapola os quatro cantos externos do tabuleiro
+ * The current algorithm:
+ * 1. Converts the image to grayscale
+ * 2. Detects the internal corners of the chessboard pattern (7x7)
+ * 3. Refines the detected points with subpixel accuracy
+ * 4. Extrapolates the four outer corners of the chessboard
  *
- * @param frame Frame de entrada capturado pela câmera.
- * @return std::optional<BoardCorners> Cantos detectados ou std::nullopt.
+ * @param frame Input image in which to detect the chessboard.
+ * @return std::optional<BoardCorners> Detected corners or std::nullopt.
  */
 std::optional<BoardCorners> BoardDetector::detect(const cv::Mat& frame) const {
     if (frame.empty()) return std::nullopt;
