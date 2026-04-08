@@ -1,3 +1,18 @@
+/**
+ * @file board_detection_demo.cpp
+ * @brief Aplicação de demonstração para detecção de tabuleiro em tempo real.
+ *
+ * Este executável captura frames da câmera e utiliza o módulo BoardDetector
+ * para localizar um tabuleiro de xadrez na imagem.
+ *
+ * Quando o tabuleiro é encontrado, a aplicação desenha:
+ * - os quatro cantos estimados do tabuleiro
+ * - as linhas do quadrilátero correspondente
+ * - uma mensagem indicando sucesso da detecção
+ *
+ * Esta aplicação é voltada para testes e validação visual da pipeline inicial
+ * de visão computacional.
+ */
 #include "camera/camera.hpp"
 #include "vision/board_detector.hpp"
 
@@ -5,6 +20,14 @@
 #include <opencv2/imgproc.hpp>
 #include <iostream>
 
+/**
+ * @brief Ponto de entrada da aplicação de demonstração.
+ *
+ * Inicializa a câmera, captura frames continuamente e tenta detectar o tabuleiro
+ * em cada frame capturado.
+ *
+ * @return int Código de saída da aplicação.
+ */
 int main() {
     ac::Camera cam(0, 640, 480, ac::Backend::V4L2);
 
