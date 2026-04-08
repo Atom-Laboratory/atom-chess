@@ -1,10 +1,25 @@
+/**
+ * @file board_detector.cpp
+ * @brief Implementação do detector de tabuleiro.
+ */    
 #include "vision/board_detector.hpp"
 
 #include <opencv2/calib3d.hpp>
 #include <opencv2/imgproc.hpp>
 
 namespace ac {
-
+/**
+ * @brief Detecta o tabuleiro em uma imagem e estima seus quatro cantos externos.
+ *
+ * O algoritmo atual:
+ * 1. Converte a imagem para tons de cinza
+ * 2. Detecta os cantos internos do padrão xadrez (7x7)
+ * 3. Refina os pontos detectados com precisão subpixel
+ * 4. Extrapola os quatro cantos externos do tabuleiro
+ *
+ * @param frame Frame de entrada capturado pela câmera.
+ * @return std::optional<BoardCorners> Cantos detectados ou std::nullopt.
+ */
 std::optional<BoardCorners> BoardDetector::detect(const cv::Mat& frame) const {
     if (frame.empty()) return std::nullopt;
     
