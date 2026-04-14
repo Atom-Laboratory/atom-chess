@@ -30,7 +30,7 @@ find_package(OpenCV REQUIRED)
 # ==========================================
 add_library(acvision SHARED
     src/camera/camera.cpp
-    src/vision/board_detector.cpp
+    src/board_detector/board_detector.cpp
 )
 
 target_sources(acvision
@@ -39,7 +39,7 @@ target_sources(acvision
         BASE_DIRS include
         FILES 
             include/camera/camera.hpp
-            include/vision/board_detector.hpp
+            include/board_detector/board_detector.hpp
 )
 
 target_include_directories(acvision 
