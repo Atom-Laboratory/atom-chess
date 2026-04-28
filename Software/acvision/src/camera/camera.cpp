@@ -6,6 +6,7 @@
  */
 
 #include "camera/camera.hpp"
+#include <opencv2/imgproc.hpp> //cv::cvtColor e cv::COLOR_BGR2GRAY;
 #include <iostream>
 
 namespace ac {
@@ -75,6 +76,26 @@ cv::Mat Camera::capture_frame() {
     std::cerr << "[ACVISION][WARNING]: Frame dropped from device " << m_id << std::endl;
 }
 return frame;
+}
+
+/**
+ * @brief Localiza valores de intensidade mínima e máxima.
+ * @details Converte o frame BGR para 1 canal (Grayscale) para evitar crash no cv::minMaxLoc.
+ */
+void Camera::get_min_max_intensity(double* min_val, double* max_val) {
+    cv::Mat frame = capture_frame();
+    
+    if (frame.empty()) {
+        if (min_val) *min_val = 0.0;
+        if (max_val) *max_val = 0.0;
+        return;
+    }
+
+    //  Fix está aqui:
+    cv::Mat gray;
+    cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY); // BGR (3 canais) -> Gray (1 canal)
+    
+    cv::minMaxLoc(gray, min_val, max_val);
 }
 
 bool Camera::is_opened() const {
