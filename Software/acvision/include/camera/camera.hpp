@@ -8,6 +8,7 @@
 #pragma once 
 
 #include <opencv2/videoio.hpp> 
+#include <opencv2/core.hpp> // FIX para cv::Mat, cv::Point;
 #include <string>
 
 /**
@@ -68,6 +69,16 @@ namespace ac {
          * The caller is responsible for checking if the returned cv::Mat is empty before using it.
          */
         cv::Mat capture_frame();
+
+
+        /**
+         * @brief Finds the minimum and maximum intensity values in the current frame.
+         * @details Converts the frame internally to grayscale to avoid OpenCV assertion
+         * failures with multi-channel matrices (Issue #26).
+         * @param[out] min_val Pointer used to store the minimum value found.
+         * @param[out] max_val Pointer used to store the maximum value found.
+         */
+        void get_min_max_intensity(double* min_val, double* max_val);
 
         /**
          * @brief Checks the current state of the hardware link.
