@@ -72,11 +72,11 @@ namespace ac {
 
 
         /**
-         * @brief Localiza os valores de intensidade mínima e máxima no frame atual.
-         * @details Converte o frame internamente para tons de cinza para evitar falhas de 
-         * asserção do OpenCV com matrizes multi-canal (Issue #26).
-         * * @param[out] min_val Ponteiro para armazenar o valor mínimo encontrado.
-         * @param[out] max_val Ponteiro para armazenar o valor máximo encontrado.
+         * @brief Finds the minimum and maximum intensity values in the current frame.
+         * @details Converts the frame internally to grayscale to avoid OpenCV assertion
+         * failures with multi-channel matrices (Issue #26).
+         * @param[out] min_val Pointer used to store the minimum value found.
+         * @param[out] max_val Pointer used to store the maximum value found.
          */
         void get_min_max_intensity(double* min_val, double* max_val);
 
