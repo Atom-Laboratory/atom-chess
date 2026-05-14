@@ -109,6 +109,7 @@ FetchContent_MakeAvailable(googletest)
 
 set(TEST_LIST
     "test_camera"
+    "test_board_detector"
 )
 
 foreach(test_name ${TEST_LIST})
@@ -122,6 +123,18 @@ foreach(test_name ${TEST_LIST})
                 acvision 
                 GTest::gtest_main
         )
+
+        if("${test_name}" STREQUAL "test_board_detector")
+            target_link_libraries(${test_name}
+                PRIVATE
+                    opencv_imgcodecs
+            )
+
+            target_compile_definitions(${test_name}
+                PRIVATE
+                    TEST_IMAGES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/images"
+            )
+        endif()
         
         add_test(NAME ${test_name} COMMAND ${test_name})
         set_target_properties(${test_name} PROPERTIES FOLDER "Tests")

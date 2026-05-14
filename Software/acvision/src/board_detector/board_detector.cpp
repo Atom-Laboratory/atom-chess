@@ -2,7 +2,7 @@
  * @file board_detector.cpp
  * @brief Chessboard detection and corner estimation for camera calibration.
  */    
-#include "vision/board_detector.hpp"
+#include "board_detector/board_detector.hpp"
 
 #include <opencv2/calib3d.hpp>
 #include <opencv2/imgproc.hpp>
