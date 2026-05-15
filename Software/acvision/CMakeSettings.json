@@ -1,7 +1,6 @@
 ﻿{
-    "cmake.sourceDirectory": "${workspaceFolder}/Software/acvision",
-    "cmake.generator": "Ninja",
-    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
-    "cmake.ignoreCMakeListsCheck": false,
-    "cmake.configureOnOpen": true
+  "cmake.sourceDirectory": "${workspaceFolder}/Software/acvision",
+  "cmake.generator": "Ninja",
+  "cmake.configureOnOpen": true,
+  "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

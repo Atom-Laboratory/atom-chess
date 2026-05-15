@@ -4,11 +4,15 @@
 #include <iostream>
 #include <chrono>
 
+#include "fen_generator/fen_generator.hpp"
+
 int main() {
     const std::string window_name = "Atom Chess - Vision Monitor";
     cv::namedWindow(window_name, cv::WINDOW_AUTOSIZE);
 
-    ac::Camera camera(0, 640, 480); 
+    ac::Camera camera(1, 1080, 720); 
+
+    ac::FenGenerator fen_gen;
 
     if (!camera.is_opened()) return -1;
 

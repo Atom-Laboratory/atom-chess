@@ -1,84 +1,182 @@
-# 📷 ATOM Chess - Visão Computacional: Teste de Câmera
+# 📷 ATOM Chess — Visão Computacional
 
-## 📋 Conteúdo
+## 📋 Sumário
 
-- [1. Instalação e Configuração do OpenCV (Windows)](#-1-instalação-e-configuração-do-opencv-windows)
-  - [1.1. Configuração de Variáveis de Ambiente (Runtime)](#11-configuração-de-variáveis-de-ambiente-runtime)
-- [2. Configuração da Toolchain (Visual Studio)](#-2-configuração-da-toolchain-visual-studio)
-  - [2.1. Criação e Setup do Projeto](#21-criação-e-setup-do-projeto)
-  - [2.2. Diretórios VC++ (Headers e Libs)](#22-diretórios-vc-headers-e-libs)
-  - [2.3. Vinculador (Linker)](#23-vinculador-linker)
-- [3. Executando o Teste](#-3-executando-o-teste)
-
----
-
-## 🛠️ 1. Instalação e Configuração do OpenCV (Windows)
-
-A versão homologada para este teste é a **4.13.0**.
-
-1. Faça o download do executável (`opencv-4.13.0-windows.exe`) diretamente do [repositório oficial de releases no GitHub](https://github.com/opencv/opencv/releases) ou do site oficial do OpenCV.
-2. Execute o arquivo e extraia o conteúdo para um diretório raiz de fácil acesso, preferencialmente em um SSD para otimizar o tempo de build.
-   > **Recomendação de Path:** `C:\opencv\`
-
-### 1.1. Configuração de Variáveis de Ambiente (Runtime)
-
-Para que o Windows localize as DLLs do OpenCV em tempo de execução (dynamic linking):
-
-1. Pressione `Win`, digite **"Editar as variáveis de ambiente do sistema"** e pressione `Enter`.
-2. Clique em **Variáveis de Ambiente...**.
-3. Em _Variáveis do sistema_, localize `Path`, selecione-a e clique em **Editar**.
-4. Adicione um **Novo** caminho para a pasta `bin`:
-   ```
-   C:\opencv\build\x64\vc16\bin
-   ```
-
-⚠️ **Reinicie o computador** para que a variável seja propagada.
+1. [Requisitos de Sistema](#-1-requisitos-de-sistema)  
+2. [OpenCV (Windows)](#️-2-opencv-windows)  
+3. [Configuração do Ambiente (MSVC)](#️-3-configuração-do-ambiente-msvc)  
+4. [Build e Execução via Terminal](#-4-build-e-execução-via-terminal)  
+5. [Fluxo Diário de Desenvolvimento](#-5-fluxo-diário-de-desenvolvimento)  
+6. [Troubleshooting](#-6-troubleshooting)
 
 ---
 
-## 💻 2. Configuração da Toolchain (Visual Studio)
+## 🧩 1. Requisitos de Sistema
 
-Certifique-se de ter o **Visual Studio Community** (ou superior) instalado com a carga de trabalho "Desenvolvimento para Desktop com C++".
+### Windows
 
-### 2.1. Criação e Setup do Projeto
+- Visual Studio Build Tools 2022 (C++)
+- CMake instalado no `PATH`
+- Ninja (opcional)
+- VSCode como editor
 
-1. Crie um Projeto Vazio (Empty Project) em C++.
-2. Na barra de ferramentas, defina a plataforma como **x64**.
-3. Acesse **Projeto > Propriedades...** (ou `Alt + Enter`).
+**Extensão recomendada:**
 
-### 2.2. Diretórios VC++ (Headers e Libs)
+- C/C++ (Microsoft)
 
-Nas Propriedades, navegue até **Diretórios VC++** e configure:
+### Linux
 
-**Diretórios de Inclusão:**
+#### Debian Distributions:
 
-```
-C:\opencv\build\include
-```
-
-**Diretórios de Biblioteca:**
-
-```
-C:\opencv\build\x64\vc16\lib
+```bash
+sudo apt update
+sudo apt install build-essential cmake ninja-build libopencv-dev
 ```
 
-### 2.3. Vinculador (Linker)
+#### Arch:
 
-1. Expanda **Vinculador > Entrada**.
-2. Em **Dependências Adicionais**, adicione:
-   ```
-   opencv_world4130d.lib
-   ```
+```bash
+sudo pacman -Syu
+pacman -S --needed base-devel cmake ninja opencv
+```
 
-> **Nota:** O sufixo `d` é para Debug. Para Release, use `opencv_world4130.lib`.
 
 ---
 
-## ▶️ 3. Executando o Teste
+## 🛠️ 2. OpenCV (Windows)
 
-1. No Gerenciador de Soluções, clique com o botão direito no projeto e abra a pasta no Gerenciador de Arquivos.
-2. Copie os diretórios `src`, `include` e `examples` para a pasta do projeto.
-3. Adicione os arquivos `.cpp` ao projeto via **Botão direito > Adicionar > Item Existente...**.
-4. Execute com `F5` (Depurador Local do Windows).
+Baixe o OpenCV pré-compilado e extraia em:
 
-**Troubleshooting:** Se falhar com erro sobre `opencv_world4130d.dll` não encontrada, revise o passo 1.1 e reinicie o computador.
+```text
+D:\opencv
+```
+
+Verifique se existe:
+
+```text
+D:\opencv\build\x64\vc16\lib\OpenCVConfig.cmake
+```
+
+### Variável de ambiente (`OpenCV_DIR`)
+
+```bat
+setx OpenCV_DIR "D:\opencv\build\x64\vc16"
+```
+
+Adicione também ao `PATH`:
+
+```text
+D:\opencv\build\x64\vc16\bin
+```
+
+> Reinicie o terminal após essas alterações.
+
+---
+
+## ⚙️ 3. Configuração do Ambiente (MSVC)
+
+Antes de compilar, no cmd, execute:
+
+```bat
+"C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvars64.bat"
+```
+
+Teste com:
+
+```bat
+cl
+```
+
+Se a versão do compilador aparecer, está correto.
+
+### 📁 Estrutura do projeto
+
+```text
+Software/acvision/
+├── CMakeLists.txt
+├── src/
+├── include/
+└── build/
+```
+
+---
+
+## 🔨 4. Build e Execução via Terminal
+
+Entre no projeto:
+
+```bat
+cd Software/acvision
+```
+
+Configure:
+
+```bat
+cmake --preset debug
+```
+
+Compile:
+
+```bat
+cmake --build build
+```
+
+Localize o executável:
+
+```bat
+dir build /s *.exe
+```
+
+Execute:
+
+```bat
+build\Debug\nome_do_executavel.exe
+```
+
+---
+
+## 🚀 5. Fluxo Diário de Desenvolvimento
+
+Sempre que abrir o projeto:
+
+```bat
+"C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvars64.bat"
+cd Software/acvision
+cmake --build build
+build\Debug\nome_do_executavel.exe
+```
+
+---
+
+## 🧪 6. Troubleshooting
+
+### `cl` não reconhecido
+
+MSVC não foi carregado. Execute `vcvars64.bat`.
+
+### `OpenCV_DIR` errado
+
+Deve apontar para a pasta que contém `OpenCVConfig.cmake`.
+
+### Erro de DLL do OpenCV
+
+Adicione ao `PATH`:
+
+```text
+D:\opencv\build\x64\vc16\bin
+```
+
+### Erro `LNK` / `cv::`
+
+Compilador incorreto. Use **MSVC (`cl.exe`)**, nunca MinGW.
+
+### `cmake` não encontrado
+
+CMake não está no `PATH` do sistema.
+
+---
+
+## ✅ Regra final
+
+Não usar **CMake Tools** do VSCode.  
+Todo build deve ser feito via terminal com MSVC ativo.
