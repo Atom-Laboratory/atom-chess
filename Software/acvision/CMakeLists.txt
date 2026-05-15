@@ -30,6 +30,7 @@ find_package(OpenCV REQUIRED)
 # ==========================================
 add_library(acvision SHARED
     src/camera/camera.cpp
+    src/board_detector/board_detector.cpp
     src/piece_detector/piece_detector.cpp
     src/fen_generator/fen_generator.cpp
 )
@@ -39,7 +40,8 @@ target_sources(acvision
         FILE_SET HEADERS
         BASE_DIRS include
         FILES 
-            include/camera/camera.hpp 
+            include/camera/camera.hpp
+            include/board_detector/board_detector.hpp
             include/piece_detector/piece_detector.hpp
             include/fen_generator/fen_generator.hpp
 
@@ -56,6 +58,7 @@ target_link_libraries(acvision
         opencv_imgproc
         opencv_highgui
         opencv_videoio
+        opencv_calib3d
 )
 
 if(MSVC)
@@ -69,6 +72,7 @@ endif()
 # ==========================================
 set(APP_LIST
     "capture_gui"
+    "board_detection_demo"
 )
 
 foreach(app ${APP_LIST})
@@ -153,6 +157,18 @@ foreach(test_name ${TEST_LIST})
                 acvision 
                 GTest::gtest_main
         )
+
+        if("${test_name}" STREQUAL "test_board_detector")
+            target_link_libraries(${test_name}
+                PRIVATE
+                    opencv_imgcodecs
+            )
+
+            target_compile_definitions(${test_name}
+                PRIVATE
+                    TEST_IMAGES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/images"
+            )
+        endif()
         
         add_test(NAME ${test_name} COMMAND ${test_name})
         set_target_properties(${test_name} PROPERTIES FOLDER "Tests")
