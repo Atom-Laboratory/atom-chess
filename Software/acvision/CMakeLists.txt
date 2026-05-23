@@ -142,8 +142,10 @@ FetchContent_MakeAvailable(googletest)
 
 set(TEST_LIST
     "test_camera"
+    "test_board_detector"
     "test_piece_detector"
     "test_fen_generator"
+    "benchmark_board_detector"
 )
 
 foreach(test_name ${TEST_LIST})
@@ -158,7 +160,7 @@ foreach(test_name ${TEST_LIST})
                 GTest::gtest_main
         )
 
-        if("${test_name}" STREQUAL "test_board_detector")
+        if("${test_name}" STREQUAL "test_board_detector" OR "${test_name}" STREQUAL "benchmark_board_detector")
             target_link_libraries(${test_name}
                 PRIVATE
                     opencv_imgcodecs
