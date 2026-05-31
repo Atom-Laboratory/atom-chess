@@ -44,7 +44,6 @@ target_sources(acvision
             include/board_detector/board_detector.hpp
             include/piece_detector/piece_detector.hpp
             include/fen_generator/fen_generator.hpp
-
 )
 
 target_include_directories(acvision 
@@ -122,21 +121,17 @@ foreach(sim ${SIM_LIST})
     endif()
 endforeach()
 
-
-
 # ==========================================
 # AUTOMATED TESTS (tests Folder)
 # ==========================================
 enable_testing()
 
-# 1. Faz o download automático do Google Test (Padrão Sênior)
 include(FetchContent)
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        v1.14.0 # Versão estável
+  GIT_TAG        v1.14.0
 )
-# Força o GTest a usar o mesmo C-Runtime (CRT) dinâmico do MSVC no Windows
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
@@ -145,7 +140,6 @@ set(TEST_LIST
     "test_board_detector"
     "test_piece_detector"
     "test_fen_generator"
-    "benchmark_board_detector"
 )
 
 foreach(test_name ${TEST_LIST})
@@ -160,7 +154,7 @@ foreach(test_name ${TEST_LIST})
                 GTest::gtest_main
         )
 
-        if("${test_name}" STREQUAL "test_board_detector" OR "${test_name}" STREQUAL "benchmark_board_detector")
+        if("${test_name}" STREQUAL "test_board_detector")
             target_link_libraries(${test_name}
                 PRIVATE
                     opencv_imgcodecs
@@ -182,6 +176,40 @@ foreach(test_name ${TEST_LIST})
                 $<TARGET_FILE_DIR:${test_name}>
                 COMMAND_EXPAND_LISTS
                 COMMENT "[ACVISION] Copying OpenCV DLLs for test: ${test_name}"
+            )
+        endif()
+    endif()
+endforeach()
+
+# ==========================================
+# BENCHMARK TARGETS
+# Manual execution only — NOT registered in CTest.
+# Requires a physical camera. Run with: ./bin/benchmark_board_detector [camera_id]
+# ==========================================
+set(BENCHMARK_LIST
+    "benchmark_board_detector"
+)
+
+foreach(benchmark_name ${BENCHMARK_LIST})
+    set(benchmark_src "tests/${benchmark_name}.cpp")
+
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${benchmark_src})
+        add_executable(${benchmark_name} ${benchmark_src})
+
+        target_link_libraries(${benchmark_name}
+            PRIVATE
+                acvision
+        )
+
+        set_target_properties(${benchmark_name} PROPERTIES FOLDER "Benchmarks")
+
+        if(WIN32)
+            add_custom_command(TARGET ${benchmark_name} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_RUNTIME_DLLS:${benchmark_name}>
+                $<TARGET_FILE_DIR:${benchmark_name}>
+                COMMAND_EXPAND_LISTS
+                COMMENT "[ACVISION] Copying OpenCV DLLs for benchmark: ${benchmark_name}"
             )
         endif()
     endif()
