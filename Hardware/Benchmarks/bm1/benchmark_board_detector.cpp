@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "board_detector/board_detector.hpp"
+#include <board_detector/board_detector.hpp>
 
 int main(int argc, char** argv) {
     int camera_id = 0;
@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    cv::VideoCapture capture(camera_id);
+    cv::VideoCapture capture(camera_id, cv::CAP_V4L2);
 
     if (!capture.isOpened()) {
         std::cerr << "[ERROR] Could not open camera with id " << camera_id << ".\n";
@@ -29,6 +29,8 @@ int main(int argc, char** argv) {
                   << camera_id << ".\n";
         return 1;
     }
+
+    capture.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
 
     capture.set(cv::CAP_PROP_FRAME_WIDTH, 640);
     capture.set(cv::CAP_PROP_FRAME_HEIGHT, 480);

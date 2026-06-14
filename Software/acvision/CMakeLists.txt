@@ -1,16 +1,14 @@
 cmake_minimum_required(VERSION 3.23)
 
 project(acvision 
-    VERSION 1.0.0 
+    VERSION 0.0.1 
     DESCRIPTION "A Library for Computer Vision applied to Chessboard Analysis"
     LANGUAGES CXX)
 
-# ==========================================
-# Configurações Globais (Modern C++)
-# ==========================================
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 if(WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif()
@@ -176,40 +174,6 @@ foreach(test_name ${TEST_LIST})
                 $<TARGET_FILE_DIR:${test_name}>
                 COMMAND_EXPAND_LISTS
                 COMMENT "[ACVISION] Copying OpenCV DLLs for test: ${test_name}"
-            )
-        endif()
-    endif()
-endforeach()
-
-# ==========================================
-# BENCHMARK TARGETS
-# Manual execution only — NOT registered in CTest.
-# Requires a physical camera. Run with: ./bin/benchmark_board_detector [camera_id]
-# ==========================================
-set(BENCHMARK_LIST
-    "benchmark_board_detector"
-)
-
-foreach(benchmark_name ${BENCHMARK_LIST})
-    set(benchmark_src "tests/${benchmark_name}.cpp")
-
-    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${benchmark_src})
-        add_executable(${benchmark_name} ${benchmark_src})
-
-        target_link_libraries(${benchmark_name}
-            PRIVATE
-                acvision
-        )
-
-        set_target_properties(${benchmark_name} PROPERTIES FOLDER "Benchmarks")
-
-        if(WIN32)
-            add_custom_command(TARGET ${benchmark_name} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                $<TARGET_RUNTIME_DLLS:${benchmark_name}>
-                $<TARGET_FILE_DIR:${benchmark_name}>
-                COMMAND_EXPAND_LISTS
-                COMMENT "[ACVISION] Copying OpenCV DLLs for benchmark: ${benchmark_name}"
             )
         endif()
     endif()
