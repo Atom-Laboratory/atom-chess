@@ -3,6 +3,7 @@
 #include <opencv2/imgproc.hpp>
 #include <iostream>
 #include <chrono>
+#include <string>
 
 #include "fen_generator/fen_generator.hpp"
 
