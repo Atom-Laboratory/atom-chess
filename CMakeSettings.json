@@ -1,4 +1,6 @@
-﻿{
+﻿// This File is The CMAKESETTINGS.JSON
+
+{
   "cmake.sourceDirectory": "${workspaceFolder}/Software/acvision",
   "cmake.generator": "Ninja",
   "cmake.configureOnOpen": true,
