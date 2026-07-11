@@ -91,10 +91,12 @@ std::optional<BoardCorners> BoardDetector::detectByChessboardPattern(const cv::M
     cv::Point2f vx = (tr_in - tl_in) / 6.0f;
     cv::Point2f vy = (bl_in - tl_in) / 6.0f;
 
-    cv::Point2f tl = tl_in - 0.5f * vx - 0.5f * vy;
-    cv::Point2f tr = tr_in + 0.5f * vx - 0.5f * vy;
-    cv::Point2f br = br_in + 0.5f * vx + 0.5f * vy;
-    cv::Point2f bl = bl_in - 0.5f * vx + 0.5f * vy;
+    float MultiplierConstant = 0.8;
+
+    cv::Point2f tl = tl_in - MultiplierConstant * vx - MultiplierConstant * vy;
+    cv::Point2f tr = tr_in + MultiplierConstant * vx - MultiplierConstant * vy;
+    cv::Point2f br = br_in + MultiplierConstant * vx + MultiplierConstant * vy;
+    cv::Point2f bl = bl_in - MultiplierConstant * vx + MultiplierConstant * vy;
 
     return BoardCorners{{tl, tr, br, bl}};
 }
