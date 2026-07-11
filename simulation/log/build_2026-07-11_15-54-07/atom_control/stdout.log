@@ -1,0 +1,22 @@
+[ 50%] [32mBuilding CXX object CMakeFiles/scara_commander.dir/src/scara_commander.cpp.o[0m
+[100%] [1m[32mLinking CXX executable scara_commander[0m
+[100%] Built target scara_commander
+-- Install configuration: ""
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/lib/atom_control/scara_commander
+-- Set non-toolchain portion of runtime path of "/home/enzo/repos/atom-chess/simulation/install/atom_control/lib/atom_control/scara_commander" to ""
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/package_run_dependencies/atom_control
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/parent_prefix_path/atom_control
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/ament_prefix_path.sh
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/ament_prefix_path.dsv
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/path.sh
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/path.dsv
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.bash
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.fish
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.sh
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.zsh
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.dsv
+-- Up-to-date: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/package.dsv
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/packages/atom_control
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/cmake/atom_controlConfig.cmake
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/cmake/atom_controlConfig-version.cmake
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/package.xml

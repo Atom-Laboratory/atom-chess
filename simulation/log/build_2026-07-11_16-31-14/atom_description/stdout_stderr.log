@@ -1,0 +1,40 @@
+[0mCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+[0m
+-- Found ament_cmake: 2.8.7 (/opt/ros/lyrical/share/ament_cmake/cmake)
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Configuring done (0.3s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/enzo/repos/atom-chess/simulation/build/atom_description
+-- Install configuration: ""
+-- Execute custom install script
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/urdf/atom.urdf.xacro
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/arm1.stl
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/arm2.stl
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/base.stl
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/gripper_back.stl
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/gripper_hand1.stl
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/gripper_hand2.stl
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/z_axis.stl
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/ament_index/resource_index/package_run_dependencies/atom_description
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/ament_index/resource_index/parent_prefix_path/atom_description
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/environment/ament_prefix_path.sh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/environment/ament_prefix_path.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/environment/path.sh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/environment/path.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.bash
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.fish
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.sh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.zsh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/package.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/ament_index/resource_index/packages/atom_description
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/cmake/atom_descriptionConfig.cmake
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/cmake/atom_descriptionConfig-version.cmake
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/package.xml

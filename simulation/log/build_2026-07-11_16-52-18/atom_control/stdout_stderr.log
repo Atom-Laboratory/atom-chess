@@ -1,0 +1,18 @@
+-- Found ament_cmake: 2.8.7 (/opt/ros/lyrical/share/ament_cmake/cmake)
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found rclcpp: 32.0.0 (/opt/ros/lyrical/share/rclcpp/cmake)
+-- Found rosidl_generator_c: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_c/cmake)
+-- Found rosidl_generator_cpp: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_cpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rmw_implementation_cmake: 7.10.1 (/opt/ros/lyrical/share/rmw_implementation_cmake/cmake)
+-- Found rmw_fastrtps_cpp: 9.4.8 (/opt/ros/lyrical/share/rmw_fastrtps_cpp/cmake)
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Found rclcpp_action: 32.0.0 (/opt/ros/lyrical/share/rclcpp_action/cmake)
+-- Found control_msgs: 6.9.0 (/opt/ros/lyrical/share/control_msgs/cmake)
+-- Found motion: 0.0.0 (/home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake)
+[31mCMake Error at CMakeLists.txt:20 (ament_target_dependencies):
+  Unknown CMake command "ament_target_dependencies".
+
+[0m
+-- Configuring incomplete, errors occurred!

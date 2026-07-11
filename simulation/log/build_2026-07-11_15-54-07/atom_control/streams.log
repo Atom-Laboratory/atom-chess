@@ -1,0 +1,26 @@
+[0.019s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/atom_control': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --build /home/enzo/repos/atom-chess/simulation/build/atom_control -- -j12 -l12
+[0.112s] [ 50%] [32mBuilding CXX object CMakeFiles/scara_commander.dir/src/scara_commander.cpp.o[0m
+[9.999s] [100%] [1m[32mLinking CXX executable scara_commander[0m
+[10.743s] [100%] Built target scara_commander
+[10.756s] Invoked command in '/home/enzo/repos/atom-chess/simulation/build/atom_control' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --build /home/enzo/repos/atom-chess/simulation/build/atom_control -- -j12 -l12
+[10.770s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/atom_control': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --install /home/enzo/repos/atom-chess/simulation/build/atom_control
+[10.779s] -- Install configuration: ""
+[10.780s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/lib/atom_control/scara_commander
+[10.786s] -- Set non-toolchain portion of runtime path of "/home/enzo/repos/atom-chess/simulation/install/atom_control/lib/atom_control/scara_commander" to ""
+[10.788s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/package_run_dependencies/atom_control
+[10.789s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/parent_prefix_path/atom_control
+[10.790s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/ament_prefix_path.sh
+[10.790s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/ament_prefix_path.dsv
+[10.790s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/path.sh
+[10.791s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/path.dsv
+[10.791s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.bash
+[10.791s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.fish
+[10.792s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.sh
+[10.792s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.zsh
+[10.792s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.dsv
+[10.793s] -- Up-to-date: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/package.dsv
+[10.793s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/packages/atom_control
+[10.794s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/cmake/atom_controlConfig.cmake
+[10.794s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/cmake/atom_controlConfig-version.cmake
+[10.795s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/package.xml
+[10.798s] Invoked command in '/home/enzo/repos/atom-chess/simulation/build/atom_control' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --install /home/enzo/repos/atom-chess/simulation/build/atom_control
