@@ -32,14 +32,10 @@ find_package(OpenCV REQUIRED)
 # ==========================================
 add_library(acvision SHARED
     src/camera/camera.cpp
-    src/board_detector/board_detector.cpp
+    src/board_vision/board_vision.cpp
     src/piece_detector/piece_detector.cpp
     src/fen_generator/fen_generator.cpp
-<<<<<<< HEAD:Software/acvision/CMakeLists.txt
-    src/board_geometry/board_geometry.cpp
-=======
     src/homography/homography.cpp
->>>>>>> homography:software/acvision/CMakeLists.txt
 )
 
 target_sources(acvision
@@ -48,14 +44,10 @@ target_sources(acvision
         BASE_DIRS include
         FILES 
             include/camera/camera.hpp
-            include/board_detector/board_detector.hpp
+            include/board_vision/board_vision.hpp
             include/piece_detector/piece_detector.hpp
             include/fen_generator/fen_generator.hpp
-<<<<<<< HEAD:Software/acvision/CMakeLists.txt
-            include/board_geometry/board_geometry.hpp
-=======
             include/homography/homography.hpp
->>>>>>> homography:software/acvision/CMakeLists.txt
 
 )
 
@@ -84,7 +76,7 @@ endif()
 # ==========================================
 set(APP_LIST
     "capture_gui"
-    "board_detection_demo"
+    "board_demo"
 )
 
 foreach(app ${APP_LIST})

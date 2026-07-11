@@ -36,6 +36,8 @@ private:
     std::optional<BoardCorners> detectByChessboardPattern(const cv::Mat& frame) const;
     std::optional<BoardCorners> detectByContours(const cv::Mat& frame) const;
     static std::array<cv::Point2f, 4> orderCorners(const std::vector<cv::Point>& quad);
+    cv::Mat normalizeImage(const cv::Mat& topDownImage, int fixedSize);
+    void partitionBoard(const cv::Mat& normalizedImage, cv::Mat board[8][8]);
 };
 
 }

@@ -1,5 +1,5 @@
 /**
- * @file board_detection_demo.cpp
+ * @file board_demo.cpp
  * @brief Application for demonstrating real-time chessboard detection.
  *
  * This executable captures frames from the camera and uses the BoardDetector module
@@ -16,7 +16,7 @@
 
 #include "camera/camera.hpp"
 #include "homography/homography.hpp"
-#include "board_detector/board_detector.hpp"
+#include "board_vision/board_vision.hpp"
 
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
