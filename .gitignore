@@ -6,6 +6,9 @@
 [Oo]ut/
 [Bb]in/
 [Ll]ib/
+[Ii]nstal/
+[Ll]og/
+
 
 # Arquivos gerados pelo CMake
 CMakeCache.txt

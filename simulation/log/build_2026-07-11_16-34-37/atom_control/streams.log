@@ -1,0 +1,44 @@
+[0.022s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/atom_control': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/atom_control -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/atom_control
+[0.352s] -- The C compiler identification is GNU 15.2.0
+[1.202s] -- The CXX compiler identification is GNU 15.2.0
+[1.805s] -- Detecting C compiler ABI info
+[2.024s] -- Detecting C compiler ABI info - done
+[2.039s] -- Check for working C compiler: /usr/bin/cc - skipped
+[2.040s] -- Detecting C compile features
+[2.041s] -- Detecting C compile features - done
+[2.057s] -- Detecting CXX compiler ABI info
+[2.271s] -- Detecting CXX compiler ABI info - done
+[2.286s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[2.286s] -- Detecting CXX compile features
+[2.287s] -- Detecting CXX compile features - done
+[2.319s] -- Found ament_cmake: 2.8.7 (/opt/ros/lyrical/share/ament_cmake/cmake)
+[2.781s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[2.872s] -- Found rclcpp: 32.0.0 (/opt/ros/lyrical/share/rclcpp/cmake)
+[2.959s] -- Found rosidl_generator_c: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_c/cmake)
+[2.983s] -- Found rosidl_generator_cpp: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_cpp/cmake)
+[3.024s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[3.056s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[3.192s] -- Found rmw_implementation_cmake: 7.10.1 (/opt/ros/lyrical/share/rmw_implementation_cmake/cmake)
+[3.200s] -- Found rmw_fastrtps_cpp: 9.4.8 (/opt/ros/lyrical/share/rmw_fastrtps_cpp/cmake)
+[3.267s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[3.399s] -- Found rclcpp_action: 32.0.0 (/opt/ros/lyrical/share/rclcpp_action/cmake)
+[3.474s] -- Found control_msgs: 6.9.0 (/opt/ros/lyrical/share/control_msgs/cmake)
+[5.473s] [31mCMake Error at CMakeLists.txt:15 (find_package):
+[5.473s]   By not providing "Findmotion.cmake" in CMAKE_MODULE_PATH this project has
+[5.473s]   asked CMake to find a package configuration file provided by "motion", but
+[5.473s]   CMake did not find one.
+[5.473s] 
+[5.473s]   Could not find a package configuration file provided by "motion" with any
+[5.473s]   of the following names:
+[5.473s] 
+[5.473s]     motionConfig.cmake
+[5.473s]     motion-config.cmake
+[5.473s] 
+[5.473s]   Add the installation prefix of "motion" to CMAKE_PREFIX_PATH or set
+[5.473s]   "motion_DIR" to a directory containing one of the above files.  If "motion"
+[5.473s]   provides a separate development package or SDK, be sure it has been
+[5.473s]   installed.
+[5.473s] 
+[5.474s] [0m
+[5.474s] -- Configuring incomplete, errors occurred!
+[5.482s] Invoked command in '/home/enzo/repos/atom-chess/simulation/build/atom_control' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/atom_control -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/atom_control
