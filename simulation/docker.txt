@@ -1,0 +1,6 @@
+docker run -d \
+  --name atom_simulation \
+  -p 6080:80 \
+  -e RESOLUTION=1920x1080 \
+  -v $(pwd)/atom-chess/simulation:/home/ubuntu/simulation \
+  tiryoh/ros2-desktop-vnc:humble

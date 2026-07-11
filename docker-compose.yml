@@ -1,0 +1,16 @@
+services:
+  atom_sim:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: atom_simulation
+    hostname: atom-ros2
+    ports:
+      - "6080:80"
+    environment:
+      - RESOLUTION=1920x1080
+      - LIBGL_ALWAYS_SOFTWARE=1
+      - VNC_PASSWORD=atompswd
+    volumes:
+      - ./simulation:/home/ubuntu/simulation
+    restart: unless-stopped

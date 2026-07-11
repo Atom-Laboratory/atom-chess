@@ -1,0 +1,21 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    scara_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+scara_arm_controller:
+  ros__parameters:
+    joints:
+      - joint_base_to_link1
+      - joint_z_axis_arm1
+      - joint_arm1_link_arm2_link
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity

@@ -1,0 +1,52 @@
+-- The C compiler identification is GNU 15.2.0
+-- The CXX compiler identification is GNU 15.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 2.8.7 (/opt/ros/lyrical/share/ament_cmake/cmake)
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found rclcpp: 32.0.0 (/opt/ros/lyrical/share/rclcpp/cmake)
+-- Found rosidl_generator_c: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_c/cmake)
+-- Found rosidl_generator_cpp: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_cpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rmw_implementation_cmake: 7.10.1 (/opt/ros/lyrical/share/rmw_implementation_cmake/cmake)
+-- Found rmw_fastrtps_cpp: 9.4.8 (/opt/ros/lyrical/share/rmw_fastrtps_cpp/cmake)
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Found rclcpp_action: 32.0.0 (/opt/ros/lyrical/share/rclcpp_action/cmake)
+-- Found control_msgs: 6.9.0 (/opt/ros/lyrical/share/control_msgs/cmake)
+-- Found motion: 0.0.0 (/home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake)
+-- Configuring done (3.4s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/enzo/repos/atom-chess/simulation/build/atom_control
+[ 50%] [32mBuilding CXX object CMakeFiles/scara_commander.dir/src/scara_commander.cpp.o[0m
+[100%] [1m[32mLinking CXX executable scara_commander[0m
+[100%] Built target scara_commander
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/lib/atom_control/scara_commander
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control//config/scara_arm_controller/follow_joint_trajectory/controllers.yaml
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control//launch/robot_sim.launch.py
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/package_run_dependencies/atom_control
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/parent_prefix_path/atom_control
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/ament_prefix_path.sh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/ament_prefix_path.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/path.sh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/path.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.bash
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.fish
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.sh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.zsh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/package.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/packages/atom_control
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/cmake/atom_controlConfig.cmake
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/cmake/atom_controlConfig-version.cmake
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/package.xml

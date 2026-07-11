@@ -1,0 +1,30 @@
+[0.019s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/atom_control': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/atom_control -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/atom_control
+[0.303s] -- The C compiler identification is GNU 15.2.0
+[1.121s] -- The CXX compiler identification is GNU 15.2.0
+[1.722s] -- Detecting C compiler ABI info
+[1.958s] -- Detecting C compiler ABI info - done
+[1.974s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.974s] -- Detecting C compile features
+[1.975s] -- Detecting C compile features - done
+[1.995s] -- Detecting CXX compiler ABI info
+[2.227s] -- Detecting CXX compiler ABI info - done
+[2.243s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[2.243s] -- Detecting CXX compile features
+[2.244s] -- Detecting CXX compile features - done
+[2.278s] -- Found ament_cmake: 2.8.7 (/opt/ros/lyrical/share/ament_cmake/cmake)
+[2.849s] -- Found rclcpp: 32.0.0 (/opt/ros/lyrical/share/rclcpp/cmake)
+[2.944s] -- Found rosidl_generator_c: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_c/cmake)
+[2.970s] -- Found rosidl_generator_cpp: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_cpp/cmake)
+[3.019s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[3.053s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[3.190s] -- Found rmw_implementation_cmake: 7.10.1 (/opt/ros/lyrical/share/rmw_implementation_cmake/cmake)
+[3.198s] -- Found rmw_fastrtps_cpp: 9.4.8 (/opt/ros/lyrical/share/rmw_fastrtps_cpp/cmake)
+[3.267s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[3.398s] -- Found rclcpp_action: 32.0.0 (/opt/ros/lyrical/share/rclcpp_action/cmake)
+[3.475s] -- Found control_msgs: 6.9.0 (/opt/ros/lyrical/share/control_msgs/cmake)
+[3.672s] [31mCMake Error at CMakeLists.txt:19 (ament_target_dependencies):
+[3.672s]   Unknown CMake command "ament_target_dependencies".
+[3.672s] 
+[3.673s] [0m
+[3.673s] -- Configuring incomplete, errors occurred!
+[3.680s] Invoked command in '/home/enzo/repos/atom-chess/simulation/build/atom_control' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/atom_control -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/atom_control

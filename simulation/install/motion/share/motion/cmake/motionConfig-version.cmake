@@ -1,0 +1,1 @@
+/home/enzo/repos/atom-chess/simulation/build/motion/ament_cmake_core/motionConfig-version.cmake

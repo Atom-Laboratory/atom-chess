@@ -1,0 +1,32 @@
+[0.023s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/atom_control': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/atom_control -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/atom_control
+[0.089s] -- Found ament_cmake: 2.8.7 (/opt/ros/lyrical/share/ament_cmake/cmake)
+[0.298s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.321s] -- Found rclcpp: 32.0.0 (/opt/ros/lyrical/share/rclcpp/cmake)
+[0.373s] -- Found rosidl_generator_c: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_c/cmake)
+[0.383s] -- Found rosidl_generator_cpp: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_cpp/cmake)
+[0.403s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.422s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.516s] -- Found rmw_implementation_cmake: 7.10.1 (/opt/ros/lyrical/share/rmw_implementation_cmake/cmake)
+[0.520s] -- Found rmw_fastrtps_cpp: 9.4.8 (/opt/ros/lyrical/share/rmw_fastrtps_cpp/cmake)
+[0.572s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.678s] -- Found rclcpp_action: 32.0.0 (/opt/ros/lyrical/share/rclcpp_action/cmake)
+[0.744s] -- Found control_msgs: 6.9.0 (/opt/ros/lyrical/share/control_msgs/cmake)
+[3.028s] [31mCMake Error at CMakeLists.txt:12 (find_package):
+[3.028s]   By not providing "Findmotion.cmake" in CMAKE_MODULE_PATH this project has
+[3.028s]   asked CMake to find a package configuration file provided by "motion", but
+[3.028s]   CMake did not find one.
+[3.028s] 
+[3.028s]   Could not find a package configuration file provided by "motion" with any
+[3.028s]   of the following names:
+[3.028s] 
+[3.028s]     motionConfig.cmake
+[3.028s]     motion-config.cmake
+[3.028s] 
+[3.028s]   Add the installation prefix of "motion" to CMAKE_PREFIX_PATH or set
+[3.028s]   "motion_DIR" to a directory containing one of the above files.  If "motion"
+[3.028s]   provides a separate development package or SDK, be sure it has been
+[3.028s]   installed.
+[3.028s] 
+[3.028s] [0m
+[3.029s] -- Configuring incomplete, errors occurred!
+[3.036s] Invoked command in '/home/enzo/repos/atom-chess/simulation/build/atom_control' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/atom_control -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/atom_control

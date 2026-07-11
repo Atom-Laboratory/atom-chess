@@ -1,0 +1,46 @@
+-- The C compiler identification is GNU 15.2.0
+-- The CXX compiler identification is GNU 15.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 2.8.7 (/opt/ros/lyrical/share/ament_cmake/cmake)
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found urdf: 2.13.2 (/opt/ros/lyrical/share/urdf/cmake)
+-- Found xacro: 2.1.1 (/opt/ros/lyrical/share/xacro/cmake)
+-- Configuring done (2.9s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/enzo/repos/atom-chess/simulation/build/atom_description
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/urdf/atom.urdf.xacro
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/arm1.stl
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/arm2.stl
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/base.stl
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/gripper_back.stl
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/gripper_hand1.stl
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/gripper_hand2.stl
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/z_axis.stl
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/launch/view_robot.launch.py
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/ament_index/resource_index/package_run_dependencies/atom_description
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/ament_index/resource_index/parent_prefix_path/atom_description
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/environment/ament_prefix_path.sh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/environment/ament_prefix_path.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/environment/path.sh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/environment/path.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.bash
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.fish
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.sh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.zsh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/package.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/ament_index/resource_index/packages/atom_description
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/cmake/atom_descriptionConfig.cmake
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/cmake/atom_descriptionConfig-version.cmake
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/package.xml
