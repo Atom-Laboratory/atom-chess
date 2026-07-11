@@ -26,10 +26,9 @@ int main() {
     auto last_loop_end = std::chrono::high_resolution_clock::now();
 
     while (true) {
-        // 1. Capture Logic
-        cv::Mat frame = camera.capture_frame();
-
-        if (frame.empty()) {
+        cv::Mat frame;
+        if (!camera.capture_frame(frame))
+        {
             std::cerr << "[ERROR] Lost connection to camera." << std::endl;
             break;
         }

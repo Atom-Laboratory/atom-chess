@@ -17,9 +17,8 @@ TEST(CameraTest, Initialization) {
 TEST(CameraTest, FrameCapture) {
     ac::Camera cam(0); // 1. Instancia o objeto
     
-
-    cv::Mat frame = cam.capture_frame(); // 2. Captura um frame
-    bool success = !frame.empty();
+    cv::Mat frame;
+    bool success = cam.capture_frame(frame);
 
     // 3. Asserções do GTest
     EXPECT_TRUE(success) << "Falha ao ler o frame da câmera de hardware.";

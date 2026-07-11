@@ -9,6 +9,7 @@
 
 #include <opencv2/videoio.hpp> 
 #include <string>
+#include <variant>
 
 /**
  * @namespace ac
@@ -19,7 +20,17 @@ namespace ac {
     enum class Backend {
         AUTO,
         DSHOW,
-        V4L2
+        MSMF,
+        V4L2,
+        FFMPEG,
+        GSTREAMER
+    };
+
+    enum class Resolution
+    {
+        VGA,
+        HD,
+        FULL_HD
     };
 
     /**
@@ -42,7 +53,23 @@ namespace ac {
          *          if the device cannot be claimed. Use is_opened() to verify initialization.  
 
          */
-        explicit Camera(int device_id = 0, int width = 1280, int height = 720, Backend backend = Backend::AUTO);
+        explicit Camera(
+            int device_id, 
+            Resolution resolution = Resolution::HD,
+            Backend backend = Backend::AUTO
+        );
+
+        Camera(
+            int device_id,
+            int width,
+            int height,
+            Backend backend = Backend::AUTO
+        );
+
+        explicit Camera(
+            const std::string& url,
+            Backend backend = Backend::AUTO
+        );
 
         /**
          * @brief Destructor. Ensures the hardware resource is released to the OS.
@@ -67,7 +94,7 @@ namespace ac {
          * @return cv::Mat A container representing the captured image. 
          * The caller is responsible for checking if the returned cv::Mat is empty before using it.
          */
-        cv::Mat capture_frame();
+        bool capture_frame(cv::Mat& frame);
 
         /**
          * @brief Checks the current state of the hardware link.
@@ -75,9 +102,28 @@ namespace ac {
          */
         bool is_opened() const;
 
+        int width() const;
+
+        int height() const;
+
+        double fps() const;
+        double actual_fps() const;
+
+        struct CameraInfo
+        {
+            int width;
+            int height;
+            double fps;
+            Backend backend;
+        };
+
+        CameraInfo info() const;
     private:
         cv::VideoCapture m_cap; ///< The underlying OpenCV video capture handle.
-        int m_id;   ///< Cached ID of the hardware device.
+        std::variant<int, std::string> m_source;
+        Backend m_backend;
+        int m_width;
+        int m_height;
 };
 
 } // namespace ac

@@ -30,7 +30,12 @@
  * @return int Application exit code.
  */
 int main() {
-    ac::Camera cam(0, 640, 480, ac::Backend::V4L2);
+
+    ac::Camera cam(
+        1,
+        ac::Resolution::VGA,
+        ac::Backend::V4L2
+    );
 
     if (!cam.is_opened()) {
         std::cerr << "Erro ao abrir camera\n";
@@ -42,9 +47,19 @@ int main() {
     std::optional<ac::BoardCorners> lastResult;
     int frameCount = 0;
 
+    auto info = cam.info();
+
+        std::cout
+            << "[INFO] Camera: "
+            << info.width
+            << "x"
+            << info.height
+            << '\n';
+
     while (true) {
-        auto frame = cam.capture_frame();
-        if (frame.empty()) {
+        cv::Mat frame;
+
+        if (!cam.capture_frame(frame)) {
             std::cerr << "Frame vazio.\n";
             break;
         }
@@ -90,6 +105,8 @@ int main() {
                         cv::FONT_HERSHEY_SIMPLEX, 0.8,
                         cv::Scalar(0, 0, 255), 2);
         }
+
+        
 
         cv::imshow("Board", frame);
 
