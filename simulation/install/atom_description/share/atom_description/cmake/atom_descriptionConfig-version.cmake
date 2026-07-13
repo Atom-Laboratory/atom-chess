@@ -1,0 +1,1 @@
+/home/enzo/repos/atom-chess/simulation/build/atom_description/ament_cmake_core/atom_descriptionConfig-version.cmake
