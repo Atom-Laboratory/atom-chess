@@ -6,16 +6,16 @@ namespace ac
 /**
  * @brief Analyze all board cells.
  */
-OccupancyGrid analyzeBoard(
+OccupancyGrid PieceDetector::analyzeBoard(
     const std::array<std::array<cv::Mat,8>,8>& boardCells) const
 {
-    std::array<std::array<CellState,8>,8> result;
+    OccupancyGrid result;
 
     for(int r = 0; r < 8; r++)
     {
         for(int c = 0; c < 8; c++)
         {
-            result[r][c] = analyzeCell(boardCells[r][c]);
+            result.cells[r][c] = analyzeCell(boardCells[r][c]);
         }
     }
 
@@ -25,21 +25,35 @@ OccupancyGrid analyzeBoard(
 /**
  * @brief Analyze a single cell.
  */
-CellState PieceDetector::analyzeCell(const cv::Mat& cell) const
+CellObservation PieceDetector::analyzeCell(const cv::Mat& cell) const
 {
-    if(cell.empty())
-        return CellState::EMPTY;
+
+    CellObservation obs;
+
+    if(cell.empty()){
+        obs.state = CellState::EMPTY;
+        return obs;
+    }
 
     cv::Mat roi = extractCenterROI(cell);
     double edgeDensity = computeEdgeDensity(roi);
 
     if(edgeDensity < 0.02)
-        return CellState::EMPTY;
+    {
+        obs.state = CellState::EMPTY;
+    }
+    else if(isWhitePiece(roi))
+    {
+        obs.state = CellState::WHITE;
+    }
+    else {
+        obs.state = CellState::BLACK;
+    }
 
-    if(isWhitePiece(roi))
-        return CellState::WHITE;
+    obs.roi = roi;
+    obs.confidence = 1.0f;
 
-    return CellState::BLACK;
+    return obs;
 }
 
 /**

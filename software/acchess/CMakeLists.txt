@@ -17,7 +17,15 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 set(SFML_STATIC_LIBRARIES TRUE)
-find_package(SFML 3.0 COMPONENTS Window Graphics System REQUIRED)
+# find_package(SFML 3.0 COMPONENTS Window Graphics System REQUIRED)
+include(FetchContent)
+
+FetchContent_Declare(
+    SFML
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG        3.0.0
+)
+FetchContent_MakeAvailable(SFML)
 
 # ==========================================
 # TARGET: acchess (Core Library)
