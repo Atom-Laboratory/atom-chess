@@ -6,8 +6,7 @@ namespace ac
 /**
  * @brief Analyze all board cells.
  */
-std::array<std::array<CellState,8>,8>
-PieceDetector::analyzeBoard(
+OccupancyGrid analyzeBoard(
     const std::array<std::array<cv::Mat,8>,8>& boardCells) const
 {
     std::array<std::array<CellState,8>,8> result;
