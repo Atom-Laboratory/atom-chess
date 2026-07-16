@@ -33,6 +33,7 @@ add_library(acvision SHARED
     src/board_detector/board_detector.cpp
     src/piece_detector/piece_detector.cpp
     src/fen_generator/fen_generator.cpp
+    src/stockfish_uci.cpp
 )
 
 target_sources(acvision
