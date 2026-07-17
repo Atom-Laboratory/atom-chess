@@ -36,6 +36,7 @@ add_library(acvision SHARED
     src/piece_detector/piece_detector.cpp
     src/fen_generator/fen_generator.cpp
     src/homography/homography.cpp
+    src/stockfish_uci.cpp
 )
 
 target_sources(acvision
@@ -149,6 +150,7 @@ set(TEST_LIST
     "test_piece_detector"
     "test_fen_generator"
     "test_board_geometry"
+    "test_stockfish_uci"
 )
 
 foreach(test_name ${TEST_LIST})
