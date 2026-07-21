@@ -1,0 +1,96 @@
+flowchart TB
+
+    subgraph CameraNode["Câmera"]
+        Camera["ESP32-CAM"]
+    end
+
+    subgraph Vision["Orange Pi - Vision Computer"]
+        CameraDriver["Camera Node"]
+        Calibration["Calibration Node"]
+        Undistort["Undistortion Node"]
+        BoardDetection["Board Detection Node"]
+        Homography["Homography Node"]
+        Occupancy["Occupancy Detection Node"]
+
+        BoardState["/board_state"]
+
+        CameraDriver --> Calibration
+        Calibration --> Undistort
+        Undistort --> BoardDetection
+        BoardDetection --> Homography
+        Homography --> Occupancy
+        Occupancy --> BoardState
+    end
+
+    subgraph Brain["Banana Pi M5 - Chess Core"]
+        Comparator["Board Comparator"]
+        GameState["Game State"]
+        FSM["Game FSM"]
+
+        FEN["FEN Generator"]
+        Rules["Chess Rules"]
+        Stockfish["Stockfish Node"]
+
+        TaskPlanner["Task Planner"]
+        TrajectoryPlanner["Trajectory Planner"]
+        IK["Inverse Kinematics"]
+
+        Supervisor["System Supervisor"]
+
+        BoardState --> Comparator
+        Comparator --> GameState
+        GameState --> FSM
+
+        FSM --> FEN
+        FEN --> Stockfish
+        Rules --> GameState
+
+        Stockfish --> TaskPlanner
+        TaskPlanner --> TrajectoryPlanner
+        TrajectoryPlanner --> IK
+
+        Supervisor --> FSM
+        Supervisor --> TaskPlanner
+    end
+
+    subgraph Motion["ESP32-S3 - Hardware Controller"]
+        MicroROS["micro-ROS Client"]
+
+        MotionController["Motion Controller"]
+        Interpolator["Trajectory Interpolator"]
+        MotionProfile["Motion Profile"]
+        StepGenerator["Step Generator"]
+
+        Gripper["Gripper Controller"]
+        Sensors["Sensor Interface"]
+        Safety["Safety / Emergency Stop"]
+
+        MicroROS --> MotionController
+        MotionController --> Interpolator
+        Interpolator --> MotionProfile
+        MotionProfile --> StepGenerator
+
+        MicroROS --> Gripper
+        Sensors --> MicroROS
+        Safety --> MicroROS
+    end
+
+    subgraph Robot["SCARA Robot"]
+        Drivers["Stepper Drivers"]
+        Motors["Stepper Motors"]
+        GripperMechanism["Gripper"]
+    end
+
+    Camera -->|"Wi-Fi"| CameraDriver
+
+    BoardState -.->|"ROS 2 Topic"| Comparator
+
+    IK -.->|"ROS 2 Action / Topic"| MicroROS
+    TaskPlanner -.->|"ROS 2 Action"| Gripper
+
+    StepGenerator --> Drivers
+    Drivers --> Motors
+    Gripper --> GripperMechanism
+
+    Sensors -.->|"Feedback"| Supervisor
+    Safety -.->|"Emergency State"| Supervisor

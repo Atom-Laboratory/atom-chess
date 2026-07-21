@@ -34,7 +34,7 @@ int main(){
 
     while (true) {
 
-        std::array<std::array<ac::CellState, 8>, 8> board = piece_detector.analyzeBoard(boardCells);
+        ac::OccupancyGrid occupancyGrid = piece_detector.analyzeBoard(boardCells);
 
         cv::Mat boardImage(800, 800, CV_8UC3);
 
@@ -47,20 +47,38 @@ int main(){
 
         cv::imshow(window_name, boardImage);
 
-        if (cv::waitKey(1) == 27 || cv::waitKey(1) == 113) break; 
+        int key = cv::waitKey(1);
 
-        std::cout << "Final Board State:" << std::endl;
-        for(int r = 0; r < 8; r++) {
-            for(int c = 0; c < 8; c++) {
-                char stateChar;
-                switch (board[r][c]) {
-                    case ac::CellState::EMPTY: stateChar = '.'; break;
-                    case ac::CellState::WHITE: stateChar = 'W'; break;
-                    case ac::CellState::BLACK: stateChar = 'B'; break;
-                }
-                std::cout << stateChar << " ";
+        if (key == 27 || key == 'q')
+            break;
+
+        std::cout << "Final Board State:\n";
+
+    for (int r = 0; r < 8; ++r)
+    {
+        for (int c = 0; c < 8; ++c)
+        {
+            char stateChar;
+
+            switch (occupancyGrid.cells[r][c].state)
+            {
+                case ac::CellState::EMPTY:
+                    stateChar = '.';
+                    break;
+
+                case ac::CellState::WHITE:
+                    stateChar = 'W';
+                    break;
+
+                case ac::CellState::BLACK:
+                    stateChar = 'B';
+                    break;
             }
-            std::cout << std::endl;
+
+            std::cout << stateChar << ' ';
+        }
+
+        std::cout << '\n';
     }
     }
 
