@@ -1,7 +1,7 @@
 include(FetchContent)
 
 if(NOT TARGET GTest::gtest_main)
-    find_package(GTest CONFIG QUIET)
+    find_package(GTest QUIET)
 endif()
 
 if(NOT TARGET GTest::gtest_main)
