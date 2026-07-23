@@ -1,48 +1,50 @@
-# Testes do modulo acvision
+# Testes do módulo `acvision`
 
-Esta pasta concentra os testes automatizados do modulo de visao computacional.
-O objetivo principal e validar o comportamento do `BoardDetector` com imagens 2D
-reprodutiveis, sem depender de uma webcam conectada ao ambiente de teste.
+Esta pasta contém os testes automatizados e de integração do módulo de visão
+computacional. A suíte padrão usa entradas determinísticas e não depende de
+hardware.
 
-## Estrutura
+## Suíte padrão
 
-- `test_camera.cpp`: teste de integracao simples para captura de camera. Depende de hardware.
-- `test_board_detector.cpp`: testes unitarios/reprodutiveis para deteccao de tabuleiro.
-- `images/`: assets 2D usados pelos testes do detector.
+- `test_piece_detector.cpp`: valida a construção do `OccupancyGrid`.
+- `test_board_detector.cpp`: valida a detecção com e sem um tabuleiro.
+- `test_board_geometry.cpp`: valida os cantos detectados na imagem de referência.
+- `images/`: imagens 2D versionadas usadas pelos testes de tabuleiro.
 
-## Imagens esperadas
+O CMake procura primeiro uma instalação existente do GoogleTest. Quando ela não
+está disponível, a versão `v1.14.0` é obtida com `FetchContent`.
 
-Os testes do `BoardDetector` usam os seguintes arquivos:
-
-- `images/chessboard.png`: imagem com um tabuleiro de xadrez 8x8 visivel.
-- `images/no_board.png`: imagem 2D sem tabuleiro.
-
-Esta pasta ja inclui imagens sinteticas deterministicas geradas com OpenCV. Elas
-sao pequenas, versionaveis e podem ser substituidas por capturas reais 2D no
-futuro, desde que mantenham os mesmos nomes. Se os arquivos forem removidos, o
-teste tenta recria-los antes de carrega-los com `cv::imread`.
-
-## Como rodar
-
-A partir de `Software/acvision`:
+## Executar a partir da raiz do repositório
 
 ```sh
-mkdir -p build
-cd build
-cmake ..
-make -j$(nproc)
-ctest --output-on-failure
+cmake -S . -B build
+cmake --build build
+ctest --test-dir build --output-on-failure
 ```
 
-Para rodar apenas o teste do detector:
+Para configurar sem testes:
 
 ```sh
-ctest -R test_board_detector --output-on-failure
+cmake -S . -B build -DBUILD_TESTING=OFF
 ```
 
-## Por que imagens 2D
+O módulo também pode ser configurado isoladamente:
 
-Testes com imagens 2D sao reprodutiveis, rapidos e independentes de camera,
-iluminacao, foco, permissao de dispositivo e disponibilidade de hardware. A camera
-continua util para validacao manual e testes de integracao, mas nao deve ser a base
-dos testes unitarios do detector.
+```sh
+cmake -S software/acvision -B build/acvision
+cmake --build build/acvision
+ctest --test-dir build/acvision --output-on-failure
+```
+
+## Teste com câmera física
+
+`test_camera.cpp` é um teste de integração e requer uma câmera disponível no
+dispositivo `0`. Por isso, ele não faz parte da suíte padrão executada pelo CI.
+
+Para habilitá-lo explicitamente:
+
+```sh
+cmake -S . -B build -DACVISION_BUILD_HARDWARE_TESTS=ON
+cmake --build build
+ctest --test-dir build --output-on-failure
+```

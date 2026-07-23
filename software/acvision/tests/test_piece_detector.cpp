@@ -31,7 +31,7 @@ TEST(PieceDetectorTest, ProcessaTodasAsCelulas)
     {
         for(int c = 0; c < 8; c++)
         {
-            EXPECT_EQ(result[r][c], CellState::EMPTY);
+            EXPECT_EQ(result.cells[r][c].state, CellState::EMPTY);
         }
     }
 }
@@ -65,6 +65,6 @@ TEST(PieceDetectorTest, DetectaCores)
 
     auto result = detector.analyzeBoard(boardCells);
 
-    EXPECT_EQ(result[0][0], CellState::WHITE);
-    EXPECT_EQ(result[7][7], CellState::BLACK);
+    EXPECT_EQ(result.cells[0][0].state, CellState::WHITE);
+    EXPECT_EQ(result.cells[7][7].state, CellState::BLACK);
 }

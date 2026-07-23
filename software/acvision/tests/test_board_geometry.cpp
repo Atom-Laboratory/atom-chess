@@ -1,14 +1,20 @@
 #include <gtest/gtest.h>
 #include <opencv2/opencv.hpp>
+#include <filesystem>
 #include <string>
 #include <optional>
 #include "board_vision/board_vision.hpp"
 
+#ifndef TEST_IMAGES_DIR
+#define TEST_IMAGES_DIR "."
+#endif
+
 // Teste focado no fluxo real que o Enzo implementou
 TEST(BoardVisionTest, TestRealBoardDetectionAndGeometry) {
     // 1. Carrega a imagem real que o Enzo disponibilizou
-    std::string imagePath = "software/acvision/tests/images/chessboard.png";
-    cv::Mat srcImage = cv::imread(imagePath);
+    const std::filesystem::path imagePath =
+        std::filesystem::path(TEST_IMAGES_DIR) / "chessboard.png";
+    cv::Mat srcImage = cv::imread(imagePath.string());
     
     // Garante que o arquivo de imagem foi aberto com sucesso
     ASSERT_FALSE(srcImage.empty()) << "Erro: Nao foi possivel carregar a imagem de teste em: " << imagePath;

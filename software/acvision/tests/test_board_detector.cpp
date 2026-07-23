@@ -4,7 +4,7 @@
  */
 #include <gtest/gtest.h>
 
-#include "board_detector/board_detector.hpp"
+#include "board_vision/board_vision.hpp"
 
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
