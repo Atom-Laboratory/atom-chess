@@ -48,6 +48,7 @@ target_sources(acvision
             include/piece_detector/piece_detector.hpp
             # include/fen_generator/fen_generator.hpp
             include/homography/homography.hpp
+            include/board_state/board_state.hpp
 
 )
 
