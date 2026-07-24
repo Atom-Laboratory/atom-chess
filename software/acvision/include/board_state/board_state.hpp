@@ -1,3 +1,4 @@
+#include <vector>
 #pragma once
 
 namespace ac {
@@ -33,6 +34,17 @@ struct Piece {
 };
 
 /**
+ * @brief Represents a change detected between two board states.
+ */
+struct BoardChange {
+    Piece piece;        // The piece that was moved/captured
+    int from_row{-1};   // Starting row index (-1 if unknown/placed)
+    int from_col{-1};   // Starting col index (-1 if unknown/placed)
+    int to_row{-1};     // Ending row index (-1 if removed)
+    int to_col{-1};     // Ending col index (-1 if removed)
+};
+
+/**
  * @brief Manages the 8x8 logical representation of the chessboard.
  */
 class BoardState {
@@ -65,6 +77,12 @@ public:
      */
     void set_piece(int row, int col, const Piece& piece);
 
+    /**
+     * @brief Compares this board state with a new one to find differences.
+     * * @param new_state The updated board state detected by the camera.
+     * @return std::vector<BoardChange> A list of detected changes.
+     */
+    std::vector<BoardChange> compare_with(const BoardState& new_state) const;
 private:
     /**
      * @brief 8x8 matrix representing the 64 squares of the chessboard.
