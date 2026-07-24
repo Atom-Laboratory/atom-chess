@@ -36,6 +36,7 @@ add_library(acvision SHARED
     src/piece_detector/piece_detector.cpp
     # src/fen_generator/fen_generator.cpp
     src/homography/homography.cpp
+    src/board_state/board_state.cpp
 )
 
 target_sources(acvision
@@ -48,6 +49,7 @@ target_sources(acvision
             include/piece_detector/piece_detector.hpp
             # include/fen_generator/fen_generator.hpp
             include/homography/homography.hpp
+            include/board_state/board_state.hpp
 
 )
 
