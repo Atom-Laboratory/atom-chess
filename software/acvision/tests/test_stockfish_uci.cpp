@@ -3,7 +3,7 @@
 
 TEST(StockfishUCITest, Inicializacao) {
     
-    ac::StockfishUCI stockfish("/usr/games/stockfish"); 
+    ac::StockfishUCI stockfish("stockfish"); 
     
     
     bool iniciou = stockfish.init();
@@ -13,7 +13,7 @@ TEST(StockfishUCITest, Inicializacao) {
 
 TEST(StockfishUCITest, RetornaMelhorJogada) {
     
-    ac::StockfishUCI stockfish("/usr/games/stockfish");
+    ac::StockfishUCI stockfish("stockfish");
     
     
     stockfish.init();
@@ -22,6 +22,18 @@ TEST(StockfishUCITest, RetornaMelhorJogada) {
     
     std::string melhor_jogada = stockfish.get_best_move(fen_inicial, 5);
     
-    EXPECT_FALSE(melhor_jogada.empty());
+    ASSERT_FALSE(melhor_jogada.empty());
     EXPECT_GE(melhor_jogada.length(), 4);
+}
+
+TEST(StockfishUCITest, BestMoveIsCheckMate){
+    ac::StockfishUCI stockfish("stockfish");
+    stockfish.init();
+
+    std::string fen = "6k1/5ppp/8/8/8/5Q2/6PP/6K1 w - - 0 1";
+
+    std::string best_move = stockfish.get_best_move(fen,15);
+
+    std::cout << "best_move: " + best_move ;
+    EXPECT_EQ(best_move, "f3a8");
 }

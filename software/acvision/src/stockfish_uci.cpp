@@ -21,10 +21,13 @@ StockfishUCI::~StockfishUCI() {
 }
 
 bool StockfishUCI::init() {
+    std::cerr << "[INIT] 1. Creating Pipes\n";
+    
     if (pipe(m_pipe_in) == -1 || pipe(m_pipe_out) == -1) {
         std::cerr << "[UCI] Erro ao criar os pipes.\n";
         return false;
     }
+    std::cerr << "[INIT] 2. Forking\n";
 
     m_process_id = fork();
 
@@ -33,26 +36,43 @@ bool StockfishUCI::init() {
         return false;
     }
 
+    std::cerr << "[INIT] 3 pid=" << m_process_id << '\n';
+
     if (m_process_id == 0) {
+        std::cerr << "[INIT] Son\n";
+
         dup2(m_pipe_in[0], STDIN_FILENO);
         dup2(m_pipe_out[1], STDOUT_FILENO);
 
-        close(m_pipe_in[0]); close(m_pipe_in[1]);
-        close(m_pipe_out[0]); close(m_pipe_out[1]);
+        std::cerr << "[INIT] Before Exec\n";
 
         execlp(m_engine_path.c_str(), m_engine_path.c_str(), nullptr);
         
-        exit(1);
+        perror("execpl");
+        _exit(EXIT_FAILURE);
     } else {
-        close(m_pipe_in[0]);
-        close(m_pipe_out[1]);
+        std::cerr << "[INIT] Parent\n";
         
         send_command("uci");
-        read_output("uciok"); 
-        
+        std::cerr << "[INIT] UCI SENT\n";
+
+        auto response = read_output("uciok"); 
+        if (response.find("uciok") == std::string::npos){
+            return false;
+        }
+            
+        std::cerr << "[INIT] UCI RECIEVED\n";
+
         send_command("isready");
-        read_output("readyok"); 
-        
+        std::cerr << "[INIT] ISREADY SENT\n";
+
+        response = read_output("readyok");
+        if (response.find("readyok") == std::string::npos)
+        {
+            return false; 
+        }
+        std::cerr << "[INIT] ISREADY RECIEVED\n";
+
         return true;
     }
 }
