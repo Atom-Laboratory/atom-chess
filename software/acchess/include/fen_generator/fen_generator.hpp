@@ -5,8 +5,8 @@
 #include <string>
 #include "piece_detector/piece_detector.hpp"
 
-namespace ac
-{
+namespace ac::chess {
+
 
 /**
  * @class FenGenerator

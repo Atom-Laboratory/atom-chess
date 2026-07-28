@@ -1,7 +1,7 @@
 #include "fen_generator/fen_generator.hpp"
 
-namespace ac
-{
+namespace ac::chess {
+
 
 /**
  * @brief Implementation of FEN string generation.

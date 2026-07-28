@@ -4,6 +4,7 @@
 #include "board/move.hpp"
 #include "board/square.hpp"
 #include <array>
+namespace ac::chess {
 class Board{
     public:
         Board();
@@ -27,3 +28,4 @@ class Board{
 
         std::array<std::array<Piece,8>,8> board_;
 };
+}

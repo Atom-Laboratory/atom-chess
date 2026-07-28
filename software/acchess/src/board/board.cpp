@@ -1,7 +1,7 @@
 #include "board/board.hpp"
 #include <iostream>
 #include <cstdint>
-
+namespace ac::chess {
 Board::Board()
 {
     reset();
@@ -83,4 +83,5 @@ bool Board::operator==(const Board& other) const{
 
 bool Board::operator!=(const Board& other) const{
     return !(*this == other);
+}
 }

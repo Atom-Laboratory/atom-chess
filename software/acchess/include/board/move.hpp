@@ -2,6 +2,7 @@
 
 #include "board/square.hpp"
 #include "board/piece.hpp"
+namespace ac::chess {
 
 struct Move {
 
@@ -14,3 +15,4 @@ struct Move {
     bool castle = false;
     bool enPassant = false;
 };
+}
