@@ -71,8 +71,8 @@ bool Board::isSqrEmpty(Square sq) const{
 
 void Board::clear(){
     for (auto& row : board_){
-        for (auto& piece : board_){
-            piece = {};
+        for (auto& piece : row){
+            piece = Piece{};
         }
     }
 }
