@@ -5,6 +5,10 @@
 #include "board/square.hpp"
 #include <array>
 namespace ac::chess {
+    /**
+ * @class Board
+ * @brief Represents the official state of the chessboard and the arrangement of its pieces.
+ */
 class Board{
     public:
         Board();
