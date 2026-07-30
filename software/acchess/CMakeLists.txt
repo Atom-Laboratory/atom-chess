@@ -37,6 +37,7 @@ add_library(acchess STATIC
     src/board/square.cpp
     src/viewer/renderer.cpp
     src/utils/path.cpp
+    src/fen_generator/fen_generator.cpp
 )
 
 target_sources(acchess

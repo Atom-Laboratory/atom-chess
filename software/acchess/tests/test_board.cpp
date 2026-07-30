@@ -54,8 +54,18 @@ TEST(BoardTest, UpdateAndQueryPieces) {
     EXPECT_EQ(retrieved.type, PieceType::Knight);
     EXPECT_EQ(retrieved.color, PieceColor::White);
 
-    // Ensure a piece was not inserted in the wrong square accidentally
-    EXPECT_TRUE(board.isSqrEmpty({0, 0}));
+    // Ensure no pieces were inserted in the wrong squares accidentally
+for (int r = 0; r < 8; ++r) {
+    for (int c = 0; c < 8; ++c) {
+        Square currentSq{r, c};
+        
+        // Check all the houses except the one where the piece was intentionally inserted.
+        // (Adjust 'targetSq' if your variable has a different name, or use the direct coordinates)
+        if (currentSq.row != sq.row || currentSq.col != sq.col) {
+            EXPECT_TRUE(board.isSqrEmpty(currentSq));
+        }
+    }
+}
 
     // 2. Replacement
     Piece queen{PieceType::Queen, PieceColor::Black};
@@ -157,4 +167,66 @@ TEST(BoardIntegrationTest, FENGeneratorIntegration) {
     EXPECT_FALSE(fen.empty());
     EXPECT_NE(fen.find("rnbqkbnr/pppppppp"), std::string::npos);
     EXPECT_NE(fen.find("PPPPPPPP/RNBQKBNR"), std::string::npos);
+}
+// =========================================================================
+// Integration Tests (Issue #95 - Board Changes and Movements)
+// =========================================================================
+
+/**
+ * @brief Verifies the board comparison operators (== and !=).
+ */
+TEST(BoardIntegrationTest, BoardEqualityOperator) {
+    Board b1;
+    Board b2;
+    
+    b1.clear();
+    b2.clear();
+    
+    // Empty boards should be equal
+    EXPECT_TRUE(b1 == b2);
+
+    // Changing one board should make them unequal
+    b1.setPiece({0, 0}, Piece{PieceType::Rook, PieceColor::White});
+    EXPECT_FALSE(b1 == b2);
+    EXPECT_TRUE(b1 != b2);
+
+    // Applying the same change to the second board should make them equal again
+    b2.setPiece({0, 0}, Piece{PieceType::Rook, PieceColor::White});
+    EXPECT_TRUE(b1 == b2);
+}
+
+/**
+ * @brief Verifies if the makeMove method correctly updates the board state.
+ */
+TEST(BoardIntegrationTest, MakeMoveStateUpdate) {
+    Board board;
+    board.clear();
+    
+    Square fromSq{1, 4}; // e2
+    Square toSq{3, 4};   // e4
+    Piece whitePawn{PieceType::Pawn, PieceColor::White};
+    
+    // Setup initial state
+    board.setPiece(fromSq, whitePawn);
+    EXPECT_FALSE(board.isSqrEmpty(fromSq));
+    EXPECT_TRUE(board.isSqrEmpty(toSq));
+
+    // Create and execute a basic move
+    Move pawnPush;
+    pawnPush.from = fromSq;
+    pawnPush.to = toSq;
+    pawnPush.promotion = PieceType::None;
+    pawnPush.capture = false;
+    pawnPush.castle = false;
+    pawnPush.enPassant = false;
+
+    board.makeMove(pawnPush);
+
+    // Verify the state changed as expected
+    EXPECT_TRUE(board.isSqrEmpty(fromSq));
+    EXPECT_FALSE(board.isSqrEmpty(toSq));
+    
+    Piece movedPiece = board.pieceAt(toSq);
+    EXPECT_EQ(movedPiece.type, PieceType::Pawn);
+    EXPECT_EQ(movedPiece.color, PieceColor::White);
 }

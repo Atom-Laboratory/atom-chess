@@ -28,9 +28,7 @@ public:
      * @note All detected pieces are represented as pawns (P/p).
      * @note Additional FEN fields are set to fixed values.
      */
-    static std::string generate(
-        static std::string generate(const Board& board);
-    );
+    static std::string generate(const Board& board);
 };
 
 }

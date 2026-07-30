@@ -1,13 +1,12 @@
 #include "fen_generator/fen_generator.hpp"
+#include <cctype> // Required to use std::toupper
 
 namespace ac::chess {
-
 
 /**
  * @brief Implementation of FEN string generation.
  */
-std::string FenGenerator::generate(
-    const std::array<std::array<CellState,8>,8>& board)
+std::string FenGenerator::generate(const Board& board)
 {
     std::string fen;
 
@@ -17,7 +16,8 @@ std::string FenGenerator::generate(
 
         for(int c = 0; c < 8; c++)
         {
-            if(board[r][c] == CellState::EMPTY)
+            Square currentSq{r, c};
+            if(board.isSqrEmpty(currentSq))
             {
                 empty++;
             }
@@ -29,7 +29,25 @@ std::string FenGenerator::generate(
                     empty = 0;
                 }
 
-                fen += (board[r][c] == CellState::WHITE) ? 'P' : 'p';
+                Piece p = board.pieceAt(currentSq);
+                char pieceChar = '?';
+                
+                // Maps the part type to the standard FEN (lowercase) font.
+                switch(p.type) {
+                    case PieceType::Pawn:   pieceChar = 'p'; break;
+                    case PieceType::Knight: pieceChar = 'n'; break;
+                    case PieceType::Bishop: pieceChar = 'b'; break;
+                    case PieceType::Rook:   pieceChar = 'r'; break;
+                    case PieceType::Queen:  pieceChar = 'q'; break;
+                    case PieceType::King:   pieceChar = 'k'; break;
+                }
+                
+                // If the part is white, the letter in FEN should be uppercase.
+                if (p.color == PieceColor::White) {
+                    pieceChar = std::toupper(pieceChar);
+                }
+                
+                fen += pieceChar;
             }
         }
 
