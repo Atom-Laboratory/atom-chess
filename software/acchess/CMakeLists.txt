@@ -83,3 +83,17 @@ add_custom_command(TARGET chess.demo POST_BUILD
         ${CMAKE_CURRENT_SOURCE_DIR}/assets
         $<TARGET_FILE_DIR:chess.demo>/assets
 )
+
+
+# =========================================================================
+# TESTS
+# =========================================================================
+
+add_executable(test_board tests/test_board.cpp)
+
+# Link the test executable with the acchess library and with Google Test.
+target_link_libraries(test_board PRIVATE acchess GTest::gtest_main)
+
+# Registering tests for CTest imports automatically.
+include(GoogleTest)
+gtest_discover_tests(test_board)

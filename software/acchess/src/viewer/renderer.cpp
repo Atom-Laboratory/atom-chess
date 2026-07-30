@@ -3,6 +3,8 @@
 
 #include <stdexcept>
 
+using namespace ac::chess;
+
 Renderer::Renderer()
 {
 }

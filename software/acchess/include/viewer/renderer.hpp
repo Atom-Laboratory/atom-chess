@@ -6,6 +6,8 @@
 
 #include "board/board.hpp"
 
+using namespace ac::chess;
+
 class Renderer
 {
 public:
