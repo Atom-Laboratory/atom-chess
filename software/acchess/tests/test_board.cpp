@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "board/board.hpp"
 #include "board/piece.hpp"
+#include "fen_generator/fen_generator.hpp"
 
 using namespace ac::chess;
 
@@ -93,4 +94,67 @@ TEST(BoardTest, CompareBoards) {
     // Applying the same alteration to the second board should make them equal again
     board2.setPiece({4, 4}, Piece{PieceType::Pawn, PieceColor::White});
     EXPECT_TRUE(board1 == board2);
+}
+
+// =========================================================================
+// Integration Tests (Issue #94)
+// =========================================================================
+
+/**
+ * @brief Integration test simulating a sequence of board state changes.
+ *        Verifies the complex interaction between Board, Piece, and Square
+ *        across multiple sequential updates, simulating a basic movement
+ *        and a capture scenario to ensure state consistency.
+ */
+TEST(BoardIntegrationTest, SimulateMoveAndCaptureSequence) {
+    Board board;
+    board.clear();
+
+    Square sourceSq{1, 4};      // e2 (White Pawn starting position)
+    Square targetSq{3, 4};      // e4 (Target empty square)
+    Square enemySq{3, 3};       // d4 (Black Pawn position)
+
+    Piece whitePawn{PieceType::Pawn, PieceColor::White};
+    Piece blackPawn{PieceType::Pawn, PieceColor::Black};
+
+    // 1. Initial Setup: Place White pawn on e2 and Black pawn on d4
+    board.setPiece(sourceSq, whitePawn);
+    board.setPiece(enemySq, blackPawn);
+
+    // 2. Simulate Movement: White pawn moves from e2 to e4
+    board.setPiece(targetSq, board.pieceAt(sourceSq));
+    board.setPiece(sourceSq, Piece{}); // Clear the source square
+
+    EXPECT_TRUE(board.isSqrEmpty(sourceSq));
+    EXPECT_FALSE(board.isSqrEmpty(targetSq));
+    EXPECT_EQ(board.pieceAt(targetSq).color, PieceColor::White);
+
+    // 3. Simulate Capture: White pawn on e4 captures Black pawn on d4
+    board.setPiece(enemySq, board.pieceAt(targetSq));
+    board.setPiece(targetSq, Piece{}); // Clear the target square
+
+    EXPECT_TRUE(board.isSqrEmpty(targetSq));
+    EXPECT_FALSE(board.isSqrEmpty(enemySq));
+    
+    // Verify the square now belongs to the White pawn, and Black pawn is gone
+    Piece capturedSqPiece = board.pieceAt(enemySq);
+    EXPECT_EQ(capturedSqPiece.type, PieceType::Pawn);
+    EXPECT_EQ(capturedSqPiece.color, PieceColor::White);
+}
+
+/**
+ * @brief Integration test verifying the interaction between Board and FEN Generator.
+ *        Ensures the board's internal default state is correctly parsed into a FEN string.
+ */
+TEST(BoardIntegrationTest, FENGeneratorIntegration) {
+    Board board;
+    
+    // The default constructor initializes the board to the standard starting position.
+    // Replace "FenGenerator::generate" with the actual class/namespace and method name you use!
+    std::string fen = FenGenerator::generate(board); 
+    
+    // Verify if the generated string is not empty and contains the standard start position signature
+    EXPECT_FALSE(fen.empty());
+    EXPECT_NE(fen.find("rnbqkbnr/pppppppp"), std::string::npos);
+    EXPECT_NE(fen.find("PPPPPPPP/RNBQKBNR"), std::string::npos);
 }

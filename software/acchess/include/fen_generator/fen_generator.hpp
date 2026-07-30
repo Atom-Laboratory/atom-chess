@@ -3,8 +3,7 @@
 
 #include <array>
 #include <string>
-#include "piece_detector/piece_detector.hpp"
-
+#include "board/board.hpp"
 namespace ac::chess {
 
 
@@ -30,7 +29,7 @@ public:
      * @note Additional FEN fields are set to fixed values.
      */
     static std::string generate(
-        const std::array<std::array<CellState,8>,8>& board
+        static std::string generate(const Board& board);
     );
 };
 
