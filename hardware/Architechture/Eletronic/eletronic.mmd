@@ -1,0 +1,166 @@
+flowchart TB
+
+    %%=========================================================
+    %% ESTILOS
+    %%=========================================================
+    classDef power fill:#ffebee,stroke:#c62828,stroke-width:2px,color:#000
+    classDef gnd fill:#eceff1,stroke:#455a64,stroke-width:2px,color:#000
+    classDef sbc fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#000
+    classDef mcu fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px,color:#000
+    classDef driver fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#000
+    classDef motor fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,color:#000
+    classDef passive fill:#fffde7,stroke:#fbc02d,stroke-width:1px,stroke-dasharray:5,color:#000
+    classDef sensor fill:#e0f7fa,stroke:#00838f,stroke-width:2px,color:#000
+
+    %%=========================================================
+    %% AGRUPAMENTOS LÓGICOS
+    %%=========================================================
+    
+    subgraph Energia ["Distribuição de Energia"]
+        AC["Rede AC<br/>127/220V"]
+        PSU["Fonte Chaveada<br/>12V / 10A"]
+        P12["+12V Distribution"]
+        GND["GND Distribution"]
+
+        BuckLogic["Buck #1<br/>12V → 5V (Lógica)"]
+        BuckControl["Buck #2<br/>12V → 5V (Controle)"]
+
+        P5Logic["+5V Logic Bus"]
+        P5Control["+5V Control Bus"]
+    end
+
+    subgraph Controle ["Processamento e Controle"]
+        subgraph SBC ["Single Board Computers"]
+            direction LR
+            Orange["Orange Pi<br/>Vision"]
+            Banana["Banana Pi M5<br/>Brain"]
+        end
+
+        subgraph MCU ["Microcontroladores"]
+            direction LR
+            ESP32S3["ESP32-S3"]
+            ESP32CAM["ESP32-CAM"]
+        end
+    end
+
+    subgraph Sensores ["Entradas e Segurança"]
+        EndStops["Endstops"]
+        Emergency["Emergency Stop"]
+    end
+
+    subgraph Acionamento ["Drivers de Potência (DRV8825)"]
+        direction LR
+        DRV1["DRV #1"]
+        DRV2["DRV #2"]
+        DRV3["DRV #3"]
+        DRV4["DRV #4"]
+        DRV5["DRV #5"]
+        
+        C1["100µF"]
+        C2["100µF"]
+        C3["100µF"]
+        C4["100µF"]
+        C5["100µF"]
+    end
+
+    subgraph Atuadores ["Motores"]
+        direction LR
+        J1["Joint 1"]
+        J2["Joint 2"]
+        J3["Joint 3"]
+        J4["Joint 4"]
+        J5["Joint 5"]
+        Servo["Servo Motor"]
+    end
+
+    %%=========================================================
+    %% LIGAÇÕES DE ENERGIA
+    %%=========================================================
+    AC --> PSU
+    PSU -->|+12V| P12
+    PSU -->|GND| GND
+
+    P12 --> BuckLogic
+    P12 --> BuckControl
+    GND --> BuckLogic
+    GND --> BuckControl
+
+    BuckLogic --> P5Logic
+    BuckControl --> P5Control
+
+    P5Logic --> Orange
+    P5Logic --> Banana
+    
+    P5Control --> ESP32S3
+    P5Control --> ESP32CAM
+    P5Control --> EndStops
+    P5Control --> Servo
+    
+    GND --> Orange
+    GND --> Banana
+    GND --> ESP32S3
+    GND --> ESP32CAM
+    GND --> EndStops
+    GND --> Servo
+
+    P12 --> DRV1
+    P12 --> DRV2
+    P12 --> DRV3
+    P12 --> DRV4
+    P12 --> DRV5
+
+    GND --> DRV1
+    GND --> DRV2
+    GND --> DRV3
+    GND --> DRV4
+    GND --> DRV5
+
+    %%=========================================================
+    %% LIGAÇÕES DE HARDWARE / SINAIS
+    %%=========================================================
+    
+    %% Capacitores
+    DRV1 -. "100µF entre VMOT/GND" .-> C1
+    DRV2 -. "100µF entre VMOT/GND" .-> C2
+    DRV3 -. "100µF entre VMOT/GND" .-> C3
+    DRV4 -. "100µF entre VMOT/GND" .-> C4
+    DRV5 -. "100µF entre VMOT/GND" .-> C5
+
+    %% Sinais de Controle (Mantidos unificados para reduzir cruzamentos)
+    ESP32S3 -->|"STEP, DIR, ENABLE (comp.)"| DRV1
+    ESP32S3 -->|"STEP, DIR, ENABLE (comp.)"| DRV2
+    ESP32S3 -->|"STEP, DIR, ENABLE (comp.)"| DRV3
+    ESP32S3 -->|"STEP, DIR, ENABLE (comp.)"| DRV4
+    ESP32S3 -->|"STEP, DIR, ENABLE (comp.)"| DRV5
+
+    ESP32S3 -->|"PWM"| Servo
+
+    %% Potência para os Motores
+    DRV1 -->|"A1 A2 B1 B2"| J1
+    DRV2 -->|"A1 A2 B1 B2"| J2
+    DRV3 -->|"A1 A2 B1 B2"| J3
+    DRV4 -->|"A1 A2 B1 B2"| J4
+    DRV5 -->|"A1 A2 B1 B2"| J5
+
+    %% Entradas
+    EndStops --> ESP32S3
+    Emergency --> ESP32S3
+
+    %%=========================================================
+    %% COMUNICAÇÃO DE DADOS
+    %%=========================================================
+    ESP32CAM -. "Wi-Fi" .-> Orange
+    Orange <-->|Ethernet| Banana
+    Banana <-->|UART + micro-ROS| ESP32S3
+
+    %%=========================================================
+    %% ATRIBUIÇÃO DE CLASSES (Retrocompatibilidade garantida)
+    %%=========================================================
+    class AC,PSU,P12,BuckLogic,BuckControl,P5Logic,P5Control power
+    class GND gnd
+    class Orange,Banana sbc
+    class ESP32S3,ESP32CAM mcu
+    class EndStops,Emergency sensor
+    class DRV1,DRV2,DRV3,DRV4,DRV5 driver
+    class C1,C2,C3,C4,C5 passive
+    class J1,J2,J3,J4,J5,Servo motor
