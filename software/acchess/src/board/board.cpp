@@ -1,4 +1,5 @@
 #include "board/board.hpp"
+#include "board/move_applier.hpp"
 #include <iostream>
 #include <cstdint>
 namespace ac::chess {
@@ -83,5 +84,10 @@ bool Board::operator==(const Board& other) const{
 
 bool Board::operator!=(const Board& other) const{
     return !(*this == other);
+}
+
+void Board::makeMove(const Move& move)
+{
+    MoveApplier::apply(*this, move);
 }
 }
