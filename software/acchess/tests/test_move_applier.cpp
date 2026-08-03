@@ -2,6 +2,7 @@
 
 #include "board/board.hpp"
 #include "board/move_applier.hpp"
+#include <cstdint>
 
 namespace ac::chess {
 namespace {
@@ -13,18 +14,24 @@ TEST(MoveApplierTest, AppliesNormalMoveWithoutChangingOtherSquares)
 
     const Square source{6, 4};
     const Square target{4, 4};
-    const Square unchanged{2, 2};
     const Piece pawn{PieceType::Pawn, PieceColor::White};
     const Piece knight{PieceType::Knight, PieceColor::Black};
 
     board.setPiece(source, pawn);
-    board.setPiece(unchanged, knight);
 
     MoveApplier::apply(board, Move{.from = source, .to = target});
 
     EXPECT_TRUE(board.isSqrEmpty(source));
     EXPECT_EQ(board.pieceAt(target), pawn);
-    EXPECT_EQ(board.pieceAt(unchanged), knight);
+
+    for (uint8_t row = 0; row< 8; ++row){
+        for (uint8_t col = 0; col < 8; ++col){
+            Square sq{row, col};
+            if (sq != source && sq != target){
+                EXPECT_TRUE(board.isSqrEmpty(sq));
+            }
+        }
+    }
 }
 
 TEST(MoveApplierTest, AppliesCaptureByReplacingTheTargetPiece)
