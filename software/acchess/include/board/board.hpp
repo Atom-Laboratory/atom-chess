@@ -1,7 +1,7 @@
 #pragma once
 
-#include "board/piece.hpp"
 #include "board/move.hpp"
+#include "board/piece.hpp"
 #include "board/square.hpp"
 #include <array>
 namespace ac::chess {
@@ -18,6 +18,11 @@ class Board{
         Piece pieceAt(Square sq) const;
         void setPiece(Square sq, Piece piece);
 
+        /**
+         * @brief Applies a move through MoveApplier.
+         * @deprecated Prefer MoveApplier::apply for new code.
+         */
+        [[deprecated("Use MoveApplier::apply")]]
         void makeMove(const Move& move);
 
         bool isSqrEmpty(Square sq) const;

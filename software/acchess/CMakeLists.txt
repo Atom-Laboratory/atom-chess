@@ -30,6 +30,7 @@ add_library(acchess STATIC
     src/board/board.cpp
     src/board/board_comparator.cpp
     src/board/move.cpp
+    src/board/move_applier.cpp
     src/board/piece.cpp
     src/board/square.cpp
     src/viewer/renderer.cpp
@@ -45,6 +46,7 @@ target_sources(acchess
             include/board/board.hpp
             include/board/board_comparator.hpp
             include/board/move.hpp
+            include/board/move_applier.hpp
             include/board/piece.hpp
             include/board/square.hpp
             include/board/square_change.hpp
@@ -79,11 +81,15 @@ add_custom_command(TARGET chess.demo POST_BUILD
 )
 
 add_executable(test_board tests/test_board.cpp)
+add_executable(test_move_applier tests/test_move_applier.cpp)
 add_executable(test_board_comparator tests/test_board_comparator.cpp)
 
 target_link_libraries(test_board PRIVATE acchess GTest::gtest_main)
+target_link_libraries(test_move_applier PRIVATE acchess GTest::gtest_main)
 target_link_libraries(test_board_comparator PRIVATE acchess GTest::gtest_main)
 
 include(GoogleTest)
+
 gtest_discover_tests(test_board)
+gtest_discover_tests(test_move_applier)
 gtest_discover_tests(test_board_comparator)

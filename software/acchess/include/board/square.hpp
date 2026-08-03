@@ -5,5 +5,7 @@ struct Square {
     int col;
 
     bool operator==(const Square& other) const;
+
+    bool operator!=(const Square& other) const;
 };
 }
