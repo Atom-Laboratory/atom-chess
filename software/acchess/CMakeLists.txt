@@ -17,7 +17,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 set(SFML_STATIC_LIBRARIES TRUE)
-# find_package(SFML 3.0 COMPONENTS Window Graphics System REQUIRED)
 include(FetchContent)
 
 FetchContent_Declare(
@@ -27,11 +26,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(SFML)
 
-# ==========================================
-# TARGET: acchess (Core Library)
-# ==========================================
 add_library(acchess STATIC
     src/board/board.cpp
+    src/board/board_comparator.cpp
     src/board/move.cpp
     src/board/piece.cpp
     src/board/square.cpp
@@ -46,9 +43,11 @@ target_sources(acchess
         BASE_DIRS include
         FILES 
             include/board/board.hpp
+            include/board/board_comparator.hpp
             include/board/move.hpp
             include/board/piece.hpp
             include/board/square.hpp
+            include/board/square_change.hpp
             include/viewer/renderer.hpp
             include/utils/path.hpp
 )
@@ -60,9 +59,6 @@ target_include_directories(acchess
 
 target_link_libraries(acchess PUBLIC SFML::Graphics SFML::Window SFML::System)
 
-# ==========================================
-# AUTOMATIC TARGET GENERATION (Apps Folder)
-# ==========================================
 set(APP_LIST
     "chess.demo"
 )
@@ -71,10 +67,7 @@ foreach(app ${APP_LIST})
     set(app_src "apps/${app}.cpp")
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${app_src})
         add_executable(${app} ${app_src})
-        
-        # Linkagem Limpa: o target acchess repassa o SFML automaticamente
         target_link_libraries(${app} PRIVATE acchess)
-        
         set_target_properties(${app} PROPERTIES FOLDER "Applications")
     endif()
 endforeach()
@@ -85,16 +78,12 @@ add_custom_command(TARGET chess.demo POST_BUILD
         $<TARGET_FILE_DIR:chess.demo>/assets
 )
 
-
-# =========================================================================
-# TESTS
-# =========================================================================
-
 add_executable(test_board tests/test_board.cpp)
+add_executable(test_board_comparator tests/test_board_comparator.cpp)
 
-# Link the test executable with the acchess library and with Google Test.
 target_link_libraries(test_board PRIVATE acchess GTest::gtest_main)
+target_link_libraries(test_board_comparator PRIVATE acchess GTest::gtest_main)
 
-# Registering tests for CTest imports automatically.
 include(GoogleTest)
 gtest_discover_tests(test_board)
+gtest_discover_tests(test_board_comparator)
