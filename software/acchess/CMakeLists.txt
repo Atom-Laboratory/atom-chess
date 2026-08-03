@@ -33,6 +33,7 @@ FetchContent_MakeAvailable(SFML)
 add_library(acchess STATIC
     src/board/board.cpp
     src/board/move.cpp
+    src/board/move_applier.cpp
     src/board/piece.cpp
     src/board/square.cpp
     src/viewer/renderer.cpp
@@ -47,6 +48,7 @@ target_sources(acchess
         FILES 
             include/board/board.hpp
             include/board/move.hpp
+            include/board/move_applier.hpp
             include/board/piece.hpp
             include/board/square.hpp
             include/viewer/renderer.hpp

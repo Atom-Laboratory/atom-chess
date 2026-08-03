@@ -84,19 +84,4 @@ bool Board::operator==(const Board& other) const{
 bool Board::operator!=(const Board& other) const{
     return !(*this == other);
 }
-void Board::makeMove(const Move& move) {
-    // 1. Take the piece that is in the original house.
-    Piece movingPiece = pieceAt(move.from);
-
-    // 2. If it's a promotional move, update the item type.
-    if (move.promotion != PieceType::None) {
-        movingPiece.type = move.promotion;
-    }
-
-    // 3. Place the piece in its destination slot.
-    setPiece(move.to, movingPiece);
-
-    // 4. Empty the original house (by placing a 'None' piece)
-    setPiece(move.from, Piece{PieceType::None, PieceColor::None});
-}
 }
