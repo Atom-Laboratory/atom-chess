@@ -8,7 +8,7 @@ std::vector<SquareChange> BoardComparator::compare(
 )
 {
     std::vector<SquareChange> changes;
-    changes.reserve(4);
+    changes.reserve(4); // the number 4 here is chosen because the max number of squares that can change in a single chess move is 4 (castling).
 
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
