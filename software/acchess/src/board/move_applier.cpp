@@ -2,9 +2,7 @@
 
 namespace ac::chess {
 
-namespace {
-
-void moveCastlingRook(Board& board, const Move& move)
+void MoveApplier::moveCastlingRook(Board& board, const Move& move)
 {
     const bool kingSide = move.to.col > move.from.col;
     const int rookSourceColumn = kingSide ? 7 : 0;
@@ -18,13 +16,11 @@ void moveCastlingRook(Board& board, const Move& move)
     board.setPiece(rookTarget, rook);
 }
 
-void removeEnPassantPawn(Board& board, const Move& move)
+void MoveApplier::removeEnPassantPawn(Board& board, const Move& move)
 {
     const Square capturedPawnSquare{move.from.row, move.to.col};
     board.setPiece(capturedPawnSquare, Piece{});
 }
-
-} // namespace
 
 void MoveApplier::apply(Board& board, const Move& move)
 {
