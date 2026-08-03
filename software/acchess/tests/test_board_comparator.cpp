@@ -2,6 +2,7 @@
 
 #include "board/board.hpp"
 #include "board/board_comparator.hpp"
+#include <cstdint>
 
 namespace ac::chess {
 namespace {
@@ -27,8 +28,21 @@ TEST(BoardComparatorTest, ReportsSimpleMoveInRowMajorOrder)
     const auto changes = BoardComparator::compare(previous, current);
 
     ASSERT_EQ(changes.size(), 2);
-    EXPECT_EQ(changes[0], (SquareChange{.square = {1, 4}, .before = {PieceType::Pawn, PieceColor::White}, .after = {}}));
-    EXPECT_EQ(changes[1], (SquareChange{.square = {3, 4}, .before = {}, .after = {PieceType::Pawn, PieceColor::White}}));
+    EXPECT_EQ(
+        changes[0], 
+        (SquareChange{
+            .square = {1, 4}, 
+            .before = {PieceType::Pawn, PieceColor::White}, 
+            .after = {}
+        }));
+    
+    EXPECT_EQ(
+        changes[1], 
+        (SquareChange{
+            .square = {3, 4}, 
+            .before = {}, 
+            .after = {PieceType::Pawn, PieceColor::White}
+        }));
 }
 
 TEST(BoardComparatorTest, ReportsCaptureWithPreviousAndCurrentPieces)
@@ -76,8 +90,8 @@ TEST(BoardComparatorTest, ReportsFourChangedSquaresForCastling)
 
     Board current = previous;
     current.setPiece({7, 4}, Piece{});
-    current.setPiece({7, 7}, Piece{});
     current.setPiece({7, 6}, {PieceType::King, PieceColor::White});
+    current.setPiece({7, 7}, Piece{});
     current.setPiece({7, 5}, {PieceType::Rook, PieceColor::White});
 
     EXPECT_EQ(BoardComparator::compare(previous, current).size(), 4);
@@ -106,8 +120,8 @@ TEST(BoardComparatorTest, ReportsAllChangedSquaresWithoutInterpretingThem)
     Board current;
     current.clear();
 
-    for (int row = 0; row < 8; ++row) {
-        for (int col = 0; col < 8; ++col) {
+    for (uint8_t row = 0; row < 8; ++row) {
+        for (uint8_t col = 0; col < 8; ++col) {
             current.setPiece({row, col}, {PieceType::Pawn, PieceColor::White});
         }
     }
