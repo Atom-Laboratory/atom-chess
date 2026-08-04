@@ -3,7 +3,6 @@
 #include <string>
 
 #include "fen_generator/fen_generator.hpp"
-#include "piece_detector/piece_detector.hpp"
 
 using namespace ac;
 

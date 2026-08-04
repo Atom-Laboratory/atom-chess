@@ -48,6 +48,7 @@ target_sources(acvision
             include/piece_detector/piece_detector.hpp
             # include/fen_generator/fen_generator.hpp
             include/homography/homography.hpp
+            
 
 )
 
@@ -147,8 +148,8 @@ FetchContent_MakeAvailable(googletest)
 set(TEST_LIST
     "test_camera"
     "test_piece_detector"
-    "test_fen_generator"
     "test_board_geometry"
+    
 )
 
 foreach(test_name ${TEST_LIST})

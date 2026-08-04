@@ -3,7 +3,6 @@
 
 #include <array>
 #include <string>
-#include "piece_detector/piece_detector.hpp"
 
 namespace ac
 {
