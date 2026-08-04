@@ -16,6 +16,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
+# ==========================================
+# Chess Engine Dependencies (Stockfish)
+# ==========================================
+# Search for the Stockfish executable in the user's system
+find_program(STOCKFISH_EXECUTABLE NAMES stockfish PATHS /usr/games /usr/bin)
+if(NOT STOCKFISH_EXECUTABLE)
+    message(WARNING "Stockfish executable not found! Make sure it is installed via apt.")
+endif()
+
 set(SFML_STATIC_LIBRARIES TRUE)
 # find_package(SFML 3.0 COMPONENTS Window Graphics System REQUIRED)
 include(FetchContent)
@@ -37,6 +46,7 @@ add_library(acchess STATIC
     src/board/square.cpp
     src/viewer/renderer.cpp
     src/utils/path.cpp
+    src/engine/stockfish_uci.cpp
 )
 
 target_sources(acchess
@@ -50,6 +60,7 @@ target_sources(acchess
             include/board/square.hpp
             include/viewer/renderer.hpp
             include/utils/path.hpp
+            include/engine/stockfish_uci.hpp
 )
 
 target_include_directories(acchess 
@@ -83,3 +94,39 @@ add_custom_command(TARGET chess.demo POST_BUILD
         ${CMAKE_CURRENT_SOURCE_DIR}/assets
         $<TARGET_FILE_DIR:chess.demo>/assets
 )
+
+# ==========================================
+# AUTOMATED TESTS (tests Folder)
+# ==========================================
+enable_testing()
+
+# Download Google Test
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        v1.14.0
+)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+set(TEST_LIST
+    "test_stockfish_uci"
+    
+)
+
+foreach(test_name ${TEST_LIST})
+    set(test_src "tests/${test_name}.cpp")
+    
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${test_src})
+        add_executable(${test_name} ${test_src})
+        
+        target_link_libraries(${test_name} 
+            PRIVATE 
+                acchess 
+                GTest::gtest_main
+        )
+        
+        add_test(NAME ${test_name} COMMAND ${test_name})
+        set_target_properties(${test_name} PROPERTIES FOLDER "Tests")
+    endif()
+endforeach()

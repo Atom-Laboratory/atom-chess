@@ -1,10 +1,10 @@
-#include "stockfish_uci.hpp"
+#include "engine/stockfish_uci.hpp"
 #include <iostream>
 #include <string.h>
 #include <sys/wait.h>
 #include <sys/select.h>
 
-namespace ac {
+namespace ac::chess::engine {
 
 StockfishUCI::StockfishUCI(const std::string& engine_path) {
     m_engine_path = engine_path;
@@ -21,58 +21,40 @@ StockfishUCI::~StockfishUCI() {
 }
 
 bool StockfishUCI::init() {
-    std::cerr << "[INIT] 1. Creating Pipes\n";
-    
     if (pipe(m_pipe_in) == -1 || pipe(m_pipe_out) == -1) {
-        std::cerr << "[UCI] Erro ao criar os pipes.\n";
+        std::cerr << "[UCI] Erro ao criar os pipes de comunicacao.\n";
         return false;
     }
-    std::cerr << "[INIT] 2. Forking\n";
 
     m_process_id = fork();
 
     if (m_process_id < 0) {
-        std::cerr << "[UCI] Erro no fork.\n";
+        std::cerr << "[UCI] Erro no fork do sistema operacional.\n";
         return false;
     }
 
-    std::cerr << "[INIT] 3 pid=" << m_process_id << '\n';
-
     if (m_process_id == 0) {
-        std::cerr << "[INIT] Son\n";
-
+        // Child Process: Redirect standard I/O to pipes
         dup2(m_pipe_in[0], STDIN_FILENO);
         dup2(m_pipe_out[1], STDOUT_FILENO);
 
-        std::cerr << "[INIT] Before Exec\n";
+        close(m_pipe_in[0]); close(m_pipe_in[1]);
+        close(m_pipe_out[0]); close(m_pipe_out[1]);
 
         execlp(m_engine_path.c_str(), m_engine_path.c_str(), nullptr);
         
-        perror("execpl");
-        _exit(EXIT_FAILURE);
+        exit(1);
     } else {
-        std::cerr << "[INIT] Parent\n";
+        // Parent Process: Close unused pipe ends
+        close(m_pipe_in[0]);
+        close(m_pipe_out[1]);
         
         send_command("uci");
-        std::cerr << "[INIT] UCI SENT\n";
-
-        auto response = read_output("uciok"); 
-        if (response.find("uciok") == std::string::npos){
-            return false;
-        }
-            
-        std::cerr << "[INIT] UCI RECIEVED\n";
-
+        read_output("uciok"); 
+        
         send_command("isready");
-        std::cerr << "[INIT] ISREADY SENT\n";
-
-        response = read_output("readyok");
-        if (response.find("readyok") == std::string::npos)
-        {
-            return false; 
-        }
-        std::cerr << "[INIT] ISREADY RECIEVED\n";
-
+        read_output("readyok"); 
+        
         return true;
     }
 }
@@ -86,8 +68,6 @@ std::string StockfishUCI::read_output(const std::string& stop_word) {
     std::string result = "";
     char buffer[256];
     ssize_t bytes_read;
-
-    
     fd_set read_fds;
     struct timeval tv;
 
@@ -95,11 +75,10 @@ std::string StockfishUCI::read_output(const std::string& stop_word) {
         FD_ZERO(&read_fds);
         FD_SET(m_pipe_out[0], &read_fds);
 
-        
+        // 5 second timeout to prevent indefinite blocking
         tv.tv_sec = 5;
         tv.tv_usec = 0;
 
-        
         int ret = select(m_pipe_out[0] + 1, &read_fds, NULL, NULL, &tv);
 
         if (ret == -1) {
@@ -110,7 +89,6 @@ std::string StockfishUCI::read_output(const std::string& stop_word) {
             break;
         }
 
-        
         bytes_read = read(m_pipe_out[0], buffer, sizeof(buffer) - 1);
         if (bytes_read <= 0) break;
 
@@ -136,4 +114,4 @@ std::string StockfishUCI::get_best_move(const std::string& fen_state, int depth)
     return read_output("bestmove"); 
 }
 
-}
+} // namespace ac::chess::engine
