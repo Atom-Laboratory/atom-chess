@@ -13,9 +13,22 @@ namespace ac
  */
 enum class CellState
 {
-    EMPTY,  /**< Empty square */
-    WHITE,  /**< White piece */
-    BLACK   /**< Black piece */
+    EMPTY, 
+    WHITE,
+    BLACK
+};
+
+struct CellObservation{
+    CellState state;
+
+    float confidence = 0.0f;
+
+    cv::Mat roi;
+};
+
+struct OccupancyGrid
+{
+    std::array<std::array<CellObservation,8>,8> cells;
 };
 
 /**
@@ -33,9 +46,9 @@ public:
      * @brief Analyzes all board cells.
      *
      * @param boardCells 8x8 matrix containing images (cv::Mat) of the cells.
-     * @return 8x8 matrix containing the state of each cell.
+     * @return OccpancyGrid
      */
-    std::array<std::array<CellState,8>,8> analyzeBoard(
+    OccupancyGrid analyzeBoard(
         const std::array<std::array<cv::Mat,8>,8>& boardCells
     ) const;
 
@@ -47,7 +60,7 @@ private:
      * @param cell Image of the cell.
      * @return CellState Detected state of the cell.
      */
-    CellState analyzeCell(const cv::Mat& cell) const;
+    CellObservation analyzeCell(const cv::Mat& cell) const;
 
     /**
      * @brief Extracts the central region of the cell image.
