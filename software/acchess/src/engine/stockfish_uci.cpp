@@ -50,10 +50,16 @@ bool StockfishUCI::init() {
         close(m_pipe_out[1]);
         
         send_command("uci");
-        read_output("uciok"); 
+        if (read_output("uciok").empty()) {
+            std::cerr << "[UCI] Erro: Falha ao inicializar o protocolo UCI ou timeout atingido.\n";
+            return false;
+        }
         
         send_command("isready");
-        read_output("readyok"); 
+        if (read_output("readyok").empty()) {
+            std::cerr << "[UCI] Erro: Motor nao esta pronto ou timeout atingido.\n";
+            return false;
+        }
         
         return true;
     }
