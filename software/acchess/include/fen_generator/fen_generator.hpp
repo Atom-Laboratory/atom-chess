@@ -1,38 +1,49 @@
-#ifndef AC_FEN_GENERATOR_HPP
-#define AC_FEN_GENERATOR_HPP
+#pragma once
 
-#include <array>
 #include <string>
+#include "board/board.hpp"
 
 namespace ac
 {
 
 /**
  * @class FenGenerator
- * @brief Responsible for converting board state into a FEN formatted string.
+ * @brief Serializes a Board's state into Forsyth-Edwards Notation (FEN).
  *
- * This class provides a static method to generate the textual representation
- * of a chessboard based on an 8x8 matrix of CellState values.
+ * The generator consumes exclusively the state exposed by the Board State
+ * module (`Board`). It has no dependency on Computer Vision or Motion
+ * Planning, so it can run purely on the logical game state.
+ *
+ * The produced string contains all six standard FEN fields and is
+ * compatible with UCI engines such as Stockfish (see ac::chess::engine::StockfishUCI).
  */
 class FenGenerator
 {
 public:
 
     /**
-     * @brief Generates a FEN string from the board state.
+     * @brief Generates a full FEN string representing the given board.
      *
-     * @param board 8x8 matrix containing the state of each cell (EMPTY, WHITE, BLACK).
-     * @return std::string FEN formatted string representing the board.
-     *
-     * @note Only piece occupancy and color are considered.
-     * @note All detected pieces are represented as pawns (P/p).
-     * @note Additional FEN fields are set to fixed values.
+     * @param board The current board state.
+     * @return std::string A FEN string with piece placement, side to move,
+     *         castling availability, en passant target square, halfmove
+     *         clock and fullmove number, in that order.
      */
-    static std::string generate(
-        const std::array<std::array<CellState,8>,8>& board
-    );
+    static std::string generate(const Board& board);
+
+private:
+
+    /// @brief Serializes the 8x8 piece placement field (ranks 8 -> 1).
+    static std::string serializePiecePlacement(const Board& board);
+
+    /// @brief Serializes castling availability, e.g. "KQkq" or "-".
+    static std::string serializeCastlingRights(const Board& board);
+
+    /// @brief Serializes the en passant target square, e.g. "e3" or "-".
+    static std::string serializeEnPassant(const Board& board);
+
+    /// @brief Maps a Piece to its FEN character (uppercase = white).
+    static char pieceToChar(const Piece& piece);
 };
 
 }
-
-#endif
