@@ -85,13 +85,16 @@ add_custom_command(TARGET chess.demo POST_BUILD
 add_executable(test_board tests/test_board.cpp)
 add_executable(test_move_applier tests/test_move_applier.cpp)
 add_executable(test_board_comparator tests/test_board_comparator.cpp)
+add_executable(test_move_validator tests/test_move_validator.cpp)
 
 target_link_libraries(test_board PRIVATE acchess GTest::gtest_main)
 target_link_libraries(test_move_applier PRIVATE acchess GTest::gtest_main)
 target_link_libraries(test_board_comparator PRIVATE acchess GTest::gtest_main)
+target_link_libraries(test_move_validator PRIVATE acchess GTest::gtest_main)
 
 include(GoogleTest)
 
 gtest_discover_tests(test_board)
 gtest_discover_tests(test_move_applier)
 gtest_discover_tests(test_board_comparator)
+gtest_discover_tests(test_move_validator)
