@@ -118,6 +118,9 @@ if(BUILD_TESTING AND STOCKFISH_EXECUTABLE)
 
     add_executable(test_stockfish_uci tests/test_stockfish_uci.cpp)
     target_link_libraries(test_stockfish_uci PRIVATE acchess GTest::gtest_main)
+    target_compile_definitions(test_stockfish_uci PRIVATE
+        STOCKFISH_EXECUTABLE_PATH="${STOCKFISH_EXECUTABLE}"
+    )
     add_test(NAME test_stockfish_uci COMMAND test_stockfish_uci)
     set_target_properties(test_stockfish_uci PROPERTIES FOLDER "Tests")
 endif()
