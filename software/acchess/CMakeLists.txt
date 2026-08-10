@@ -44,6 +44,7 @@ add_library(acchess STATIC
     src/board/board_comparator.cpp
     src/board/move.cpp
     src/board/move_applier.cpp
+    src/board/move_validator.cpp
     src/board/piece.cpp
     src/board/square.cpp
     src/viewer/renderer.cpp
@@ -61,6 +62,7 @@ target_sources(acchess
             include/board/board_comparator.hpp
             include/board/move.hpp
             include/board/move_applier.hpp
+            include/board/move_validator.hpp
             include/board/piece.hpp
             include/board/square.hpp
             include/board/square_change.hpp
