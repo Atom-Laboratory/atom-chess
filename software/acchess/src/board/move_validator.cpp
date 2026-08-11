@@ -63,6 +63,33 @@ bool isPromotionPiece(PieceType type)
         || type == PieceType::Queen;
 }
 
+bool hasExactlyOneKing(const Board& board, PieceColor color)
+{
+    bool foundKing = false;
+
+    for (int row = 0; row < boardSize; ++row) {
+        for (int col = 0; col < boardSize; ++col) {
+            if (board.pieceAt({row, col}) != Piece{PieceType::King, color}) {
+                continue;
+            }
+
+            if (foundKing) {
+                return false;
+            }
+
+            foundKing = true;
+        }
+    }
+
+    return foundKing;
+}
+
+bool hasValidKings(const Board& board)
+{
+    return hasExactlyOneKing(board, PieceColor::White)
+        && hasExactlyOneKing(board, PieceColor::Black);
+}
+
 bool isPathClear(const Board& board, Square from, Square to)
 {
     if (from == to) {
@@ -555,9 +582,14 @@ std::optional<Move> MoveValidator::validate(
     }
 
     const std::optional<Board> observed = buildObservedBoard(previous, changes);
-    const std::optional<Move> move = inferMove(changes, sideToMove);
     if (!observed.has_value()
-        || !move.has_value()
+        || !hasValidKings(previous)
+        || !hasValidKings(*observed)) {
+        return std::nullopt;
+    }
+
+    const std::optional<Move> move = inferMove(changes, sideToMove);
+    if (!move.has_value()
         || !isMovementValid(previous, *move, sideToMove)
         || !isCastlingPathSafe(previous, *move, sideToMove)) {
         return std::nullopt;
