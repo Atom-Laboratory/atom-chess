@@ -42,6 +42,82 @@ TEST(MoveValidatorTest, InfersAValidPawnPush)
     EXPECT_EQ(*result, expected);
 }
 
+TEST(MoveValidatorTest, RejectsBoardWithoutWhiteKing)
+{
+    Board previous = boardWithKings();
+    previous.setPiece({7, 4}, {});
+    previous.setPiece({1, 3}, {PieceType::Pawn, PieceColor::Black});
+    const Board observed = afterMove(
+        previous,
+        Move{.from = {1, 3}, .to = {2, 3}}
+    );
+
+    EXPECT_FALSE(
+        MoveValidator::validate(previous, observed, PieceColor::Black).has_value()
+    );
+}
+
+TEST(MoveValidatorTest, RejectsBoardWithoutBlackKing)
+{
+    Board previous = boardWithKings();
+    previous.setPiece({0, 4}, {});
+    previous.setPiece({6, 3}, {PieceType::Pawn, PieceColor::White});
+    const Board observed = afterMove(
+        previous,
+        Move{.from = {6, 3}, .to = {5, 3}}
+    );
+
+    EXPECT_FALSE(
+        MoveValidator::validate(previous, observed, PieceColor::White).has_value()
+    );
+}
+
+TEST(MoveValidatorTest, RejectsBoardWithTwoWhiteKings)
+{
+    Board previous = boardWithKings();
+    previous.setPiece({7, 0}, {PieceType::King, PieceColor::White});
+    previous.setPiece({1, 3}, {PieceType::Pawn, PieceColor::Black});
+    const Board observed = afterMove(
+        previous,
+        Move{.from = {1, 3}, .to = {2, 3}}
+    );
+
+    EXPECT_FALSE(
+        MoveValidator::validate(previous, observed, PieceColor::Black).has_value()
+    );
+}
+
+TEST(MoveValidatorTest, RejectsBoardWithTwoBlackKings)
+{
+    Board previous = boardWithKings();
+    previous.setPiece({0, 0}, {PieceType::King, PieceColor::Black});
+    previous.setPiece({6, 3}, {PieceType::Pawn, PieceColor::White});
+    const Board observed = afterMove(
+        previous,
+        Move{.from = {6, 3}, .to = {5, 3}}
+    );
+
+    EXPECT_FALSE(
+        MoveValidator::validate(previous, observed, PieceColor::White).has_value()
+    );
+}
+
+TEST(MoveValidatorTest, AcceptsBoardWithExactlyOneKingOfEachColor)
+{
+    Board previous = boardWithKings();
+    previous.setPiece({6, 3}, {PieceType::Pawn, PieceColor::White});
+    const Move expected{.from = {6, 3}, .to = {5, 3}};
+
+    const auto result = MoveValidator::validate(
+        previous,
+        afterMove(previous, expected),
+        PieceColor::White
+    );
+
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(*result, expected);
+}
+
 TEST(MoveValidatorTest, RejectsAMoveFromTheWrongSide)
 {
     Board previous = boardWithKings();
