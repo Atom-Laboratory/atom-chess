@@ -6,10 +6,10 @@ namespace ac
 /**
  * @brief Analyze all board cells.
  */
-OccupancyGrid PieceDetector::analyzeBoard(
-    const std::array<std::array<cv::Mat,8>,8>& boardCells) const
+BoardState PieceDetector::analyzeBoard(
+    const std::array<std::array<cv::Mat, 8>, 8>& boardCells) const
 {
-    OccupancyGrid result;
+    BoardState result;
 
     for(int r = 0; r < 8; r++)
     {
@@ -25,35 +25,21 @@ OccupancyGrid PieceDetector::analyzeBoard(
 /**
  * @brief Analyze a single cell.
  */
-CellObservation PieceDetector::analyzeCell(const cv::Mat& cell) const
+CellState PieceDetector::analyzeCell(const cv::Mat& cell) const
 {
-
-    CellObservation obs;
-
-    if(cell.empty()){
-        obs.state = CellState::EMPTY;
-        return obs;
-    }
+    if(cell.empty())
+        return CellState::EMPTY;
 
     cv::Mat roi = extractCenterROI(cell);
     double edgeDensity = computeEdgeDensity(roi);
 
     if(edgeDensity < 0.02)
-    {
-        obs.state = CellState::EMPTY;
-    }
-    else if(isWhitePiece(roi))
-    {
-        obs.state = CellState::WHITE;
-    }
-    else {
-        obs.state = CellState::BLACK;
-    }
+        return CellState::EMPTY;
 
-    obs.roi = roi;
-    obs.confidence = 1.0f;
+    if(isWhitePiece(roi))
+        return CellState::WHITE;
 
-    return obs;
+    return CellState::BLACK;
 }
 
 /**
@@ -66,7 +52,7 @@ cv::Mat PieceDetector::extractCenterROI(const cv::Mat& cell) const
     int w = static_cast<int>(cell.cols * 0.5);
     int h = static_cast<int>(cell.rows * 0.5);
 
-    return cell(cv::Rect(x,y,w,h));
+    return cell(cv::Rect(x, y, w, h));
 }
 
 /**
@@ -77,7 +63,8 @@ cv::Mat PieceDetector::normalizeLighting(const cv::Mat& input) const
     cv::Mat gray;
     cv::cvtColor(input, gray, cv::COLOR_BGR2GRAY);
 
-    cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(2.0, cv::Size(8,8));
+    cv::Ptr<cv::CLAHE> clahe =
+        cv::createCLAHE(2.0, cv::Size(8, 8));
 
     cv::Mat normalized;
     clahe->apply(gray, normalized);

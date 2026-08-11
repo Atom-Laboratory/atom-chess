@@ -4,32 +4,10 @@
 #include <opencv2/opencv.hpp>
 #include <array>
 
+#include "board_state/board_state.hpp"
+
 namespace ac
 {
-
-/**
- * @enum CellState
- * @brief Represents the state of a board cell.
- */
-enum class CellState
-{
-    EMPTY, 
-    WHITE,
-    BLACK
-};
-
-struct CellObservation{
-    CellState state;
-
-    float confidence = 0.0f;
-
-    cv::Mat roi;
-};
-
-struct OccupancyGrid
-{
-    std::array<std::array<CellObservation,8>,8> cells;
-};
 
 /**
  * @class PieceDetector
@@ -46,10 +24,10 @@ public:
      * @brief Analyzes all board cells.
      *
      * @param boardCells 8x8 matrix containing images (cv::Mat) of the cells.
-     * @return OccpancyGrid
+     * @return BoardState containing the visual state of each cell.
      */
-    OccupancyGrid analyzeBoard(
-        const std::array<std::array<cv::Mat,8>,8>& boardCells
+    BoardState analyzeBoard(
+        const std::array<std::array<cv::Mat, 8>, 8>& boardCells
     ) const;
 
 private:
@@ -60,7 +38,7 @@ private:
      * @param cell Image of the cell.
      * @return CellState Detected state of the cell.
      */
-    CellObservation analyzeCell(const cv::Mat& cell) const;
+    CellState analyzeCell(const cv::Mat& cell) const;
 
     /**
      * @brief Extracts the central region of the cell image.
