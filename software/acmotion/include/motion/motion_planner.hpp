@@ -49,6 +49,10 @@ class CoordinateMapperMock {
 public:
     virtual ~CoordinateMapperMock() = default;
 
+    /**
+     * @param square Algebraic notation string for the board cell.
+     * @return std::pair<double, double> Cartesian coordinates {X, Y} in mm at table surface height (Z=0).
+     */
     virtual std::pair<double, double> getCoordinates(const std::string& square) const {
         (void)square;
         return {100.0, 100.0}; // Simulated fixed coordinates
@@ -73,11 +77,16 @@ public:
 
     /**
      * @brief Generates a trajectory to move a piece from source cell to target cell.
+     * @param from Algebraic notation of the starting square (e.g., "e2").
+     * @param to Algebraic notation of the destination square (e.g., "e4").
+     * @return std::vector<Pose> Sequence of 3D poses defining the pick-and-place movement.
      */
     std::vector<Pose> planMove(const std::string& from, const std::string& to);
 
     /**
      * @brief Returns a predefined pose based on the state machine Enum.
+     * @param pos Desired predefined position.
+     * @return Pose Cartesian pose associated with the predefined position.
      */
     Pose getPredefinedPose(PredefinedPosition pos) const;
 
