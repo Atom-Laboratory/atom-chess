@@ -1,6 +1,6 @@
 img01.jpg, 2b1kbnr/1pp2pp1/B1n1p3/p1Q4p/P3N2P/5N1R/1PPPPPP1/R1B1K3 w Qk - 0 1
 img02.jpg, 2b1kbnr/1pp2pp1/B1n1p3/p1Q4p/P3N2P/5N1R/1PPPPPP1/R1B1K3 w Qk - 0 1
-img03.jpg,
+img03.jpg, rn1qkb1r/pbpp1ppp/1p3n2/4p3/8/5NP1/PPPPPPBP/RNBQ1RK1 w kq - 0 1
 img04.jpg, 2b1kbnr/1pp2pp1/B1n1p3/p1Q4p/P3N2P/5N1R/1PPPPPP1/R1B1K3 w Qk - 0 1
 img05.jpg, 2b1kbnr/1pp2pp1/B1n1p3/p1Q4p/P3N2P/5N1R/1PPPPPP1/R1B1K3 w Qk - 0 1
 img06.jpg, 2b1kbnr/1pp2pp1/B1n1p3/p1Q4p/P3N2P/5N1R/1PPPPPP1/R1B1K3 w Qk - 0 1
@@ -28,8 +28,30 @@ img27.jpg, r3k1n1/pppqbpp1/3p3r/4pbB1/7P/N1Q5/PPP1BPP1/1KR5 w q - 0 1
 img28.jpg, r3k1n1/pppqbpp1/3p3r/4pbB1/7P/N1Q5/PPP1BPP1/1KR5 w q - 0 1
 img29.jpg, r3k1n1/pppqbpp1/3p3r/4pbB1/7P/N1Q5/PPP1BPP1/1KR5 w q - 0 1
 img30.jpg, r3k1n1/pppqbpp1/3p3r/4pbB1/7P/N1Q5/PPP1BPP1/1KR5 w q - 0 1
-
-img3.jpg, 
-
-
-
+img31.jpg, 4k3/8/3p3r/4p3/n2b3P/N6B/PPP2q2/K3R3 w - - 0 1
+img32.jpg, 4k3/8/3p3r/4p3/n2b3P/N6B/PPP2q2/K3R3 w - - 0 1
+img33.jpg, 4k3/8/3p3r/4p3/n2b3P/N6B/PPP2q2/K3R3 w - - 0 1
+img34.jpg, 4k3/8/3p3r/4p3/n2b3P/N6B/PPP2q2/K3R3 w - - 0 1
+img35.jpg, 4k3/8/3p3r/4p3/n2b3P/N6B/PPP2q2/K3R3 w - - 0 1
+img36.jpg, 5R1k/6P1/6K1/8/8/8/8/8 w - - 0 1
+img37.jpg, 5R1k/6P1/6K1/8/8/8/8/8 w - - 0 1
+img38.jpg, 5R1k/6P1/6K1/8/8/8/8/8 w - - 0 1
+img39.jpg, rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+img40.jpg, rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+img41.jpg, rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+img42.jpg, rnbqkbnr/ppp2ppp/8/4p3/4p3/3P4/PPP2PPP/RNBQKBNR w KQkq - 0 1
+img43.jpg, rnbqkbnr/ppp2ppp/8/4p3/4p3/3P4/PPP2PPP/RNBQKBNR w KQkq - 0 1
+img44.jpg, rnbqkbnr/ppp2ppp/8/4p3/4p3/3P4/PPP2PPP/RNBQKBNR w KQkq - 0 1
+img45.jpg, rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+img46.jpg, rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+img47.jpg, rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+img48.jpg, rnbqkb1r/ppp2ppp/4pn2/3p4/3P1B2/4PN2/PPP2PPP/RN1QKB1R w KQkq - 0 1
+img49.jpg, rnbqkb1r/ppp2ppp/4pn2/3p4/3P1B2/4PN2/PPP2PPP/RN1QKB1R w KQkq - 0 1
+img50.jpg, rnbqkb1r/ppp2ppp/4pn2/3p4/3P1B2/4PN2/PPP2PPP/RN1QKB1R w KQkq - 0 1
+img51.jpg, rnbqkb1r/ppp2ppp/4pn2/3p4/3P1B2/4PN2/PPP2PPP/RN1QKB1R w KQkq - 0 1
+img52.jpg, rnbqkb1r/ppp2ppp/4pn2/3p4/3P1B2/4PN2/PPP2PPP/RN1QKB1R w KQkq - 0 1
+img53.jpg, rn1qkb1r/pbpp1ppp/1p3n2/4p3/8/5NP1/PPPPPPBP/RNBQ1RK1 w kq - 0 1
+img54.jpg, rn1qkb1r/pbpp1ppp/1p3n2/4p3/8/5NP1/PPPPPPBP/RNBQ1RK1 w kq - 0 1
+img55.jpg, rn1qkb1r/pbpp1ppp/1p3n2/4p3/8/5NP1/PPPPPPBP/RNBQ1RK1 w kq - 0 1
+img56.jpg, rn1qkb1r/pbpp1ppp/1p3n2/4p3/8/5NP1/PPPPPPBP/RNBQ1RK1 w kq - 0 1
+img57.jpg, rn1qkb1r/pbpp1ppp/1p3n2/4p3/8/5NP1/PPPPPPBP/RNBQ1RK1 w kq - 0 1
