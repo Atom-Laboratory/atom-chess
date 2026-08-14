@@ -187,8 +187,8 @@ if(BUILD_TESTING)
     endforeach()
 
     target_link_libraries(test_board_geometry PRIVATE opencv_imgcodecs)
-    set_tests_properties(test_board_geometry PROPERTIES
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../.."
+    target_compile_definitions(test_board_geometry PRIVATE
+        TEST_IMAGES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/images"
     )
 endif()
 
