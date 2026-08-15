@@ -6,10 +6,10 @@ namespace ac
 /**
  * @brief Analyze all board cells.
  */
-BoardState PieceDetector::analyzeBoard(
+BoardObservation PieceDetector::analyzeBoard(
     const std::array<std::array<cv::Mat, 8>, 8>& boardCells) const
 {
-    BoardState result;
+    BoardObservation result;
 
     for(int r = 0; r < 8; r++)
     {
@@ -25,21 +25,25 @@ BoardState PieceDetector::analyzeBoard(
 /**
  * @brief Analyze a single cell.
  */
-CellState PieceDetector::analyzeCell(const cv::Mat& cell) const
+CellObservationState PieceDetector::analyzeCell(const cv::Mat& cell) const
 {
     if(cell.empty())
-        return CellState::EMPTY;
+        return CellObservationState::EMPTY;
 
     cv::Mat roi = extractCenterROI(cell);
     double edgeDensity = computeEdgeDensity(roi);
 
     if(edgeDensity < 0.02)
-        return CellState::EMPTY;
+    {
+        return CellObservationState::EMPTY;
+    }
 
     if(isWhitePiece(roi))
-        return CellState::WHITE;
+    {
+        return CellObservationState::WHITE;
+    }
 
-    return CellState::BLACK;
+    return CellObservationState::BLACK;
 }
 
 /**

@@ -25,14 +25,14 @@ TEST(PieceDetectorTest, ProcessaTodasAsCelulas)
         }
     }
 
-    BoardState result = detector.analyzeBoard(boardCells);
+    BoardObservation result = detector.analyzeBoard(boardCells);
 
     // Verifica se todas foram classificadas como EMPTY.
     for(int r = 0; r < 8; r++)
     {
         for(int c = 0; c < 8; c++)
         {
-            EXPECT_EQ(result.cells[r][c], CellState::EMPTY);
+            EXPECT_EQ(result.cells[r][c], CellObservationState::EMPTY);
         }
     }
 }
@@ -87,8 +87,8 @@ TEST(PieceDetectorTest, DetectaCores)
 
     boardCells[7][7] = blackCell;
 
-    BoardState result = detector.analyzeBoard(boardCells);
+    BoardObservation result = detector.analyzeBoard(boardCells);
 
-    EXPECT_EQ(result.cells[0][0], CellState::WHITE);
-    EXPECT_EQ(result.cells[7][7], CellState::BLACK);
+    EXPECT_EQ(result.cells[0][0], CellObservationState::WHITE);
+    EXPECT_EQ(result.cells[7][7], CellObservationState::BLACK);
 }
