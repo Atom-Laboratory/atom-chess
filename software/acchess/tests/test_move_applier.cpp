@@ -15,7 +15,6 @@ TEST(MoveApplierTest, AppliesNormalMoveWithoutChangingOtherSquares)
     const Square source{6, 4};
     const Square target{4, 4};
     const Piece pawn{PieceType::Pawn, PieceColor::White};
-    const Piece knight{PieceType::Knight, PieceColor::Black};
 
     board.setPiece(source, pawn);
 
@@ -24,10 +23,10 @@ TEST(MoveApplierTest, AppliesNormalMoveWithoutChangingOtherSquares)
     EXPECT_TRUE(board.isSqrEmpty(source));
     EXPECT_EQ(board.pieceAt(target), pawn);
 
-    for (uint8_t row = 0; row< 8; ++row){
-        for (uint8_t col = 0; col < 8; ++col){
+    for (uint8_t row = 0; row < 8; ++row) {
+        for (uint8_t col = 0; col < 8; ++col) {
             Square sq{row, col};
-            if (sq != source && sq != target){
+            if (sq != source && sq != target) {
                 EXPECT_TRUE(board.isSqrEmpty(sq));
             }
         }

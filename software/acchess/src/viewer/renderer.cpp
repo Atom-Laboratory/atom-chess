@@ -3,7 +3,10 @@
 
 #include <stdexcept>
 
-using namespace ac::chess;
+using ac::chess::Board;
+using ac::chess::Piece;
+using ac::chess::PieceColor;
+using ac::chess::PieceType;
 
 Renderer::Renderer()
 {

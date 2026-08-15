@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(acchess
-    VERSION 1.0.0
+project(acchess 
+    VERSION 1.0.0 
     DESCRIPTION "A Library for Chess"
     LANGUAGES CXX)
 
@@ -26,6 +26,7 @@ if(NOT STOCKFISH_EXECUTABLE)
 endif()
 
 set(SFML_STATIC_LIBRARIES TRUE)
+# find_package(SFML 3.0 COMPONENTS Window Graphics System REQUIRED)
 include(FetchContent)
 
 FetchContent_Declare(
@@ -35,6 +36,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(SFML)
 
+# ==========================================
+# TARGET: acchess (Core Library)
+# ==========================================
 add_library(acchess STATIC
     src/board/board.cpp
     src/board/board_comparator.cpp
@@ -52,7 +56,7 @@ target_sources(acchess
     PUBLIC
         FILE_SET HEADERS
         BASE_DIRS include
-        FILES
+        FILES 
             include/board/board.hpp
             include/board/board_comparator.hpp
             include/board/move.hpp
@@ -66,13 +70,16 @@ target_sources(acchess
             include/engine/stockfish_uci.hpp
 )
 
-target_include_directories(acchess
-    PUBLIC
+target_include_directories(acchess 
+    PUBLIC 
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
 
 target_link_libraries(acchess PUBLIC SFML::Graphics SFML::Window SFML::System)
 
+# ==========================================
+# AUTOMATIC TARGET GENERATION (Apps Folder)
+# ==========================================
 set(APP_LIST
     "chess.demo"
 )
@@ -81,7 +88,10 @@ foreach(app ${APP_LIST})
     set(app_src "apps/${app}.cpp")
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${app_src})
         add_executable(${app} ${app_src})
+        
+        # Linkagem Limpa: o target acchess repassa o SFML automaticamente
         target_link_libraries(${app} PRIVATE acchess)
+        
         set_target_properties(${app} PROPERTIES FOLDER "Applications")
     endif()
 endforeach()
@@ -112,20 +122,21 @@ set(TEST_LIST
     "test_fen_generator"
     "test_move_applier"
     "test_stockfish_uci"
+    
 )
 
 foreach(test_name ${TEST_LIST})
     set(test_src "tests/${test_name}.cpp")
-
+    
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${test_src})
         add_executable(${test_name} ${test_src})
-
-        target_link_libraries(${test_name}
-            PRIVATE
-                acchess
+        
+        target_link_libraries(${test_name} 
+            PRIVATE 
+                acchess 
                 GTest::gtest_main
         )
-
+        
         add_test(NAME ${test_name} COMMAND ${test_name})
         set_target_properties(${test_name} PROPERTIES FOLDER "Tests")
     endif()

@@ -13,7 +13,7 @@ namespace ac::chess {
  */
 class MoveApplier {
 public:
- /** 
+ /**
   * @brief Applies a validated move to the board.
   * @param board The board to be updated.
   * @param move The move to be applied.
