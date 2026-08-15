@@ -1,4 +1,3 @@
-# SOFTWARE/MOTION CMAKELISTS.TXT
 cmake_minimum_required(VERSION 3.8)
 project(motion)
 
@@ -6,6 +5,7 @@ find_package(ament_cmake REQUIRED)
 
 add_library(${PROJECT_NAME} SHARED
   src/move.cpp
+  src/motion_planner.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

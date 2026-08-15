@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(acchess 
-    VERSION 1.0.0 
+project(acchess
+    VERSION 1.0.0
     DESCRIPTION "A Library for Chess"
     LANGUAGES CXX)
 
@@ -15,6 +15,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+# ==========================================
+# Chess Engine Dependencies (Stockfish)
+# ==========================================
+# Search for the Stockfish executable in the user's system
+find_program(STOCKFISH_EXECUTABLE NAMES stockfish PATHS /usr/games /usr/bin)
+if(NOT STOCKFISH_EXECUTABLE)
+    message(WARNING "Stockfish executable not found! Make sure it is installed via apt.")
+endif()
 
 set(SFML_STATIC_LIBRARIES TRUE)
 include(FetchContent)
@@ -36,13 +45,14 @@ add_library(acchess STATIC
     src/viewer/renderer.cpp
     src/utils/path.cpp
     src/fen_generator/fen_generator.cpp
+    src/engine/stockfish_uci.cpp
 )
 
 target_sources(acchess
     PUBLIC
         FILE_SET HEADERS
         BASE_DIRS include
-        FILES 
+        FILES
             include/board/board.hpp
             include/board/board_comparator.hpp
             include/board/move.hpp
@@ -50,12 +60,14 @@ target_sources(acchess
             include/board/piece.hpp
             include/board/square.hpp
             include/board/square_change.hpp
+            include/fen_generator/fen_generator.hpp
             include/viewer/renderer.hpp
             include/utils/path.hpp
+            include/engine/stockfish_uci.hpp
 )
 
-target_include_directories(acchess 
-    PUBLIC 
+target_include_directories(acchess
+    PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
 
@@ -80,16 +92,41 @@ add_custom_command(TARGET chess.demo POST_BUILD
         $<TARGET_FILE_DIR:chess.demo>/assets
 )
 
-add_executable(test_board tests/test_board.cpp)
-add_executable(test_move_applier tests/test_move_applier.cpp)
-add_executable(test_board_comparator tests/test_board_comparator.cpp)
+# ==========================================
+# AUTOMATED TESTS (tests Folder)
+# ==========================================
+enable_testing()
 
-target_link_libraries(test_board PRIVATE acchess GTest::gtest_main)
-target_link_libraries(test_move_applier PRIVATE acchess GTest::gtest_main)
-target_link_libraries(test_board_comparator PRIVATE acchess GTest::gtest_main)
+# Download Google Test
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        v1.14.0
+)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
 
-include(GoogleTest)
+set(TEST_LIST
+    "test_board"
+    "test_board_comparator"
+    "test_fen_generator"
+    "test_move_applier"
+    "test_stockfish_uci"
+)
 
-gtest_discover_tests(test_board)
-gtest_discover_tests(test_move_applier)
-gtest_discover_tests(test_board_comparator)
+foreach(test_name ${TEST_LIST})
+    set(test_src "tests/${test_name}.cpp")
+
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${test_src})
+        add_executable(${test_name} ${test_src})
+
+        target_link_libraries(${test_name}
+            PRIVATE
+                acchess
+                GTest::gtest_main
+        )
+
+        add_test(NAME ${test_name} COMMAND ${test_name})
+        set_target_properties(${test_name} PROPERTIES FOLDER "Tests")
+    endif()
+endforeach()

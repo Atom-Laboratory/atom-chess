@@ -20,7 +20,8 @@ int main() {
     std::cout << "[INFO] Starting Capture GUI. Press 'ESC' or 'Q' to exit." << std::endl;
 
     float smoothed_fps = 0.0f;
-    const float alpha = 0.1f; 
+    const float alpha = 0.1f;
+    constexpr float min_frame_delta_ms = 0.001f;
     
     // Ponto de referência para medir o ciclo total (Frame-to-Frame)
     auto last_loop_end = std::chrono::high_resolution_clock::now();
@@ -38,15 +39,19 @@ int main() {
         std::chrono::duration<float, std::milli> frame_delta = current_loop_end - last_loop_end;
         last_loop_end = current_loop_end;
 
-        // Instantaneous FPS Calculation
-        float instant_fps = 1000.0f / frame_delta.count();
+        const float frame_delta_ms = frame_delta.count();
 
-        // Exponential Moving Average for FPS
-        if (smoothed_fps == 0) smoothed_fps = instant_fps;
-        else smoothed_fps = (alpha * instant_fps) + (1.0f - alpha) * smoothed_fps;
+        // Ignore intervals too small to produce a reliable FPS sample.
+        if (frame_delta_ms >= min_frame_delta_ms) {
+            const float instant_fps = 1000.0f / frame_delta_ms;
+
+            // Exponential Moving Average for FPS
+            if (smoothed_fps == 0) smoothed_fps = instant_fps;
+            else smoothed_fps = (alpha * instant_fps) + (1.0f - alpha) * smoothed_fps;
+        }
 
         // 3. UI Overlay
-        std::string latency_str = "Frame Delta: " + std::to_string(static_cast<int>(frame_delta.count())) + "ms";
+        std::string latency_str = "Frame Delta: " + std::to_string(static_cast<int>(frame_delta_ms)) + "ms";
         std::string fps_str = "EMA FPS: " + std::to_string(static_cast<int>(smoothed_fps));
         
         // Overlay (Drop Shadow + Text)
