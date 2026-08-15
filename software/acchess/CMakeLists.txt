@@ -116,28 +116,25 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-set(TEST_LIST
-    "test_board"
-    "test_board_comparator"
-    "test_fen_generator"
-    "test_move_applier"
-    "test_stockfish_uci"
-    
-)
+add_executable(test_fen_generator tests/test_fen_generator.cpp)
+add_executable(test_stockfish_uci tests/test_stockfish_uci.cpp)
 
-foreach(test_name ${TEST_LIST})
-    set(test_src "tests/${test_name}.cpp")
-    
-    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${test_src})
-        add_executable(${test_name} ${test_src})
-        
-        target_link_libraries(${test_name} 
-            PRIVATE 
-                acchess 
-                GTest::gtest_main
-        )
-        
-        add_test(NAME ${test_name} COMMAND ${test_name})
-        set_target_properties(${test_name} PROPERTIES FOLDER "Tests")
-    endif()
-endforeach()
+add_executable(test_board tests/test_board.cpp)
+add_executable(test_move_applier tests/test_move_applier.cpp)
+add_executable(test_board_comparator tests/test_board_comparator.cpp)
+
+target_link_libraries(test_fen_generator PRIVATE acchess GTest::gtest_main)
+target_link_libraries(test_stockfish_uci PRIVATE acchess GTest::gtest_main)
+
+target_link_libraries(test_board PRIVATE acchess GTest::gtest_main)
+target_link_libraries(test_move_applier PRIVATE acchess GTest::gtest_main)
+target_link_libraries(test_board_comparator PRIVATE acchess GTest::gtest_main)
+
+include(GoogleTest)
+
+gtest_discover_tests(test_fen_generator)
+gtest_discover_tests(test_stockfish_uci)
+
+gtest_discover_tests(test_board)
+gtest_discover_tests(test_move_applier)
+gtest_discover_tests(test_board_comparator)
