@@ -4,6 +4,8 @@
 #include <opencv2/opencv.hpp>
 #include <array>
 
+#include "piece_detector/piece_detector_config.hpp"
+
 namespace ac
 {
 
@@ -43,10 +45,16 @@ class PieceDetector
 public:
 
     /**
+     * @brief Injects a new calibration configuration into the detector.
+     * @param config The structure containing the calibrated color profiles.
+     */
+    void setConfig(const PieceDetectorConfig& config);
+
+    /**
      * @brief Analyzes all board cells.
      *
      * @param boardCells 8x8 matrix containing images (cv::Mat) of the cells.
-     * @return OccpancyGrid
+     * @return OccupancyGrid Detected grid of cells.
      */
     OccupancyGrid analyzeBoard(
         const std::array<std::array<cv::Mat,8>,8>& boardCells
@@ -54,11 +62,13 @@ public:
 
 private:
 
+    PieceDetectorConfig m_config;
+
     /**
      * @brief Analyzes a single board cell.
      *
      * @param cell Image of the cell.
-     * @return CellState Detected state of the cell.
+     * @return CellObservation Detected state of the cell.
      */
     CellObservation analyzeCell(const cv::Mat& cell) const;
 

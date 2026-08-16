@@ -78,6 +78,7 @@ endif()
 set(APP_LIST
     # "capture_gui"
     "board_demo"
+    "color_calibrator"
 )
 
 foreach(app ${APP_LIST})
