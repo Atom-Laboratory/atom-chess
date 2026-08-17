@@ -6,6 +6,7 @@
  */
 
 #include "camera/camera.hpp"
+#include <opencv2/imgproc.hpp>
 #include <iostream>
 #include <utility>
 #include <variant>
@@ -165,6 +166,61 @@ bool Camera::capture_frame(cv::Mat& frame){
     }
 
     return true;
+}
+
+/**
+ * @details Captures the current frame and forwards it to @ref compute_min_max_intensity,
+ * which performs the channel handling and the actual `cv::minMaxLoc` call. Keeping that
+ * logic in a free function (rather than inline here) is what allows it to be unit-tested
+ * with synthetic frames instead of requiring real camera hardware.
+ */
+void Camera::get_min_max_intensity(double* min_val, double* max_val)
+{
+    cv::Mat frame;
+    capture_frame(frame);
+    compute_min_max_intensity(frame, min_val, max_val);
+}
+
+void compute_min_max_intensity(const cv::Mat& frame, double* min_val, double* max_val)
+{
+    if (frame.empty())
+    {
+        if (min_val) *min_val = 0.0;
+        if (max_val) *max_val = 0.0;
+        return;
+    }
+
+    // cv::minMaxLoc requires a single-channel matrix (Issue #26). Convert only when
+    // the frame actually has more than one channel, instead of assuming BGR blindly.
+    cv::Mat gray;
+    const cv::Mat* target = &frame;
+
+    switch (frame.channels())
+    {
+        case 1:
+            // Already single-channel (e.g. grayscale source); no conversion needed.
+            break;
+
+        case 3:
+            cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY); // BGR (3 canais) -> Gray (1 canal)
+            target = &gray;
+            break;
+
+        case 4:
+            cv::cvtColor(frame, gray, cv::COLOR_BGRA2GRAY); // BGRA (4 canais) -> Gray (1 canal)
+            target = &gray;
+            break;
+
+        default:
+            std::cerr << "[ACVISION][WARNING] compute_min_max_intensity: unsupported "
+                          "channel count (" << frame.channels()
+                      << "); returning 0 instead of calling cv::minMaxLoc." << std::endl;
+            if (min_val) *min_val = 0.0;
+            if (max_val) *max_val = 0.0;
+            return;
+    }
+
+    cv::minMaxLoc(*target, min_val, max_val);
 }
 
 bool Camera::is_opened() const
