@@ -78,6 +78,9 @@ endif()
 set(APP_LIST
     # "capture_gui"
     "board_demo"
+
+    # Vision Benchmark Executable
+    "benchmark_piece_detector"
 )
 
 foreach(app ${APP_LIST})
