@@ -34,7 +34,7 @@ int main(){
 
     while (true) {
 
-        ac::OccupancyGrid occupancyGrid = piece_detector.analyzeBoard(boardCells);
+        ac::BoardObservation boardObs = piece_detector.analyzeBoard(boardCells);
 
         cv::Mat boardImage(800, 800, CV_8UC3);
 
@@ -60,17 +60,17 @@ int main(){
         {
             char stateChar;
 
-            switch (occupancyGrid.cells[r][c].state)
+            switch (boardObs.cells[r][c])
             {
-                case ac::CellState::EMPTY:
+                case ac::CellObservationState::EMPTY:
                     stateChar = '.';
                     break;
 
-                case ac::CellState::WHITE:
+                case ac::CellObservationState::WHITE:
                     stateChar = 'W';
                     break;
 
-                case ac::CellState::BLACK:
+                case ac::CellObservationState::BLACK:
                     stateChar = 'B';
                     break;
             }

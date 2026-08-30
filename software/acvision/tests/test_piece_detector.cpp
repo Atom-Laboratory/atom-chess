@@ -7,7 +7,7 @@
 using namespace ac;
 
 /**
- * @brief Testa se o detector processa as 64 células sem erro
+ * @brief Testa se o detector processa as 64 células sem erro.
  */
 TEST(PieceDetectorTest, ProcessaTodasAsCelulas)
 {
@@ -15,29 +15,30 @@ TEST(PieceDetectorTest, ProcessaTodasAsCelulas)
 
     std::array<std::array<cv::Mat, 8>, 8> boardCells;
 
-    // Inicializa todas como vazias
+    // Inicializa todas como vazias.
     for(int r = 0; r < 8; r++)
     {
         for(int c = 0; c < 8; c++)
         {
-            boardCells[r][c] = cv::Mat::zeros(100, 100, CV_8UC3);
+            boardCells[r][c] =
+                cv::Mat::zeros(100, 100, CV_8UC3);
         }
     }
 
-    auto result = detector.analyzeBoard(boardCells);
+    BoardObservation result = detector.analyzeBoard(boardCells);
 
-    // Verifica se todas foram classificadas como EMPTY
+    // Verifica se todas foram classificadas como EMPTY.
     for(int r = 0; r < 8; r++)
     {
         for(int c = 0; c < 8; c++)
         {
-            EXPECT_EQ(result.cells[r][c].state, CellState::EMPTY);
+            EXPECT_EQ(result.cells[r][c], CellObservationState::EMPTY);
         }
     }
 }
 
 /**
- * @brief Testa detecção de peças branca e preta
+ * @brief Testa detecção de peças branca e preta.
  */
 TEST(PieceDetectorTest, DetectaCores)
 {
@@ -49,22 +50,45 @@ TEST(PieceDetectorTest, DetectaCores)
     {
         for(int c = 0; c < 8; c++)
         {
-            boardCells[r][c] = cv::Mat::zeros(100, 100, CV_8UC3);
+            boardCells[r][c] =
+                cv::Mat::zeros(100, 100, CV_8UC3);
         }
     }
 
-    // peça branca (círculo branco em fundo escuro)
-    cv::Mat whiteCell = cv::Mat::zeros(100, 100, CV_8UC3);
-    cv::circle(whiteCell, cv::Point(50,50), 20, cv::Scalar(255,255,255), -1);
+    // Peça branca: círculo branco em fundo escuro.
+    cv::Mat whiteCell =
+        cv::Mat::zeros(100, 100, CV_8UC3);
+
+    cv::circle(
+        whiteCell,
+        cv::Point(50, 50),
+        20,
+        cv::Scalar(255, 255, 255),
+        -1
+    );
+
     boardCells[0][0] = whiteCell;
 
-    // peça preta (círculo escuro em fundo claro)
-    cv::Mat blackCell = cv::Mat(100, 100, CV_8UC3, cv::Scalar(200,200,200));
-    cv::circle(blackCell, cv::Point(50,50), 20, cv::Scalar(20,20,20), -1);
+    // Peça preta: círculo escuro em fundo claro.
+    cv::Mat blackCell(
+        100,
+        100,
+        CV_8UC3,
+        cv::Scalar(200, 200, 200)
+    );
+
+    cv::circle(
+        blackCell,
+        cv::Point(50, 50),
+        20,
+        cv::Scalar(20, 20, 20),
+        -1
+    );
+
     boardCells[7][7] = blackCell;
 
-    auto result = detector.analyzeBoard(boardCells);
+    BoardObservation result = detector.analyzeBoard(boardCells);
 
-    EXPECT_EQ(result.cells[0][0].state, CellState::WHITE);
-    EXPECT_EQ(result.cells[7][7].state, CellState::BLACK);
+    EXPECT_EQ(result.cells[0][0], CellObservationState::WHITE);
+    EXPECT_EQ(result.cells[7][7], CellObservationState::BLACK);
 }
