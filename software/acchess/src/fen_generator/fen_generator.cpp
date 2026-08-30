@@ -1,49 +1,68 @@
 #include "fen_generator/fen_generator.hpp"
 
-namespace ac
-{
+#include <cctype>
 
-/**
- * @brief Implementation of FEN string generation.
- */
-std::string FenGenerator::generate(
-    const std::array<std::array<CellState,8>,8>& board)
+namespace ac::chess {
+namespace {
+
+char pieceSymbol(Piece piece)
+{
+    char symbol = '?';
+
+    switch (piece.type) {
+        case PieceType::None:   break;
+        case PieceType::Pawn:   symbol = 'p'; break;
+        case PieceType::Knight: symbol = 'n'; break;
+        case PieceType::Bishop: symbol = 'b'; break;
+        case PieceType::Rook:   symbol = 'r'; break;
+        case PieceType::Queen:  symbol = 'q'; break;
+        case PieceType::King:   symbol = 'k'; break;
+    }
+
+    if (piece.color == PieceColor::White) {
+        symbol = static_cast<char>(std::toupper(
+            static_cast<unsigned char>(symbol)
+        ));
+    }
+
+    return symbol;
+}
+
+} // namespace
+
+std::string FenGenerator::generate(const Board& board)
 {
     std::string fen;
 
-    for(int r = 0; r < 8; r++)
-    {
-        int empty = 0;
+    for (int row = 0; row < 8; ++row) {
+        int emptySquares = 0;
 
-        for(int c = 0; c < 8; c++)
-        {
-            if(board[r][c] == CellState::EMPTY)
-            {
-                empty++;
+        for (int column = 0; column < 8; ++column) {
+            const Square square{row, column};
+            if (board.isSqrEmpty(square)) {
+                ++emptySquares;
+                continue;
             }
-            else
-            {
-                if(empty > 0)
-                {
-                    fen += std::to_string(empty);
-                    empty = 0;
-                }
 
-                fen += (board[r][c] == CellState::WHITE) ? 'P' : 'p';
+            if (emptySquares > 0) {
+                fen += std::to_string(emptySquares);
+                emptySquares = 0;
             }
+
+            fen += pieceSymbol(board.pieceAt(square));
         }
 
-        if(empty > 0)
-            fen += std::to_string(empty);
+        if (emptySquares > 0) {
+            fen += std::to_string(emptySquares);
+        }
 
-        if(r < 7)
-            fen += "/";
+        if (row < 7) {
+            fen += '/';
+        }
     }
 
-    // Additional FEN fields (fixed)
     fen += " w - - 0 1";
-
     return fen;
 }
 
-}
+} // namespace ac::chess

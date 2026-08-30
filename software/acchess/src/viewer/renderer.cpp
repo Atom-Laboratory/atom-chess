@@ -3,6 +3,11 @@
 
 #include <stdexcept>
 
+using ac::chess::Board;
+using ac::chess::Piece;
+using ac::chess::PieceColor;
+using ac::chess::PieceType;
+
 Renderer::Renderer()
 {
 }

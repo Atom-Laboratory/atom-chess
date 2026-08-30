@@ -1,5 +1,5 @@
 #pragma once
-
+namespace ac::chess {
 enum class PieceType
 {
     None = 0,
@@ -23,3 +23,4 @@ struct Piece {
     PieceColor color = PieceColor::None;
     bool operator==(const Piece&) const = default;
 };
+}
