@@ -7,6 +7,10 @@ project(acvision
     DESCRIPTION "A Library for Computer Vision applied to Chessboard Analysis"
     LANGUAGES CXX)
 
+if(PROJECT_IS_TOP_LEVEL)
+    include(CTest)
+endif()
+
 # ==========================================
 # Configurações Globais (Modern C++)
 # ==========================================
@@ -132,64 +136,61 @@ endforeach()
 # ==========================================
 # AUTOMATED TESTS (tests Folder)
 # ==========================================
-enable_testing()
+if(BUILD_TESTING)
+    include(FetchContent)
 
-# 1. Faz o download automático do Google Test (Padrão Sênior)
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        v1.14.0 # Versão estável
-)
-# Força o GTest a usar o mesmo C-Runtime (CRT) dinâmico do MSVC no Windows
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
+    if(NOT TARGET GTest::gtest_main)
+        find_package(GTest QUIET)
+    endif()
 
-set(TEST_LIST
-    "test_camera"
-    "test_piece_detector"
-    "test_board_geometry"
-    
-)
-
-foreach(test_name ${TEST_LIST})
-    set(test_src "tests/${test_name}.cpp")
-    
-    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${test_src})
-        add_executable(${test_name} ${test_src})
-        
-        target_link_libraries(${test_name} 
-            PRIVATE 
-                acvision 
-                GTest::gtest_main
+    if(NOT TARGET GTest::gtest_main)
+        FetchContent_Declare(
+            googletest
+            GIT_REPOSITORY https://github.com/google/googletest.git
+            GIT_TAG v1.14.0
+            GIT_SHALLOW TRUE
         )
+        set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+        FetchContent_MakeAvailable(googletest)
+    endif()
 
-        if("${test_name}" STREQUAL "test_board_detector")
-            target_link_libraries(${test_name}
-                PRIVATE
-                    opencv_imgcodecs
-            )
+    set(TEST_LIST
+        test_piece_detector
+        test_board_geometry
+    )
 
-            target_compile_definitions(${test_name}
-                PRIVATE
-                    TEST_IMAGES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/images"
-            )
-        endif()
-        
+    option(
+        ACVISION_BUILD_HARDWARE_TESTS
+        "Build tests that require a physical camera"
+        OFF
+    )
+
+    if(ACVISION_BUILD_HARDWARE_TESTS)
+        list(APPEND TEST_LIST test_camera)
+    endif()
+
+    foreach(test_name ${TEST_LIST})
+        add_executable(${test_name} tests/${test_name}.cpp)
+        target_link_libraries(${test_name} PRIVATE acvision GTest::gtest_main)
         add_test(NAME ${test_name} COMMAND ${test_name})
         set_target_properties(${test_name} PROPERTIES FOLDER "Tests")
-        
+
         if(WIN32)
             add_custom_command(TARGET ${test_name} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different
-                $<TARGET_RUNTIME_DLLS:${test_name}>
-                $<TARGET_FILE_DIR:${test_name}>
+                    $<TARGET_RUNTIME_DLLS:${test_name}>
+                    $<TARGET_FILE_DIR:${test_name}>
                 COMMAND_EXPAND_LISTS
                 COMMENT "[ACVISION] Copying OpenCV DLLs for test: ${test_name}"
             )
         endif()
-    endif()
-endforeach()
+    endforeach()
+
+    target_link_libraries(test_board_geometry PRIVATE opencv_imgcodecs)
+    target_compile_definitions(test_board_geometry PRIVATE
+        TEST_IMAGES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/images"
+    )
+endif()
 
 # ==========================================
 # Configuração de IDE
