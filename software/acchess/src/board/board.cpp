@@ -21,6 +21,12 @@ void Board::reset()
 {
     clear();
 
+    sideToMove_ = PieceColor::White;
+    castlingRights_ = CastlingRights{};
+    enPassantTarget_ = std::nullopt;
+    halfmoveClock_ = 0;
+    fullmoveNumber_ = 1;
+
     board_[0][0] = {PieceType::Rook,   PieceColor::Black};
     board_[0][1] = {PieceType::Knight, PieceColor::Black};
     board_[0][2] = {PieceType::Bishop, PieceColor::Black};
@@ -71,7 +77,7 @@ bool Board::isSqrEmpty(Square sq) const{
 
 void Board::clear(){
     for (auto& row : board_){
-        for (auto& piece : board_){
+        for (auto& piece : row){
             piece = {};
         }
     }
@@ -83,4 +89,54 @@ bool Board::operator==(const Board& other) const{
 
 bool Board::operator!=(const Board& other) const{
     return !(*this == other);
+}
+
+PieceColor Board::sideToMove() const
+{
+    return sideToMove_;
+}
+
+void Board::setSideToMove(PieceColor color)
+{
+    sideToMove_ = color;
+}
+
+const CastlingRights& Board::castlingRights() const
+{
+    return castlingRights_;
+}
+
+void Board::setCastlingRights(const CastlingRights& rights)
+{
+    castlingRights_ = rights;
+}
+
+std::optional<Square> Board::enPassantTarget() const
+{
+    return enPassantTarget_;
+}
+
+void Board::setEnPassantTarget(std::optional<Square> target)
+{
+    enPassantTarget_ = target;
+}
+
+int Board::halfmoveClock() const
+{
+    return halfmoveClock_;
+}
+
+void Board::setHalfmoveClock(int halfmoveClock)
+{
+    halfmoveClock_ = halfmoveClock;
+}
+
+int Board::fullmoveNumber() const
+{
+    return fullmoveNumber_;
+}
+
+void Board::setFullmoveNumber(int fullmoveNumber)
+{
+    fullmoveNumber_ = fullmoveNumber;
 }

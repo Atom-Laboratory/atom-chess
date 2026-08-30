@@ -47,6 +47,7 @@ add_library(acchess STATIC
     src/viewer/renderer.cpp
     src/utils/path.cpp
     src/engine/stockfish_uci.cpp
+    src/fen_generator/fen_generator.cpp
 )
 
 target_sources(acchess
@@ -61,6 +62,7 @@ target_sources(acchess
             include/viewer/renderer.hpp
             include/utils/path.hpp
             include/engine/stockfish_uci.hpp
+            include/fen_generator/fen_generator.hpp
 )
 
 target_include_directories(acchess 
@@ -111,7 +113,7 @@ FetchContent_MakeAvailable(googletest)
 
 set(TEST_LIST
     "test_stockfish_uci"
-    
+    "test_fen_generator"
 )
 
 foreach(test_name ${TEST_LIST})
