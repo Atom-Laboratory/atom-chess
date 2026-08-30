@@ -4,6 +4,15 @@ ATOM Chess is a research and development project focused on building an autonomo
 
 The project combines computer vision, chess programming, artificial intelligence, robotics, motion planning, and embedded systems into a single autonomous platform.
 
+## ATOM Laboratory
+
+ATOM Chess is part of **ATOM Laboratory**, a broader research and development initiative focused on the integration of robotics, computer vision, artificial intelligence, software engineering, electronics, and mechanical engineering.
+
+ATOM Laboratory provides the broader research context in which ATOM Chess is developed. Other projects may be developed independently within the laboratory, with their own technical objectives, architectures, and licensing models.
+
+ATOM Chess is one of the laboratory's open-source software projects, while its physical hardware remains proprietary unless explicitly released under a separate hardware license.
+
+
 ## Project Goals
 
 The primary objective of ATOM Chess is to develop a self-contained robotic system capable of:
@@ -23,7 +32,9 @@ The system is designed with modularity and hardware/software separation in mind,
 
 ## Project Leadership
 
-ATOM Chess was conceived and initiated by Enzo Ribas, who leads the project’s technical and product development. He is responsible for defining the system architecture, coordinating the multidisciplinary development effort, and contributing across software engineering, computer vision, robotics, electronics, and mechanical systems. The project reflects his approach to integrating these disciplines into a cohesive autonomous platform. For more information about his work and professional background, visit his [LinkedIn profile](https://www.linkedin.com/in/oenzoribas/).
+ATOM Chess was conceived and initiated by **Enzo Ribas**, who leads the project’s technical and product development. He is responsible for defining the system architecture, coordinating the multidisciplinary development effort, and contributing across software engineering, computer vision, robotics, electronics, and mechanical systems.
+
+For more information about his work and professional background, visit his [Enzo's LinkedIn profile](https://www.linkedin.com/in/oenzoribas/).
 
 ## System Architecture
 
@@ -33,36 +44,9 @@ ATOM Chess is organized into four primary subsystems:
 
 The vision subsystem is responsible for converting camera data into structured information about the chessboard.
 
-Its responsibilities include:
-
-* Camera acquisition.
-* Camera calibration.
-* Chessboard detection.
-* Perspective correction.
-* Homography computation.
-* Board coordinate mapping.
-* Cell extraction.
-* Piece occupancy detection.
-* Board-state reconstruction.
-* Move detection.
-
-The vision pipeline is designed to provide the chess core with a representation of the physical board rather than exposing computer-vision-specific details to the rest of the system.
-
 ### Chess Core
 
 The chess core contains the domain model and game-state logic.
-
-It is responsible for:
-
-* Board representation.
-* Piece representation.
-* Square representation.
-* Move representation.
-* Board state comparison.
-* FEN generation.
-* Game-state management.
-* Move validation.
-* Chess-engine integration.
 
 The core is intentionally independent of the physical robot and computer-vision implementation.
 
@@ -70,54 +54,19 @@ The core is intentionally independent of the physical robot and computer-vision 
 
 The planning layer connects the chess domain to the robotic system.
 
-It is responsible for:
-
-* Requesting moves from the chess engine.
-* Translating chess moves into physical actions.
-* Selecting the required sequence of robotic operations.
-* Generating trajectories.
-* Computing the required robot configuration.
-* Handling execution constraints.
-
 The chess engine is treated as a decision component rather than as part of the board representation itself.
 
 ### Motion and Control
 
 The motion subsystem is responsible for physically executing planned operations.
 
-Its responsibilities include:
-
-* Trajectory interpolation.
-* Motion profiling.
-* Inverse kinematics.
-* Motor control.
-* Communication with the motion controller.
-* Execution of robotic commands.
-* Hardware-level safety and error handling.
-
 The current architecture separates high-level planning from low-level motor control, allowing computationally intensive logic to remain outside the microcontroller.
-
-## Technology Stack
-
-The project uses technologies including:
-
-* C++
-* Python
-* OpenCV
-* CMake
-* Ninja
-* GoogleTest
-* Stockfish
-* ESP32
-* Embedded C/C++
-* Computer vision
-* Robotics and inverse kinematics
-
-Additional technologies may be introduced as individual subsystems evolve.
 
 ## Build
 
 The project uses CMake as its build-system generator.
+
+The supported development environment is Linux.
 
 A typical build configuration is:
 
@@ -159,12 +108,69 @@ ATOM Chess is also intended as a research platform. Its modular architecture ena
 
 The platform is designed so that individual components can be benchmarked and replaced without requiring a complete redesign of the system.
 
-## License
+## Contributing
 
-This project is currently under development. Licensing information will be added when the project's distribution model is finalized.
+ATOM Chess is developed as a collaborative, multidisciplinary project involving software engineers, computer scientists, researchers, and contributors working across computer vision, chess programming, robotics, electronics, mechanical engineering, and related fields.
 
-## Contributors
 
-ATOM Chess is developed as part of the ATOM Project by a multidisciplinary team working across software engineering, computer vision, robotics, electronics, mechanical engineering, and research.
 
-Contributions should follow the project's architectural conventions, testing requirements, coding standards, and commit guidelines.
+Contributions may include:
+
+* Bug fixes.
+* New features.
+* Tests.
+* Documentation.
+* Refactoring.
+* Performance improvements.
+* Research implementations.
+* Computer vision improvements.
+* Chess algorithms.
+* Robotics and motion-planning algorithms.
+
+Pull requests should be focused, tested, and clearly describe the motivation, implementation, and testing performed.
+
+All contributions are expected to follow the project's contribution guidelines, coding standards, testing requirements, and architectural conventions.
+
+For information about contributing, see [`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
+
+Community members are also encouraged to review existing pull requests. Review guidelines and the community review template are available in [`.github/REVIEW_TEMPLATE.md`](.github/REVIEW_TEMPLATE.md).
+
+## Licensing
+
+ATOM Chess uses separate licensing for software and hardware.
+
+### Software
+
+The ATOM Chess software is released under the MIT License.
+
+See [`LICENSE`](LICENSE) for the complete license text.
+
+Unless explicitly stated otherwise, the MIT License applies to the software source code contained in this repository.
+
+### Hardware
+
+The ATOM Chess hardware is currently **not open source**.
+
+Hardware designs are not licensed under the MIT License.
+
+This includes, but is not limited to:
+
+* Mechanical CAD files.
+* Mechanical drawings.
+* Electrical schematics.
+* PCB designs.
+* PCB layouts.
+* Manufacturing files.
+* Bills of materials.
+* Assembly documentation.
+* Manufacturing documentation.
+
+Unless explicitly stated otherwise, no permission is granted to reproduce, manufacture, modify, distribute, or commercially exploit the ATOM Chess hardware designs.
+
+See [`HARDWARE_LICENSE.md`](HARDWARE_LICENSE.md) for the current hardware licensing policy.
+
+### Third-Party Materials
+
+Third-party software, hardware, documentation, libraries, models, and other materials remain subject to their respective licenses.
+
+The ATOM Chess MIT License does not supersede or replace the license of third-party materials.
