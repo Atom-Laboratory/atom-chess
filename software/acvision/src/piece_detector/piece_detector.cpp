@@ -6,6 +6,12 @@ namespace ac
 /**
  * @brief Analyze all board cells.
  */
+
+ void PieceDetector::setConfig(const PieceDetectorConfig& config)
+{
+    m_config = config;
+}
+
 OccupancyGrid PieceDetector::analyzeBoard(
     const std::array<std::array<cv::Mat,8>,8>& boardCells) const
 {
@@ -106,6 +112,23 @@ double PieceDetector::computeEdgeDensity(const cv::Mat& cell) const
  */
 bool PieceDetector::isWhitePiece(const cv::Mat& cell) const
 {
+    // If calibration has been enabled by the user, we use dynamic colors (HSV).
+    if (m_config.useCalibration)
+    {
+        cv::Mat hsv;
+        cv::cvtColor(cell, hsv, cv::COLOR_BGR2HSV);
+
+        cv::Mat whiteMask, blackMask;
+        cv::inRange(hsv, m_config.whiteProfile.lowerBound, m_config.whiteProfile.upperBound, whiteMask);
+        cv::inRange(hsv, m_config.blackProfile.lowerBound, m_config.blackProfile.upperBound, blackMask);
+
+        int whitePixels = cv::countNonZero(whiteMask);
+        int blackPixels = cv::countNonZero(blackMask);
+
+        // The color with the most matching pixels in the image wins.
+        return whitePixels > blackPixels;
+    }
+
     cv::Mat norm = normalizeLighting(cell);
 
     cv::Scalar mean, stddev;
