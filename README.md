@@ -131,7 +131,7 @@ Pull requests should be focused, tested, and clearly describe the motivation, im
 
 All contributions are expected to follow the project's contribution guidelines, coding standards, testing requirements, and architectural conventions.
 
-For information about contributing, see [`CONTRIBUTING.md`](.github/CONTRIBUTING.md).
+For information about contributing, see [`CONTRIBUTING.md`](CONTRIBUTING.MD).
 
 Community members are also encouraged to review existing pull requests. Review guidelines and the community review template are available in [`.github/REVIEW_TEMPLATE.md`](.github/REVIEW_TEMPLATE.md).
 
