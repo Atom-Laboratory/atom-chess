@@ -185,47 +185,36 @@ bool CoordinateMapper::saveCalibration() const
     }
 
     file << std::setprecision(17);
-    file << "version=1
-";
-    file << "board_calibrated=" << static_cast<int>(board_.calibrated) << '
-';
-    file << "board_a1_x=" << board_.a1.x << '
-';
-    file << "board_a1_y=" << board_.a1.y << '
-';
-    file << "board_square_size=" << board_.squareSize << '
-';
-    file << "board_rotation=" << board_.rotationRadians << '
-';
+    file << "version=1" << std::endl;
+    file << "board_calibrated=" << static_cast<int>(board_.calibrated) << std::endl;
+    file << "board_a1_x=" << board_.a1.x << std::endl;
+    file << "board_a1_y=" << board_.a1.y << std::endl;
+    file << "board_square_size=" << board_.squareSize << std::endl;
+    file << "board_rotation=" << board_.rotationRadians << std::endl;
     file << "board_rank_direction="
          << (board_.rankDirection == RankDirection::COUNTERCLOCKWISE ? 1 : -1)
-         << '
-';
+         << std::endl;
 
-    const auto writeGrid = [&file](const char* prefix, bool configured, const GridGeometry& g) {
-        file << prefix << "_configured=" << static_cast<int>(configured) << '
-';
-        file << prefix << "_origin_x=" << g.origin.x << '
-';
-        file << prefix << "_origin_y=" << g.origin.y << '
-';
-        file << prefix << "_column_x=" << g.columnStep.x << '
-';
-        file << prefix << "_column_y=" << g.columnStep.y << '
-';
-        file << prefix << "_row_x=" << g.rowStep.x << '
-';
-        file << prefix << "_row_y=" << g.rowStep.y << '
-';
-        file << prefix << "_rows=" << g.rows << '
-';
-        file << prefix << "_columns=" << g.columns << '
-';
+    const auto writeGrid = [&file](
+        const char* prefix,
+        bool configured,
+        const GridGeometry& geometry)
+    {
+        file << prefix << "_configured=" << static_cast<int>(configured) << std::endl;
+        file << prefix << "_origin_x=" << geometry.origin.x << std::endl;
+        file << prefix << "_origin_y=" << geometry.origin.y << std::endl;
+        file << prefix << "_column_x=" << geometry.columnStep.x << std::endl;
+        file << prefix << "_column_y=" << geometry.columnStep.y << std::endl;
+        file << prefix << "_row_x=" << geometry.rowStep.x << std::endl;
+        file << prefix << "_row_y=" << geometry.rowStep.y << std::endl;
+        file << prefix << "_rows=" << geometry.rows << std::endl;
+        file << prefix << "_columns=" << geometry.columns << std::endl;
     };
 
     writeGrid("white_graveyard", whiteGraveyardConfigured_, whiteGraveyard_);
     writeGrid("black_graveyard", blackGraveyardConfigured_, blackGraveyard_);
-    return true;
+
+    return file.good();
 }
 
 bool CoordinateMapper::loadCalibration()
