@@ -10,7 +10,7 @@ int main()
     ac::chess::Board board;
     board.reset();
 
-    Renderer renderer;
+    ac::chess::Renderer renderer;
 
     if (!renderer.init())
         return -1;

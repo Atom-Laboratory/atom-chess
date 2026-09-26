@@ -6,6 +6,8 @@
 
 #include "board/board.hpp"
 
+namespace ac::chess {
+
 class Renderer
 {
 public:
@@ -15,7 +17,7 @@ public:
 
     bool isOpen() const;
 
-    void draw(const ac::chess::Board& board);
+    void draw(const Board& board);
 
 private:
 
@@ -23,9 +25,9 @@ private:
 
     void drawBoard();
 
-    void drawPieces(const ac::chess::Board& board);
+    void drawPieces(const Board& board);
 
-    const sf::Texture& textureFor(const ac::chess::Piece& piece) const;
+    const sf::Texture& textureFor(const Piece& piece) const;
 
 private:
 
@@ -38,3 +40,5 @@ private:
 
     std::array<sf::Texture, 12> pieceTextures_;
 };
+
+} // namespace ac::chess
