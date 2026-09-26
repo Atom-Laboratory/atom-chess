@@ -3,6 +3,22 @@
 namespace ac
 {
 
+void PieceDetector::setConfig(const PieceDetectorConfig& config)
+{
+    m_config = config;
+}
+
+bool PieceDetector::loadConfig(const std::string& filename)
+{
+    PieceDetectorConfig loaded;
+    if (!loaded.load(filename)) {
+        return false;
+    }
+
+    m_config = loaded;
+    return true;
+}
+
 /**
  * @brief Analyze all board cells.
  */
@@ -97,6 +113,29 @@ double PieceDetector::computeEdgeDensity(const cv::Mat& cell) const
  */
 bool PieceDetector::isWhitePiece(const cv::Mat& cell) const
 {
+    if (m_config.useCalibration)
+    {
+        cv::Mat hsv;
+        cv::cvtColor(cell, hsv, cv::COLOR_BGR2HSV);
+
+        cv::Mat whiteMask;
+        cv::Mat blackMask;
+        cv::inRange(
+            hsv,
+            m_config.whiteProfile.lowerBound,
+            m_config.whiteProfile.upperBound,
+            whiteMask
+        );
+        cv::inRange(
+            hsv,
+            m_config.blackProfile.lowerBound,
+            m_config.blackProfile.upperBound,
+            blackMask
+        );
+
+        return cv::countNonZero(whiteMask) > cv::countNonZero(blackMask);
+    }
+
     cv::Mat norm = normalizeLighting(cell);
 
     cv::Scalar mean, stddev;
