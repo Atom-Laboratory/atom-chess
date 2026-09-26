@@ -3,8 +3,10 @@
 
 #include <opencv2/opencv.hpp>
 #include <array>
+#include <string>
 
 #include "board_observation/board_observation.hpp"
+#include "piece_detector/piece_detector_config.hpp"
 
 namespace ac
 {
@@ -19,6 +21,17 @@ namespace ac
 class PieceDetector
 {
 public:
+    /**
+     * @brief Replaces the detector color configuration.
+     */
+    void setConfig(const PieceDetectorConfig& config);
+
+    /**
+     * @brief Loads a persisted color calibration into this detector.
+     * @return true when a valid configuration was loaded.
+     */
+    bool loadConfig(const std::string& filename);
+
 
     /**
      * @brief Analyzes all board cells.
@@ -31,6 +44,7 @@ public:
     ) const;
 
 private:
+    PieceDetectorConfig m_config{};
 
     /**
      * @brief Analyzes a single board cell.
