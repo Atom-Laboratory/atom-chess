@@ -1,157 +1,295 @@
 /**
  * @file benchmark_piece_detector.cpp
- * @brief Executable for quantitatively evaluating the accuracy of the PieceDetector.
+ * @brief Dataset benchmark for the board-detection and PieceDetector pipeline.
+ *
+ * The benchmark evaluates the current vision contract only: EMPTY / WHITE /
+ * BLACK observations for each of the 64 squares. Piece identity and legal chess
+ * state belong to acchess and are intentionally outside this benchmark.
  */
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <filesystem>
+#include <array>
 #include <chrono>
+#include <cctype>
+#include <filesystem>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
-#include <opencv2/opencv.hpp>
+#include <opencv2/imgcodecs.hpp>
 
-// #include "board_vision/board_vision.hpp"
-// #include "piece_detector/piece_detector.hpp"
-// #include "fen_generator/fen_generator.hpp" 
+#include "board_observation/board_observation.hpp"
+#include "board_vision/board_vision.hpp"
+#include "homography/homography.hpp"
+#include "piece_detector/piece_detector.hpp"
 
 namespace fs = std::filesystem;
 
-// Function to read the gabarito.txt
-std::vector<std::pair<std::string, std::string>> loadGroundTruth(const std::string& filePath) {
-    std::vector<std::pair<std::string, std::string>> groundTruth;
+namespace {
+
+using GroundTruthEntry = std::pair<std::string, std::string>;
+
+std::vector<GroundTruthEntry> loadGroundTruth(const fs::path& filePath)
+{
+    std::vector<GroundTruthEntry> entries;
     std::ifstream file(filePath);
     std::string line;
 
     if (!file.is_open()) {
-        std::cerr << "[ERRO] Nao foi possivel abrir o arquivo de gabarito: " << filePath << std::endl;
-        return groundTruth;
+        std::cerr << "[ERROR] Cannot open ground truth file: " << filePath << '\n';
+        return entries;
     }
 
     while (std::getline(file, line)) {
-        std::stringstream ss(line);
+        std::stringstream stream(line);
         std::string imageName;
         std::string fen;
 
-        // Read the image name and FEN, separated by a comma.
-        if (std::getline(ss, imageName, ',') && std::getline(ss, fen)) {
-            // Remove any whitespace before FEN.
-            fen.erase(0, fen.find_first_not_of(" \t"));
-            
-            // Take only the first part of FEN (before the first space).
-            std::string cleanFen = fen.substr(0, fen.find(" "));
-            
-            groundTruth.push_back({imageName, cleanFen});
+        if (!std::getline(stream, imageName, ',') || !std::getline(stream, fen)) {
+            continue;
         }
+
+        const auto first = fen.find_first_not_of(" \t");
+        if (first == std::string::npos) {
+            continue;
+        }
+        fen.erase(0, first);
+
+        // Only the piece-placement field is required to derive EMPTY/WHITE/BLACK.
+        const auto separator = fen.find(' ');
+        entries.emplace_back(imageName, fen.substr(0, separator));
     }
-    return groundTruth;
+
+    return entries;
 }
 
-int main(int argc, char** argv) {
-    // 1. Dataset Path Configuration
-    // Relative path considering that the executable runs from the build/ folder.
-    std::string dataset_path = "software/acvision/tests/dataset"; 
-    if (argc > 1) {
-        dataset_path = argv[1];
-    }
+bool parseObservationGroundTruth(
+    const std::string& placement,
+    ac::BoardObservation& expected)
+{
+    int row = 0;
+    int col = 0;
 
-    std::cout << "[INFO] Iniciando Benchmark de Deteccao de Pecas...\n";
-    std::cout << "[INFO] Lendo imagens e gabarito em: " << dataset_path << "\n\n";
-
-    if (!fs::exists(dataset_path) || !fs::is_directory(dataset_path)) {
-        std::cerr << "[ERRO] Pasta do dataset nao encontrada. Verifique se o caminho esta correto.\n";
-        return -1;
-    }
-
-    std::string groundTruthPath = dataset_path + "/gabarito.txt";
-    auto groundTruth = loadGroundTruth(groundTruthPath);
-
-    if (groundTruth.empty()) {
-        std::cerr << "[ERRO] O gabarito.txt esta vazio ou nao foi lido corretamente.\n";
-        return -1;
-    }
-
-    // 2. Metric Variables (Counters)
-    int total_images = 0;
-    int board_detected_count = 0; // Practice tests for now.
-    int grid_extracted_count = 0;
-    
-    int total_squares_evaluated = 0;
-    int squares_correctly_classified = 0;
-    
-    int total_pieces_expected = 0;
-    int pieces_correctly_detected = 0;
-    int pieces_correctly_colored = 0;
-    
-    int fen_perfect_match_count = 0;
-    
-    double total_processing_time_ms = 0.0;
-
-    // 3. Processing Loop (Now based on the template)
-    for (const auto& entry : groundTruth) {
-        total_images++;
-        std::string imageName = entry.first;
-        std::string expectedFen = entry.second;
-        std::string imagePath = dataset_path + "/" + imageName;
-
-        auto start_time = std::chrono::high_resolution_clock::now();
-
-        // ==========================================
-        // COMPUTER VISION SIMULATION
-        // cv::Mat img = cv::imread(imagePath);
-        // BoardDetection -> Homography -> PieceDetector -> FEN
-        // ==========================================
-        
-        // Detection simulation to see the metric in action.
-        // FEN of image 01 fixed to test the comparator.
-        std::string detectedFen = "2b1kbnr/1pp2pp1/B1q1p3/p1Q4p/P3N2P/5N1R/PPPPPP2/R1B1K3"; 
-
-        auto end_time = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double, std::milli> duration = end_time - start_time;
-        total_processing_time_ms += duration.count();
-
-        // FEN check
-        std::cout << "Testando: " << imageName << "\n";
-        std::cout << "  Esperado:  " << expectedFen << "\n";
-        std::cout << "  Detectado: " << detectedFen << "\n";
-
-        if (expectedFen == detectedFen) {
-            std::cout << "  -> [PASSOU] FENs conferem!\n";
-            fen_perfect_match_count++;
-        } else {
-            std::cout << "  -> [FALHOU] Diferenca encontrada.\n";
+    for (const char token : placement) {
+        if (token == '/') {
+            if (col != 8 || row >= 7) {
+                return false;
+            }
+            ++row;
+            col = 0;
+            continue;
         }
-        std::cout << "---------------------------------\n";
+
+        if (std::isdigit(static_cast<unsigned char>(token))) {
+            const int emptyCount = token - '0';
+            if (emptyCount < 1 || emptyCount > 8 || col + emptyCount > 8) {
+                return false;
+            }
+            for (int i = 0; i < emptyCount; ++i) {
+                expected.cells[row][col++] = ac::CellObservationState::EMPTY;
+            }
+            continue;
+        }
+
+        if (!std::isalpha(static_cast<unsigned char>(token)) || col >= 8) {
+            return false;
+        }
+
+        expected.cells[row][col++] =
+            std::isupper(static_cast<unsigned char>(token))
+                ? ac::CellObservationState::WHITE
+                : ac::CellObservationState::BLACK;
     }
 
-    // 4. Generation of the Final Report
-    std::cout << "========================================\n";
-    std::cout << "           RESUMO DO BENCHMARK          \n";
-    std::cout << "========================================\n";
-    std::cout << "Dataset: " << total_images << " imagens\n\n";
+    return row == 7 && col == 8;
+}
 
-    if (total_images > 0) {
-        std::cout << "Board Detection ............. " << (board_detected_count * 100.0 / total_images) << "%\n";
-        std::cout << "Grid Extraction ............. " << (grid_extracted_count * 100.0 / total_images) << "%\n\n";
-        
-        double sq_accuracy = total_squares_evaluated > 0 ? (squares_correctly_classified * 100.0 / total_squares_evaluated) : 0.0;
-        double piece_accuracy = total_pieces_expected > 0 ? (pieces_correctly_detected * 100.0 / total_pieces_expected) : 0.0;
-        double color_accuracy = pieces_correctly_detected > 0 ? (pieces_correctly_colored * 100.0 / pieces_correctly_detected) : 0.0;
+std::array<std::array<cv::Mat, 8>, 8> splitBoard(const cv::Mat& topDown)
+{
+    std::array<std::array<cv::Mat, 8>, 8> cells{};
+    const int cellWidth = topDown.cols / 8;
+    const int cellHeight = topDown.rows / 8;
 
-        std::cout << "Casas corretamente classificadas .... " << sq_accuracy << "%\n";
-        std::cout << "Pecas corretamente detectadas ....... " << piece_accuracy << "%\n";
-        std::cout << "Cor corretamente identificada ....... " << color_accuracy << "%\n\n";
-
-        std::cout << "FEN identico ao esperado ............ " << fen_perfect_match_count << " / " << total_images 
-                  << " (" << (fen_perfect_match_count * 100.0 / total_images) << "%)\n\n";
-
-        std::cout << "Tempo medio por imagem .............. " << (total_processing_time_ms / total_images) << " ms\n";
-    } else {
-        std::cout << "[AVISO] Nenhuma imagem processada para gerar metricas.\n";
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            const cv::Rect roi(
+                col * cellWidth,
+                row * cellHeight,
+                cellWidth,
+                cellHeight
+            );
+            cells[row][col] = topDown(roi);
+        }
     }
+
+    return cells;
+}
+
+bool isOccupied(ac::CellObservationState state)
+{
+    return state != ac::CellObservationState::EMPTY;
+}
+
+} // namespace
+
+int main(int argc, char** argv)
+{
+#ifdef ACVISION_DATASET_DIR
+    fs::path datasetPath = ACVISION_DATASET_DIR;
+#else
+    fs::path datasetPath = "software/acvision/tests/dataset";
+#endif
+
+    if (argc > 1) {
+        datasetPath = argv[1];
+    }
+
+    if (!fs::exists(datasetPath) || !fs::is_directory(datasetPath)) {
+        std::cerr << "[ERROR] Dataset directory not found: " << datasetPath << '\n';
+        return 1;
+    }
+
+    const auto groundTruth = loadGroundTruth(datasetPath / "gabarito.txt");
+    if (groundTruth.empty()) {
+        std::cerr << "[ERROR] Ground truth is empty or invalid.\n";
+        return 1;
+    }
+
+    ac::BoardDetector boardDetector;
+    ac::Homography homography;
+    ac::PieceDetector pieceDetector;
+
+    std::size_t totalImages = 0;
+    std::size_t imageLoadFailures = 0;
+    std::size_t invalidGroundTruth = 0;
+    std::size_t boardDetected = 0;
+    std::size_t gridsExtracted = 0;
+
+    std::size_t totalSquares = 0;
+    std::size_t correctSquares = 0;
+
+    std::size_t expectedOccupied = 0;
+    std::size_t occupancyTruePositive = 0;
+    std::size_t falsePositive = 0;
+    std::size_t falseNegative = 0;
+    std::size_t colorCorrect = 0;
+
+    double totalProcessingMs = 0.0;
+
+    for (const auto& [imageName, placement] : groundTruth) {
+        ++totalImages;
+
+        ac::BoardObservation expected{};
+        if (!parseObservationGroundTruth(placement, expected)) {
+            ++invalidGroundTruth;
+            std::cerr << "[WARN] Invalid FEN placement for " << imageName << '\n';
+            continue;
+        }
+
+        const cv::Mat image = cv::imread((datasetPath / imageName).string());
+        if (image.empty()) {
+            ++imageLoadFailures;
+            std::cerr << "[WARN] Cannot read image: " << imageName << '\n';
+            continue;
+        }
+
+        const auto started = std::chrono::steady_clock::now();
+
+        const auto corners = boardDetector.detect(image);
+        if (!corners) {
+            const auto ended = std::chrono::steady_clock::now();
+            totalProcessingMs +=
+                std::chrono::duration<double, std::milli>(ended - started).count();
+            std::cout << imageName << ": board-not-detected\n";
+            continue;
+        }
+        ++boardDetected;
+
+        const cv::Mat H = homography.compute(corners->corners);
+        const cv::Mat topDown = homography.warp(image, H, 800);
+        if (topDown.empty() || topDown.rows < 8 || topDown.cols < 8) {
+            std::cout << imageName << ": invalid-warp\n";
+            continue;
+        }
+
+        const auto cells = splitBoard(topDown);
+        ++gridsExtracted;
+        const ac::BoardObservation detected = pieceDetector.analyzeBoard(cells);
+
+        const auto ended = std::chrono::steady_clock::now();
+        totalProcessingMs +=
+            std::chrono::duration<double, std::milli>(ended - started).count();
+
+        std::size_t imageCorrect = 0;
+        for (int row = 0; row < 8; ++row) {
+            for (int col = 0; col < 8; ++col) {
+                const auto exp = expected.cells[row][col];
+                const auto got = detected.cells[row][col];
+
+                ++totalSquares;
+                if (exp == got) {
+                    ++correctSquares;
+                    ++imageCorrect;
+                }
+
+                const bool expOccupied = isOccupied(exp);
+                const bool gotOccupied = isOccupied(got);
+
+                if (expOccupied) {
+                    ++expectedOccupied;
+                }
+                if (expOccupied && gotOccupied) {
+                    ++occupancyTruePositive;
+                    if (exp == got) {
+                        ++colorCorrect;
+                    }
+                } else if (!expOccupied && gotOccupied) {
+                    ++falsePositive;
+                } else if (expOccupied && !gotOccupied) {
+                    ++falseNegative;
+                }
+            }
+        }
+
+        std::cout << imageName << ": "
+                  << imageCorrect << "/64 cells correct ("
+                  << std::fixed << std::setprecision(1)
+                  << (100.0 * static_cast<double>(imageCorrect) / 64.0)
+                  << "%)\n";
+    }
+
+    const auto pct = [](std::size_t value, std::size_t total) {
+        return total == 0
+            ? 0.0
+            : 100.0 * static_cast<double>(value) / static_cast<double>(total);
+    };
+
+    const std::size_t processedImages = gridsExtracted;
+
+    std::cout << "\n========================================\n";
+    std::cout << "PieceDetector benchmark summary\n";
+    std::cout << "========================================\n";
+    std::cout << "Dataset entries .............. " << totalImages << '\n';
+    std::cout << "Image load failures .......... " << imageLoadFailures << '\n';
+    std::cout << "Invalid ground truth ......... " << invalidGroundTruth << '\n';
+    std::cout << "Board detection .............. " << boardDetected << "/" << totalImages
+              << " (" << pct(boardDetected, totalImages) << "%)\n";
+    std::cout << "Grid extraction .............. " << gridsExtracted << "/" << totalImages
+              << " (" << pct(gridsExtracted, totalImages) << "%)\n";
+    std::cout << "Cell classification accuracy . " << pct(correctSquares, totalSquares) << "%\n";
+    std::cout << "Occupied-piece recall ........ " << pct(occupancyTruePositive, expectedOccupied) << "%\n";
+    std::cout << "Color accuracy (detected) .... " << pct(colorCorrect, occupancyTruePositive) << "%\n";
+    std::cout << "False positives .............. " << falsePositive << '\n';
+    std::cout << "False negatives .............. " << falseNegative << '\n';
+    std::cout << "Average processing time ...... "
+              << (processedImages == 0 ? 0.0 : totalProcessingMs / processedImages)
+              << " ms/image\n";
     std::cout << "========================================\n";
 
-    return 0;
+    // A benchmark run is valid even when accuracy is poor: the metrics are the
+    // research output. Non-zero is reserved for fixture/input failures.
+    return (imageLoadFailures == 0 && invalidGroundTruth == 0) ? 0 : 2;
 }
