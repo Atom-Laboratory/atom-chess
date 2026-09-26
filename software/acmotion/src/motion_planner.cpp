@@ -110,21 +110,24 @@ Pose MotionPlanner::getPredefinedPose(PredefinedPosition pos) const {
 
 std::vector<Pose> MotionPlanner::planMove(const std::string& from, const std::string& to) {
     auto [fromX, fromY] = mapper_.getCoordinates(from);
-    auto [toX, toY]     = mapper_.getCoordinates(to);
+    auto [toX, toY] = mapper_.getCoordinates(to);
 
     std::vector<Pose> trajectory;
 
-    // 1. Deslocamento para posicao segura sobre a origem
+    // Keep the gripper open while descending around the source piece.
     trajectory.push_back({fromX, fromY, safeHeightZ_, GRIPPER_OPEN, "APPROACH_SOURCE"});
-    // 2. Descida para pegar a peca
-    trajectory.push_back({fromX, fromY, pickHeightZ_, GRIPPER_CLOSED, "PICK_PIECE"});
-    // 3. Subida com a peca presa
+    trajectory.push_back({fromX, fromY, pickHeightZ_, GRIPPER_OPEN, "LOWER_TO_SOURCE"});
+
+    // Close only after the gripper reaches the pick height.
+    trajectory.push_back({fromX, fromY, pickHeightZ_, GRIPPER_CLOSED, "GRASP_PIECE"});
     trajectory.push_back({fromX, fromY, safeHeightZ_, GRIPPER_CLOSED, "LIFT_PIECE"});
-    // 4. Deslocamento horizontal seguro para o destino
+
+    // Horizontal travel is performed at the collision-clearance height.
     trajectory.push_back({toX, toY, safeHeightZ_, GRIPPER_CLOSED, "APPROACH_TARGET"});
-    // 5. Descida para soltar a peca
+    trajectory.push_back({toX, toY, pickHeightZ_, GRIPPER_CLOSED, "LOWER_TO_TARGET"});
+
+    // Release at the target, then retract with the gripper open.
     trajectory.push_back({toX, toY, pickHeightZ_, GRIPPER_OPEN, "RELEASE_PIECE"});
-    // 6. Retorno para altura de seguranca
     trajectory.push_back({toX, toY, safeHeightZ_, GRIPPER_OPEN, "RETRACT"});
 
     return trajectory;
