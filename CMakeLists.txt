@@ -7,8 +7,9 @@ project(ATOMChess)
 # enable CTest locally in their own CMakeLists.txt files.
 include(CTest)
 
-# Core modules currently participating in the repository-level build.
-# acmotion is tracked separately because its ROS2/ament boundary still needs
-# to be decoupled before it can join this headless CMake graph safely.
+# Linux SBC-hosted software modules participating in the repository-level build.
+# Low-level ESP32 firmware remains a separate embedded target and is intentionally
+# not part of this CMake graph.
 add_subdirectory(software/acvision)
 add_subdirectory(software/acchess)
+add_subdirectory(software/acmotion)
