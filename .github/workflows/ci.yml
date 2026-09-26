@@ -1,0 +1,220 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CMAKE_BUILD_PARALLEL_LEVEL: 2
+  CTEST_OUTPUT_ON_FAILURE: 1
+
+jobs:
+  build-test:
+    name: Build & Test (${{ matrix.compiler }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [gcc, clang]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ninja-build \
+            libopencv-dev \
+            stockfish \
+            libx11-dev \
+            libxrandr-dev \
+            libxcursor-dev \
+            libxi-dev \
+            libudev-dev \
+            libgl1-mesa-dev \
+            libfreetype6-dev \
+            libogg-dev \
+            libvorbis-dev \
+            libflac-dev
+
+      - name: Select compiler
+        shell: bash
+        run: |
+          if [[ "${{ matrix.compiler }}" == "gcc" ]]; then
+            echo "CC=gcc" >> "$GITHUB_ENV"
+            echo "CXX=g++" >> "$GITHUB_ENV"
+          else
+            echo "CC=clang" >> "$GITHUB_ENV"
+            echo "CXX=clang++" >> "$GITHUB_ENV"
+          fi
+
+      - name: Configure
+        run: |
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DACCHESS_BUILD_VIEWER=OFF \
+            -DACVISION_BUILD_HARDWARE_TESTS=OFF \
+            -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Werror"
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+
+  static-analysis:
+    name: Static Analysis
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install analysis dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ninja-build \
+            libopencv-dev \
+            stockfish \
+            clang \
+            clang-tidy \
+            cppcheck \
+            libx11-dev \
+            libxrandr-dev \
+            libxcursor-dev \
+            libxi-dev \
+            libudev-dev \
+            libgl1-mesa-dev \
+            libfreetype6-dev \
+            libogg-dev \
+            libvorbis-dev \
+            libflac-dev
+
+      - name: Configure compile database
+        env:
+          CC: clang
+          CXX: clang++
+        run: |
+          cmake -S . -B build-analysis -G Ninja \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DACCHESS_BUILD_VIEWER=OFF \
+            -DACVISION_BUILD_HARDWARE_TESTS=OFF \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+      - name: Cppcheck
+        run: |
+          cppcheck \
+            --enable=warning,performance,portability \
+            --error-exitcode=1 \
+            --inline-suppr \
+            --std=c++20 \
+            --suppress=missingIncludeSystem \
+            software
+
+      - name: clang-tidy
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path.cwd().resolve()
+          database = json.loads(Path("build-analysis/compile_commands.json").read_text())
+          files = []
+          for entry in database:
+              path = Path(entry["file"]).resolve()
+              try:
+                  rel = path.relative_to(root)
+              except ValueError:
+                  continue
+              if str(rel).startswith("software/") and path.suffix in {".cc", ".cpp", ".cxx"}:
+                  files.append(str(path))
+          Path("build-analysis/clang-tidy-files.txt").write_text(
+              "\n".join(sorted(set(files))) + "\n"
+          )
+          PY
+          test -s build-analysis/clang-tidy-files.txt
+          while IFS= read -r file; do
+            clang-tidy "$file" -p build-analysis --warnings-as-errors='*'
+          done < build-analysis/clang-tidy-files.txt
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install coverage dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ninja-build \
+            libopencv-dev \
+            stockfish \
+            lcov \
+            libx11-dev \
+            libxrandr-dev \
+            libxcursor-dev \
+            libxi-dev \
+            libudev-dev \
+            libgl1-mesa-dev \
+            libfreetype6-dev \
+            libogg-dev \
+            libvorbis-dev \
+            libflac-dev
+
+      - name: Configure coverage build
+        env:
+          CC: gcc
+          CXX: g++
+        run: |
+          cmake -S . -B build-coverage -G Ninja \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DACCHESS_BUILD_VIEWER=OFF \
+            -DACVISION_BUILD_HARDWARE_TESTS=OFF \
+            -DCMAKE_CXX_FLAGS="--coverage -O0 -g" \
+            -DCMAKE_EXE_LINKER_FLAGS="--coverage" \
+            -DCMAKE_SHARED_LINKER_FLAGS="--coverage"
+
+      - name: Build
+        run: cmake --build build-coverage --parallel
+
+      - name: Test
+        run: ctest --test-dir build-coverage --output-on-failure
+
+      - name: Capture coverage
+        run: |
+          lcov --capture \
+            --directory build-coverage \
+            --output-file coverage.info \
+            --ignore-errors mismatch
+          lcov --remove coverage.info \
+            '/usr/*' \
+            '*/_deps/*' \
+            '*/tests/*' \
+            --output-file coverage.filtered.info \
+            --ignore-errors unused
+
+      - name: Coverage summary
+        run: lcov --summary coverage.filtered.info
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-lcov
+          path: coverage.filtered.info
+          if-no-files-found: error

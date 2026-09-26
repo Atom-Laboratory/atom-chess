@@ -1,0 +1,56 @@
+# Atom Hardware Licensing
+
+Copyright (c) 2026 Enzo Ribas
+
+## Current Hardware Licensing Status
+
+The Atom software is open source and is distributed under the MIT License.
+
+The Atom hardware is currently **not open source**.
+
+Unless a specific hardware component or file is explicitly identified as being released under a separate license, no license or permission is granted to use, reproduce, modify, manufacture, distribute, sublicense, or commercially exploit the Atom hardware designs.
+
+This includes, but is not limited to:
+
+* Mechanical CAD files
+* Mechanical drawings
+* Electrical schematics
+* PCB source files
+* PCB layouts
+* Manufacturing files
+* Gerber files
+* Drill files
+* Bills of materials (BOMs)
+* Assembly files
+* Manufacturing documentation
+* Hardware source files
+* Proprietary reference designs or components
+
+The presence of hardware-related documentation or references in this repository does not, by itself, grant permission to reproduce or manufacture the hardware.
+
+## Third-Party Hardware Files
+
+Some hardware-related files may originate from third parties or may be subject to licenses that do not permit redistribution.
+
+Such files must not be interpreted as being licensed under the Atom software license.
+
+Third-party files are not intentionally included in the public repository unless their redistribution is permitted by their respective license or rights holder.
+
+## Future Hardware Licensing
+
+The Atom hardware may be released under a dedicated open hardware license in the future.
+
+Any future open-source hardware release will explicitly identify:
+
+* The applicable license.
+* The files covered by that license.
+* The rights granted to users.
+* Any applicable third-party restrictions.
+
+Until such a release is explicitly announced, the Atom hardware remains proprietary.
+
+## No Implied License
+
+Nothing in this repository should be interpreted as granting an implied license to the Atom hardware.
+
+The MIT License covered by `LICENSE` DOES NOT grant rights to hardware designs unless explicitly stated otherwise.

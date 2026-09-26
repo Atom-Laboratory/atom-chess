@@ -3,13 +3,29 @@
 namespace ac
 {
 
+void PieceDetector::setConfig(const PieceDetectorConfig& config)
+{
+    m_config = config;
+}
+
+bool PieceDetector::loadConfig(const std::string& filename)
+{
+    PieceDetectorConfig loaded;
+    if (!loaded.load(filename)) {
+        return false;
+    }
+
+    m_config = loaded;
+    return true;
+}
+
 /**
  * @brief Analyze all board cells.
  */
-OccupancyGrid PieceDetector::analyzeBoard(
-    const std::array<std::array<cv::Mat,8>,8>& boardCells) const
+BoardObservation PieceDetector::analyzeBoard(
+    const std::array<std::array<cv::Mat, 8>, 8>& boardCells) const
 {
-    OccupancyGrid result;
+    BoardObservation result;
 
     for(int r = 0; r < 8; r++)
     {
@@ -25,35 +41,25 @@ OccupancyGrid PieceDetector::analyzeBoard(
 /**
  * @brief Analyze a single cell.
  */
-CellObservation PieceDetector::analyzeCell(const cv::Mat& cell) const
+CellObservationState PieceDetector::analyzeCell(const cv::Mat& cell) const
 {
-
-    CellObservation obs;
-
-    if(cell.empty()){
-        obs.state = CellState::EMPTY;
-        return obs;
-    }
+    if(cell.empty())
+        return CellObservationState::EMPTY;
 
     cv::Mat roi = extractCenterROI(cell);
     double edgeDensity = computeEdgeDensity(roi);
 
     if(edgeDensity < 0.02)
     {
-        obs.state = CellState::EMPTY;
+        return CellObservationState::EMPTY;
     }
-    else if(isWhitePiece(roi))
+
+    if(isWhitePiece(roi))
     {
-        obs.state = CellState::WHITE;
-    }
-    else {
-        obs.state = CellState::BLACK;
+        return CellObservationState::WHITE;
     }
 
-    obs.roi = roi;
-    obs.confidence = 1.0f;
-
-    return obs;
+    return CellObservationState::BLACK;
 }
 
 /**
@@ -66,7 +72,7 @@ cv::Mat PieceDetector::extractCenterROI(const cv::Mat& cell) const
     int w = static_cast<int>(cell.cols * 0.5);
     int h = static_cast<int>(cell.rows * 0.5);
 
-    return cell(cv::Rect(x,y,w,h));
+    return cell(cv::Rect(x, y, w, h));
 }
 
 /**
@@ -77,7 +83,8 @@ cv::Mat PieceDetector::normalizeLighting(const cv::Mat& input) const
     cv::Mat gray;
     cv::cvtColor(input, gray, cv::COLOR_BGR2GRAY);
 
-    cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(2.0, cv::Size(8,8));
+    cv::Ptr<cv::CLAHE> clahe =
+        cv::createCLAHE(2.0, cv::Size(8, 8));
 
     cv::Mat normalized;
     clahe->apply(gray, normalized);
@@ -106,6 +113,29 @@ double PieceDetector::computeEdgeDensity(const cv::Mat& cell) const
  */
 bool PieceDetector::isWhitePiece(const cv::Mat& cell) const
 {
+    if (m_config.useCalibration)
+    {
+        cv::Mat hsv;
+        cv::cvtColor(cell, hsv, cv::COLOR_BGR2HSV);
+
+        cv::Mat whiteMask;
+        cv::Mat blackMask;
+        cv::inRange(
+            hsv,
+            m_config.whiteProfile.lowerBound,
+            m_config.whiteProfile.upperBound,
+            whiteMask
+        );
+        cv::inRange(
+            hsv,
+            m_config.blackProfile.lowerBound,
+            m_config.blackProfile.upperBound,
+            blackMask
+        );
+
+        return cv::countNonZero(whiteMask) > cv::countNonZero(blackMask);
+    }
+
     cv::Mat norm = normalizeLighting(cell);
 
     cv::Scalar mean, stddev;
