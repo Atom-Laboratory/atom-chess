@@ -11,48 +11,84 @@ protected:
 };
 
 TEST_F(MotionPlannerTest, GraveyardAllocationTypeSeparation) {
-    // Alocar um Peão Branco não deve consumir o slot de uma Torre Branca
+    // Allocating a white pawn must not consume a white rook slot.
     Pose pawnPose = planner.allocateNextGraveyardPose(PieceColor::White, PieceType::Pawn);
     Pose rookPose = planner.allocateNextGraveyardPose(PieceColor::White, PieceType::Rook);
 
-    // Peões ficam na linha 0 e Torres na linha 1 (diferentes posições Y)
+    // Pawns and rooks occupy different graveyard rows.
     EXPECT_NE(pawnPose.y, rookPose.y);
 
-    // Preencher o limite máximo de peões brancos (8 peões)
+    // Fill the maximum white-pawn capacity.
     for (int i = 0; i < 7; ++i) {
         EXPECT_NO_THROW(planner.allocateNextGraveyardPose(PieceColor::White, PieceType::Pawn));
     }
 
-    // O 9º peão deve lançar exceção out_of_range
+    // A ninth white pawn exceeds the physical allocation.
     EXPECT_THROW(planner.allocateNextGraveyardPose(PieceColor::White, PieceType::Pawn), std::out_of_range);
 
-    // Mas ainda deve ser possível alocar a segunda Torre Branca normalmente
+    // Rook allocation remains independent.
     EXPECT_NO_THROW(planner.allocateNextGraveyardPose(PieceColor::White, PieceType::Rook));
 }
 
 TEST_F(MotionPlannerTest, GraveyardColorIndependence) {
-    // A alocação de peças brancas e pretas deve ser independente
+    // White and black graveyards are independent.
     Pose whitePawn = planner.allocateNextGraveyardPose(PieceColor::White, PieceType::Pawn);
     Pose blackPawn = planner.allocateNextGraveyardPose(PieceColor::Black, PieceType::Pawn);
 
-    // As coordenadas X devem ser opostas/distintas devido às bases diferentes
+    // Different base locations must produce distinct coordinates.
     EXPECT_NE(whitePawn.x, blackPawn.x);
 }
 
 TEST_F(MotionPlannerTest, InvalidPieceTypeHandling) {
-    // Tentar alocar peça sem cor ou sem tipo deve lançar invalid_argument
+    // Missing color/type is invalid.
     EXPECT_THROW(planner.allocateNextGraveyardPose(PieceColor::None, PieceType::Pawn), std::invalid_argument);
     EXPECT_THROW(planner.allocateNextGraveyardPose(PieceColor::White, PieceType::None), std::invalid_argument);
 }
 
 TEST_F(MotionPlannerTest, ResetGraveyard) {
-    // Encher peões brancos até o limite
+    // Fill the white-pawn area.
     for (int i = 0; i < 8; ++i) {
         planner.allocateNextGraveyardPose(PieceColor::White, PieceType::Pawn);
     }
     EXPECT_THROW(planner.allocateNextGraveyardPose(PieceColor::White, PieceType::Pawn), std::out_of_range);
 
-    // Após o reset, deve ser possível alocar novamente
+    // Reset makes the area available again.
     planner.resetGraveyards();
     EXPECT_NO_THROW(planner.allocateNextGraveyardPose(PieceColor::White, PieceType::Pawn));
+}
+
+TEST_F(MotionPlannerTest, PredefinedPoses)
+{
+    const Pose home = planner.getPredefinedPose(PredefinedPosition::HOME);
+    EXPECT_DOUBLE_EQ(home.x, 0.0);
+    EXPECT_DOUBLE_EQ(home.y, 0.0);
+    EXPECT_DOUBLE_EQ(home.z, 150.0);
+}
+
+TEST_F(MotionPlannerTest, PlanBasicMovePreservesSafeGripperSequence)
+{
+    const auto trajectory = planner.planMove("e2", "e4");
+
+    ASSERT_EQ(trajectory.size(), 8u);
+
+    EXPECT_EQ(trajectory[0].label, "APPROACH_SOURCE");
+    EXPECT_DOUBLE_EQ(trajectory[0].gripper_percent, 100.0);
+
+    EXPECT_EQ(trajectory[1].label, "LOWER_TO_SOURCE");
+    EXPECT_DOUBLE_EQ(trajectory[1].z, 10.0);
+    EXPECT_DOUBLE_EQ(trajectory[1].gripper_percent, 100.0);
+
+    EXPECT_EQ(trajectory[2].label, "GRASP_PIECE");
+    EXPECT_DOUBLE_EQ(trajectory[2].z, 10.0);
+    EXPECT_DOUBLE_EQ(trajectory[2].gripper_percent, 0.0);
+
+    EXPECT_EQ(trajectory[3].label, "LIFT_PIECE");
+    EXPECT_DOUBLE_EQ(trajectory[3].z, 50.0);
+    EXPECT_DOUBLE_EQ(trajectory[3].gripper_percent, 0.0);
+
+    EXPECT_EQ(trajectory[6].label, "RELEASE_PIECE");
+    EXPECT_DOUBLE_EQ(trajectory[6].gripper_percent, 100.0);
+
+    EXPECT_EQ(trajectory[7].label, "RETRACT");
+    EXPECT_DOUBLE_EQ(trajectory[7].z, 50.0);
 }
