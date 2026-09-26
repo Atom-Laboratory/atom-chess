@@ -121,10 +121,12 @@ if(BUILD_TESTING)
     # Chess-domain unit tests are deterministic and must not depend on an
     # external Stockfish binary. EXISTS keeps this branch compatible with
     # main while PR #85 introduces additional tests incrementally.
+    # Register only tests whose implementation is part of the current acchess
+    # target. Legacy FEN tests still depend on the removed CellState model and
+    # will be replaced by the Board-based tests from PR #85.
     set(ACCHESS_UNIT_TESTS
         test_board
         test_board_comparator
-        test_fen_generator
         test_move_applier
     )
 
