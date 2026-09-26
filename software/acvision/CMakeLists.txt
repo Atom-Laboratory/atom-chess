@@ -7,6 +7,8 @@ project(acvision
     DESCRIPTION "A Library for Computer Vision applied to Chessboard Analysis"
     LANGUAGES CXX)
 
+# When acvision is configured by itself, enable CTest locally. In a
+# repository-level build the root CMakeLists.txt already owns this setup.
 if(PROJECT_IS_TOP_LEVEL)
     include(CTest)
 endif()
@@ -159,6 +161,8 @@ if(BUILD_TESTING)
         test_board_geometry
     )
 
+    # Hardware tests are opt-in so normal developer/CI builds remain
+    # deterministic and do not require a physical camera device.
     option(
         ACVISION_BUILD_HARDWARE_TESTS
         "Build tests that require a physical camera"
@@ -186,6 +190,8 @@ if(BUILD_TESTING)
         endif()
     endforeach()
 
+    # Board geometry relies on a fixture image. Compile the absolute fixture
+    # directory into the test so CTest can run from any working directory.
     target_link_libraries(test_board_geometry PRIVATE opencv_imgcodecs)
     target_compile_definitions(test_board_geometry PRIVATE
         TEST_IMAGES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/images"
