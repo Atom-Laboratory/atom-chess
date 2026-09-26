@@ -96,11 +96,13 @@ if(ACCHESS_BUILD_VIEWER)
 endif()
 
 # ==========================================
-# AUTOMATED TESTS (tests Folder)
+# AUTOMATED TESTS
 # ==========================================
-if(BUILD_TESTING AND STOCKFISH_EXECUTABLE)
+if(BUILD_TESTING)
     include(FetchContent)
 
+    # Prefer a system GoogleTest installation. Fetch the pinned fallback only
+    # when the package is unavailable to keep local/offline builds predictable.
     if(NOT TARGET GTest::gtest_main)
         find_package(GTest QUIET)
     endif()
@@ -116,11 +118,37 @@ if(BUILD_TESTING AND STOCKFISH_EXECUTABLE)
         FetchContent_MakeAvailable(googletest)
     endif()
 
-    add_executable(test_stockfish_uci tests/test_stockfish_uci.cpp)
-    target_link_libraries(test_stockfish_uci PRIVATE acchess GTest::gtest_main)
-    target_compile_definitions(test_stockfish_uci PRIVATE
-        STOCKFISH_EXECUTABLE_PATH="${STOCKFISH_EXECUTABLE}"
+    # Chess-domain unit tests are deterministic and must not depend on an
+    # external Stockfish binary. EXISTS keeps this branch compatible with
+    # main while PR #85 introduces additional tests incrementally.
+    set(ACCHESS_UNIT_TESTS
+        test_board
+        test_board_comparator
+        test_fen_generator
+        test_move_applier
     )
-    add_test(NAME test_stockfish_uci COMMAND test_stockfish_uci)
-    set_target_properties(test_stockfish_uci PROPERTIES FOLDER "Tests")
+
+    foreach(test_name IN LISTS ACCHESS_UNIT_TESTS)
+        set(test_src "${CMAKE_CURRENT_SOURCE_DIR}/tests/${test_name}.cpp")
+        if(EXISTS "${test_src}")
+            add_executable(${test_name} "${test_src}")
+            target_link_libraries(${test_name} PRIVATE acchess GTest::gtest_main)
+            add_test(NAME ${test_name} COMMAND ${test_name})
+            set_target_properties(${test_name} PROPERTIES FOLDER "Tests")
+        endif()
+    endforeach()
+
+    # Stockfish is an external integration dependency. Only the UCI integration
+    # test is conditional on the executable being available.
+    if(STOCKFISH_EXECUTABLE)
+        add_executable(test_stockfish_uci tests/test_stockfish_uci.cpp)
+        target_link_libraries(test_stockfish_uci PRIVATE acchess GTest::gtest_main)
+        target_compile_definitions(test_stockfish_uci PRIVATE
+            STOCKFISH_EXECUTABLE_PATH="${STOCKFISH_EXECUTABLE}"
+        )
+        add_test(NAME test_stockfish_uci COMMAND test_stockfish_uci)
+        set_target_properties(test_stockfish_uci PROPERTIES FOLDER "Tests")
+    else()
+        message(STATUS "Stockfish not found: test_stockfish_uci will not be registered.")
+    endif()
 endif()
