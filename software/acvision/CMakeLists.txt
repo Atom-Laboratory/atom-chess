@@ -85,6 +85,7 @@ endif()
 set(APP_LIST
     # "capture_gui"
     "board_demo"
+    "benchmark_piece_detector"
 )
 
 foreach(app ${APP_LIST})
@@ -204,3 +205,13 @@ endif()
 # Configuração de IDE
 # ==========================================
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT capture_gui)
+
+
+# The benchmark reads image fixtures from disk. Keep imgcodecs scoped to this
+# developer/research executable instead of adding it to the production library.
+if(TARGET benchmark_piece_detector)
+    target_link_libraries(benchmark_piece_detector PRIVATE opencv_imgcodecs)
+    target_compile_definitions(benchmark_piece_detector PRIVATE
+        ACVISION_DATASET_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/dataset"
+    )
+endif()
