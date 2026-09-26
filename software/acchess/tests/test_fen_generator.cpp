@@ -6,6 +6,21 @@
 namespace ac::chess {
 namespace {
 
+TEST(FenGeneratorTest, GeneratesArbitraryPositionWithPieceTypesAndColors)
+{
+    Board board;
+    board.clear();
+    board.setPiece({0, 0}, {PieceType::King, PieceColor::Black});
+    board.setPiece({0, 1}, {PieceType::Queen, PieceColor::Black});
+    board.setPiece({7, 6}, {PieceType::Knight, PieceColor::White});
+    board.setPiece({7, 7}, {PieceType::Rook, PieceColor::White});
+
+    EXPECT_EQ(
+        FenGenerator::generate(board),
+        "kq6/8/8/8/8/8/8/6NR w - - 0 1"
+    );
+}
+
 TEST(FenGeneratorTest, GeneratesInitialPositionWithAllPieceTypesAndColors)
 {
     Board board;
