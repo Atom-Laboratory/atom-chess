@@ -7,6 +7,7 @@
 
 #pragma once 
 
+#include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp> 
 #include <string>
 #include <variant>
@@ -97,6 +98,16 @@ namespace ac {
         bool capture_frame(cv::Mat& frame);
 
         /**
+         * @brief Captures the current frame and computes its global min/max pixel intensity.
+         * @details Internally delegates to @ref compute_min_max_intensity so the same
+         * conversion/validation logic used here can also be exercised directly in unit
+         * tests with synthetic cv::Mat instances (no physical camera required).
+         * @param min_val Output pointer for the minimum intensity found (may be nullptr).
+         * @param max_val Output pointer for the maximum intensity found (may be nullptr).
+         */
+        void get_min_max_intensity(double* min_val, double* max_val);
+
+        /**
          * @brief Checks the current state of the hardware link.
          * @return true if the camera was successfully opened and is ready for I/O.
          */
@@ -125,5 +136,26 @@ namespace ac {
         int m_width;
         int m_height;
 };
+
+/**
+ * @brief Computes the global min/max pixel intensity of a single frame.
+ *
+ * @details `cv::minMaxLoc` requires a single-channel matrix. This helper accepts
+ * frames with 1 (grayscale), 3 (BGR) or 4 (BGRA) channels, converting to grayscale
+ * with `cv::cvtColor` only when needed before delegating to `cv::minMaxLoc`.
+ *
+ * - An empty frame sets both outputs to 0.0 instead of touching `cv::minMaxLoc`.
+ * - An unsupported channel count (anything other than 1, 3 or 4) also sets both
+ *   outputs to 0.0 and logs a warning, rather than crashing with an OpenCV assertion.
+ *
+ * This function is intentionally free-standing (not a member of Camera) so it can be
+ * unit-tested directly with synthetic `cv::Mat` instances, without requiring camera
+ * hardware to be present (see Issue #26 and #35).
+ *
+ * @param frame The frame to analyze. May be empty.
+ * @param min_val Output pointer for the minimum intensity found (may be nullptr).
+ * @param max_val Output pointer for the maximum intensity found (may be nullptr).
+ */
+void compute_min_max_intensity(const cv::Mat& frame, double* min_val, double* max_val);
 
 } // namespace ac

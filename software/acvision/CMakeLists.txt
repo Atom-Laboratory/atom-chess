@@ -159,6 +159,7 @@ if(BUILD_TESTING)
     set(TEST_LIST
         test_piece_detector
         test_board_geometry
+        test_camera_min_max
     )
 
     # Hardware tests are opt-in so normal developer/CI builds remain
