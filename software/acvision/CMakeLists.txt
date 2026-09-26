@@ -51,6 +51,7 @@ target_sources(acvision
         FILES 
             include/camera/camera.hpp
             include/board_vision/board_vision.hpp
+            include/board_observation/board_observation.hpp
             include/piece_detector/piece_detector.hpp
             # include/fen_generator/fen_generator.hpp
             include/homography/homography.hpp
