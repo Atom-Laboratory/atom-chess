@@ -9,6 +9,7 @@
 namespace ac::chess {
 
 /**
+ * @class Board
  * @brief Represents the official chessboard state and its pieces.
  */
 class Board {

@@ -9,6 +9,9 @@
 namespace ac::chess {
 namespace {
 
+/**
+ * @brief Verifies the initial layout and that clear() empties all 64 squares.
+ */
 TEST(BoardTest, StartsInInitialPositionAndCanBeCleared)
 {
     Board board;
@@ -36,6 +39,9 @@ TEST(BoardTest, ResetRestoresInitialPosition)
     EXPECT_EQ(board.pieceAt({6, 3}), (Piece{PieceType::Pawn, PieceColor::White}));
 }
 
+/**
+ * @brief Verifies that piece updates affect only the selected square.
+ */
 TEST(BoardTest, InsertsReplacesAndRemovesOnlyTheSelectedPiece)
 {
     Board board;
@@ -83,6 +89,9 @@ TEST(BoardTest, ComparesEqualAndDifferentBoards)
     EXPECT_EQ(first, second);
 }
 
+/**
+ * @brief Verifies that invalid coordinates are rejected before board access.
+ */
 TEST(BoardTest, RejectsSquaresOutsideTheBoard)
 {
     Board board;
@@ -95,6 +104,9 @@ TEST(BoardTest, RejectsSquaresOutsideTheBoard)
     );
 }
 
+/**
+ * @brief Verifies that the official Board state is serialized by FenGenerator.
+ */
 TEST(BoardIntegrationTest, GeneratesFenFromBoard)
 {
     Board board;
