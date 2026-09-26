@@ -11,6 +11,11 @@ int main(){
     cv::namedWindow(window_name, cv::WINDOW_AUTOSIZE);
 
     ac::PieceDetector piece_detector;
+    if (piece_detector.loadConfig("piece_detector_calibration.yml")) {
+        std::cout << "Loaded PieceDetector color calibration.\n";
+    } else {
+        std::cout << "No valid color calibration found; using default classifier.\n";
+    }
 
     std::array<std::array<cv::Mat, 8>, 8> boardCells;
     
