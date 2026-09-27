@@ -58,6 +58,28 @@ std::vector<Pose> MotionPlanner::planBoardMove(
     );
 }
 
+std::vector<Pose> MotionPlanner::planTask(
+    const PhysicalTask& task) const
+{
+    if (task.type == PhysicalTaskType::PromotionRequired) {
+        throw std::invalid_argument(
+            "PromotionRequired has no physical replacement strategy"
+        );
+    }
+
+    if (!task.physicalSource.has_value()
+        || !task.physicalTarget.has_value()) {
+        throw std::invalid_argument(
+            "Physical transfer task requires source and target coordinates"
+        );
+    }
+
+    return planTransfer(
+        *task.physicalSource,
+        *task.physicalTarget
+    );
+}
+
 Pose MotionPlanner::getPredefinedPose(PredefinedPosition position) const
 {
     switch (position) {
