@@ -121,9 +121,6 @@ void Board::makeMove(const Move& move)
     MoveApplier::apply(*this, move);
 }
 
-} // namespace ac::chess
-
-
 PieceColor Board::sideToMove() const noexcept
 {
     return sideToMove_;
