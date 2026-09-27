@@ -12,4 +12,5 @@ include(CTest)
 # not part of this CMake graph.
 add_subdirectory(software/acvision)
 add_subdirectory(software/acchess)
+add_subdirectory(software/acintegration)
 add_subdirectory(software/acmotion)
