@@ -84,6 +84,34 @@ void MoveApplier::apply(Board& board, const Move& move)
     if (move.castle) {
         moveCastlingRook(board, move);
     }
+
+    board.setCastlingRights(rights);
+
+    if (movingPiece.type == PieceType::Pawn
+        && std::abs(move.to.row - move.from.row) == 2) {
+        board.setEnPassantTarget(Square{
+            (move.to.row + move.from.row) / 2,
+            move.from.col
+        });
+    } else {
+        board.setEnPassantTarget(std::nullopt);
+    }
+
+    if (movingPiece.type == PieceType::Pawn || isCapture) {
+        board.setHalfmoveClock(0);
+    } else {
+        board.setHalfmoveClock(board.halfmoveClock() + 1);
+    }
+
+    if (movingPiece.color == PieceColor::Black) {
+        board.setFullmoveNumber(board.fullmoveNumber() + 1);
+    }
+
+    board.setSideToMove(
+        movingPiece.color == PieceColor::White
+            ? PieceColor::Black
+            : PieceColor::White
+    );
 }
 
 } // namespace ac::chess
