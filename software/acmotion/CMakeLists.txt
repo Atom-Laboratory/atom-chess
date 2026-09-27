@@ -16,6 +16,7 @@ find_package(ament_cmake QUIET)
 add_library(${PROJECT_NAME} STATIC
   src/motion_planner.cpp
   src/coordinate_mapper.cpp
+  src/graveyard_allocator.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -57,6 +58,10 @@ if(BUILD_TESTING)
   add_executable(test_coordinate_mapper tests/test_coordinate_mapper.cpp)
   target_link_libraries(test_coordinate_mapper PRIVATE motion GTest::gtest_main)
   add_test(NAME test_coordinate_mapper COMMAND test_coordinate_mapper)
+
+  add_executable(test_graveyard_allocator tests/test_graveyard_allocator.cpp)
+  target_link_libraries(test_graveyard_allocator PRIVATE motion GTest::gtest_main)
+  add_test(NAME test_graveyard_allocator COMMAND test_graveyard_allocator)
 endif()
 
 # Keep ROS2 package export/install support when ament is available, but do not
