@@ -23,9 +23,14 @@ public:
      * @param board Board containing the state of every square.
      * @return std::string FEN formatted string representing the board.
      *
-     * @note Additional FEN fields are set to fixed values.
      */
     static std::string generate(const Board& board);
+
+private:
+    static std::string serializePiecePlacement(const Board& board);
+    static std::string serializeCastlingRights(const Board& board);
+    static std::string serializeEnPassant(const Board& board);
+    static char pieceToChar(Piece piece);
 };
 
 }
