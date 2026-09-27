@@ -80,7 +80,7 @@ public:
      * @brief Reports whether board geometry has been calibrated.
      * @return true after successful calibrateBoard() or loadCalibration().
      */
-    [[nodiscard]] bool isBoardCalibrated() const noexcept;
+    bool isBoardCalibrated() const noexcept;
 
     /**
      * @brief Calibrates the fixed chessboard from the physical first-rank endpoints.
@@ -106,7 +106,7 @@ public:
      * @throws std::runtime_error when the board is not calibrated.
      * @throws std::invalid_argument when square notation is invalid.
      */
-    [[nodiscard]] Point2D boardSquare(const std::string& square) const;
+    Point2D boardSquare(const std::string& square) const;
 
     /**
      * @brief Configures one captured-piece graveyard as a regular physical grid.
@@ -128,7 +128,7 @@ public:
      * @throws std::runtime_error when that graveyard is not configured.
      * @throws std::out_of_range when row/column exceed configured dimensions.
      */
-    [[nodiscard]] Point2D graveyardSlot(
+    Point2D graveyardSlot(
         GraveyardSide side,
         std::size_t row,
         std::size_t column
@@ -140,7 +140,7 @@ public:
      *
      * @note This method does not invent defaults for missing physical calibration.
      */
-    [[nodiscard]] bool saveCalibration() const;
+    bool saveCalibration() const;
 
     /**
      * @brief Loads calibration from configPath.
