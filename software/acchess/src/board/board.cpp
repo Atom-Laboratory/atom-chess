@@ -45,6 +45,12 @@ void Board::reset()
 {
     clear();
 
+    sideToMove_ = PieceColor::White;
+    castlingRights_ = CastlingRights{};
+    enPassantTarget_.reset();
+    halfmoveClock_ = 0;
+    fullmoveNumber_ = 1;
+
     board_[0][0] = {PieceType::Rook, PieceColor::Black};
     board_[0][1] = {PieceType::Knight, PieceColor::Black};
     board_[0][2] = {PieceType::Bishop, PieceColor::Black};
@@ -97,7 +103,12 @@ void Board::clear()
 
 bool Board::operator==(const Board& other) const
 {
-    return board_ == other.board_;
+    return board_ == other.board_
+        && sideToMove_ == other.sideToMove_
+        && castlingRights_ == other.castlingRights_
+        && enPassantTarget_ == other.enPassantTarget_
+        && halfmoveClock_ == other.halfmoveClock_
+        && fullmoveNumber_ == other.fullmoveNumber_;
 }
 
 bool Board::operator!=(const Board& other) const
@@ -108,6 +119,71 @@ bool Board::operator!=(const Board& other) const
 void Board::makeMove(const Move& move)
 {
     MoveApplier::apply(*this, move);
+}
+
+} // namespace ac::chess
+
+
+PieceColor Board::sideToMove() const noexcept
+{
+    return sideToMove_;
+}
+
+void Board::setSideToMove(PieceColor color)
+{
+    if (color == PieceColor::None) {
+        throw std::invalid_argument("Side to move cannot be None");
+    }
+    sideToMove_ = color;
+}
+
+const CastlingRights& Board::castlingRights() const noexcept
+{
+    return castlingRights_;
+}
+
+void Board::setCastlingRights(const CastlingRights& rights) noexcept
+{
+    castlingRights_ = rights;
+}
+
+std::optional<Square> Board::enPassantTarget() const noexcept
+{
+    return enPassantTarget_;
+}
+
+void Board::setEnPassantTarget(std::optional<Square> target)
+{
+    if (target.has_value()) {
+        validateSquare(*target);
+    }
+    enPassantTarget_ = target;
+}
+
+int Board::halfmoveClock() const noexcept
+{
+    return halfmoveClock_;
+}
+
+void Board::setHalfmoveClock(int value)
+{
+    if (value < 0) {
+        throw std::invalid_argument("Halfmove clock cannot be negative");
+    }
+    halfmoveClock_ = value;
+}
+
+int Board::fullmoveNumber() const noexcept
+{
+    return fullmoveNumber_;
+}
+
+void Board::setFullmoveNumber(int value)
+{
+    if (value < 1) {
+        throw std::invalid_argument("Fullmove number must be at least 1");
+    }
+    fullmoveNumber_ = value;
 }
 
 } // namespace ac::chess
