@@ -11,6 +11,11 @@ namespace {
 
 constexpr int boardSize = 8;
 
+/**
+ * @brief Validates that a square belongs to the 8x8 board domain.
+ * @param square Zero-based board coordinate.
+ * @throws std::out_of_range when row or column is outside [0, 7].
+ */
 void validateSquare(Square square)
 {
     if (square.row < 0 || square.row >= boardSize
