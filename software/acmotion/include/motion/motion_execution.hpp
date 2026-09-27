@@ -32,6 +32,7 @@ enum class MotionExecutionState {
  */
 enum class MotionExecutionResult {
     Success,
+    TransportError,
     Timeout,
     ProtocolError,
     ControllerError,
