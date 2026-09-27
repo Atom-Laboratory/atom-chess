@@ -52,6 +52,7 @@ void MoveApplier::removeEnPassantPawn(Board& board, const Move& move)
 void MoveApplier::apply(Board& board, const Move& move)
 {
     Piece movingPiece = board.pieceAt(move.from);
+    const bool wasPawn = movingPiece.type == PieceType::Pawn;
     const Piece targetPiece = board.pieceAt(move.to);
     const bool isCapture = move.capture
         || move.enPassant
@@ -87,8 +88,7 @@ void MoveApplier::apply(Board& board, const Move& move)
 
     board.setCastlingRights(rights);
 
-    if (movingPiece.type == PieceType::Pawn
-        && std::abs(move.to.row - move.from.row) == 2) {
+    if (wasPawn && std::abs(move.to.row - move.from.row) == 2) {
         board.setEnPassantTarget(Square{
             (move.to.row + move.from.row) / 2,
             move.from.col
@@ -97,7 +97,7 @@ void MoveApplier::apply(Board& board, const Move& move)
         board.setEnPassantTarget(std::nullopt);
     }
 
-    if (movingPiece.type == PieceType::Pawn || isCapture) {
+    if (wasPawn || isCapture) {
         board.setHalfmoveClock(0);
     } else {
         board.setHalfmoveClock(board.halfmoveClock() + 1);
