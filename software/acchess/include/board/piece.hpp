@@ -23,4 +23,14 @@ struct Piece {
     PieceColor color = PieceColor::None;
     bool operator==(const Piece&) const = default;
 };
+
+/**
+ * @brief Checks whether a piece has a consistent type and color.
+ */
+constexpr bool isValid(Piece piece) noexcept
+{
+    return (piece.type == PieceType::None)
+        == (piece.color == PieceColor::None);
 }
+
+} // namespace ac::chess

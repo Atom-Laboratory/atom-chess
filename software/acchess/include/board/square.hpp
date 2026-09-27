@@ -1,8 +1,8 @@
 #pragma once
 namespace ac::chess {
 struct Square {
-    int row;
-    int col;
+    int row{-1};
+    int col{-1};
 
     bool operator==(const Square& other) const;
 

@@ -74,6 +74,50 @@ TEST(BoardTest, InsertsReplacesAndRemovesOnlyTheSelectedPiece)
     EXPECT_TRUE(board.isSqrEmpty(target));
 }
 
+TEST(BoardTest, RejectsInvalidPieceEncodingsWithoutChangingTheBoard)
+{
+    Board board;
+    const Square target{4, 4};
+    const Piece original = board.pieceAt(target);
+
+    EXPECT_THROW(
+        board.setPiece(target, {PieceType::None, PieceColor::White}),
+        std::invalid_argument
+    );
+    EXPECT_EQ(board.pieceAt(target), original);
+
+    EXPECT_THROW(
+        board.setPiece(target, {PieceType::Pawn, PieceColor::None}),
+        std::invalid_argument
+    );
+    EXPECT_EQ(board.pieceAt(target), original);
+}
+
+TEST(PieceTest, ValidatesTypeAndColorAsOneInvariant)
+{
+    EXPECT_TRUE(isValid(Piece{}));
+    EXPECT_TRUE(isValid({PieceType::Pawn, PieceColor::White}));
+    EXPECT_TRUE(isValid({PieceType::King, PieceColor::Black}));
+    EXPECT_FALSE(isValid({PieceType::None, PieceColor::White}));
+    EXPECT_FALSE(isValid({PieceType::Pawn, PieceColor::None}));
+}
+
+TEST(SquareTest, DefaultsToAnInvalidSentinel)
+{
+    const Square square;
+
+    EXPECT_EQ(square.row, -1);
+    EXPECT_EQ(square.col, -1);
+}
+
+TEST(MoveTest, DefaultsToInvalidSourceAndDestinationSquares)
+{
+    const Move move;
+
+    EXPECT_EQ(move.from, Square{});
+    EXPECT_EQ(move.to, Square{});
+}
+
 TEST(BoardTest, ComparesEqualAndDifferentBoards)
 {
     Board first;

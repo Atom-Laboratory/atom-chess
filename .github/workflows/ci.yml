@@ -122,6 +122,7 @@ jobs:
             --inline-suppr \
             --std=c++20 \
             --suppress=missingIncludeSystem \
+            -i software/acchess/tests \
             software
 
       - name: clang-tidy

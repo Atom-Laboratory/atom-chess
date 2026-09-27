@@ -35,6 +35,9 @@ Piece Board::pieceAt(Square square) const
 void Board::setPiece(Square square, Piece piece)
 {
     validateSquare(square);
+    if (!isValid(piece)) {
+        throw std::invalid_argument("Invalid piece encoding");
+    }
     board_[square.row][square.col] = piece;
 }
 
