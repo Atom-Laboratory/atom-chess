@@ -52,6 +52,22 @@ void MoveApplier::removeEnPassantPawn(Board& board, const Move& move)
 void MoveApplier::apply(Board& board, const Move& move)
 {
     Piece movingPiece = board.pieceAt(move.from);
+    const Piece targetPiece = board.pieceAt(move.to);
+    const bool isCapture = move.capture
+        || move.enPassant
+        || targetPiece.type != PieceType::None;
+
+    CastlingRights rights = board.castlingRights();
+
+    if (movingPiece.type == PieceType::King) {
+        revokeKingRights(rights, movingPiece.color);
+    } else if (movingPiece.type == PieceType::Rook) {
+        revokeRookRight(rights, movingPiece.color, move.from);
+    }
+
+    if (targetPiece.type == PieceType::Rook) {
+        revokeRookRight(rights, targetPiece.color, move.to);
+    }
 
     board.setPiece(move.from, Piece{});
 
