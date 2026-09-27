@@ -5,6 +5,13 @@
 namespace ac::chess {
 namespace {
 
+/**
+ * @brief Revokes a rook-specific castling right after a rook moves from,
+ *        or is captured on, its original home square.
+ * @param rights Mutable castling-right snapshot.
+ * @param color Color of the rook whose right may be revoked.
+ * @param square Rook source or capture square.
+ */
 void revokeRookRight(CastlingRights& rights, PieceColor color, Square square)
 {
     if (color == PieceColor::White && square.row == 7) {
@@ -16,6 +23,11 @@ void revokeRookRight(CastlingRights& rights, PieceColor color, Square square)
     }
 }
 
+/**
+ * @brief Revokes both castling rights after a king moves.
+ * @param rights Mutable castling-right snapshot.
+ * @param color Color of the moving king.
+ */
 void revokeKingRights(CastlingRights& rights, PieceColor color)
 {
     if (color == PieceColor::White) {
