@@ -168,6 +168,16 @@ bool isPathClear(const Board& board, Square from, Square to)
     return true;
 }
 
+/**
+ * @brief Reconstructs an observed piece placement from raw square changes.
+ * @param previous Authoritative Board before the move.
+ * @param changes Raw changed-square records.
+ * @return Reconstructed Board when every change is structurally consistent;
+ *         std::nullopt for duplicates, invalid coordinates or mismatched before-values.
+ *
+ * Metadata is intentionally copied from previous because observations describe
+ * piece placement only; authoritative metadata changes are committed later by MoveApplier.
+ */
 std::optional<Board> buildObservedBoard(
     const Board& previous,
     const std::vector<SquareChange>& changes
@@ -202,6 +212,12 @@ std::optional<Board> buildObservedBoard(
     return observed;
 }
 
+/**
+ * @brief Infers a normal move, capture or promotion from exactly two changes.
+ * @param changes Candidate square changes.
+ * @param sideToMove Expected moving side.
+ * @return Inferred Move or std::nullopt when source/destination roles are ambiguous.
+ */
 std::optional<Move> inferOrdinaryMove(
     const std::vector<SquareChange>& changes,
     PieceColor sideToMove
@@ -251,6 +267,15 @@ std::optional<Move> inferOrdinaryMove(
     };
 }
 
+/**
+ * @brief Infers the geometry of an en-passant observation from three changes.
+ * @param changes Candidate source, destination and captured-pawn changes.
+ * @param sideToMove Expected moving side.
+ * @return En-passant Move geometry or std::nullopt when the three-square pattern is invalid.
+ *
+ * This helper only infers the observed pattern. Authorization against the
+ * authoritative en-passant target is performed during movement validation.
+ */
 std::optional<Move> inferEnPassant(
     const std::vector<SquareChange>& changes,
     PieceColor sideToMove
@@ -303,6 +328,14 @@ std::optional<Move> inferEnPassant(
     };
 }
 
+/**
+ * @brief Infers castling geometry from king and rook source/destination changes.
+ * @param changes Four changed squares representing king and rook relocation.
+ * @param sideToMove Expected moving side.
+ * @return Castle Move geometry or std::nullopt when the pattern is inconsistent.
+ *
+ * Castling rights and attacked-square rules are validated separately.
+ */
 std::optional<Move> inferCastling(
     const std::vector<SquareChange>& changes,
     PieceColor sideToMove
@@ -358,6 +391,12 @@ std::optional<Move> inferCastling(
     };
 }
 
+/**
+ * @brief Selects the appropriate move-inference strategy by change count.
+ * @param changes Raw changed-square records.
+ * @param sideToMove Expected moving side.
+ * @return Candidate Move or std::nullopt when no supported one-move pattern matches.
+ */
 std::optional<Move> inferMove(
     const std::vector<SquareChange>& changes,
     PieceColor sideToMove
@@ -375,6 +414,15 @@ std::optional<Move> inferMove(
     return std::nullopt;
 }
 
+/**
+ * @brief Validates pawn geometry, captures, promotion and en-passant metadata.
+ * @param board Authoritative Board before the move.
+ * @param move Candidate pawn move.
+ * @param color Moving pawn color.
+ * @return true when all pawn-specific rules are satisfied.
+ *
+ * En passant is accepted only when move.to equals Board::enPassantTarget().
+ */
 bool isPawnMoveValid(const Board& board, const Move& move, PieceColor color)
 {
     const int direction = pawnDirection(color);
@@ -426,6 +474,15 @@ bool isPawnMoveValid(const Board& board, const Move& move, PieceColor color)
         : move.promotion == PieceType::None;
 }
 
+/**
+ * @brief Validates castle geometry, rook presence, clear path and castling rights.
+ * @param board Authoritative Board before the move.
+ * @param move Candidate castle move.
+ * @param color Moving side.
+ * @return true when geometry and Board::castlingRights() authorize the castle.
+ *
+ * Attacked-square safety is validated separately by isCastlingPathSafe().
+ */
 bool isCastlingGeometryValid(
     const Board& board,
     const Move& move,
@@ -469,6 +526,13 @@ bool isCastlingGeometryValid(
     return true;
 }
 
+/**
+ * @brief Validates piece-specific movement rules for one candidate move.
+ * @param board Authoritative Board before the move.
+ * @param move Candidate move.
+ * @param sideToMove Expected moving side.
+ * @return true when movement, destination occupancy and special flags are consistent.
+ */
 bool isMovementValid(
     const Board& board,
     const Move& move,
@@ -535,6 +599,16 @@ bool isMovementValid(
     return false;
 }
 
+/**
+ * @brief Checks whether one piece attacks a target square in the current position.
+ * @param board Board used for occupancy and path checks.
+ * @param from Attacking piece square.
+ * @param target Candidate attacked square.
+ * @return true when the piece attacks target according to chess geometry.
+ *
+ * This function evaluates attacks, not legal moves; king-safety consequences
+ * for the attacking side are intentionally irrelevant here.
+ */
 bool pieceAttacks(const Board& board, Square from, Square target)
 {
     const Piece piece = board.pieceAt(from);
@@ -566,6 +640,13 @@ bool pieceAttacks(const Board& board, Square from, Square target)
     return false;
 }
 
+/**
+ * @brief Checks whether any piece of a color attacks a square.
+ * @param board Position to inspect.
+ * @param square Target square.
+ * @param attacker Attacking color.
+ * @return true when at least one attacker controls the target square.
+ */
 bool isSquareAttacked(const Board& board, Square square, PieceColor attacker)
 {
     for (int row = 0; row < boardSize; ++row) {
@@ -581,6 +662,12 @@ bool isSquareAttacked(const Board& board, Square square, PieceColor attacker)
     return false;
 }
 
+/**
+ * @brief Locates the unique king of one color.
+ * @param board Board to inspect.
+ * @param color King color.
+ * @return King square, or std::nullopt when zero or multiple matching kings exist.
+ */
 std::optional<Square> findKing(const Board& board, PieceColor color)
 {
     std::optional<Square> king;
@@ -600,6 +687,12 @@ std::optional<Square> findKing(const Board& board, PieceColor color)
     return king;
 }
 
+/**
+ * @brief Checks whether one side has a unique king that is not under attack.
+ * @param board Position to inspect.
+ * @param color Side whose king safety is evaluated.
+ * @return true when a unique king exists and is not attacked.
+ */
 bool isKingSafe(const Board& board, PieceColor color)
 {
     const std::optional<Square> king = findKing(board, color);
@@ -607,6 +700,15 @@ bool isKingSafe(const Board& board, PieceColor color)
         && !isSquareAttacked(board, *king, opposite(color));
 }
 
+/**
+ * @brief Verifies that castling does not start in check or cross an attacked square.
+ * @param board Authoritative Board before the move.
+ * @param move Candidate move.
+ * @param color Moving side.
+ * @return true for non-castling moves, or for castles whose origin/transit are safe.
+ *
+ * Final-square king safety is verified against the reconstructed observed board.
+ */
 bool isCastlingPathSafe(
     const Board& board,
     const Move& move,
@@ -630,6 +732,12 @@ bool isCastlingPathSafe(
 
 } // namespace
 
+/**
+ * @brief Board-to-Board validation entry point.
+ *
+ * Computes raw changes with BoardComparator and delegates to the change-list
+ * overload so both public APIs share exactly the same legality pipeline.
+ */
 std::optional<Move> MoveValidator::validate(
     const Board& previous,
     const Board& observed,
@@ -643,6 +751,14 @@ std::optional<Move> MoveValidator::validate(
     );
 }
 
+/**
+ * @brief Core validation pipeline for one observed change set.
+ *
+ * The pipeline validates authoritative side-to-move metadata, reconstructs
+ * observed placement, checks king-count invariants, infers exactly one move,
+ * validates piece rules and history-dependent metadata, checks castling path
+ * safety, then rejects any result that leaves the moving king in check.
+ */
 std::optional<Move> MoveValidator::validate(
     const Board& previous,
     const std::vector<SquareChange>& changes,
