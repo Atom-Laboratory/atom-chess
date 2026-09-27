@@ -184,7 +184,7 @@ TEST(TaskPlannerTest, RejectsMoveFromEmptySource)
     board.clear();
 
     EXPECT_THROW(
-        planner.planTasks(
+        (void)planner.planTasks(
             board,
             ac::chess::Move{.from = {4, 4}, .to = {3, 4}}
         ),
