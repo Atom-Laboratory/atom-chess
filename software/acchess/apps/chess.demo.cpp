@@ -7,10 +7,10 @@
 
 int main()
 {
-    Board board;
+    ac::chess::Board board;
     board.reset();
 
-    Renderer renderer;
+    ac::chess::Renderer renderer;
 
     if (!renderer.init())
         return -1;
@@ -32,7 +32,6 @@ int main()
         board.printBoard();
     }
 
-    
 
     return 0;
 }

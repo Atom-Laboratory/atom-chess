@@ -48,9 +48,12 @@ endif()
 # ==========================================
 add_library(acchess STATIC
     src/board/board.cpp
+    src/board/board_comparator.cpp
     src/board/move.cpp
+    src/board/move_applier.cpp
     src/board/piece.cpp
     src/board/square.cpp
+    src/fen_generator/fen_generator.cpp
     src/utils/path.cpp
     src/engine/stockfish_uci.cpp
 )
@@ -61,9 +64,13 @@ target_sources(acchess
         BASE_DIRS include
         FILES 
             include/board/board.hpp
+            include/board/board_comparator.hpp
             include/board/move.hpp
+            include/board/move_applier.hpp
             include/board/piece.hpp
             include/board/square.hpp
+            include/board/square_change.hpp
+            include/fen_generator/fen_generator.hpp
             include/utils/path.hpp
             include/engine/stockfish_uci.hpp
 )
@@ -119,15 +126,12 @@ if(BUILD_TESTING)
     endif()
 
     # Chess-domain unit tests are deterministic and must not depend on an
-    # external Stockfish binary. EXISTS keeps this branch compatible with
-    # main while PR #85 introduces additional tests incrementally.
-    # Register only tests whose implementation is part of the current acchess
-    # target. Legacy FEN tests still depend on the removed CellState model and
-    # will be replaced by the Board-based tests from PR #85.
+    # external Stockfish binary.
     set(ACCHESS_UNIT_TESTS
         test_board
         test_board_comparator
         test_move_applier
+        test_fen_generator
     )
 
     foreach(test_name IN LISTS ACCHESS_UNIT_TESTS)

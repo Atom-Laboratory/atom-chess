@@ -6,6 +6,8 @@
 
 #include "board/board.hpp"
 
+namespace ac::chess {
+
 class Renderer
 {
 public:
@@ -38,3 +40,5 @@ private:
 
     std::array<sf::Texture, 12> pieceTextures_;
 };
+
+} // namespace ac::chess

@@ -3,6 +3,8 @@
 
 #include <stdexcept>
 
+namespace ac::chess {
+
 Renderer::Renderer()
 {
 }
@@ -129,3 +131,5 @@ void Renderer::draw(const Board& board)
 
     window_.display();
 }
+
+} // namespace ac::chess
