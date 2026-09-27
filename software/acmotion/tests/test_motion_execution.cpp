@@ -180,7 +180,7 @@ TEST(MotionExecutionTest, RejectsInvalidTrajectoryOrdering)
     MotionExecution execution(transport);
 
     EXPECT_THROW(
-        execution.execute({segment(2), segment(1)}),
+        (void)execution.execute({segment(2), segment(1)}),
         std::invalid_argument
     );
     EXPECT_TRUE(transport.sent.empty());
