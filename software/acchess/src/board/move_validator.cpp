@@ -333,7 +333,11 @@ bool isPawnMoveValid(const Board& board, const Move& move, PieceColor color)
         }
 
         const int requiredRow = color == PieceColor::White ? 3 : 4;
+        const auto enPassantTarget = board.enPassantTarget();
+
         return move.from.row == requiredRow
+            && enPassantTarget.has_value()
+            && *enPassantTarget == move.to
             && board.pieceAt({move.from.row, move.to.col})
                 == Piece{PieceType::Pawn, opposite(color)};
     }
@@ -381,6 +385,16 @@ bool isCastlingGeometryValid(
     }
 
     const bool kingSide = move.to.col == 6;
+    const CastlingRights& rights = board.castlingRights();
+
+    const bool hasRight = color == PieceColor::White
+        ? (kingSide ? rights.whiteKingSide : rights.whiteQueenSide)
+        : (kingSide ? rights.blackKingSide : rights.blackQueenSide);
+
+    if (!hasRight) {
+        return false;
+    }
+
     const Square rookSquare{row, kingSide ? 7 : 0};
     if (board.pieceAt(rookSquare) != Piece{PieceType::Rook, color}) {
         return false;
@@ -577,7 +591,8 @@ std::optional<Move> MoveValidator::validate(
     PieceColor sideToMove
 )
 {
-    if (sideToMove == PieceColor::None) {
+    if (sideToMove == PieceColor::None
+        || previous.sideToMove() != sideToMove) {
         return std::nullopt;
     }
 
