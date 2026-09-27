@@ -103,5 +103,36 @@ TEST(MotionPlannerTest, RejectsNonFinitePhysicalPoint)
     );
 }
 
+
+TEST(MotionPlannerTest, ExpandsPhysicalTaskIntoTrajectory)
+{
+    auto mapper = calibratedBoardMapper();
+    MotionPlanner planner(mapper);
+
+    PhysicalTask task;
+    task.type = PhysicalTaskType::MoveBoardPiece;
+    task.physicalSource = Point2D{10.0, 20.0};
+    task.physicalTarget = Point2D{30.0, 40.0};
+
+    const auto trajectory = planner.planTask(task);
+
+    ASSERT_EQ(trajectory.size(), 8u);
+    EXPECT_DOUBLE_EQ(trajectory.front().x, 10.0);
+    EXPECT_DOUBLE_EQ(trajectory.front().y, 20.0);
+    EXPECT_DOUBLE_EQ(trajectory[4].x, 30.0);
+    EXPECT_DOUBLE_EQ(trajectory[4].y, 40.0);
+}
+
+TEST(MotionPlannerTest, RejectsPromotionTaskWithoutPhysicalStrategy)
+{
+    auto mapper = calibratedBoardMapper();
+    MotionPlanner planner(mapper);
+
+    PhysicalTask task;
+    task.type = PhysicalTaskType::PromotionRequired;
+
+    EXPECT_THROW(planner.planTask(task), std::invalid_argument);
+}
+
 } // namespace
 } // namespace ac::motion
