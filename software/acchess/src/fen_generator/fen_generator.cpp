@@ -46,4 +46,38 @@ std::string FenGenerator::generate(const Board& board)
     return fen;
 }
 
+std::string FenGenerator::serializePiecePlacement(const Board& board)
+{
+    std::string fen;
+
+    for (int row = 0; row < 8; ++row) {
+        int emptySquares = 0;
+
+        for (int column = 0; column < 8; ++column) {
+            const Piece piece = board.pieceAt({row, column});
+            if (piece.type == PieceType::None) {
+                ++emptySquares;
+                continue;
+            }
+
+            if (emptySquares > 0) {
+                fen += std::to_string(emptySquares);
+                emptySquares = 0;
+            }
+
+            fen += pieceToChar(piece);
+        }
+
+        if (emptySquares > 0) {
+            fen += std::to_string(emptySquares);
+        }
+
+        if (row < 7) {
+            fen += '/';
+        }
+    }
+
+    return fen;
+}
+
 } // namespace ac::chess
