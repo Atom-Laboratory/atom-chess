@@ -80,4 +80,17 @@ std::string FenGenerator::serializePiecePlacement(const Board& board)
     return fen;
 }
 
+std::string FenGenerator::serializeCastlingRights(const Board& board)
+{
+    const CastlingRights& rights = board.castlingRights();
+    std::string field;
+
+    if (rights.whiteKingSide) field += 'K';
+    if (rights.whiteQueenSide) field += 'Q';
+    if (rights.blackKingSide) field += 'k';
+    if (rights.blackQueenSide) field += 'q';
+
+    return field.empty() ? "-" : field;
+}
+
 } // namespace ac::chess
