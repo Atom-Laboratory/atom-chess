@@ -93,4 +93,21 @@ std::string FenGenerator::serializeCastlingRights(const Board& board)
     return field.empty() ? "-" : field;
 }
 
+std::string FenGenerator::serializeEnPassant(const Board& board)
+{
+    const auto target = board.enPassantTarget();
+    if (!target.has_value()) {
+        return "-";
+    }
+
+    const char file = static_cast<char>('a' + target->col);
+    const char rank = static_cast<char>('8' - target->row);
+    return std::string{file, rank};
+}
+
+char FenGenerator::pieceToChar(Piece piece)
+{
+    return pieceSymbol(piece);
+}
+
 } // namespace ac::chess
