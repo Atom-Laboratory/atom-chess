@@ -9,52 +9,92 @@ namespace {
 
 constexpr int boardSize = 8;
 
+/**
+ * @brief Checks whether a square belongs to the 8x8 board domain.
+ * @param square Zero-based board coordinate.
+ * @return true when row and column are both inside [0, 7].
+ */
 bool isInside(Square square)
 {
     return square.row >= 0 && square.row < boardSize
         && square.col >= 0 && square.col < boardSize;
 }
 
+/**
+ * @brief Tests whether a piece value represents an empty square.
+ * @param piece Piece value to inspect.
+ * @return true only for the canonical empty Piece{} encoding.
+ */
 bool isEmpty(Piece piece)
 {
     return piece == Piece{};
 }
 
-bool hasValidEncoding(Piece piece)
-{
-    return (piece.type == PieceType::None) == (piece.color == PieceColor::None);
-}
-
+/**
+ * @brief Returns the opposing chess color.
+ * @param color White or Black.
+ * @return The opposite concrete color.
+ */
 PieceColor opposite(PieceColor color)
 {
     return color == PieceColor::White ? PieceColor::Black : PieceColor::White;
 }
 
+/**
+ * @brief Returns the row delta used by pawns of one color.
+ * @param color Pawn color.
+ * @return -1 for White and +1 for Black.
+ */
 int pawnDirection(PieceColor color)
 {
     return color == PieceColor::White ? -1 : 1;
 }
 
+/**
+ * @brief Returns the initial pawn rank in internal zero-based coordinates.
+ * @param color Pawn color.
+ * @return 6 for White and 1 for Black.
+ */
 int pawnStartRow(PieceColor color)
 {
     return color == PieceColor::White ? 6 : 1;
 }
 
+/**
+ * @brief Returns the promotion destination row for one color.
+ * @param color Pawn color.
+ * @return 0 for White and 7 for Black.
+ */
 int promotionRow(PieceColor color)
 {
     return color == PieceColor::White ? 0 : 7;
 }
 
+/**
+ * @brief Returns the home row containing king and rooks for one color.
+ * @param color Side being validated.
+ * @return 7 for White and 0 for Black.
+ */
 int homeRow(PieceColor color)
 {
     return color == PieceColor::White ? 7 : 0;
 }
 
+/**
+ * @brief Normalizes an integer delta to {-1, 0, +1}.
+ * @param value Signed delta.
+ * @return Direction step.
+ */
 int step(int value)
 {
     return (value > 0) - (value < 0);
 }
 
+/**
+ * @brief Checks whether a type is a legal pawn-promotion result.
+ * @param type Candidate promoted type.
+ * @return true for knight, bishop, rook or queen.
+ */
 bool isPromotionPiece(PieceType type)
 {
     return type == PieceType::Knight
@@ -63,6 +103,12 @@ bool isPromotionPiece(PieceType type)
         || type == PieceType::Queen;
 }
 
+/**
+ * @brief Verifies that a Board contains exactly one king of one color.
+ * @param board Board to inspect.
+ * @param color King color.
+ * @return true when exactly one matching king exists.
+ */
 bool hasExactlyOneKing(const Board& board, PieceColor color)
 {
     bool foundKing = false;
@@ -84,12 +130,24 @@ bool hasExactlyOneKing(const Board& board, PieceColor color)
     return foundKing;
 }
 
+/**
+ * @brief Validates the king-count invariant for both players.
+ * @param board Board to inspect.
+ * @return true when both colors have exactly one king.
+ */
 bool hasValidKings(const Board& board)
 {
     return hasExactlyOneKing(board, PieceColor::White)
         && hasExactlyOneKing(board, PieceColor::Black);
 }
 
+/**
+ * @brief Checks that all intermediate squares between two aligned squares are empty.
+ * @param board Board used for occupancy queries.
+ * @param from Source square.
+ * @param to Destination square.
+ * @return true when no intermediate square is occupied.
+ */
 bool isPathClear(const Board& board, Square from, Square to)
 {
     if (from == to) {
@@ -125,8 +183,8 @@ std::optional<Board> buildObservedBoard(
         const SquareChange& change = changes[index];
 
         if (!isInside(change.square)
-            || !hasValidEncoding(change.before)
-            || !hasValidEncoding(change.after)
+            || !isValid(change.before)
+            || !isValid(change.after)
             || change.before == change.after
             || previous.pieceAt(change.square) != change.before) {
             return std::nullopt;
