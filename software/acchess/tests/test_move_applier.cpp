@@ -110,6 +110,9 @@ TEST(MoveApplierTest, AppliesEnPassantCapture)
 } // namespace ac::chess
 
 
+namespace ac::chess {
+namespace {
+
 TEST(MoveApplierMetadataTest, WhiteDoublePawnPushUpdatesMetadata)
 {
     Board board;
@@ -195,3 +198,7 @@ TEST(MoveApplierMetadataTest, QuietNonPawnMoveIncrementsHalfmoveClock)
 
     EXPECT_EQ(board.halfmoveClock(), 10);
 }
+
+
+} // namespace
+} // namespace ac::chess
