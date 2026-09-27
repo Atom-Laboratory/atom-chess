@@ -6,6 +6,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string_view>
+#include <system_error>
 #include <vector>
 
 namespace ac::motion {
