@@ -98,7 +98,7 @@ TEST(MotionPlannerTest, RejectsNonFinitePhysicalPoint)
     const double nan = std::numeric_limits<double>::quiet_NaN();
 
     EXPECT_THROW(
-        planner.planTransfer({nan, 0.0}, {0.0, 0.0}),
+        (void)planner.planTransfer({nan, 0.0}, {0.0, 0.0}),
         std::invalid_argument
     );
 }
@@ -131,7 +131,7 @@ TEST(MotionPlannerTest, RejectsPromotionTaskWithoutPhysicalStrategy)
     PhysicalTask task;
     task.type = PhysicalTaskType::PromotionRequired;
 
-    EXPECT_THROW(planner.planTask(task), std::invalid_argument);
+    EXPECT_THROW((void)planner.planTask(task), std::invalid_argument);
 }
 
 } // namespace
