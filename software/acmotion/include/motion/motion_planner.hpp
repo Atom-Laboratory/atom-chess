@@ -3,99 +3,118 @@
 
 #include <string>
 #include <vector>
-#include <utility>
 
-/**
- * @file motion_planner.hpp
- * @brief Trajectory planning and motion execution interface for the SCARA robot.
- */
+#include "motion/coordinate_mapper.hpp"
 
 namespace ac::motion {
 
 /**
  * @enum PredefinedPosition
- * @brief Predefined target positions for state machine transitions.
+ * @brief Stable non-board poses used by high-level motion flows.
  */
 enum class PredefinedPosition {
-    HOME,
-    GRAVEYARD,
-    SAFE_STAGING
+    HOME,        ///< Neutral parking pose away from the board.
+    SAFE_STAGING ///< Generic high-clearance staging pose.
 };
 
 /**
  * @struct Pose
- * @brief Represents a 3D Cartesian position, gripper aperture percentage, and debug label.
+ * @brief One Cartesian manipulation waypoint in the SCARA base frame.
  */
 struct Pose {
-    double x{0.0};              ///< X-coordinate in mm (Cartesian space)
-    double y{0.0};              ///< Y-coordinate in mm (Cartesian space)
-    double z{0.0};              ///< Z-coordinate in mm (Cartesian space)
-    double gripper_percent{0.0};///< Gripper opening percentage (0.0 = fully closed, 100.0 = fully open)
-    std::string label;          ///< Descriptive tag for debugging and logging (e.g., "HOME", "PICK", "PLACE")
-};
-
-/**
- * @class CoordinateMapperMock
- * @brief Mock implementation of the CoordinateMapper interface for board cell translation during testing.
- */
-class CoordinateMapperMock {
-public:
-    virtual ~CoordinateMapperMock() = default;
-
-    /**
-     * @brief Translates an algebraic chess square (e.g., "e4") to Cartesian 2D coordinates (X, Y).
-     * @param square Algebraic notation string for the board cell.
-     * @return std::pair<double, double> Cartesian coordinates {X, Y} in mm at table surface height (Z = 0).
-     */
-    virtual std::pair<double, double> getCoordinates(const std::string& square) const {
-        (void)square;
-        return {100.0, 100.0}; // Simulated fixed coordinates
-    }
+    double x{0.0};               ///< X coordinate in millimetres.
+    double y{0.0};               ///< Y coordinate in millimetres.
+    double z{0.0};               ///< Z coordinate in millimetres.
+    double gripperPercent{0.0};  ///< 0 = closed, 100 = fully open.
+    std::string label;           ///< Diagnostic label for logs/tracing.
 };
 
 /**
  * @class MotionPlanner
- * @brief Generates high-level sequential trajectories (poses) for chess piece manipulation.
+ * @brief Expands one physical transfer into an ordered pick-and-place trajectory.
+ *
+ * MotionPlanner runs on the Linux SBC. It consumes calibrated Cartesian
+ * coordinates and generates high-level poses. It does not interpolate step
+ * pulses, access GPIO, or drive motors directly; those responsibilities belong
+ * to the ESP32-S3 motion controller.
  */
 class MotionPlanner {
 public:
     /**
-     * @brief Constructs a MotionPlanner instance.
-     * @param mapper Reference to the coordinate mapper interface.
-     * @param safeHeightZ Clearance height in Z (mm) to avoid colliding with other pieces during horizontal moves.
-     * @param pickHeightZ Height in Z (mm) where the gripper grips or releases a chess piece.
+     * @brief Constructs a planner using calibrated board geometry.
+     * @param mapper Coordinate mapper used by planBoardMove().
+     * @param safeHeightZ Collision-clearance height in millimetres.
+     * @param pickHeightZ Grasp/release height in millimetres.
+     *
+     * @throws std::invalid_argument when safeHeightZ is not above pickHeightZ,
+     *         or when either height is non-finite.
+     * @note mapper must outlive this planner.
      */
-    MotionPlanner(const CoordinateMapperMock& mapper, 
-                  double safeHeightZ = 50.0, 
-                  double pickHeightZ = 10.0);
+    MotionPlanner(
+        const CoordinateMapper& mapper,
+        double safeHeightZ = 50.0,
+        double pickHeightZ = 10.0
+    );
 
     /**
-     * @brief Generates a trajectory to move a piece from a source cell to a target cell.
-     * @param from Square notation of source position (e.g., "e2").
-     * @param to Square notation of target position (e.g., "e4").
-     * @return std::vector<Pose> Ordered sequence of poses representing the movement trajectory.
+     * @brief Plans a pick-and-place transfer between two physical XY points.
+     * @param source Physical source coordinate in the SCARA base frame.
+     * @param target Physical destination coordinate in the SCARA base frame.
+     * @return Eight ordered poses: approach, lower, grasp, lift, travel, lower,
+     *         release, retract.
+     *
+     * @throws std::invalid_argument when either point contains non-finite values.
      */
-    std::vector<Pose> planMove(const std::string& from, const std::string& to);
+    [[nodiscard]] std::vector<Pose> planTransfer(
+        Point2D source,
+        Point2D target
+    ) const;
 
     /**
-     * @brief Returns a predefined pose based on the state machine Enum.
-     * @param pos Desired predefined position.
-     * @return Pose Cartesian pose associated with the predefined position.
+     * @brief Plans a transfer between two algebraic board squares.
+     * @param from Source square such as "e2".
+     * @param to Target square such as "e4".
+     * @return Same eight-pose sequence produced by planTransfer().
+     *
+     * @throws std::runtime_error when board geometry is not calibrated.
+     * @throws std::invalid_argument when notation is invalid.
      */
-    Pose getPredefinedPose(PredefinedPosition pos) const;
+    [[nodiscard]] std::vector<Pose> planBoardMove(
+        const std::string& from,
+        const std::string& to
+    ) const;
+
+    /**
+     * @brief Returns one stable predefined pose.
+     * @param position Desired predefined target.
+     * @return Cartesian pose associated with the requested position.
+     */
+    [[nodiscard]] Pose getPredefinedPose(PredefinedPosition position) const;
 
 private:
-    const CoordinateMapperMock& mapper_;
-    double safeHeightZ_;
-    double pickHeightZ_;
+    /**
+     * @brief Validates that a 2D physical point is finite.
+     * @param point Coordinate to validate.
+     * @throws std::invalid_argument when X or Y is NaN/inf.
+     */
+    static void validatePoint(Point2D point);
+
+    const CoordinateMapper& mapper_; ///< Calibrated board geometry.
+    double safeHeightZ_;             ///< Collision-clearance height in mm.
+    double pickHeightZ_;             ///< Grasp/release height in mm.
 
     static constexpr double GRIPPER_OPEN = 100.0;
     static constexpr double GRIPPER_CLOSED = 0.0;
 
-    const Pose HOME_POSE = {0.0, 0.0, 150.0, GRIPPER_OPEN, "HOME"};
-    const Pose GRAVEYARD_POSE = {200.0, -100.0, 50.0, GRIPPER_OPEN, "GRAVEYARD"};
+    const Pose HOME_POSE{
+        0.0, 0.0, 150.0, GRIPPER_OPEN, "HOME"
+    };
+
+    const Pose SAFE_STAGING_POSE{
+        0.0, 0.0, 100.0, GRIPPER_OPEN, "SAFE_STAGING"
+    };
 };
 
 } // namespace ac::motion
 
-#endif // ACMOTION_MOTION_PLANNER_HPP
+#endif
