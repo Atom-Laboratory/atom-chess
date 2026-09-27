@@ -46,6 +46,9 @@ TEST(FenGeneratorTest, CompressesEmptySquares)
 } // namespace ac::chess
 
 
+namespace ac::chess {
+namespace {
+
 TEST(FenGeneratorTest, SerializesDynamicMetadata)
 {
     Board board;
@@ -60,3 +63,7 @@ TEST(FenGeneratorTest, SerializesDynamicMetadata)
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b Kq e3 12 7"
     );
 }
+
+
+} // namespace
+} // namespace ac::chess
