@@ -32,36 +32,17 @@ char pieceSymbol(Piece piece)
 
 std::string FenGenerator::generate(const Board& board)
 {
-    std::string fen;
-
-    for (int row = 0; row < 8; ++row) {
-        int emptySquares = 0;
-
-        for (int column = 0; column < 8; ++column) {
-            const Square square{row, column};
-            if (board.isSqrEmpty(square)) {
-                ++emptySquares;
-                continue;
-            }
-
-            if (emptySquares > 0) {
-                fen += std::to_string(emptySquares);
-                emptySquares = 0;
-            }
-
-            fen += pieceSymbol(board.pieceAt(square));
-        }
-
-        if (emptySquares > 0) {
-            fen += std::to_string(emptySquares);
-        }
-
-        if (row < 7) {
-            fen += '/';
-        }
-    }
-
-    fen += " w - - 0 1";
+    std::string fen = serializePiecePlacement(board);
+    fen += ' ';
+    fen += board.sideToMove() == PieceColor::White ? 'w' : 'b';
+    fen += ' ';
+    fen += serializeCastlingRights(board);
+    fen += ' ';
+    fen += serializeEnPassant(board);
+    fen += ' ';
+    fen += std::to_string(board.halfmoveClock());
+    fen += ' ';
+    fen += std::to_string(board.fullmoveNumber());
     return fen;
 }
 
