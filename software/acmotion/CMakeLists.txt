@@ -17,6 +17,7 @@ add_library(${PROJECT_NAME} STATIC
   src/motion_planner.cpp
   src/coordinate_mapper.cpp
   src/graveyard_allocator.cpp
+  src/task_planner.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -62,6 +63,10 @@ if(BUILD_TESTING)
   add_executable(test_graveyard_allocator tests/test_graveyard_allocator.cpp)
   target_link_libraries(test_graveyard_allocator PRIVATE motion GTest::gtest_main)
   add_test(NAME test_graveyard_allocator COMMAND test_graveyard_allocator)
+
+  add_executable(test_task_planner tests/test_task_planner.cpp)
+  target_link_libraries(test_task_planner PRIVATE motion GTest::gtest_main)
+  add_test(NAME test_task_planner COMMAND test_task_planner)
 endif()
 
 # Keep ROS2 package export/install support when ament is available, but do not
