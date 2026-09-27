@@ -500,6 +500,7 @@ TEST(MoveValidatorTest, InfersEnPassant)
     Board previous = boardWithKings();
     previous.setPiece({3, 4}, {PieceType::Pawn, PieceColor::White});
     previous.setPiece({3, 5}, {PieceType::Pawn, PieceColor::Black});
+    previous.setEnPassantTarget(Square{2, 5});
     const Move expected{
         .from = {3, 4},
         .to = {2, 5},
@@ -627,6 +628,7 @@ TEST(MoveValidatorTest, RejectsKingMovementIntoCheck)
 TEST(MoveValidatorTest, AcceptsAChangesSequenceDirectly)
 {
     Board previous = boardWithKings();
+    previous.setSideToMove(PieceColor::Black);
     previous.setPiece({1, 2}, {PieceType::Pawn, PieceColor::Black});
     const Move expected{.from = {1, 2}, .to = {3, 2}};
     const Board observed = afterMove(previous, expected);
@@ -754,6 +756,89 @@ TEST(MoveValidatorTest, RejectsMultipleIncompatibleMoves)
     EXPECT_FALSE(
         MoveValidator::validate(previous, observed, PieceColor::White).has_value()
     );
+}
+
+
+TEST(MoveValidatorMetadataTest, RejectsSideDifferentFromAuthoritativeBoardState)
+{
+    Board previous = boardWithKings();
+    previous.setPiece({6, 3}, {PieceType::Pawn, PieceColor::White});
+
+    const Board observed = afterMove(
+        previous,
+        Move{.from = {6, 3}, .to = {5, 3}}
+    );
+
+    EXPECT_FALSE(
+        MoveValidator::validate(previous, observed, PieceColor::Black).has_value()
+    );
+}
+
+TEST(MoveValidatorMetadataTest, RejectsCastlingWhenRightWasRevoked)
+{
+    Board previous = boardWithKings();
+    previous.setPiece({7, 7}, {PieceType::Rook, PieceColor::White});
+
+    CastlingRights rights = previous.castlingRights();
+    rights.whiteKingSide = false;
+    previous.setCastlingRights(rights);
+
+    const Move castle{
+        .from = {7, 4},
+        .to = {7, 6},
+        .castle = true
+    };
+
+    const Board observed = afterMove(previous, castle);
+
+    EXPECT_FALSE(
+        MoveValidator::validate(previous, observed, PieceColor::White).has_value()
+    );
+}
+
+TEST(MoveValidatorMetadataTest, RejectsEnPassantWithoutMatchingTarget)
+{
+    Board previous = boardWithKings();
+    previous.setPiece({3, 4}, {PieceType::Pawn, PieceColor::White});
+    previous.setPiece({3, 5}, {PieceType::Pawn, PieceColor::Black});
+    previous.setEnPassantTarget(Square{2, 6});
+
+    const Move enPassant{
+        .from = {3, 4},
+        .to = {2, 5},
+        .capture = true,
+        .enPassant = true
+    };
+
+    const Board observed = afterMove(previous, enPassant);
+
+    EXPECT_FALSE(
+        MoveValidator::validate(previous, observed, PieceColor::White).has_value()
+    );
+}
+
+TEST(MoveValidatorMetadataTest, AcceptsEnPassantWithMatchingTarget)
+{
+    Board previous = boardWithKings();
+    previous.setPiece({3, 4}, {PieceType::Pawn, PieceColor::White});
+    previous.setPiece({3, 5}, {PieceType::Pawn, PieceColor::Black});
+    previous.setEnPassantTarget(Square{2, 5});
+
+    const Move expected{
+        .from = {3, 4},
+        .to = {2, 5},
+        .capture = true,
+        .enPassant = true
+    };
+
+    const auto result = MoveValidator::validate(
+        previous,
+        afterMove(previous, expected),
+        PieceColor::White
+    );
+
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(*result, expected);
 }
 
 } // namespace
