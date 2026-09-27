@@ -16,7 +16,7 @@ TEST(MotionProtocolTest, EncodesVersionedJointSegment)
     };
 
     EXPECT_EQ(
-        MotionProtocol::encodeSegment(segment),
+        (void)MotionProtocol::encodeSegment(segment),
         "ACM1|42|SEG|0.500000|-0.250000|25.000000|80.000000|750\n"
     );
 }
@@ -69,7 +69,7 @@ TEST(MotionProtocolTest, RejectsInvalidSegment)
     };
 
     EXPECT_THROW(
-        MotionProtocol::encodeSegment(segment),
+        (void)MotionProtocol::encodeSegment(segment),
         std::invalid_argument
     );
 
@@ -78,7 +78,7 @@ TEST(MotionProtocolTest, RejectsInvalidSegment)
         std::numeric_limits<double>::quiet_NaN();
 
     EXPECT_THROW(
-        MotionProtocol::encodeSegment(segment),
+        (void)MotionProtocol::encodeSegment(segment),
         std::invalid_argument
     );
 }
