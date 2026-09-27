@@ -108,3 +108,90 @@ TEST(MoveApplierTest, AppliesEnPassantCapture)
 
 } // namespace
 } // namespace ac::chess
+
+
+TEST(MoveApplierMetadataTest, WhiteDoublePawnPushUpdatesMetadata)
+{
+    Board board;
+
+    MoveApplier::apply(
+        board,
+        Move{.from = {6, 4}, .to = {4, 4}}
+    );
+
+    EXPECT_EQ(board.sideToMove(), PieceColor::Black);
+    ASSERT_TRUE(board.enPassantTarget().has_value());
+    EXPECT_EQ(*board.enPassantTarget(), (Square{5, 4}));
+    EXPECT_EQ(board.halfmoveClock(), 0);
+    EXPECT_EQ(board.fullmoveNumber(), 1);
+}
+
+TEST(MoveApplierMetadataTest, BlackMoveAdvancesFullmoveAndClearsEnPassant)
+{
+    Board board;
+
+    MoveApplier::apply(
+        board,
+        Move{.from = {6, 4}, .to = {4, 4}}
+    );
+    MoveApplier::apply(
+        board,
+        Move{.from = {1, 4}, .to = {3, 4}}
+    );
+
+    EXPECT_EQ(board.sideToMove(), PieceColor::White);
+    ASSERT_TRUE(board.enPassantTarget().has_value());
+    EXPECT_EQ(*board.enPassantTarget(), (Square{2, 4}));
+    EXPECT_EQ(board.fullmoveNumber(), 2);
+}
+
+TEST(MoveApplierMetadataTest, KingMoveRevokesBothCastlingRights)
+{
+    Board board;
+    board.clear();
+    board.setPiece({7, 4}, {PieceType::King, PieceColor::White});
+
+    MoveApplier::apply(
+        board,
+        Move{.from = {7, 4}, .to = {6, 4}}
+    );
+
+    const auto rights = board.castlingRights();
+    EXPECT_FALSE(rights.whiteKingSide);
+    EXPECT_FALSE(rights.whiteQueenSide);
+    EXPECT_TRUE(rights.blackKingSide);
+    EXPECT_TRUE(rights.blackQueenSide);
+}
+
+TEST(MoveApplierMetadataTest, RookCaptureRevokesCapturedSideRight)
+{
+    Board board;
+    board.clear();
+    board.setPiece({1, 0}, {PieceType::Queen, PieceColor::White});
+    board.setPiece({0, 0}, {PieceType::Rook, PieceColor::Black});
+
+    MoveApplier::apply(
+        board,
+        Move{.from = {1, 0}, .to = {0, 0}, .capture = true}
+    );
+
+    const auto rights = board.castlingRights();
+    EXPECT_FALSE(rights.blackQueenSide);
+    EXPECT_TRUE(rights.blackKingSide);
+    EXPECT_EQ(board.halfmoveClock(), 0);
+}
+
+TEST(MoveApplierMetadataTest, QuietNonPawnMoveIncrementsHalfmoveClock)
+{
+    Board board;
+    board.clear();
+    board.setPiece({7, 1}, {PieceType::Knight, PieceColor::White});
+    board.setHalfmoveClock(9);
+
+    MoveApplier::apply(
+        board,
+        Move{.from = {7, 1}, .to = {5, 2}}
+    );
+
+    EXPECT_EQ(board.halfmoveClock(), 10);
+}
