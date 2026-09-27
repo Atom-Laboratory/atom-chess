@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "motion/coordinate_mapper.hpp"
+#include "motion/physical_task.hpp"
 
 namespace ac::motion {
 
@@ -82,6 +83,21 @@ public:
     [[nodiscard]] std::vector<Pose> planBoardMove(
         const std::string& from,
         const std::string& to
+    ) const;
+
+    /**
+     * @brief Expands one high-level PhysicalTask into a pick-and-place trajectory.
+     * @param task Task produced by TaskPlanner.
+     * @return Eight-pose transfer trajectory for MoveBoardPiece or RemoveCapturedPiece.
+     *
+     * @throws std::invalid_argument when a transfer task lacks physical endpoints,
+     *         or when task.type is PromotionRequired.
+     *
+     * @note PromotionRequired is intentionally not converted into motion until
+     *       the project defines concrete promotion replacement hardware.
+     */
+    [[nodiscard]] std::vector<Pose> planTask(
+        const PhysicalTask& task
     ) const;
 
     /**
