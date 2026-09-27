@@ -1,6 +1,33 @@
 #include "board/move_applier.hpp"
 
+#include <cstdlib>
+
 namespace ac::chess {
+namespace {
+
+void revokeRookRight(CastlingRights& rights, PieceColor color, Square square)
+{
+    if (color == PieceColor::White && square.row == 7) {
+        if (square.col == 0) rights.whiteQueenSide = false;
+        if (square.col == 7) rights.whiteKingSide = false;
+    } else if (color == PieceColor::Black && square.row == 0) {
+        if (square.col == 0) rights.blackQueenSide = false;
+        if (square.col == 7) rights.blackKingSide = false;
+    }
+}
+
+void revokeKingRights(CastlingRights& rights, PieceColor color)
+{
+    if (color == PieceColor::White) {
+        rights.whiteKingSide = false;
+        rights.whiteQueenSide = false;
+    } else if (color == PieceColor::Black) {
+        rights.blackKingSide = false;
+        rights.blackQueenSide = false;
+    }
+}
+
+} // namespace
 
 void MoveApplier::moveCastlingRook(Board& board, const Move& move)
 {
