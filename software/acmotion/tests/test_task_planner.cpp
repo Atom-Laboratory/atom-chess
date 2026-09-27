@@ -45,8 +45,8 @@ TEST(TaskPlannerTest, PlansNormalMoveAsSingleBoardTransfer)
 
     ASSERT_EQ(tasks.size(), 1u);
     EXPECT_EQ(tasks[0].type, PhysicalTaskType::MoveBoardPiece);
-    EXPECT_EQ(tasks[0].boardSource, ac::chess::Square(6, 4));
-    EXPECT_EQ(tasks[0].boardTarget, ac::chess::Square(4, 4));
+    EXPECT_EQ(tasks[0].boardSource, (ac::chess::Square{6, 4}));
+    EXPECT_EQ(tasks[0].boardTarget, (ac::chess::Square{4, 4}));
     ASSERT_TRUE(tasks[0].physicalSource.has_value());
     ASSERT_TRUE(tasks[0].physicalTarget.has_value());
 }
@@ -110,8 +110,8 @@ TEST(TaskPlannerTest, RemovesCorrectPawnForEnPassant)
 
     ASSERT_EQ(tasks.size(), 2u);
     EXPECT_EQ(tasks[0].type, PhysicalTaskType::RemoveCapturedPiece);
-    EXPECT_EQ(tasks[0].boardSource, ac::chess::Square(3, 3));
-    EXPECT_EQ(tasks[1].boardTarget, ac::chess::Square(2, 3));
+    EXPECT_EQ(tasks[0].boardSource, (ac::chess::Square{3, 3}));
+    EXPECT_EQ(tasks[1].boardTarget, (ac::chess::Square{2, 3}));
 }
 
 TEST(TaskPlannerTest, CastlingMovesKingThenRook)
@@ -141,10 +141,10 @@ TEST(TaskPlannerTest, CastlingMovesKingThenRook)
 
     ASSERT_EQ(tasks.size(), 2u);
     EXPECT_EQ(tasks[0].piece.type, ac::chess::PieceType::King);
-    EXPECT_EQ(tasks[0].boardTarget, ac::chess::Square(7, 6));
+    EXPECT_EQ(tasks[0].boardTarget, (ac::chess::Square{7, 6}));
     EXPECT_EQ(tasks[1].piece.type, ac::chess::PieceType::Rook);
-    EXPECT_EQ(tasks[1].boardSource, ac::chess::Square(7, 7));
-    EXPECT_EQ(tasks[1].boardTarget, ac::chess::Square(7, 5));
+    EXPECT_EQ(tasks[1].boardSource, (ac::chess::Square{7, 7}));
+    EXPECT_EQ(tasks[1].boardTarget, (ac::chess::Square{7, 5}));
 }
 
 TEST(TaskPlannerTest, PromotionIsExplicitInsteadOfAssumedPhysicalReplacement)
