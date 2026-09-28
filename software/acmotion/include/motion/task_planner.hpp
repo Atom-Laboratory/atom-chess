@@ -57,7 +57,8 @@ public:
      * @throws std::runtime_error when board/graveyard geometry is not calibrated.
      *
      * @post boardBeforeMove is never modified.
-     * @post GraveyardAllocator consumes a slot only for actual captured pieces.
+     * @post GraveyardAllocator consumes a slot only when the complete plan is
+     *       returned successfully.
      */
     [[nodiscard]] std::vector<PhysicalTask> planTasks(
         const ac::chess::Board& boardBeforeMove,

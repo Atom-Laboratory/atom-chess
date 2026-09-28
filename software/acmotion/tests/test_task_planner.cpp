@@ -49,6 +49,10 @@ TEST(TaskPlannerTest, PlansNormalMoveAsSingleBoardTransfer)
     EXPECT_EQ(tasks[0].boardTarget, (ac::chess::Square{4, 4}));
     ASSERT_TRUE(tasks[0].physicalSource.has_value());
     ASSERT_TRUE(tasks[0].physicalTarget.has_value());
+    EXPECT_NEAR(tasks[0].physicalSource->x, 40.0, 1e-9);
+    EXPECT_NEAR(tasks[0].physicalSource->y, 10.0, 1e-9);
+    EXPECT_NEAR(tasks[0].physicalTarget->x, 40.0, 1e-9);
+    EXPECT_NEAR(tasks[0].physicalTarget->y, 30.0, 1e-9);
 }
 
 TEST(TaskPlannerTest, RemovesCapturedPieceBeforeMovingAttacker)
@@ -190,6 +194,60 @@ TEST(TaskPlannerTest, RejectsMoveFromEmptySource)
         ),
         std::invalid_argument
     );
+}
+
+TEST(TaskPlannerTest, FailedPlanningDoesNotConsumeGraveyardSlot)
+{
+    auto mapper = configuredMapper();
+    GraveyardAllocator graveyard(mapper);
+    TaskPlanner planner(mapper, graveyard);
+
+    ac::chess::Board invalidBoard;
+    invalidBoard.clear();
+    invalidBoard.setPiece({4, 2}, {
+        ac::chess::PieceType::Bishop,
+        ac::chess::PieceColor::White
+    });
+    invalidBoard.setPiece({3, 3}, {
+        ac::chess::PieceType::Pawn,
+        ac::chess::PieceColor::Black
+    });
+
+    const ac::chess::Move structurallyInvalidMove{
+        .from = {4, 2},
+        .to = {3, 3},
+        .capture = true,
+        .castle = true
+    };
+
+    EXPECT_THROW(
+        (void)planner.planTasks(invalidBoard, structurallyInvalidMove),
+        std::invalid_argument
+    );
+
+    ac::chess::Board validBoard;
+    validBoard.clear();
+    validBoard.setPiece({4, 2}, {
+        ac::chess::PieceType::Bishop,
+        ac::chess::PieceColor::White
+    });
+    validBoard.setPiece({3, 3}, {
+        ac::chess::PieceType::Pawn,
+        ac::chess::PieceColor::Black
+    });
+
+    const ac::chess::Move validCapture{
+        .from = {4, 2},
+        .to = {3, 3},
+        .capture = true
+    };
+
+    const auto tasks = planner.planTasks(validBoard, validCapture);
+
+    ASSERT_EQ(tasks.size(), 2u);
+    ASSERT_TRUE(tasks[0].physicalTarget.has_value());
+    EXPECT_DOUBLE_EQ(tasks[0].physicalTarget->x, -100.0);
+    EXPECT_DOUBLE_EQ(tasks[0].physicalTarget->y, -40.0);
 }
 
 } // namespace

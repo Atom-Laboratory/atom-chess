@@ -30,6 +30,10 @@ enum class PhysicalTaskType {
  * A task may reference both logical board coordinates and calibrated physical
  * coordinates. Optional fields are used because PromotionRequired is a control
  * task rather than a direct pick-and-place transfer.
+ *
+ * @invariant MoveBoardPiece and RemoveCapturedPiece contain both physical
+ *            endpoints. PromotionRequired has no physical source because the
+ *            replacement hardware and manipulation strategy are not defined.
  */
 struct PhysicalTask {
     PhysicalTaskType type{PhysicalTaskType::MoveBoardPiece}; ///< Task category.

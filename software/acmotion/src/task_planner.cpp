@@ -1,5 +1,6 @@
 #include "motion/task_planner.hpp"
 
+#include <optional>
 #include <stdexcept>
 
 namespace ac::motion {
@@ -38,90 +39,53 @@ std::vector<PhysicalTask> TaskPlanner::planTasks(
         throw std::invalid_argument("TaskPlanner source square is empty");
     }
 
-    std::vector<PhysicalTask> tasks;
+    std::optional<ac::chess::Piece> capturedPiece;
+    std::optional<ac::chess::Square> capturedSquare;
 
     if (move.enPassant) {
-        const ac::chess::Square capturedSquare{move.from.row, move.to.col};
-        const ac::chess::Piece capturedPiece =
-            boardBeforeMove.pieceAt(capturedSquare);
+        capturedSquare = ac::chess::Square{move.from.row, move.to.col};
+        capturedPiece = boardBeforeMove.pieceAt(*capturedSquare);
 
-        if (capturedPiece.type != ac::chess::PieceType::Pawn
-            || capturedPiece.color == movingPiece.color) {
+        if (capturedPiece->type != ac::chess::PieceType::Pawn
+            || capturedPiece->color == movingPiece.color) {
             throw std::invalid_argument(
                 "En-passant task requires an opposing pawn on the captured square"
             );
         }
-
-        const Point2D graveyardTarget =
-            graveyardAllocator_.allocateNext(capturedPiece);
-
-        tasks.push_back({
-            PhysicalTaskType::RemoveCapturedPiece,
-            capturedPiece,
-            capturedSquare,
-            std::nullopt,
-            boardPoint(capturedSquare),
-            graveyardTarget
-        });
     } else if (move.capture) {
-        const ac::chess::Piece capturedPiece = boardBeforeMove.pieceAt(move.to);
-        if (capturedPiece.type == ac::chess::PieceType::None
-            || capturedPiece.color == movingPiece.color) {
+        capturedSquare = move.to;
+        capturedPiece = boardBeforeMove.pieceAt(*capturedSquare);
+        if (capturedPiece->type == ac::chess::PieceType::None
+            || capturedPiece->color == movingPiece.color) {
             throw std::invalid_argument(
                 "Capture task requires an opposing piece on the destination square"
             );
         }
-
-        const Point2D graveyardTarget =
-            graveyardAllocator_.allocateNext(capturedPiece);
-
-        tasks.push_back({
-            PhysicalTaskType::RemoveCapturedPiece,
-            capturedPiece,
-            move.to,
-            std::nullopt,
-            boardPoint(move.to),
-            graveyardTarget
-        });
     }
 
-    tasks.push_back({
-        PhysicalTaskType::MoveBoardPiece,
-        movingPiece,
-        move.from,
-        move.to,
-        boardPoint(move.from),
-        boardPoint(move.to)
-    });
+    std::optional<ac::chess::Piece> castlingRook;
+    std::optional<ac::chess::Square> rookSource;
+    std::optional<ac::chess::Square> rookTarget;
 
     if (move.castle) {
         const bool kingSide = move.to.col > move.from.col;
-        const ac::chess::Square rookSource{
+        rookSource = ac::chess::Square{
             move.from.row,
             kingSide ? 7 : 0
         };
-        const ac::chess::Square rookTarget{
+        rookTarget = ac::chess::Square{
             move.from.row,
             kingSide ? 5 : 3
         };
-        const ac::chess::Piece rook = boardBeforeMove.pieceAt(rookSource);
+        castlingRook = boardBeforeMove.pieceAt(*rookSource);
 
         if (movingPiece.type != ac::chess::PieceType::King
-            || rook.type != ac::chess::PieceType::Rook
-            || rook.color != movingPiece.color) {
+            || castlingRook->type != ac::chess::PieceType::Rook
+            || castlingRook->color != movingPiece.color) {
             throw std::invalid_argument(
                 "Castling task requires matching king and rook pieces"
             );
         }
-
-        tasks.push_back({
-            PhysicalTaskType::MoveBoardPiece,
-            rook,
-            rookSource,
-            rookTarget,
-            boardPoint(rookSource),
-            boardPoint(rookTarget)
-        });
     }
 
     if (move.promotion != ac::chess::PieceType::None) {
@@ -130,7 +94,62 @@ std::vector<PhysicalTask> TaskPlanner::planTasks(
                 "Promotion task requires a moving pawn"
             );
         }
+    }
 
+    const Point2D movingSource = boardPoint(move.from);
+    const Point2D movingTarget = boardPoint(move.to);
+    const std::optional<Point2D> capturedSource = capturedSquare.has_value()
+        ? std::optional<Point2D>{boardPoint(*capturedSquare)}
+        : std::nullopt;
+    const std::optional<Point2D> rookPhysicalSource = rookSource.has_value()
+        ? std::optional<Point2D>{boardPoint(*rookSource)}
+        : std::nullopt;
+    const std::optional<Point2D> rookPhysicalTarget = rookTarget.has_value()
+        ? std::optional<Point2D>{boardPoint(*rookTarget)}
+        : std::nullopt;
+
+    const std::size_t taskCount = 1U
+        + static_cast<std::size_t>(capturedPiece.has_value())
+        + static_cast<std::size_t>(castlingRook.has_value())
+        + static_cast<std::size_t>(
+            move.promotion != ac::chess::PieceType::None
+        );
+
+    std::vector<PhysicalTask> tasks;
+    tasks.reserve(taskCount);
+
+    if (capturedPiece.has_value()) {
+        tasks.push_back({
+            PhysicalTaskType::RemoveCapturedPiece,
+            *capturedPiece,
+            capturedSquare,
+            std::nullopt,
+            capturedSource,
+            std::nullopt
+        });
+    }
+
+    tasks.push_back({
+        PhysicalTaskType::MoveBoardPiece,
+        movingPiece,
+        move.from,
+        move.to,
+        movingSource,
+        movingTarget
+    });
+
+    if (castlingRook.has_value()) {
+        tasks.push_back({
+            PhysicalTaskType::MoveBoardPiece,
+            *castlingRook,
+            rookSource,
+            rookTarget,
+            rookPhysicalSource,
+            rookPhysicalTarget
+        });
+    }
+
+    if (move.promotion != ac::chess::PieceType::None) {
         tasks.push_back({
             PhysicalTaskType::PromotionRequired,
             {
@@ -140,8 +159,13 @@ std::vector<PhysicalTask> TaskPlanner::planTasks(
             move.to,
             move.to,
             std::nullopt,
-            boardPoint(move.to)
+            movingTarget
         });
+    }
+
+    if (capturedPiece.has_value()) {
+        tasks.front().physicalTarget =
+            graveyardAllocator_.allocateNext(*capturedPiece);
     }
 
     return tasks;
