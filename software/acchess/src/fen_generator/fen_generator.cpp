@@ -32,14 +32,30 @@ char pieceSymbol(Piece piece)
 
 std::string FenGenerator::generate(const Board& board)
 {
+    std::string fen = serializePiecePlacement(board);
+    fen += ' ';
+    fen += board.sideToMove() == PieceColor::White ? 'w' : 'b';
+    fen += ' ';
+    fen += serializeCastlingRights(board);
+    fen += ' ';
+    fen += serializeEnPassant(board);
+    fen += ' ';
+    fen += std::to_string(board.halfmoveClock());
+    fen += ' ';
+    fen += std::to_string(board.fullmoveNumber());
+    return fen;
+}
+
+std::string FenGenerator::serializePiecePlacement(const Board& board)
+{
     std::string fen;
 
     for (int row = 0; row < 8; ++row) {
         int emptySquares = 0;
 
         for (int column = 0; column < 8; ++column) {
-            const Square square{row, column};
-            if (board.isSqrEmpty(square)) {
+            const Piece piece = board.pieceAt({row, column});
+            if (piece.type == PieceType::None) {
                 ++emptySquares;
                 continue;
             }
@@ -49,7 +65,7 @@ std::string FenGenerator::generate(const Board& board)
                 emptySquares = 0;
             }
 
-            fen += pieceSymbol(board.pieceAt(square));
+            fen += pieceToChar(piece);
         }
 
         if (emptySquares > 0) {
@@ -61,8 +77,37 @@ std::string FenGenerator::generate(const Board& board)
         }
     }
 
-    fen += " w - - 0 1";
     return fen;
+}
+
+std::string FenGenerator::serializeCastlingRights(const Board& board)
+{
+    const CastlingRights& rights = board.castlingRights();
+    std::string field;
+
+    if (rights.whiteKingSide) field += 'K';
+    if (rights.whiteQueenSide) field += 'Q';
+    if (rights.blackKingSide) field += 'k';
+    if (rights.blackQueenSide) field += 'q';
+
+    return field.empty() ? "-" : field;
+}
+
+std::string FenGenerator::serializeEnPassant(const Board& board)
+{
+    const auto target = board.enPassantTarget();
+    if (!target.has_value()) {
+        return "-";
+    }
+
+    const char file = static_cast<char>('a' + target->col);
+    const char rank = static_cast<char>('8' - target->row);
+    return std::string{file, rank};
+}
+
+char FenGenerator::pieceToChar(Piece piece)
+{
+    return pieceSymbol(piece);
 }
 
 } // namespace ac::chess
