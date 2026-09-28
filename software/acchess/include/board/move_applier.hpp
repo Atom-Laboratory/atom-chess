@@ -6,31 +6,53 @@
 namespace ac::chess {
 
 /**
- * @brief Applies a previously validated move to a board.
+ * @class MoveApplier
+ * @brief Applies an already validated move to the authoritative Board state.
  *
- * This class only updates the board state. It does not decide whether a move
- * is legal according to chess rules.
+ * MoveApplier is the mutation boundary of Chess Core. It does not decide
+ * whether a move is legal; that responsibility belongs to MoveValidator.
+ *
+ * Applying a move updates both piece placement and all FEN metadata that can
+ * be derived from the transition:
+ * - side to move;
+ * - castling rights;
+ * - en-passant target;
+ * - halfmove clock;
+ * - fullmove number.
+ *
+ * This separation keeps rule validation independent from deterministic state
+ * mutation and allows the resulting Board to be serialized directly to FEN.
  */
 class MoveApplier {
 public:
- /**
-  * @brief Applies a validated move to the board.
-  * @param board The board to be updated.
-  * @param move The move to be applied.
-  */
+    /**
+     * @brief Applies a validated move and atomically updates Board metadata.
+     * @param board Authoritative Board instance to mutate.
+     * @param move Previously validated chess move.
+     *
+     * @pre move.from contains the moving piece.
+     * @pre Special-move flags are already validated by MoveValidator or
+     *      another trusted caller.
+     *
+     * @post Piece placement reflects the move.
+     * @post FEN metadata reflects the resulting game state.
+     */
     static void apply(Board& board, const Move& move);
 
 private:
     /**
-     * @brief Moves the rook during castling.
-     * @param board The board to be updated.
-     * @param move The castling move to be applied.
+     * @brief Relocates the rook portion of an already validated castle.
+     * @param board Board being mutated.
+     * @param move King move carrying the castle flag.
+     *
+     * The rook source/target columns are inferred from the king destination.
      */
     static void moveCastlingRook(Board& board, const Move& move);
+
     /**
-     * @brief Removes the captured pawn during an en passant move.
-     * @param board The board to be updated.
-     * @param move The en passant move to be applied.
+     * @brief Removes the pawn captured by an already validated en-passant move.
+     * @param board Board being mutated.
+     * @param move En-passant move whose destination identifies the captured file.
      */
     static void removeEnPassantPawn(Board& board, const Move& move);
 };

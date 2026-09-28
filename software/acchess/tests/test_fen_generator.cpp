@@ -17,7 +17,7 @@ TEST(FenGeneratorTest, GeneratesArbitraryPositionWithPieceTypesAndColors)
 
     EXPECT_EQ(
         FenGenerator::generate(board),
-        "kq6/8/8/8/8/8/8/6NR w - - 0 1"
+        "kq6/8/8/8/8/8/8/6NR w KQkq - 0 1"
     );
 }
 
@@ -27,7 +27,7 @@ TEST(FenGeneratorTest, GeneratesInitialPositionWithAllPieceTypesAndColors)
 
     EXPECT_EQ(
         FenGenerator::generate(board),
-        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1"
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     );
 }
 
@@ -38,9 +38,32 @@ TEST(FenGeneratorTest, CompressesEmptySquares)
 
     EXPECT_EQ(
         FenGenerator::generate(board),
-        "8/8/8/8/8/8/8/8 w - - 0 1"
+        "8/8/8/8/8/8/8/8 w KQkq - 0 1"
     );
 }
+
+} // namespace
+} // namespace ac::chess
+
+
+namespace ac::chess {
+namespace {
+
+TEST(FenGeneratorTest, SerializesDynamicMetadata)
+{
+    Board board;
+    board.setSideToMove(PieceColor::Black);
+    board.setCastlingRights({true, false, false, true});
+    board.setEnPassantTarget(Square{5, 4});
+    board.setHalfmoveClock(12);
+    board.setFullmoveNumber(7);
+
+    EXPECT_EQ(
+        FenGenerator::generate(board),
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b Kq e3 12 7"
+    );
+}
+
 
 } // namespace
 } // namespace ac::chess
