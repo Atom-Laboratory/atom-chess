@@ -71,3 +71,18 @@ pio device monitor -b 115200
 10. Only then enable full host MotionExecution.
 
 The firmware contains no chess-domain logic and no inverse kinematics.
+
+
+## Runtime cancellation
+
+Cancellation is polled during active motion, not only between segments.
+
+A matching:
+
+```
+ACM1|<active-seq>|CANCEL
+```
+
+stops further STEP generation for the active segment and returns a terminal response. Additional SEG commands received while a segment is active are rejected rather than executed re-entrantly.
+
+The physical E-stop must still be wired as an independent hardware safety mechanism; software cancellation is not a substitute for it.
