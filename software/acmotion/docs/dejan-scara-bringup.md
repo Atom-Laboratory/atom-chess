@@ -5,7 +5,7 @@ This guide is specific to the SCARA robot from the How To Mechatronics tutorial 
 Official mechanical reference:
 https://howtomechatronics.com/projects/scara-robot-how-to-build-your-own-arduino-based-robot/
 
-## 0. Important compatibility status
+## 0. Software compatibility status
 
 The reference robot uses:
 
@@ -15,32 +15,17 @@ The reference robot uses:
 - Z axis — NEMA 17 + lead screw;
 - gripper — MG996R servo.
 
-ATOM currently models J1, J2, Z and gripper in `JointTarget`. J3 is not yet represented in the autonomous execution contract.
+ATOM's motion contract now represents J1/J2/J3/Z plus the servo gripper.
 
-Issue #160 tracks that migration.
+For chess, the SBC uses `Pose.toolYawRad` as the desired planar end-effector orientation. IK solves J1/J2 for XY and computes J3 so the requested yaw is maintained after applying the measured J3 zero offset.
 
-### What you can safely do before #160
-
-- assemble and wire the robot;
-- configure current limits;
-- verify each motor independently;
-- verify endstops;
-- test servo independently;
-- verify SBC ↔ ESP32 serial communication;
-- run repository unit tests;
-- measure mechanical geometry;
-- calibrate coordinate frames;
-- test J1/J2 IK numerically/offline;
-- move individual axes with dedicated low-level firmware/test commands.
-
-### What must wait for #160
-
-Do not execute autonomous Cartesian ATOM trajectories on the complete arm until J3 is represented in:
-
-- JointTarget;
-- IK/orientation;
-- ACM protocol;
-- ESP32 firmware.
+Before powered autonomous motion, you still must measure and configure:
+- J1/J2/J3 mechanical limits;
+- J3 zero offset;
+- all transmission ratios / steps-per-radian;
+- Z steps/mm and limits;
+- motor direction conventions;
+- physical board calibration.
 
 ---
 
@@ -379,21 +364,17 @@ Do not calibrate the board until these conventions are frozen.
 
 ---
 
-# 16. Current software IK check
+# 16. Software IK check
 
-The existing solver can be used to validate J1/J2 position calculations offline.
+The solver now produces J1/J2/J3/Z targets.
 
-It must not yet be considered the complete physical solver for this arm because J3 orientation is missing.
-
-Track completion in #160.
-
-Once #160 is implemented, the expected conceptual relationship for a fixed tool orientation is:
+For the configured sign convention:
 
 ```
-J1 + J2 + J3 = desired tool yaw
+J3 = desired_tool_yaw - J1 - J2 - J3_zero_offset
 ```
 
-with the exact sign/offset convention determined by the physical joint-zero definitions.
+Validate this numerically before powered motion. The measured physical zero/sign convention must match the software configuration; otherwise the tool orientation will be wrong even when XY is correct.
 
 ---
 
@@ -433,7 +414,7 @@ Use measured values, not defaults, for the physical robot.
 
 # 19. First physical pick-and-place
 
-Only after #160 is resolved and the full four-stepper joint contract is validated:
+Only after the full four-stepper joint contract and your measured calibration are validated:
 
 1. use one test piece;
 2. use two central board squares;
