@@ -119,13 +119,15 @@ private:
     double safeHeightZ_;             ///< Collision-clearance height in mm.
     double pickHeightZ_;             ///< Grasp/release height in mm.
 
-    static constexpr double GRIPPER_OPEN = 100.0;
-    static constexpr double GRIPPER_CLOSED = 0.0;
+    static constexpr double GRIPPER_OPEN = 100.0; ///< Fully open gripper command percentage.
+    static constexpr double GRIPPER_CLOSED = 0.0; ///< Fully closed gripper command percentage.
 
+    /** @brief Default neutral parking pose used outside active manipulation. */
     const Pose HOME_POSE{
         0.0, 0.0, 150.0, GRIPPER_OPEN, "HOME"
     };
 
+    /** @brief Default high-clearance staging pose used during safe repositioning. */
     const Pose SAFE_STAGING_POSE{
         0.0, 0.0, 100.0, GRIPPER_OPEN, "SAFE_STAGING"
     };
