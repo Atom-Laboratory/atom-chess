@@ -17,11 +17,11 @@ Run inverse kinematics on the Linux SBC / Brain.
 The SBC converts:
 
 ```
-Pose(x, y, z, gripper)
+Pose(x, y, z, gripper, toolYaw)
     ↓
 InverseKinematics
     ↓
-JointTarget(theta1, theta2, z, gripper)
+JointTarget(theta1, theta2, theta3, z, gripper)
 ```
 
 The ESP32-S3 receives joint-space targets only.
@@ -33,6 +33,8 @@ The solver is parameterized by:
 - link 2 length in millimetres;
 - joint 1 angular limits in radians;
 - joint 2 angular limits in radians;
+- joint 3 angular limits in radians;
+- joint 3 zero offset in radians;
 - Z travel limits in millimetres;
 - deterministic elbow configuration.
 
@@ -49,6 +51,14 @@ theta1 = atan2(y, x) - atan2(L2 sin(theta2), L1 + L2 cos(theta2))
 ```
 
 The selected elbow branch is explicit and deterministic.
+
+For the distal axis:
+
+```
+theta3 = toolYaw - theta1 - theta2 - joint3ZeroOffset
+```
+
+This keeps the planar end-effector/camera orientation explicit and independent from the J1/J2 position solution.
 
 ## Coordinate-frame assumptions
 
@@ -94,8 +104,10 @@ Incorrect frame definitions or CAD measurements can still produce physically uns
 - #156
 
 
-## Joint 3 extension required for the selected arm
+## Joint 3 orientation policy for the selected arm
 
-The current solver is planar 2R position IK. Dejan's How To Mechatronics SCARA includes a third revolute joint at the distal arm/end-effector in addition to J1/J2 and Z.
+The selected How To Mechatronics SCARA includes a third revolute joint at the distal arm/end-effector. ATOM therefore treats tool yaw as part of the Cartesian pose.
 
-For ATOM Chess, #160 must define an explicit planar end-effector orientation contract. A likely MVP policy is to solve J1/J2 for XY and compute J3 to maintain a fixed tool/camera orientation relative to the board. This decision must be implemented and tested before autonomous powered motion.
+J1/J2 solve XY position. J3 compensates the accumulated J1/J2 rotation so the requested tool/camera yaw is maintained relative to the SCARA base frame.
+
+The physical zero offset and J3 limits remain calibration data, not hard-coded geometry.
