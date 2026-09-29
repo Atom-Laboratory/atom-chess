@@ -17,13 +17,13 @@ enum class ErrorCode : int {
     LimitTriggered = 102
 };
 
-AccelStepper j1(AccelStepper::DRIVER,
+AccelStepper joint1(AccelStepper::DRIVER,
                 atom_motion_config::j1StepPin,
                 atom_motion_config::j1DirPin);
-AccelStepper j2(AccelStepper::DRIVER,
+AccelStepper joint2(AccelStepper::DRIVER,
                 atom_motion_config::j2StepPin,
                 atom_motion_config::j2DirPin);
-AccelStepper j3(AccelStepper::DRIVER,
+AccelStepper joint3(AccelStepper::DRIVER,
                 atom_motion_config::j3StepPin,
                 atom_motion_config::j3DirPin);
 AccelStepper zAxis(AccelStepper::DRIVER,
@@ -130,9 +130,9 @@ int gripperPulse(double percent)
  */
 void stopAxes()
 {
-    j1.stop();
-    j2.stop();
-    j3.stop();
+    joint1.stop();
+    joint2.stop();
+    joint3.stop();
     zAxis.stop();
 }
 
@@ -216,9 +216,9 @@ bool executeSegment(
     const long j3Target = lround(j3Rad * atom_motion_config::j3StepsPerRad);
     const long zTarget = lround(zMm * atom_motion_config::zStepsPerMm);
 
-    j1.moveTo(j1Target);
-    j2.moveTo(j2Target);
-    j3.moveTo(j3Target);
+    joint1.moveTo(j1Target);
+    joint2.moveTo(j2Target);
+    joint3.moveTo(j3Target);
     zAxis.moveTo(zTarget);
 
     const double durationSeconds = max(0.001, durationMs / 1000.0);
@@ -230,18 +230,18 @@ bool executeSegment(
         );
     };
 
-    setSegmentSpeed(j1);
-    setSegmentSpeed(j2);
-    setSegmentSpeed(j3);
+    setSegmentSpeed(joint1);
+    setSegmentSpeed(joint2);
+    setSegmentSpeed(joint3);
     setSegmentSpeed(zAxis);
 
     gripper.writeMicroseconds(gripperPulse(gripperPercent));
 
     sendEvent(sequence, "ACK");
 
-    while (j1.distanceToGo() != 0
-           || j2.distanceToGo() != 0
-           || j3.distanceToGo() != 0
+    while (joint1.distanceToGo() != 0
+           || joint2.distanceToGo() != 0
+           || joint3.distanceToGo() != 0
            || zAxis.distanceToGo() != 0) {
         if (inputActive(
                 atom_motion_config::emergencyStopPin,
@@ -257,9 +257,9 @@ bool executeSegment(
             return false;
         }
 
-        j1.run();
-        j2.run();
-        j3.run();
+        joint1.run();
+        joint2.run();
+        joint3.run();
         zAxis.run();
         yield();
     }
@@ -348,12 +348,12 @@ void setup()
     configureInput(atom_motion_config::zLimitPin);
     configureInput(atom_motion_config::emergencyStopPin);
 
-    j1.setPinsInverted(atom_motion_config::j1InvertDirection);
-    j2.setPinsInverted(atom_motion_config::j2InvertDirection);
-    j3.setPinsInverted(atom_motion_config::j3InvertDirection);
+    joint1.setPinsInverted(atom_motion_config::j1InvertDirection);
+    joint2.setPinsInverted(atom_motion_config::j2InvertDirection);
+    joint3.setPinsInverted(atom_motion_config::j3InvertDirection);
     zAxis.setPinsInverted(atom_motion_config::zInvertDirection);
 
-    for (AccelStepper* axis : {&j1, &j2, &j3, &zAxis}) {
+    for (AccelStepper* axis : {&joint1, &joint2, &joint3, &zAxis}) {
         axis->setMaxSpeed(atom_motion_config::maxStepperSpeed);
         axis->setAcceleration(atom_motion_config::stepperAcceleration);
     }
