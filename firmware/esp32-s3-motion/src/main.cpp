@@ -14,7 +14,8 @@ enum class ErrorCode : int {
     InvalidNumber = 2,
     NotConfigured = 100,
     EmergencyStop = 101,
-    LimitTriggered = 102
+    LimitTriggered = 102,
+    UnexpectedCommand = 103
 };
 
 AccelStepper joint1(AccelStepper::DRIVER,
@@ -184,6 +185,60 @@ bool configurationValid()
 }
 
 /**
+ * @brief Polls the serial stream for cancellation while a segment is executing.
+ * @param activeSequence Sequence currently executing.
+ * @return true when a matching ACM1 CANCEL frame was received.
+ *
+ * Only cancellation is accepted during active motion. Additional SEG commands
+ * are rejected instead of being executed re-entrantly.
+ */
+bool cancellationRequested(unsigned long activeSequence)
+{
+    static char cancelLine[96];
+    static size_t cancelUsed = 0;
+
+    while (Serial.available() > 0) {
+        const char ch = static_cast<char>(Serial.read());
+
+        if (ch == '\n') {
+            cancelLine[cancelUsed] = '\0';
+            if (cancelUsed > 0 && cancelLine[cancelUsed - 1] == '\r') {
+                cancelLine[cancelUsed - 1] = '\0';
+            }
+
+            char* fields[4]{};
+            const size_t count = splitFields(cancelLine, fields, 4);
+            cancelUsed = 0;
+
+            unsigned long sequence = 0;
+            if (count == 3
+                && strcmp(fields[0], "ACM1") == 0
+                && parseUnsigned(fields[1], sequence)
+                && strcmp(fields[2], "CANCEL") == 0) {
+                if (sequence == activeSequence) {
+                    return true;
+                }
+
+                sendError(sequence, ErrorCode::UnexpectedCommand);
+                continue;
+            }
+
+            sendError(activeSequence, ErrorCode::UnexpectedCommand);
+            continue;
+        }
+
+        if (cancelUsed + 1 < sizeof(cancelLine)) {
+            cancelLine[cancelUsed++] = ch;
+        } else {
+            cancelUsed = 0;
+            sendError(activeSequence, ErrorCode::InvalidFrame);
+        }
+    }
+
+    return false;
+}
+
+/**
  * @brief Executes one four-axis joint target after ACM1 validation.
  *
  * This is intentionally a conservative blocking MVP executor. Each axis uses
@@ -243,6 +298,12 @@ bool executeSegment(
            || joint2.distanceToGo() != 0
            || joint3.distanceToGo() != 0
            || zAxis.distanceToGo() != 0) {
+        if (cancellationRequested(sequence)) {
+            stopAxes();
+            sendEvent(sequence, "DONE");
+            return false;
+        }
+
         if (inputActive(
                 atom_motion_config::emergencyStopPin,
                 atom_motion_config::emergencyStopActiveLow)) {
