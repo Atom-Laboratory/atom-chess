@@ -102,7 +102,7 @@ TEST(InverseKinematicsTest, RejectsInvalidGeometry)
     geometry.link1Mm = 0.0;
 
     EXPECT_THROW(
-        InverseKinematics(geometry),
+        (void)InverseKinematics{geometry},
         std::invalid_argument
     );
 }
