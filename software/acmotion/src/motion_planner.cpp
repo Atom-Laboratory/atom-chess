@@ -5,6 +5,9 @@
 
 namespace ac::motion {
 
+/**
+ * @brief Stores calibrated geometry and validates vertical safety heights.
+ */
 MotionPlanner::MotionPlanner(
     const CoordinateMapper& mapper,
     double safeHeightZ,
@@ -22,6 +25,9 @@ MotionPlanner::MotionPlanner(
     }
 }
 
+/**
+ * @brief Rejects NaN/infinite Cartesian endpoints before trajectory creation.
+ */
 void MotionPlanner::validatePoint(Point2D point)
 {
     if (!std::isfinite(point.x) || !std::isfinite(point.y)) {
@@ -29,6 +35,12 @@ void MotionPlanner::validatePoint(Point2D point)
     }
 }
 
+/**
+ * @brief Builds the canonical eight-waypoint safe pick-and-place sequence.
+ *
+ * Horizontal travel occurs only at safeHeightZ while the gripper holds the
+ * piece; opening/closing occurs at pickHeightZ.
+ */
 std::vector<Pose> MotionPlanner::planTransfer(
     Point2D source,
     Point2D target) const
@@ -48,6 +60,9 @@ std::vector<Pose> MotionPlanner::planTransfer(
     };
 }
 
+/**
+ * @brief Resolves algebraic board squares and delegates to planTransfer().
+ */
 std::vector<Pose> MotionPlanner::planBoardMove(
     const std::string& from,
     const std::string& to) const
@@ -58,6 +73,12 @@ std::vector<Pose> MotionPlanner::planBoardMove(
     );
 }
 
+/**
+ * @brief Expands one transfer PhysicalTask into Cartesian waypoints.
+ *
+ * PromotionRequired remains intentionally unsupported until replacement
+ * mechanics are defined.
+ */
 std::vector<Pose> MotionPlanner::planTask(
     const PhysicalTask& task) const
 {
@@ -84,6 +105,9 @@ std::vector<Pose> MotionPlanner::planTask(
     throw std::invalid_argument("Unsupported physical task type");
 }
 
+/**
+ * @brief Returns one stable predefined non-board pose.
+ */
 Pose MotionPlanner::getPredefinedPose(PredefinedPosition position) const
 {
     switch (position) {
