@@ -1,13 +1,3 @@
-# BLOCKER: Dejan How To Mechatronics Joint 3
-
-The selected physical SCARA is Dejan's How To Mechatronics design. That arm uses four NEMA 17 driven DOFs: J1, J2, J3 and Z, with a separate servo gripper.
-
-Current acmotion models J1, J2, Z and gripper only. Issue #160 tracks the missing J3/orientation contract.
-
-**Do not start autonomous powered Cartesian motion from this runbook until #160 is resolved.**
-
-The setup, build, calibration-recording, protocol-only and read-only serial sections below are still valid.
-
 # acmotion — Physical Integration Runbook
 
 This runbook is the operational guide for bringing the ATOM Chess motion stack from a clean Linux SBC to the first controlled SCARA movements.
@@ -85,6 +75,8 @@ Record the measured/CAD values in your hardware configuration source:
 - link 2 length, mm;
 - joint 1 minimum/maximum, rad;
 - joint 2 minimum/maximum, rad;
+- joint 3 minimum/maximum, rad;
+- joint 3 zero offset, rad;
 - Z minimum/maximum, mm;
 - joint zero/reference positions;
 - selected elbow configuration;
@@ -102,6 +94,8 @@ Before board calibration, document:
 - +Z direction;
 - positive joint-1 rotation;
 - positive joint-2 rotation;
+- positive joint-3 rotation;
+- tool yaw zero/orientation convention;
 - board plane Z;
 - gripper/tool-center reference.
 
@@ -147,7 +141,7 @@ Before connecting the ESP32:
 2. solve known Cartesian points;
 3. independently calculate or measure expected joint angles;
 4. reject points outside the physical workspace;
-5. verify both configured joint limits and Z limits.
+5. verify J1/J2/J3 limits, requested tool yaw, and Z limits.
 
 Do not use the default values from unit tests as robot configuration. They are synthetic fixtures only.
 
@@ -216,14 +210,15 @@ Test order:
 
 1. joint 1 small positive/negative move;
 2. joint 2 small positive/negative move;
-3. Z small positive/negative move;
-4. gripper open/close;
-5. each limit switch independently;
-6. emergency stop during motion;
-7. two-joint coordinated move;
-8. Cartesian point produced through IK;
-9. board-square approach with gripper open;
-10. only then test pick-and-place.
+3. joint 3 small positive/negative move;
+4. Z small positive/negative move;
+5. gripper open/close;
+6. each limit switch independently;
+7. emergency stop during motion;
+8. J1/J2/J3 coordinated orientation check;
+9. Cartesian point + tool yaw produced through IK;
+10. board-square approach with gripper open;
+11. only then test pick-and-place.
 
 ## 11. First board transfer
 
