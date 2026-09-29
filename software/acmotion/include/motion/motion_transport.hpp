@@ -17,6 +17,9 @@ namespace ac::motion {
  */
 class IMotionTransport {
 public:
+    /**
+     * @brief Virtual destructor for safe destruction through the transport interface.
+     */
     virtual ~IMotionTransport() = default;
 
     /**
