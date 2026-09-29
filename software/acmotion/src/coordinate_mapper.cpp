@@ -12,11 +12,23 @@ namespace ac::motion {
 
 namespace {
 
+/**
+ * @brief Adds two Cartesian XY vectors component-wise.
+ * @param lhs Left operand in millimetres.
+ * @param rhs Right operand in millimetres.
+ * @return Component-wise sum in the SCARA base frame.
+ */
 Point2D add(Point2D lhs, Point2D rhs)
 {
     return {lhs.x + rhs.x, lhs.y + rhs.y};
 }
 
+/**
+ * @brief Scales one Cartesian XY vector by a scalar.
+ * @param value Vector in millimetres.
+ * @param factor Scalar multiplier.
+ * @return Scaled vector.
+ */
 Point2D scale(Point2D value, double factor)
 {
     return {value.x * factor, value.y * factor};
@@ -24,22 +36,37 @@ Point2D scale(Point2D value, double factor)
 
 } // namespace
 
+/**
+ * @brief Constructs the mapper and attempts to restore persisted calibration.
+ *
+ * Failure to load an optional calibration file leaves the mapper uncalibrated;
+ * it does not make construction fail.
+ */
 CoordinateMapper::CoordinateMapper(std::string configPath)
     : configPath_(std::move(configPath))
 {
     loadCalibration();
 }
 
+/**
+ * @brief Returns whether board geometry is ready for square lookup.
+ */
 bool CoordinateMapper::isBoardCalibrated() const noexcept
 {
     return board_.calibrated;
 }
 
+/**
+ * @brief Checks whether both components of a physical point are finite.
+ */
 bool CoordinateMapper::finite(Point2D point) noexcept
 {
     return std::isfinite(point.x) && std::isfinite(point.y);
 }
 
+/**
+ * @brief Checks basic finite/dimension invariants of a graveyard grid.
+ */
 bool CoordinateMapper::validGrid(const GridGeometry& geometry) noexcept
 {
     return finite(geometry.origin) &&
@@ -49,6 +76,11 @@ bool CoordinateMapper::validGrid(const GridGeometry& geometry) noexcept
            geometry.columns > 0;
 }
 
+/**
+ * @brief Computes fixed-board geometry from A1/H1 physical centers.
+ *
+ * Persisted calibration is updated immediately after successful computation.
+ */
 void CoordinateMapper::calibrateBoard(
     Point2D a1,
     Point2D h1,
@@ -77,6 +109,9 @@ void CoordinateMapper::calibrateBoard(
     }
 }
 
+/**
+ * @brief Converts algebraic board notation to a calibrated SCARA-base point.
+ */
 Point2D CoordinateMapper::boardSquare(const std::string& square) const
 {
     if (!board_.calibrated) {
@@ -121,6 +156,9 @@ Point2D CoordinateMapper::boardSquare(const std::string& square) const
     );
 }
 
+/**
+ * @brief Stores and persists one physical graveyard grid.
+ */
 void CoordinateMapper::setGraveyardGeometry(
     GraveyardSide side,
     const GridGeometry& geometry)
@@ -142,6 +180,9 @@ void CoordinateMapper::setGraveyardGeometry(
     }
 }
 
+/**
+ * @brief Resolves one configured graveyard grid coordinate into physical XY.
+ */
 Point2D CoordinateMapper::graveyardSlot(
     GraveyardSide side,
     std::size_t row,
@@ -173,6 +214,11 @@ Point2D CoordinateMapper::graveyardSlot(
     );
 }
 
+/**
+ * @brief Serializes current board/graveyard calibration to the configured file.
+ *
+ * An empty config path is treated as intentional in-memory configuration.
+ */
 bool CoordinateMapper::saveCalibration() const
 {
     if (configPath_.empty()) {
@@ -217,6 +263,11 @@ bool CoordinateMapper::saveCalibration() const
     return file.good();
 }
 
+/**
+ * @brief Parses persisted calibration and validates all reconstructed geometry.
+ *
+ * Any malformed numeric value invalidates all loaded calibration state.
+ */
 bool CoordinateMapper::loadCalibration()
 {
     if (configPath_.empty()) {
