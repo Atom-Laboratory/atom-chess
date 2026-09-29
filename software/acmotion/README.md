@@ -104,3 +104,19 @@ ctest --test-dir build --output-on-failure
 - Keep units explicit in public APIs and Doxygen.
 - Hardware-independent tests must remain runnable on CI.
 - New hardware/protocol decisions should receive an ADR.
+
+
+## How To Mechatronics compatibility warning
+
+The selected physical arm is Dejan's How To Mechatronics SCARA design. The official tutorial describes four NEMA 17 driven degrees of freedom: Joint 1, Joint 2, Joint 3, and the Z-axis, plus an MG996R servo gripper.
+
+The current acmotion joint-space contract models J1, J2, Z, and the gripper, but not the third revolute joint. Therefore the repository is **not yet physically complete for autonomous execution on that exact arm**.
+
+Track the required migration in #160.
+
+Until #160 is resolved:
+
+- do not treat generated JointTarget values as complete commands for the physical arm;
+- do not run autonomous Cartesian motion with motors powered;
+- protocol-only, calibration, unit-test, and read-only serial bring-up remain valid;
+- manual single-axis electrical verification may be performed only with explicit per-axis firmware/test code and normal hardware safety precautions.
