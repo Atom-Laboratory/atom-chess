@@ -21,6 +21,10 @@ enum class PredefinedPosition {
 /**
  * @struct Pose
  * @brief One Cartesian manipulation waypoint in the SCARA base frame.
+ *
+ * Position uses millimetres. toolYawRad expresses desired planar end-effector
+ * orientation in radians and is used to solve the distal J3 axis on the
+ * How To Mechatronics SCARA.
  */
 struct Pose {
     double x{0.0};               ///< X coordinate in millimetres.
@@ -28,6 +32,7 @@ struct Pose {
     double z{0.0};               ///< Z coordinate in millimetres.
     double gripperPercent{0.0};  ///< 0 = closed, 100 = fully open.
     std::string label;           ///< Diagnostic label for logs/tracing.
+    double toolYawRad{0.0};      ///< Desired planar tool orientation in radians in the SCARA base frame.
 };
 
 /**
