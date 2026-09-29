@@ -68,6 +68,11 @@ struct ScaraGeometry {
  * Z and gripper values are passed through after range validation.
  *
  * The ESP32-S3 never solves IK; it receives the resulting JointTarget.
+ *
+ * @warning This class currently solves only planar J1/J2 position plus Z.
+ *          Dejan's How To Mechatronics SCARA includes J3 for distal/tool
+ *          orientation. Issue #160 must be resolved before autonomous physical
+ *          execution on that arm.
  */
 class InverseKinematics {
 public:
