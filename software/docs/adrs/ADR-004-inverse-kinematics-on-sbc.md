@@ -92,3 +92,10 @@ Incorrect frame definitions or CAD measurements can still produce physically uns
 - #58
 - #153
 - #156
+
+
+## Joint 3 extension required for the selected arm
+
+The current solver is planar 2R position IK. Dejan's How To Mechatronics SCARA includes a third revolute joint at the distal arm/end-effector in addition to J1/J2 and Z.
+
+For ATOM Chess, #160 must define an explicit planar end-effector orientation contract. A likely MVP policy is to solve J1/J2 for XY and compute J3 to maintain a fixed tool/camera orientation relative to the board. This decision must be implemented and tested before autonomous powered motion.
