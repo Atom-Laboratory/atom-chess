@@ -91,12 +91,15 @@ public:
 
     /**
      * @brief Returns immutable geometry used by this solver.
+     * @return Validated geometry, limits and deterministic elbow preference.
      */
     [[nodiscard]] const ScaraGeometry& geometry() const noexcept;
 
 private:
     /**
      * @brief Tests whether a solved joint target satisfies all configured limits.
+     * @param target Candidate joint-space solution.
+     * @return true when J1/J2 and Z lie inside inclusive configured limits.
      */
     [[nodiscard]] bool withinLimits(const JointTarget& target) const noexcept;
 
