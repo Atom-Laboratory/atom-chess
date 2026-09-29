@@ -1,59 +1,99 @@
-/**
- * @file motion_planner.cpp
- * @brief Implementation of the MotionPlanner trajectory generation methods.
- */
-
 #include "motion/motion_planner.hpp"
+
+#include <cmath>
+#include <stdexcept>
 
 namespace ac::motion {
 
-MotionPlanner::MotionPlanner(const CoordinateMapperMock& mapper, 
-                             double safeHeightZ, 
-                             double pickHeightZ)
-    : mapper_(mapper), safeHeightZ_(safeHeightZ), pickHeightZ_(pickHeightZ) {}
-
-Pose MotionPlanner::getPredefinedPose(PredefinedPosition pos) const {
-    switch (pos) {
-        case PredefinedPosition::HOME:
-            return HOME_POSE;
-        case PredefinedPosition::GRAVEYARD:
-            return GRAVEYARD_POSE;
-        default:
-            return HOME_POSE;
+MotionPlanner::MotionPlanner(
+    const CoordinateMapper& mapper,
+    double safeHeightZ,
+    double pickHeightZ)
+    : mapper_(mapper),
+      safeHeightZ_(safeHeightZ),
+      pickHeightZ_(pickHeightZ)
+{
+    if (!std::isfinite(safeHeightZ_)
+        || !std::isfinite(pickHeightZ_)
+        || safeHeightZ_ <= pickHeightZ_) {
+        throw std::invalid_argument(
+            "safeHeightZ must be finite and greater than pickHeightZ"
+        );
     }
 }
 
-std::vector<Pose> MotionPlanner::planMove(const std::string& from, const std::string& to) {
-    std::vector<Pose> trajectory;
+void MotionPlanner::validatePoint(Point2D point)
+{
+    if (!std::isfinite(point.x) || !std::isfinite(point.y)) {
+        throw std::invalid_argument("MotionPlanner point must be finite");
+    }
+}
 
-    auto [fromX, fromY] = mapper_.getCoordinates(from);
-    auto [toX, toY]     = mapper_.getCoordinates(to);
+std::vector<Pose> MotionPlanner::planTransfer(
+    Point2D source,
+    Point2D target) const
+{
+    validatePoint(source);
+    validatePoint(target);
 
-    // 1. Move to safe height above source
-    trajectory.push_back({fromX, fromY, safeHeightZ_, GRIPPER_OPEN, "APPROACH_SOURCE"});
+    return {
+        {source.x, source.y, safeHeightZ_, GRIPPER_OPEN, "APPROACH_SOURCE"},
+        {source.x, source.y, pickHeightZ_, GRIPPER_OPEN, "LOWER_TO_SOURCE"},
+        {source.x, source.y, pickHeightZ_, GRIPPER_CLOSED, "GRASP_PIECE"},
+        {source.x, source.y, safeHeightZ_, GRIPPER_CLOSED, "LIFT_PIECE"},
+        {target.x, target.y, safeHeightZ_, GRIPPER_CLOSED, "APPROACH_TARGET"},
+        {target.x, target.y, pickHeightZ_, GRIPPER_CLOSED, "LOWER_TO_TARGET"},
+        {target.x, target.y, pickHeightZ_, GRIPPER_OPEN, "RELEASE_PIECE"},
+        {target.x, target.y, safeHeightZ_, GRIPPER_OPEN, "RETRACT"}
+    };
+}
 
-    // 2. Lower to grasp piece
-    trajectory.push_back({fromX, fromY, pickHeightZ_, GRIPPER_OPEN, "LOWER_TO_SOURCE"});
+std::vector<Pose> MotionPlanner::planBoardMove(
+    const std::string& from,
+    const std::string& to) const
+{
+    return planTransfer(
+        mapper_.boardSquare(from),
+        mapper_.boardSquare(to)
+    );
+}
 
-    // 3. Close gripper
-    trajectory.push_back({fromX, fromY, pickHeightZ_, GRIPPER_CLOSED, "GRASP_PIECE"});
+std::vector<Pose> MotionPlanner::planTask(
+    const PhysicalTask& task) const
+{
+    switch (task.type) {
+        case PhysicalTaskType::MoveBoardPiece:
+        case PhysicalTaskType::RemoveCapturedPiece:
+            if (!task.physicalSource.has_value()
+                || !task.physicalTarget.has_value()) {
+                throw std::invalid_argument(
+                    "Physical transfer task requires source and target coordinates"
+                );
+            }
+            return planTransfer(
+                *task.physicalSource,
+                *task.physicalTarget
+            );
 
-    // 4. Lift piece to safe height
-    trajectory.push_back({fromX, fromY, safeHeightZ_, GRIPPER_CLOSED, "LIFT_PIECE"});
+        case PhysicalTaskType::PromotionRequired:
+            throw std::invalid_argument(
+                "PromotionRequired has no physical replacement strategy"
+            );
+    }
 
-    // 5. Move horizontally to safe height above target
-    trajectory.push_back({toX, toY, safeHeightZ_, GRIPPER_CLOSED, "APPROACH_TARGET"});
+    throw std::invalid_argument("Unsupported physical task type");
+}
 
-    // 6. Lower to target height
-    trajectory.push_back({toX, toY, pickHeightZ_, GRIPPER_CLOSED, "LOWER_TO_TARGET"});
+Pose MotionPlanner::getPredefinedPose(PredefinedPosition position) const
+{
+    switch (position) {
+        case PredefinedPosition::HOME:
+            return HOME_POSE;
+        case PredefinedPosition::SAFE_STAGING:
+            return SAFE_STAGING_POSE;
+    }
 
-    // 7. Open gripper
-    trajectory.push_back({toX, toY, pickHeightZ_, GRIPPER_OPEN, "RELEASE_PIECE"});
-
-    // 8. Retract to safe height
-    trajectory.push_back({toX, toY, safeHeightZ_, GRIPPER_OPEN, "RETRACT"});
-
-    return trajectory;
+    return HOME_POSE;
 }
 
 } // namespace ac::motion

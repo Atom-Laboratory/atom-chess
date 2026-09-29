@@ -123,6 +123,7 @@ jobs:
             --std=c++20 \
             --suppress=missingIncludeSystem \
             -i software/acchess/tests \
+            -i software/acmotion/tests \
             software
 
       - name: clang-tidy
