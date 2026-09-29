@@ -16,14 +16,14 @@ namespace ac::motion {
  * @brief Synchronous host-side execution state exposed for diagnostics/FSM integration.
  */
 enum class MotionExecutionState {
-    Idle,
-    Sending,
-    WaitingAck,
-    WaitingDone,
-    Completed,
-    Error,
-    SafeStop,
-    Cancelled
+    Idle,       ///< No trajectory is currently being executed.
+    Sending,    ///< Host is transmitting a command to the controller.
+    WaitingAck, ///< Host waits for controller acceptance of the active segment.
+    WaitingDone,///< Host waits for successful completion of the active segment.
+    Completed,  ///< All trajectory segments completed successfully.
+    Error,      ///< Execution stopped because of transport/protocol/controller failure.
+    SafeStop,   ///< Execution stopped because of E-stop or a limit condition.
+    Cancelled   ///< Host cancellation was transmitted successfully.
 };
 
 /**
@@ -31,14 +31,14 @@ enum class MotionExecutionState {
  * @brief Terminal result returned by one trajectory execution attempt.
  */
 enum class MotionExecutionResult {
-    Success,
-    TransportError,
-    Timeout,
-    ProtocolError,
-    ControllerError,
-    EmergencyStop,
-    LimitTriggered,
-    Cancelled
+    Success,        ///< Entire requested trajectory completed successfully.
+    TransportError, ///< Host transport refused or failed command transmission.
+    Timeout,        ///< Expected controller response was not received in time.
+    ProtocolError,  ///< Malformed, unexpected or wrong-sequence response was received.
+    ControllerError,///< ESP32-S3 explicitly reported an execution error.
+    EmergencyStop,  ///< Emergency-stop event interrupted execution.
+    LimitTriggered, ///< Limit/endstop event interrupted execution.
+    Cancelled       ///< Execution was explicitly cancelled by the host.
 };
 
 /**
@@ -91,11 +91,13 @@ public:
 
     /**
      * @brief Returns the current host-side execution state.
+     * @return Current MotionExecutionState used by diagnostics/FSM integration.
      */
     [[nodiscard]] MotionExecutionState state() const noexcept;
 
     /**
      * @brief Returns the most recently active command sequence.
+     * @return Last sequence sent or being processed; zero before any execution.
      */
     [[nodiscard]] std::uint32_t activeSequence() const noexcept;
 
