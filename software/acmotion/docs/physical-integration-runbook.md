@@ -1,3 +1,13 @@
+# BLOCKER: Dejan How To Mechatronics Joint 3
+
+The selected physical SCARA is Dejan's How To Mechatronics design. That arm uses four NEMA 17 driven DOFs: J1, J2, J3 and Z, with a separate servo gripper.
+
+Current acmotion models J1, J2, Z and gripper only. Issue #160 tracks the missing J3/orientation contract.
+
+**Do not start autonomous powered Cartesian motion from this runbook until #160 is resolved.**
+
+The setup, build, calibration-recording, protocol-only and read-only serial sections below are still valid.
+
 # acmotion — Physical Integration Runbook
 
 This runbook is the operational guide for bringing the ATOM Chess motion stack from a clean Linux SBC to the first controlled SCARA movements.
