@@ -97,6 +97,12 @@ private:
 
     const CoordinateMapper& mapper_; ///< Source of calibrated physical coordinates.
 
+    /**
+     * @brief Next free allocation index for every independent color/type pool.
+     *
+     * The counter is incremented only after a physical slot is resolved
+     * successfully, so failed allocation attempts do not consume capacity.
+     */
     std::map<
         std::pair<ac::chess::PieceColor, ac::chess::PieceType>,
         std::size_t
