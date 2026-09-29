@@ -103,3 +103,10 @@ First validate:
 ACM1 segment frames include J1, J2, J3, Z and gripper. Because no production firmware had been frozen when J3 support was added, the MVP retained the ACM1 version while extending the SEG payload.
 
 Any future incompatible framing change should increment the protocol version.
+
+
+## Cancellation during execution
+
+The ESP32-S3 parser must remain responsive to `CANCEL` while a segment is active. The reference firmware polls serial input inside the active-motion loop and rejects re-entrant SEG commands.
+
+Software cancellation is operational control, not the primary safety mechanism. E-stop must remain independently wired at the hardware level.
