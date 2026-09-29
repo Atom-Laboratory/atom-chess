@@ -81,3 +81,8 @@ Before connecting motors:
 - #152
 - #153 / #156
 - #154 / #155
+
+
+## Physical-arm compatibility note
+
+The chosen How To Mechatronics SCARA has J1, J2, J3 and Z as NEMA-17-driven DOFs, plus a servo gripper. The current software boundary must be extended to carry Joint 3 before autonomous physical execution. See #160.
