@@ -5,6 +5,9 @@
 
 namespace ac::motion {
 
+/**
+ * @brief Binds logical task planning to calibrated board/graveyard geometry.
+ */
 TaskPlanner::TaskPlanner(
     const CoordinateMapper& mapper,
     GraveyardAllocator& graveyardAllocator)
@@ -13,6 +16,9 @@ TaskPlanner::TaskPlanner(
 {
 }
 
+/**
+ * @brief Converts internal row/column coordinates into algebraic board notation.
+ */
 std::string TaskPlanner::toAlgebraic(ac::chess::Square square)
 {
     if (square.row < 0 || square.row > 7
@@ -25,11 +31,20 @@ std::string TaskPlanner::toAlgebraic(ac::chess::Square square)
     return std::string{file, rank};
 }
 
+/**
+ * @brief Resolves one logical board square through CoordinateMapper.
+ */
 Point2D TaskPlanner::boardPoint(ac::chess::Square square) const
 {
     return mapper_.boardSquare(toAlgebraic(square));
 }
 
+/**
+ * @brief Decomposes one trusted chess Move into ordered physical operations.
+ *
+ * All structural preconditions are checked before GraveyardAllocator consumes
+ * a slot, preserving allocation state if plan construction fails.
+ */
 std::vector<PhysicalTask> TaskPlanner::planTasks(
     const ac::chess::Board& boardBeforeMove,
     const ac::chess::Move& move)
