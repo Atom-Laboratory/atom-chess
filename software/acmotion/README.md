@@ -47,6 +47,7 @@ interpolation / motion profile / STEP-DIR
 
 Start here for physical integration:
 
+- [Dejan SCARA bring-up manual](docs/dejan-scara-bringup.md)
 - [Physical integration runbook](docs/physical-integration-runbook.md)
 - [Physical calibration template](docs/physical-calibration-template.md)
 
