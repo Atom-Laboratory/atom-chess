@@ -41,7 +41,7 @@ JointSegment segment(std::uint32_t sequence)
 {
     return JointSegment{
         sequence,
-        {0.1, 0.2, 25.0, 100.0},
+        {0.1, 0.2, -0.3, 25.0, 100.0},
         500
     };
 }
