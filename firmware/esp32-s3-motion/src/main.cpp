@@ -160,6 +160,30 @@ bool anyLimitActive()
 }
 
 /**
+ * @brief Validates that all safety-critical physical configuration is populated.
+ * @return true only when motion pins, conversions and gripper pin are usable.
+ */
+bool configurationValid()
+{
+    return atom_motion_config::configured
+        && atom_motion_config::j1StepPin >= 0
+        && atom_motion_config::j1DirPin >= 0
+        && atom_motion_config::j2StepPin >= 0
+        && atom_motion_config::j2DirPin >= 0
+        && atom_motion_config::j3StepPin >= 0
+        && atom_motion_config::j3DirPin >= 0
+        && atom_motion_config::zStepPin >= 0
+        && atom_motion_config::zDirPin >= 0
+        && atom_motion_config::gripperServoPin >= 0
+        && atom_motion_config::j1StepsPerRad > 0.0
+        && atom_motion_config::j2StepsPerRad > 0.0
+        && atom_motion_config::j3StepsPerRad > 0.0
+        && atom_motion_config::zStepsPerMm > 0.0
+        && atom_motion_config::maxStepperSpeed > 0.0
+        && atom_motion_config::stepperAcceleration > 0.0;
+}
+
+/**
  * @brief Executes one four-axis joint target after ACM1 validation.
  *
  * This is intentionally a conservative blocking MVP executor. Each axis uses
@@ -175,7 +199,7 @@ bool executeSegment(
     double gripperPercent,
     unsigned long durationMs)
 {
-    if (!atom_motion_config::configured) {
+    if (!configurationValid()) {
         sendError(sequence, ErrorCode::NotConfigured);
         return false;
     }
@@ -343,7 +367,7 @@ void setup()
     }
 
     Serial.println(
-        atom_motion_config::configured
+        configurationValid()
             ? "ATOM_MOTION_READY"
             : "ATOM_MOTION_CONFIG_REQUIRED"
     );
