@@ -113,6 +113,7 @@ void MotionProtocol::validateSegment(const JointSegment& segment)
 
     if (!std::isfinite(target.joint1Rad)
         || !std::isfinite(target.joint2Rad)
+        || !std::isfinite(target.joint3Rad)
         || !std::isfinite(target.zMm)
         || !std::isfinite(target.gripperPercent)) {
         throw std::invalid_argument("Motion segment target must be finite");
@@ -137,6 +138,7 @@ std::string MotionProtocol::encodeSegment(const JointSegment& segment)
            << "ACM1|" << segment.sequence
            << "|SEG|" << segment.target.joint1Rad
            << '|' << segment.target.joint2Rad
+           << '|' << segment.target.joint3Rad
            << '|' << segment.target.zMm
            << '|' << segment.target.gripperPercent
            << '|' << segment.durationMs

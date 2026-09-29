@@ -26,6 +26,8 @@ Document with a sketch/photo reference if possible.
 - +Z direction:
 - Joint 1 positive rotation:
 - Joint 2 positive rotation:
+- Joint 3 positive rotation:
+- Tool yaw zero orientation:
 - Z zero/reference:
 - Tool-center-point definition:
 - Board plane Z:
@@ -43,6 +45,9 @@ Values used by `ScaraGeometry`.
 | Joint 1 maximum | TBD | rad | mechanical |
 | Joint 2 minimum | TBD | rad | mechanical |
 | Joint 2 maximum | TBD | rad | mechanical |
+| Joint 3 minimum | TBD | rad | mechanical |
+| Joint 3 maximum | TBD | rad | mechanical |
+| Joint 3 zero offset | TBD | rad | measured/reference |
 | Z minimum | TBD | mm | mechanical |
 | Z maximum | TBD | mm | mechanical |
 | Preferred elbow | TBD | Up/Down | integration decision |
@@ -70,6 +75,17 @@ Never replace TBD with values copied from unit-test fixtures.
 - Microstepping:
 - Transmission ratio:
 - Zero offset:
+
+### Joint 3
+
+- Physical reference:
+- Endstop/reference sensor:
+- Motor direction:
+- Steps/revolution:
+- Microstepping:
+- Transmission ratio:
+- Zero offset:
+- Tool yaw when J1=J2=J3=0:
 
 ### Z axis
 
@@ -165,6 +181,7 @@ Device paths such as `/dev/ttyUSB0` may change across boots. Prefer stable udev 
 
 - Joint 1 + / -:
 - Joint 2 + / -:
+- Joint 3 + / -:
 - Z + / -:
 - Gripper:
 

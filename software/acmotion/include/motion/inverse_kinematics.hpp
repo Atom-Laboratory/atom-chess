@@ -26,6 +26,8 @@ struct JointLimits {
     double joint1MaxRad{3.14159265358979323846};  ///< Maximum joint 1 angle.
     double joint2MinRad{-3.14159265358979323846}; ///< Minimum joint 2 angle.
     double joint2MaxRad{3.14159265358979323846};  ///< Maximum joint 2 angle.
+    double joint3MinRad{-3.14159265358979323846}; ///< Minimum joint 3 angle.
+    double joint3MaxRad{3.14159265358979323846};  ///< Maximum joint 3 angle.
     double zMinMm{0.0};                           ///< Minimum linear Z position.
     double zMaxMm{200.0};                         ///< Maximum linear Z position.
 };
@@ -42,6 +44,7 @@ struct ScaraGeometry {
     double link1Mm{0.0}; ///< Shoulder-to-elbow link length.
     double link2Mm{0.0}; ///< Elbow-to-tool-center link length.
     JointLimits limits{};///< Mechanical workspace limits.
+    double joint3ZeroOffsetRad{0.0}; ///< Mechanical/electrical J3 zero offset in radians.
     ElbowConfiguration preferredElbow{ElbowConfiguration::Up}; ///< Deterministic solution branch.
 };
 
@@ -65,14 +68,17 @@ struct ScaraGeometry {
  * L_1+L_2\cos\theta_2)
  * @f]
  *
- * Z and gripper values are passed through after range validation.
+ * J1/J2 solve planar XY position. J3 maintains the requested planar tool
+ * orientation according to:
  *
- * The ESP32-S3 never solves IK; it receives the resulting JointTarget.
+ * @f[
+ * \theta_3 = \psi_{tool} - \theta_1 - \theta_2 - o_3
+ * @f]
  *
- * @warning This class currently solves only planar J1/J2 position plus Z.
- *          Dejan's How To Mechatronics SCARA includes J3 for distal/tool
- *          orientation. Issue #160 must be resolved before autonomous physical
- *          execution on that arm.
+ * where `toolYawRad` is \f$\psi_{tool}\f$ and `joint3ZeroOffsetRad`
+ * is the measured J3 zero offset. Z and gripper pass through after validation.
+ *
+ * The ESP32-S3 never solves IK; it receives J1/J2/J3/Z/gripper targets.
  */
 class InverseKinematics {
 public:
@@ -104,7 +110,7 @@ private:
     /**
      * @brief Tests whether a solved joint target satisfies all configured limits.
      * @param target Candidate joint-space solution.
-     * @return true when J1/J2 and Z lie inside inclusive configured limits.
+     * @return true when J1/J2/J3 and Z lie inside inclusive configured limits.
      */
     [[nodiscard]] bool withinLimits(const JointTarget& target) const noexcept;
 

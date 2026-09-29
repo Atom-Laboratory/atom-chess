@@ -18,6 +18,8 @@ ScaraGeometry defaultGeometry(
         std::numbers::pi,
         -std::numbers::pi,
         std::numbers::pi,
+        -std::numbers::pi,
+        std::numbers::pi,
         0.0,
         200.0
     };
@@ -36,6 +38,7 @@ TEST(InverseKinematicsTest, SolvesFullyExtendedXAxis)
     ASSERT_TRUE(target.has_value());
     EXPECT_NEAR(target->joint1Rad, 0.0, 1e-9);
     EXPECT_NEAR(target->joint2Rad, 0.0, 1e-9);
+    EXPECT_NEAR(target->joint3Rad, 0.0, 1e-9);
     EXPECT_DOUBLE_EQ(target->zMm, 25.0);
     EXPECT_DOUBLE_EQ(target->gripperPercent, 50.0);
 }
@@ -51,6 +54,7 @@ TEST(InverseKinematicsTest, SolvesKnownElbowUpConfiguration)
     ASSERT_TRUE(target.has_value());
     EXPECT_NEAR(target->joint1Rad, 0.0, 1e-9);
     EXPECT_NEAR(target->joint2Rad, std::numbers::pi / 2.0, 1e-9);
+    EXPECT_NEAR(target->joint3Rad, -std::numbers::pi / 2.0, 1e-9);
 }
 
 TEST(InverseKinematicsTest, SolvesDeterministicElbowDownConfiguration)
@@ -64,6 +68,7 @@ TEST(InverseKinematicsTest, SolvesDeterministicElbowDownConfiguration)
     ASSERT_TRUE(target.has_value());
     EXPECT_NEAR(target->joint1Rad, std::numbers::pi / 2.0, 1e-9);
     EXPECT_NEAR(target->joint2Rad, -std::numbers::pi / 2.0, 1e-9);
+    EXPECT_NEAR(target->joint3Rad, 0.0, 1e-9);
 }
 
 TEST(InverseKinematicsTest, RejectsPointOutsideRadialWorkspace)
@@ -115,6 +120,52 @@ TEST(InverseKinematicsTest, RejectsInvalidGripperValue)
         (void)ik.solve(Pose{100.0, 100.0, 20.0, 120.0, "TEST"}),
         std::invalid_argument
     );
+}
+
+
+TEST(InverseKinematicsTest, MaintainsRequestedPlanarToolYawWithJoint3)
+{
+    InverseKinematics ik(defaultGeometry());
+
+    Pose pose{100.0, 100.0, 20.0, 100.0, "TEST"};
+    pose.toolYawRad = std::numbers::pi / 4.0;
+
+    const auto target = ik.solve(pose);
+
+    ASSERT_TRUE(target.has_value());
+    EXPECT_NEAR(
+        target->joint1Rad + target->joint2Rad + target->joint3Rad,
+        pose.toolYawRad,
+        1e-9
+    );
+}
+
+TEST(InverseKinematicsTest, AppliesJoint3ZeroOffset)
+{
+    auto geometry = defaultGeometry();
+    geometry.joint3ZeroOffsetRad = 0.25;
+    InverseKinematics ik(geometry);
+
+    Pose pose{200.0, 0.0, 20.0, 100.0, "TEST"};
+    pose.toolYawRad = 0.5;
+
+    const auto target = ik.solve(pose);
+
+    ASSERT_TRUE(target.has_value());
+    EXPECT_NEAR(target->joint3Rad, 0.25, 1e-9);
+}
+
+TEST(InverseKinematicsTest, RejectsJoint3OutsideMechanicalLimits)
+{
+    auto geometry = defaultGeometry();
+    geometry.limits.joint3MinRad = -0.25;
+    geometry.limits.joint3MaxRad = 0.25;
+    InverseKinematics ik(geometry);
+
+    Pose pose{100.0, 100.0, 20.0, 100.0, "TEST"};
+    pose.toolYawRad = std::numbers::pi;
+
+    EXPECT_FALSE(ik.solve(pose).has_value());
 }
 
 } // namespace

@@ -19,7 +19,7 @@ Use a versioned, line-delimited ASCII protocol named ACM1 for the MVP.
 Segment:
 
 ```
-ACM1|<seq>|SEG|<j1_rad>|<j2_rad>|<z_mm>|<gripper_pct>|<duration_ms>
+ACM1|<seq>|SEG|<j1_rad>|<j2_rad>|<j3_rad>|<z_mm>|<gripper_pct>|<duration_ms>
 ```
 
 Cancellation:
@@ -98,8 +98,15 @@ First validate:
 - #155
 
 
-## Joint 3 protocol migration
+## Joint 3 field
 
-ACM1 currently serializes J1, J2, Z and gripper. The selected How To Mechatronics arm requires an additional Joint 3 field. Issue #160 tracks the protocol/firmware migration.
+ACM1 segment frames include J1, J2, J3, Z and gripper. Because no production firmware had been frozen when J3 support was added, the MVP retained the ACM1 version while extending the SEG payload.
 
-Do not freeze ACM1 as a production-compatible physical protocol for this arm until that migration is complete. A protocol version bump should be considered if backward compatibility matters.
+Any future incompatible framing change should increment the protocol version.
+
+
+## Cancellation during execution
+
+The ESP32-S3 parser must remain responsive to `CANCEL` while a segment is active. The reference firmware polls serial input inside the active-motion loop and rejects re-entrant SEG commands.
+
+Software cancellation is operational control, not the primary safety mechanism. E-stop must remain independently wired at the hardware level.
