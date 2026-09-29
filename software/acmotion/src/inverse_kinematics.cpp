@@ -10,6 +10,11 @@ namespace {
 /**
  * @brief Returns true when every scalar in a mechanical range is finite.
  */
+/**
+ * @brief Returns true when all configured mechanical limit scalars are finite.
+ * @param limits Joint/Z limits to inspect.
+ * @return true when every bound is finite.
+ */
 bool finiteLimits(const JointLimits& limits)
 {
     return std::isfinite(limits.joint1MinRad)
@@ -22,6 +27,9 @@ bool finiteLimits(const JointLimits& limits)
 
 } // namespace
 
+/**
+ * @brief Validates and stores the geometric model used by the solver.
+ */
 InverseKinematics::InverseKinematics(ScaraGeometry geometry)
     : geometry_(geometry)
 {
@@ -39,6 +47,12 @@ InverseKinematics::InverseKinematics(ScaraGeometry geometry)
     }
 }
 
+/**
+ * @brief Solves the configured planar 2R SCARA branch for one Cartesian pose.
+ *
+ * Radially unreachable positions and mechanically disallowed solutions return
+ * std::nullopt instead of throwing.
+ */
 std::optional<JointTarget> InverseKinematics::solve(const Pose& pose) const
 {
     if (!std::isfinite(pose.x)
@@ -91,6 +105,9 @@ std::optional<JointTarget> InverseKinematics::solve(const Pose& pose) const
     return target;
 }
 
+/**
+ * @brief Checks inclusive J1/J2/Z mechanical limits for a candidate solution.
+ */
 bool InverseKinematics::withinLimits(const JointTarget& target) const noexcept
 {
     const JointLimits& limits = geometry_.limits;
@@ -103,6 +120,9 @@ bool InverseKinematics::withinLimits(const JointTarget& target) const noexcept
         && target.zMm <= limits.zMaxMm;
 }
 
+/**
+ * @brief Exposes the validated immutable solver geometry.
+ */
 const ScaraGeometry& InverseKinematics::geometry() const noexcept
 {
     return geometry_;
