@@ -38,6 +38,10 @@ struct ControllerEvent {
  * Frames are line-delimited ASCII for MVP diagnostics and firmware simplicity.
  * Chess semantics never cross this boundary.
  *
+ * @warning ACM1 currently serializes J1/J2/Z/gripper only. The selected Dejan
+ *          SCARA requires J3 as well. See #160 before using ACM1 for autonomous
+ *          powered execution on the physical arm.
+ *
  * Command examples:
  * @code
  * ACM1|42|SEG|0.523599|0.733038|25.000000|100.000000|800

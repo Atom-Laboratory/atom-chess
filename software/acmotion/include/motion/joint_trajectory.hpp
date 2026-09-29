@@ -16,6 +16,10 @@ namespace ac::motion {
  *
  * This structure is intentionally free of chess-domain semantics so it can be
  * serialized toward the ESP32-S3 without exposing FEN, PieceType or Square.
+ *
+ * @warning The selected How To Mechatronics SCARA has a third revolute joint
+ *          (J3) in addition to J1/J2/Z. The current structure is incomplete
+ *          for autonomous physical execution on that exact arm. See #160.
  */
 struct JointTarget {
     double joint1Rad{0.0};      ///< First revolute SCARA joint angle in radians.

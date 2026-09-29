@@ -16,7 +16,7 @@ TEST(MotionProtocolTest, EncodesVersionedJointSegment)
     };
 
     EXPECT_EQ(
-        (void)MotionProtocol::encodeSegment(segment),
+        MotionProtocol::encodeSegment(segment),
         "ACM1|42|SEG|0.500000|-0.250000|25.000000|80.000000|750\n"
     );
 }

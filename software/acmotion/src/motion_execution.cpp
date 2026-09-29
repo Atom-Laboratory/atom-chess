@@ -4,6 +4,9 @@
 
 namespace ac::motion {
 
+/**
+ * @brief Initializes synchronous host-side execution timeouts and transport.
+ */
 MotionExecution::MotionExecution(
     IMotionTransport& transport,
     std::chrono::milliseconds ackTimeout,
@@ -17,6 +20,12 @@ MotionExecution::MotionExecution(
     }
 }
 
+/**
+ * @brief Receives one controller line and maps it to the expected execution event.
+ *
+ * Wrong sequence IDs and unexpected ACK/DONE ordering are treated as protocol
+ * failures. ESTOP/LIMIT transition the host into SafeStop.
+ */
 MotionExecutionResult MotionExecution::waitForEvent(
     std::uint32_t sequence,
     ControllerEventType expected,
@@ -61,6 +70,12 @@ MotionExecutionResult MotionExecution::waitForEvent(
     return MotionExecutionResult::ProtocolError;
 }
 
+/**
+ * @brief Validates and executes a strictly ordered joint trajectory.
+ *
+ * Every segment is fully validated before its transport side effects, then
+ * transmitted sequentially using ACK followed by DONE semantics.
+ */
 MotionExecutionResult MotionExecution::execute(
     const std::vector<JointSegment>& trajectory)
 {
@@ -119,6 +134,9 @@ MotionExecutionResult MotionExecution::execute(
     return MotionExecutionResult::Success;
 }
 
+/**
+ * @brief Requests cancellation of the active/last in-flight sequence.
+ */
 bool MotionExecution::cancel()
 {
     if (activeSequence_ == 0
@@ -141,11 +159,17 @@ bool MotionExecution::cancel()
     return sent;
 }
 
+/**
+ * @brief Returns current host-side state without side effects.
+ */
 MotionExecutionState MotionExecution::state() const noexcept
 {
     return state_;
 }
 
+/**
+ * @brief Returns the active or most recently attempted command sequence.
+ */
 std::uint32_t MotionExecution::activeSequence() const noexcept
 {
     return activeSequence_;
