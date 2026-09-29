@@ -11,13 +11,13 @@ TEST(MotionProtocolTest, EncodesVersionedJointSegment)
 {
     const JointSegment segment{
         42,
-        {0.5, -0.25, 25.0, 80.0},
+        {0.5, -0.25, 0.75, 25.0, 80.0},
         750
     };
 
     EXPECT_EQ(
         MotionProtocol::encodeSegment(segment),
-        "ACM1|42|SEG|0.500000|-0.250000|25.000000|80.000000|750\n"
+        "ACM1|42|SEG|0.500000|-0.250000|0.750000|25.000000|80.000000|750\n"
     );
 }
 
@@ -64,7 +64,7 @@ TEST(MotionProtocolTest, RejectsInvalidSegment)
 {
     JointSegment segment{
         1,
-        {0.0, 0.0, 0.0, 101.0},
+        {0.0, 0.0, 0.0, 0.0, 101.0},
         500
     };
 
@@ -74,6 +74,14 @@ TEST(MotionProtocolTest, RejectsInvalidSegment)
     );
 
     segment.target.gripperPercent = 50.0;
+    segment.target.joint3Rad = std::numeric_limits<double>::quiet_NaN();
+
+    EXPECT_THROW(
+        (void)MotionProtocol::encodeSegment(segment),
+        std::invalid_argument
+    );
+
+    segment.target.joint3Rad = 0.0;
     segment.target.joint1Rad =
         std::numeric_limits<double>::quiet_NaN();
 
