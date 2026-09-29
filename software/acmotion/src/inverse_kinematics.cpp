@@ -21,6 +21,8 @@ bool finiteLimits(const JointLimits& limits)
         && std::isfinite(limits.joint1MaxRad)
         && std::isfinite(limits.joint2MinRad)
         && std::isfinite(limits.joint2MaxRad)
+        && std::isfinite(limits.joint3MinRad)
+        && std::isfinite(limits.joint3MaxRad)
         && std::isfinite(limits.zMinMm)
         && std::isfinite(limits.zMaxMm);
 }
@@ -39,9 +41,11 @@ InverseKinematics::InverseKinematics(ScaraGeometry geometry)
         || !std::isfinite(geometry_.link2Mm)
         || geometry_.link1Mm <= 0.0
         || geometry_.link2Mm <= 0.0
+        || !std::isfinite(geometry_.joint3ZeroOffsetRad)
         || !finiteLimits(limits)
         || limits.joint1MinRad > limits.joint1MaxRad
         || limits.joint2MinRad > limits.joint2MaxRad
+        || limits.joint3MinRad > limits.joint3MaxRad
         || limits.zMinMm > limits.zMaxMm) {
         throw std::invalid_argument("Invalid SCARA geometry or mechanical limits");
     }
@@ -58,6 +62,7 @@ std::optional<JointTarget> InverseKinematics::solve(const Pose& pose) const
     if (!std::isfinite(pose.x)
         || !std::isfinite(pose.y)
         || !std::isfinite(pose.z)
+        || !std::isfinite(pose.toolYawRad)
         || !std::isfinite(pose.gripperPercent)
         || pose.gripperPercent < 0.0
         || pose.gripperPercent > 100.0) {
@@ -91,9 +96,13 @@ std::optional<JointTarget> InverseKinematics::solve(const Pose& pose) const
             l1 + l2 * std::cos(theta2)
         );
 
+    const double theta3 =
+        pose.toolYawRad - theta1 - theta2 - geometry_.joint3ZeroOffsetRad;
+
     JointTarget target{
         theta1,
         theta2,
+        theta3,
         pose.z,
         pose.gripperPercent
     };
@@ -106,7 +115,7 @@ std::optional<JointTarget> InverseKinematics::solve(const Pose& pose) const
 }
 
 /**
- * @brief Checks inclusive J1/J2/Z mechanical limits for a candidate solution.
+ * @brief Checks inclusive J1/J2/J3/Z mechanical limits for a candidate solution.
  */
 bool InverseKinematics::withinLimits(const JointTarget& target) const noexcept
 {
@@ -116,6 +125,8 @@ bool InverseKinematics::withinLimits(const JointTarget& target) const noexcept
         && target.joint1Rad <= limits.joint1MaxRad
         && target.joint2Rad >= limits.joint2MinRad
         && target.joint2Rad <= limits.joint2MaxRad
+        && target.joint3Rad >= limits.joint3MinRad
+        && target.joint3Rad <= limits.joint3MaxRad
         && target.zMm >= limits.zMinMm
         && target.zMm <= limits.zMaxMm;
 }
