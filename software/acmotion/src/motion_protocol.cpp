@@ -53,6 +53,11 @@ std::vector<std::string_view> splitFields(const std::string& line)
 /**
  * @brief Parses a complete unsigned 32-bit decimal field.
  */
+/**
+ * @brief Parses a complete unsigned 32-bit decimal protocol field.
+ * @param field Character range to parse.
+ * @return Parsed value, or std::nullopt when any character/range is invalid.
+ */
 std::optional<std::uint32_t> parseUint32(std::string_view field)
 {
     std::uint32_t value = 0;
@@ -70,6 +75,11 @@ std::optional<std::uint32_t> parseUint32(std::string_view field)
 /**
  * @brief Parses a complete signed decimal integer field.
  */
+/**
+ * @brief Parses a complete signed decimal protocol field.
+ * @param field Character range to parse.
+ * @return Parsed value, or std::nullopt when any character/range is invalid.
+ */
 std::optional<int> parseInt(std::string_view field)
 {
     int value = 0;
@@ -86,6 +96,9 @@ std::optional<int> parseInt(std::string_view field)
 
 } // namespace
 
+/**
+ * @brief Enforces protocol-level segment invariants before serialization.
+ */
 void MotionProtocol::validateSegment(const JointSegment& segment)
 {
     const JointTarget& target = segment.target;
@@ -112,6 +125,9 @@ void MotionProtocol::validateSegment(const JointSegment& segment)
     }
 }
 
+/**
+ * @brief Serializes a validated segment into one newline-terminated ACM1 frame.
+ */
 std::string MotionProtocol::encodeSegment(const JointSegment& segment)
 {
     validateSegment(segment);
@@ -129,6 +145,9 @@ std::string MotionProtocol::encodeSegment(const JointSegment& segment)
     return stream.str();
 }
 
+/**
+ * @brief Serializes explicit host cancellation for one non-zero sequence.
+ */
 std::string MotionProtocol::encodeCancel(std::uint32_t sequence)
 {
     if (sequence == 0) {
@@ -138,6 +157,12 @@ std::string MotionProtocol::encodeCancel(std::uint32_t sequence)
     return "ACM1|" + std::to_string(sequence) + "|CANCEL\n";
 }
 
+/**
+ * @brief Parses ACK/DONE/ERR/ESTOP/LIMIT controller frames for ACM1.
+ *
+ * Unknown versions, malformed fields and invalid sequence identifiers are
+ * rejected with std::nullopt.
+ */
 std::optional<ControllerEvent> MotionProtocol::parseEvent(
     const std::string& rawLine)
 {
