@@ -96,3 +96,10 @@ First validate:
 - #58
 - #154
 - #155
+
+
+## Joint 3 protocol migration
+
+ACM1 currently serializes J1, J2, Z and gripper. The selected How To Mechatronics arm requires an additional Joint 3 field. Issue #160 tracks the protocol/firmware migration.
+
+Do not freeze ACM1 as a production-compatible physical protocol for this arm until that migration is complete. A protocol version bump should be considered if backward compatibility matters.
