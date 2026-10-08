@@ -1,7 +1,8 @@
 #include "homography/homography.hpp"
 
+#include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
-
+#include <opencv2/calib3d.hpp>
 
 namespace ac {
 
@@ -16,31 +17,24 @@ namespace ac {
     ) const
     {
 
-        std::vector<cv::Point2f> src = {
+        cv::Point2f src[4] = {
             corners[0], // TL
             corners[1], // TR
             corners[2], // BR
             corners[3]  // BL
         };
 
-
         constexpr float SIZE = 800;
 
-
-        std::vector<cv::Point2f> dst = {
-            {0,0},
-            {SIZE,0},
-            {SIZE,SIZE},
-            {0,SIZE}
+        cv::Point2f dst[4] = {
+            cv::Point2f(0.0f, 0.0f),
+            cv::Point2f(SIZE, 0.0f),
+            cv::Point2f(SIZE, SIZE),
+            cv::Point2f(0.0f, SIZE)
         };
 
-
-        return cv::getPerspectiveTransform(
-            src,
-            dst
-        );
+        return cv::getPerspectiveTransform(src, dst);
     }
-
 
     /**
     * @brief Makes the warp transformation.
@@ -61,9 +55,8 @@ namespace ac {
             frame,
             result,
             H,
-            cv::Size(size,size)
+            cv::Size(size, size)
         );
-
 
         return result;
     }
