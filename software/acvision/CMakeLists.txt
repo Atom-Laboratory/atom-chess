@@ -7,8 +7,6 @@ project(acvision
     DESCRIPTION "A Library for Computer Vision applied to Chessboard Analysis"
     LANGUAGES CXX)
 
-# When acvision is configured by itself, enable CTest locally. In a
-# repository-level build the root CMakeLists.txt already owns this setup.
 if(PROJECT_IS_TOP_LEVEL)
     include(CTest)
 endif()
@@ -40,7 +38,6 @@ add_library(acvision SHARED
     src/camera/camera.cpp
     src/board_vision/board_vision.cpp
     src/piece_detector/piece_detector.cpp
-    # src/fen_generator/fen_generator.cpp
     src/homography/homography.cpp
 )
 
@@ -54,28 +51,22 @@ target_sources(acvision
             include/board_observation/board_observation.hpp
             include/piece_detector/piece_detector.hpp
             include/piece_detector/piece_detector_config.hpp
-            # include/fen_generator/fen_generator.hpp
             include/homography/homography.hpp
-            
-
 )
 
 target_include_directories(acvision 
     PUBLIC 
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        ${OpenCV_INCLUDE_DIRS}
 )
 
 target_link_libraries(acvision
     PUBLIC 
-        opencv_core
-        opencv_imgproc
-        opencv_highgui
-        opencv_videoio
-        opencv_calib3d
+        ${OpenCV_LIBS}
 )
 
 if(MSVC)
-    target_compile_options(acvision PRIVATE /W4 /WX)
+    target_compile_options(acvision PRIVATE /W3)
 else()
     target_compile_options(acvision PRIVATE -Wall -Wextra -Wpedantic)
 endif()
@@ -84,7 +75,6 @@ endif()
 # AUTOMATIC TARGET GENERATION (Apps Folder)
 # ==========================================
 set(APP_LIST
-    # "capture_gui"
     "board_demo"
     "benchmark_piece_detector"
     "color_calibrator"
@@ -95,7 +85,7 @@ foreach(app ${APP_LIST})
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${app_src})
         add_executable(${app} ${app_src})
         
-        target_link_libraries(${app} PRIVATE acvision)
+        target_link_libraries(${app} PRIVATE acvision ${OpenCV_LIBS})
         set_target_properties(${app} PROPERTIES FOLDER "Applications")
         
         if(WIN32)
@@ -122,7 +112,7 @@ foreach(sim ${SIM_LIST})
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${sim_src})
         add_executable(${sim} ${sim_src})
         
-        target_link_libraries(${sim} PRIVATE acvision)
+        target_link_libraries(${sim} PRIVATE acvision ${OpenCV_LIBS})
         set_target_properties(${sim} PROPERTIES FOLDER "Applications")
         
         if(WIN32)
@@ -136,8 +126,6 @@ foreach(sim ${SIM_LIST})
         endif()
     endif()
 endforeach()
-
-
 
 # ==========================================
 # AUTOMATED TESTS (tests Folder)
@@ -166,8 +154,6 @@ if(BUILD_TESTING)
         test_camera_min_max
     )
 
-    # Hardware tests are opt-in so normal developer/CI builds remain
-    # deterministic and do not require a physical camera device.
     option(
         ACVISION_BUILD_HARDWARE_TESTS
         "Build tests that require a physical camera"
@@ -180,7 +166,7 @@ if(BUILD_TESTING)
 
     foreach(test_name ${TEST_LIST})
         add_executable(${test_name} tests/${test_name}.cpp)
-        target_link_libraries(${test_name} PRIVATE acvision GTest::gtest_main)
+        target_link_libraries(${test_name} PRIVATE acvision GTest::gtest_main ${OpenCV_LIBS})
         add_test(NAME ${test_name} COMMAND ${test_name})
         set_target_properties(${test_name} PROPERTIES FOLDER "Tests")
 
@@ -195,24 +181,14 @@ if(BUILD_TESTING)
         endif()
     endforeach()
 
-    # Board geometry relies on a fixture image. Compile the absolute fixture
-    # directory into the test so CTest can run from any working directory.
-    target_link_libraries(test_board_geometry PRIVATE opencv_imgcodecs)
-    target_compile_definitions(test_board_geometry PRIVATE
-        TEST_IMAGES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/images"
-    )
+    if(TARGET test_board_geometry)
+        target_compile_definitions(test_board_geometry PRIVATE
+            TEST_IMAGES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/images"
+        )
+    endif()
 endif()
 
-# ==========================================
-# Configuração de IDE
-# ==========================================
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT capture_gui)
-
-
-# The benchmark reads image fixtures from disk. Keep imgcodecs scoped to this
-# developer/research executable instead of adding it to the production library.
 if(TARGET benchmark_piece_detector)
-    target_link_libraries(benchmark_piece_detector PRIVATE opencv_imgcodecs)
     target_compile_definitions(benchmark_piece_detector PRIVATE
         ACVISION_DATASET_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/dataset"
     )

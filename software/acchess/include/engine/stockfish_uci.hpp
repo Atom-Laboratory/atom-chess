@@ -1,6 +1,11 @@
 #pragma once
 #include <string>
+
+#if defined(_WIN32) || defined(_MSC_VER)
+using pid_t = int;
+#else
 #include <unistd.h>
+#endif
 
 namespace ac::chess::engine {
 

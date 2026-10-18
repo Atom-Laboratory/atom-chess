@@ -4,11 +4,13 @@
  */    
 #include "board_vision/board_vision.hpp"
 
+#include <opencv2/opencv.hpp>
 #include <opencv2/calib3d.hpp>
 #include <opencv2/imgproc.hpp>
 #include <algorithm>
 #include <cmath>
 #include <vector>
+#include <opencv2/calib3d.hpp>
 
 namespace ac {
     

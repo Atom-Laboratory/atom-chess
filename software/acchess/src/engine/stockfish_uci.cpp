@@ -1,8 +1,12 @@
 #include "engine/stockfish_uci.hpp"
 #include <iostream>
 #include <string.h>
+
+#if !defined(_WIN32) && !defined(_MSC_VER)
 #include <sys/wait.h>
 #include <sys/select.h>
+#include <unistd.h>
+#endif
 
 namespace ac::chess::engine {
 
@@ -12,15 +16,21 @@ StockfishUCI::StockfishUCI(const std::string& engine_path) {
 }
 
 StockfishUCI::~StockfishUCI() {
+#if !defined(_WIN32) && !defined(_MSC_VER)
     if (m_process_id != -1) {
         send_command("quit");
         close(m_pipe_in[1]);
         close(m_pipe_out[0]);
         waitpid(m_process_id, nullptr, 0); 
     }
+#endif
 }
 
 bool StockfishUCI::init() {
+#if defined(_WIN32) || defined(_MSC_VER)
+    std::cerr << "[UCI] Stockfish via POSIX pipes nao e suportado nativamente no Windows.\n";
+    return false;
+#else
     if (pipe(m_pipe_in) == -1 || pipe(m_pipe_out) == -1) {
         std::cerr << "[UCI] Erro ao criar os pipes de comunicacao.\n";
         return false;
@@ -63,14 +73,20 @@ bool StockfishUCI::init() {
         
         return true;
     }
+#endif
 }
 
 void StockfishUCI::send_command(const std::string& command) {
+#if !defined(_WIN32) && !defined(_MSC_VER)
     std::string cmd = command + "\n"; 
     write(m_pipe_in[1], cmd.c_str(), cmd.size());
+#else
+    (void)command;
+#endif
 }
 
 std::string StockfishUCI::read_output(const std::string& stop_word) {
+#if !defined(_WIN32) && !defined(_MSC_VER)
     std::string result = "";
     char buffer[256];
     ssize_t bytes_read;
@@ -112,6 +128,10 @@ std::string StockfishUCI::read_output(const std::string& stop_word) {
         }
     }
     return result;
+#else
+    (void)stop_word;
+    return "";
+#endif
 }
 
 std::string StockfishUCI::get_best_move(const std::string& fen_state, int depth) {
