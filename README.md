@@ -4,6 +4,11 @@ ATOM Chess is a research and development project focused on building an autonomo
 
 The project combines computer vision, chess programming, artificial intelligence, robotics, motion planning, and embedded systems into a single autonomous platform.
 
+## 📚 Documentation and Code Structure
+
+To understand the project architecture interactively, you can access the AI-generated wiki:
+[DeepWiki - Atom Chess](https://deepwiki.com/Atom-Laboratory/atom-chess) — Allows you to explore diagrams and ask questions about the code.
+
 ## ATOM Laboratory
 
 ATOM Chess is part of **ATOM Laboratory**, a broader research and development initiative focused on the integration of robotics, computer vision, artificial intelligence, software engineering, electronics, and mechanical engineering.
@@ -36,32 +41,6 @@ ATOM Chess was conceived and initiated by **Enzo Ribas**, who leads the project�
 
 For more information about his work and professional background, visit his [Enzo's LinkedIn profile](https://www.linkedin.com/in/oenzoribas/).
 
-## System Architecture
-
-ATOM Chess is organized into four primary subsystems:
-
-### Vision
-
-The vision subsystem is responsible for converting camera data into structured information about the chessboard.
-
-### Chess Core
-
-The chess core contains the domain model and game-state logic.
-
-The core is intentionally independent of the physical robot and computer-vision implementation.
-
-### Engine and Planning
-
-The planning layer connects the chess domain to the robotic system.
-
-The chess engine is treated as a decision component rather than as part of the board representation itself.
-
-### Motion and Control
-
-The motion subsystem is responsible for physically executing planned operations.
-
-The current architecture separates high-level planning from low-level motor control, allowing computationally intensive logic to remain outside the microcontroller.
-
 ## Build
 
 The project uses CMake as its build-system generator.
@@ -83,36 +62,9 @@ ctest --test-dir build
 
 The exact build configuration may vary depending on the target platform and enabled components.
 
-## Project Status
-
-ATOM Chess is under active development.
-
-Current development is focused on establishing a robust software foundation before integrating the complete perception, chess-engine, planning, and robotic-control pipeline.
-
-The architecture is intentionally evolving as the individual subsystems are validated experimentally.
-
-## Research
-
-ATOM Chess is also intended as a research platform. Its modular architecture enables experimentation in areas including:
-
-* Computer vision for structured environments.
-* Chess position recognition.
-* Automated move detection.
-* Chess position representation.
-* Chess-engine integration.
-* Robotic manipulation.
-* Motion planning.
-* Inverse kinematics.
-* Autonomous system architectures.
-* Human-robot interaction.
-
-The platform is designed so that individual components can be benchmarked and replaced without requiring a complete redesign of the system.
-
 ## Contributing
 
 ATOM Chess is developed as a collaborative, multidisciplinary project involving software engineers, computer scientists, researchers, and contributors working across computer vision, chess programming, robotics, electronics, mechanical engineering, and related fields.
-
-
 
 Contributions may include:
 
