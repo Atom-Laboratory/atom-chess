@@ -39,6 +39,10 @@ public:
      * @brief Destroys the interface, ensuring the child process is gracefully terminated to prevent zombies.
      */
     ~StockfishUCI();
+    /**
+     * @brief Idempotent shutdown to gracefully clean up pipes and child processes.
+     */
+    void shutdown() noexcept;
 
     /**
      * @brief Initializes the pipes, forks the process, and performs the UCI handshake.
