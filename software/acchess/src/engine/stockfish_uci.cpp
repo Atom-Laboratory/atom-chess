@@ -1,6 +1,7 @@
 #include "engine/stockfish_uci.hpp"
 #include <iostream>
 #include <string.h>
+#include <cerrno>
 
 #if !defined(_WIN32) && !defined(_MSC_VER)
 #include <sys/wait.h>
@@ -13,15 +14,33 @@ namespace ac::chess::engine {
 StockfishUCI::StockfishUCI(const std::string& engine_path) {
     m_engine_path = engine_path;
     m_process_id = -1;
+    m_pipe_in[0] = -1; m_pipe_in[1] = -1;
+    m_pipe_out[0] = -1; m_pipe_out[1] = -1;
 }
 
 StockfishUCI::~StockfishUCI() {
+    shutdown();
+}
+
+void StockfishUCI::shutdown() noexcept {
 #if !defined(_WIN32) && !defined(_MSC_VER)
-    if (m_process_id != -1) {
-        send_command("quit");
-        close(m_pipe_in[1]);
-        close(m_pipe_out[0]);
-        waitpid(m_process_id, nullptr, 0); 
+    // Try sending the quit command gracefully if the process still exists.
+    if (m_pipe_in[1] != -1 && m_process_id > 0) {
+        const char* quit_cmd = "quit\n";
+        auto _ = write(m_pipe_in[1], quit_cmd, 5);
+        (void)_;
+    }
+    
+    // Close all open pipes to prevent leaks.
+    for (int i = 0; i < 2; ++i) {
+        if (m_pipe_in[i] != -1) { close(m_pipe_in[i]); m_pipe_in[i] = -1; }
+        if (m_pipe_out[i] != -1) { close(m_pipe_out[i]); m_pipe_out[i] = -1; }
+    }
+
+    // Kills orphaned processes (zombies)
+    if (m_process_id > 0) {
+        waitpid(m_process_id, nullptr, 0);
+        m_process_id = -1;
     }
 #endif
 }
@@ -33,6 +52,7 @@ bool StockfishUCI::init() {
 #else
     if (pipe(m_pipe_in) == -1 || pipe(m_pipe_out) == -1) {
         std::cerr << "[UCI] Erro ao criar os pipes de comunicacao.\n";
+        shutdown();
         return false;
     }
 
@@ -40,6 +60,7 @@ bool StockfishUCI::init() {
 
     if (m_process_id < 0) {
         std::cerr << "[UCI] Erro no fork do sistema operacional.\n";
+        shutdown();
         return false;
     }
 
@@ -56,18 +77,20 @@ bool StockfishUCI::init() {
         exit(1);
     } else {
         // Parent Process: Close unused pipe ends
-        close(m_pipe_in[0]);
-        close(m_pipe_out[1]);
+        close(m_pipe_in[0]); m_pipe_in[0] = -1;
+        close(m_pipe_out[1]); m_pipe_out[1] = -1;
         
         send_command("uci");
         if (read_output("uciok").empty()) {
             std::cerr << "[UCI] Erro: Falha ao inicializar o protocolo UCI ou timeout atingido.\n";
+            shutdown();
             return false;
         }
         
         send_command("isready");
         if (read_output("readyok").empty()) {
             std::cerr << "[UCI] Erro: Motor nao esta pronto ou timeout atingido.\n";
+            shutdown();
             return false;
         }
         
@@ -79,7 +102,19 @@ bool StockfishUCI::init() {
 void StockfishUCI::send_command(const std::string& command) {
 #if !defined(_WIN32) && !defined(_MSC_VER)
     std::string cmd = command + "\n"; 
-    write(m_pipe_in[1], cmd.c_str(), cmd.size());
+    const char* data = cmd.c_str();
+    size_t left = cmd.size();
+    
+    // A write-safe loop that handles partial writes and operating system interrupts (EINTR).
+    while (left > 0) {
+        ssize_t written = write(m_pipe_in[1], data, left);
+        if (written < 0) {
+            if (errno == EINTR) continue; // The system interrupted; try typing the rest again.
+            break; // Unrecoverable error in the pipe.
+        }
+        data += written;
+        left -= written;
+    }
 #else
     (void)command;
 #endif
