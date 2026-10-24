@@ -1,1 +1,0 @@
-/home/enzo/repos/atom-chess/simulation/build/motion/ament_cmake_environment_hooks/local_setup.sh
