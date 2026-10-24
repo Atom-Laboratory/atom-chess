@@ -69,3 +69,6 @@ $RECYCLE.BIN/
 # ==========================================
 # Evita que você suba as DLLs do OpenCV por engano
 opencv_world*.dll
+# Colcon generated artifacts
+install/
+simulation/install/
