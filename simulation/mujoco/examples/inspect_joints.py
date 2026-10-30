@@ -5,14 +5,17 @@ uses only the public backend API, without accessing mjData or training code.
 """
 import argparse
 import json
+import time
 from pathlib import Path
 
 import numpy as np
 
 from atom_mujoco.backend import Simulation
+from atom_mujoco.recording import provenance, save_record
 
 
 def inspect(sim):
+    started = time.perf_counter()
     trials = []
     for index, displacement in enumerate((.3, .08, -.4)):
         initial = sim.reset()
@@ -37,7 +40,10 @@ def inspect(sim):
                            frame_translation_delta_m=(final['arm2_position']-initial['arm2_position']).tolist(),
                            frame_rotation_delta_rad=float(angle), replay_max_error=replay_error,
                            simulated_duration_s=final['time_s']))
-    return dict(schema=1, exercise='inspect-joints-v1', manifest=sim.manifest, trials=trials)
+    return dict(schema=1, exercise='inspect-joints-v1', manifest=sim.manifest, trials=trials,
+                provenance=provenance(), seed=None, reset='zero-clipped-to-limits',
+                task=None, algorithm=None, episodes=3, checkpoints=[],
+                wall_time_s=time.perf_counter()-started)
 
 
 def main():
@@ -49,7 +55,7 @@ def main():
         parser.error('Choose a new output path; existing results are preserved')
     result = inspect(Simulation(args.bundle))
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result, indent=2, allow_nan=False), encoding='utf-8')
+    save_record(args.output, result)
     for trial in result['trials']:
         print(json.dumps(trial, indent=2))
 

@@ -10,13 +10,21 @@ import numpy as np
 
 from .backend import Simulation
 from .model import build_bundle
+from .recording import provenance, save_record
 
 
 def serializable(state):
-    return {k: v.tolist() if isinstance(v, np.ndarray) else v for k, v in state.items()}
+    if isinstance(state, np.ndarray):
+        return state.tolist()
+    if isinstance(state, dict):
+        return {k: serializable(v) for k, v in state.items()}
+    if isinstance(state, (list, tuple)):
+        return [serializable(v) for v in state]
+    return state
 
 
 def demonstration(sim, seconds):
+    started = time.perf_counter()
     sim.reset()
     # Software test scenario, not a calibrated manipulation target.
     goal = np.clip(np.array([.3, .08, -.4]), sim.lower, sim.upper)
@@ -25,6 +33,9 @@ def demonstration(sim, seconds):
         trajectory.append(serializable(sim.advance(goal)))
     error = np.abs(sim.data.qpos-goal)
     return dict(schema=1, mode='conventional_position_control',
+                provenance=provenance(), seed=None, reset='zero-clipped-to-limits',
+                task=None, algorithm=None, episodes=1, checkpoints=[],
+                wall_time_s=time.perf_counter()-started,
                 mujoco_version=mujoco.__version__, python=platform.python_version(),
                 manifest=sim.manifest, control_dt_s=sim.dt, target=goal.tolist(),
                 final_error=error.tolist(), max_joint_limit_excess=np.max([
@@ -73,6 +84,7 @@ def main():
     build = sub.add_parser('build')
     build.add_argument('--urdf', required=True, type=Path)
     build.add_argument('--output', required=True, type=Path)
+    build.add_argument('--parameters', type=Path, help='JSON overrides; experimental, not calibration')
     for command in ('demo', 'view', 'render'):
         child = sub.add_parser(command)
         child.add_argument('--bundle', type=Path, required=True)
@@ -82,7 +94,8 @@ def main():
             child.add_argument('--seconds', type=float, default=4.)
     args = parser.parse_args()
     if args.command == 'build':
-        print(json.dumps(build_bundle(args.urdf, args.output), indent=2))
+        parameters = json.loads(args.parameters.read_text(encoding='utf-8')) if args.parameters else None
+        print(json.dumps(build_bundle(args.urdf, args.output, parameters=parameters), indent=2))
         return
     sim = Simulation(args.bundle)
     if args.command == 'view':
@@ -95,7 +108,7 @@ def main():
         if not np.isfinite(args.seconds) or args.seconds <= 0:
             parser.error('seconds must be finite and positive')
         result = demonstration(sim, args.seconds)
-        args.output.write_text(json.dumps(result, indent=2, allow_nan=False), encoding='utf-8')
+        save_record(args.output, result)
         print(json.dumps({key: value for key, value in result.items() if key not in ('trajectory', 'manifest')}, indent=2))
     else:
         # PPM uses only the standard library; no image or training dependencies.

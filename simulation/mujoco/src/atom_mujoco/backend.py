@@ -88,4 +88,15 @@ class Simulation:
                     arm2_position=self.data.site_xpos[self.site_id].copy(),
                     arm2_rotation=self.data.site_xmat[self.site_id].reshape(3, 3).copy(),
                     joint_limit_excess=np.maximum(0, np.maximum(self.lower-self.data.qpos, self.data.qpos-self.upper)),
+                    tool_pose=(self.frame_pose('experimental_tool')
+                               if self.manifest.get('experimental_tool_offset_m') is not None else None),
                     contacts=None, profile=self.manifest['profile']['name'])
+
+    def frame_pose(self, site='arm2_frame'):
+        """World position (m) and rotation matrix of a named site, not a calibrated TCP."""
+        index = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, site)
+        if index < 0:
+            raise ValueError(f'Unknown site: {site}')
+        return {'site': site, 'position_m': self.data.site_xpos[index].copy(),
+                'rotation': self.data.site_xmat[index].reshape(3, 3).copy(),
+                'tcp_calibrated': False}

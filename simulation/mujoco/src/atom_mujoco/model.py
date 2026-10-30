@@ -1,5 +1,6 @@
 """Convert the supported URDF subset without silently inventing physical data."""
 import hashlib
+import copy
 import json
 import math
 from pathlib import Path
@@ -58,8 +59,30 @@ def origin(element):
     return {'pos': text(pos), 'quat': text(quat)}
 
 
-def build_bundle(urdf, output):
+def build_bundle(urdf, output, *, parameters=None):
     """Emit a portable MJCF/mesh bundle; refuse unknown geometry/topology."""
+    profile = copy.deepcopy(PROFILE)
+    parameters = dict(parameters or {})
+    allowed = {'mass_kg_per_moving_body', 'diagonal_inertia_kg_m2',
+               'joint_damping', 'joint_armature', 'actuator_kp', 'actuator_kv',
+               'timestep_s', 'control_substeps', 'tool_offset_in_arm2_m'}
+    if parameters.keys() - allowed:
+        raise ValueError('Unknown or unsupported physical parameter')
+    tool_offset = parameters.pop('tool_offset_in_arm2_m', None)
+    if tool_offset is not None:
+        tool_offset = np.asarray(tool_offset, dtype=float)
+        if tool_offset.shape != (3,) or not np.isfinite(tool_offset).all():
+            raise ValueError('tool_offset_in_arm2_m requires three finite metres')
+    profile.update(parameters)
+    for key in allowed - {'tool_offset_in_arm2_m', 'diagonal_inertia_kg_m2'}:
+        value = profile[key]
+        if isinstance(value, bool) or not np.isscalar(value) or not np.isfinite(value) or value <= 0:
+            raise ValueError(f'{key} must be finite and positive')
+    if not isinstance(profile['control_substeps'], int):
+        raise ValueError('control_substeps must be an integer')
+    inertia = np.asarray(profile['diagonal_inertia_kg_m2'], dtype=float)
+    if inertia.shape != (3,) or not np.isfinite(inertia).all() or np.any(inertia <= 0) or 2*max(inertia) > sum(inertia):
+        raise ValueError('Invalid diagonal inertia (positive and triangle inequalities required)')
     source = Path(urdf).resolve()
     raw = source.read_bytes()
     robot = ET.fromstring(raw)
@@ -89,8 +112,8 @@ def build_bundle(urdf, output):
     ET.SubElement(mjcf, 'compiler', angle='radian', fusestatic='false', inertiafromgeom='false')
     visual = ET.SubElement(mjcf, 'visual')
     ET.SubElement(visual, 'global', offwidth='800', offheight='600')
-    option = ET.SubElement(mjcf, 'option', timestep=str(PROFILE['timestep_s']),
-                          gravity=text(PROFILE['gravity']), integrator='implicitfast')
+    option = ET.SubElement(mjcf, 'option', timestep=str(profile['timestep_s']),
+                          gravity=text(profile['gravity']), integrator='implicitfast')
     ET.SubElement(option, 'flag', contact='disable')
     assets = ET.SubElement(mjcf, 'asset')
     world = ET.SubElement(mjcf, 'worldbody')
@@ -134,13 +157,13 @@ def build_bundle(urdf, output):
             if not np.isfinite([lo, hi, speed]).all() or lo >= hi or speed <= 0:
                 raise ValueError('Invalid joint limits')
             jname = joint.attrib['name']
-            ET.SubElement(body, 'inertial', pos='0 0 0', mass=str(PROFILE['mass_kg_per_moving_body']),
-                          diaginertia=text(PROFILE['diagonal_inertia_kg_m2']))
+            ET.SubElement(body, 'inertial', pos='0 0 0', mass=str(profile['mass_kg_per_moving_body']),
+                          diaginertia=text(profile['diagonal_inertia_kg_m2']))
             ET.SubElement(body, 'joint', name=jname, type='hinge' if joint.get('type') == 'revolute' else 'slide',
                           axis=text(axis), range=text([lo, hi]), limited='true',
-                          damping=str(PROFILE['joint_damping']), armature=str(PROFILE['joint_armature']))
+                          damping=str(profile['joint_damping']), armature=str(profile['joint_armature']))
             ET.SubElement(actuators, 'position', name=jname+'_position', joint=jname,
-                          kp=str(PROFILE['actuator_kp']), kv=str(PROFILE['actuator_kv']),
+                          kp=str(profile['actuator_kp']), kv=str(profile['actuator_kv']),
                           ctrllimited='true', ctrlrange=text([lo, hi]))
             metadata.append(dict(name=jname, kind=joint.get('type'), lower=lo, upper=hi, velocity=speed))
         for visual in links[name].findall('visual'):
@@ -172,6 +195,9 @@ def build_bundle(urdf, output):
                           contype='0', conaffinity='0', **origin(visual))
         if name == 'arm2_link':
             ET.SubElement(body, 'site', name='arm2_frame', size='.008', rgba='1 .4 .1 1')
+            if tool_offset is not None:
+                ET.SubElement(body, 'site', name='experimental_tool', pos=text(tool_offset),
+                              size='.006', rgba='0 1 0 1')
             # STL coordinates share the original assembly frame. Use the same
             # visual offset as arm2 at q=0; attachment is provisional, not TCP.
             for part in ('gripper_back', 'gripper_hand1', 'gripper_hand2'):
@@ -199,8 +225,9 @@ def build_bundle(urdf, output):
     for filename, data in mesh_bytes.items():
         (output/filename).write_bytes(data)
     manifest = dict(schema=1, source_urdf_sha256=hashlib.sha256(raw).hexdigest(),
-                    mujoco_version=mujoco.__version__, profile=PROFILE, scene=SCENE, joints=metadata,
+                    mujoco_version=mujoco.__version__, profile=profile, scene=SCENE, joints=metadata,
                     tip_frame='arm2_link', tcp_calibrated=False,
+                    experimental_tool_offset_m=tool_offset.tolist() if tool_offset is not None else None,
                     pieces=pieces, pieces_physics='fixed-visual-only',
                     assets_sha256={key: hashlib.sha256(value).hexdigest() for key, value in mesh_bytes.items()},
                     model_sha256=hashlib.sha256(xml.encode()).hexdigest())
