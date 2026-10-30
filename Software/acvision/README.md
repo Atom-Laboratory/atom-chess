@@ -1,182 +1,45 @@
-# 📷 ATOM Chess — Visão Computacional
+# acvision — visão C++/OpenCV
 
-## 📋 Sumário
+Biblioteca de captura, estimativa de cantos, classificação de ocupação/cor e
+serialização FEN simplificada. [Auditoria e limitações](docs/audit.md).
 
-1. [Requisitos de Sistema](#-1-requisitos-de-sistema)  
-2. [OpenCV (Windows)](#️-2-opencv-windows)  
-3. [Configuração do Ambiente (MSVC)](#️-3-configuração-do-ambiente-msvc)  
-4. [Build e Execução via Terminal](#-4-build-e-execução-via-terminal)  
-5. [Fluxo Diário de Desenvolvimento](#-5-fluxo-diário-de-desenvolvimento)  
-6. [Troubleshooting](#-6-troubleshooting)
+| Componente | Entrada | Saída / limite |
+|---|---|---|
+| Camera | Índice de câmera ou URL | cv::Mat; conferir is_opened e retorno bool de capture_frame |
+| BoardDetector | Imagem | optional de quatro cantos; não calcula estado de partida |
+| PieceDetector | Matriz 8×8 de células BGR | EMPTY/WHITE/BLACK; não identifica tipo de peça |
+| FenGenerator | Matriz 8×8 de CellState | P/p e campos fixos; não representa posição legal completa |
 
----
+Não há transporte ROS, consulta UCI ou controle de motores nesta biblioteca.
 
-## 🧩 1. Requisitos de Sistema
+## Build e testes
 
-### Windows
-
-- Visual Studio Build Tools 2022 (C++)
-- CMake instalado no `PATH`
-- Ninja (opcional)
-- VSCode como editor
-
-**Extensão recomendada:**
-
-- C/C++ (Microsoft)
-
-### Linux
-
-#### Debian Distributions:
+Fluxo verificado em Ubuntu 26.04/WSL, GCC 15.2 e OpenCV 4.10, com CMake e
+GTest já instalados. Ajuste a raiz para seu checkout:
 
 ```bash
-sudo apt update
-sudo apt install build-essential cmake ninja-build libopencv-dev
+export ATOM_ROOT=/mnt/f/Users/EHD/Github/Atom/atom-chess
+cmake -S "$ATOM_ROOT" -B "$HOME/atom-vision-build" -DBUILD_TESTING=ON
+cmake --build "$HOME/atom-vision-build" --parallel 4
+ctest --test-dir "$HOME/atom-vision-build" --output-on-failure
 ```
 
-#### Arch:
+Executáveis ficam em bin: capture_gui e board_detection_demo requerem câmera
+(índice 1 nos fontes atuais); simulator mostra células sintéticas em janela.
+Essas aplicações foram compiladas, mas não tiveram validação visual nesta revisão.
+O teste físico usa câmera 0 e é opt-in:
 
 ```bash
-sudo pacman -Syu
-pacman -S --needed base-devel cmake ninja opencv
+cmake -S "$ATOM_ROOT" -B "$HOME/atom-vision-camera-build" -DACVISION_BUILD_HARDWARE_TESTS=ON
+cmake --build "$HOME/atom-vision-camera-build" --parallel 4
+ctest --test-dir "$HOME/atom-vision-camera-build" -R test_camera --output-on-failure
 ```
 
+Este último cenário exige hardware e não foi aprovado nesta máquina. Sem GTest
+instalado, CMake usa FetchContent e precisa de rede. Não usar os presets legados
+como fluxo validado: contêm sintaxe incompatível com JSON estrito.
+Windows/MSVC não foi retestado; configurar OpenCV_DIR para o diretório que contém
+OpenCVConfig.cmake e usar o toolchain correspondente à biblioteca instalada.
 
----
-
-## 🛠️ 2. OpenCV (Windows)
-
-Baixe o OpenCV pré-compilado e extraia em:
-
-```text
-D:\opencv
-```
-
-Verifique se existe:
-
-```text
-D:\opencv\build\x64\vc16\lib\OpenCVConfig.cmake
-```
-
-### Variável de ambiente (`OpenCV_DIR`)
-
-```bat
-setx OpenCV_DIR "D:\opencv\build\x64\vc16"
-```
-
-Adicione também ao `PATH`:
-
-```text
-D:\opencv\build\x64\vc16\bin
-```
-
-> Reinicie o terminal após essas alterações.
-
----
-
-## ⚙️ 3. Configuração do Ambiente (MSVC)
-
-Antes de compilar, no cmd, execute:
-
-```bat
-"C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvars64.bat"
-```
-
-Teste com:
-
-```bat
-cl
-```
-
-Se a versão do compilador aparecer, está correto.
-
-### 📁 Estrutura do projeto
-
-```text
-Software/acvision/
-├── CMakeLists.txt
-├── src/
-├── include/
-└── build/
-```
-
----
-
-## 🔨 4. Build e Execução via Terminal
-
-Entre no projeto:
-
-```bat
-cd Software/acvision
-```
-
-Configure:
-
-```bat
-cmake --preset debug
-```
-
-Compile:
-
-```bat
-cmake --build build
-```
-
-Localize o executável:
-
-```bat
-dir build /s *.exe
-```
-
-Execute:
-
-```bat
-build\Debug\nome_do_executavel.exe
-```
-
----
-
-## 🚀 5. Fluxo Diário de Desenvolvimento
-
-Sempre que abrir o projeto:
-
-```bat
-"C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvars64.bat"
-cd Software/acvision
-cmake --build build
-build\Debug\nome_do_executavel.exe
-```
-
----
-
-## 🧪 6. Troubleshooting
-
-### `cl` não reconhecido
-
-MSVC não foi carregado. Execute `vcvars64.bat`.
-
-### `OpenCV_DIR` errado
-
-Deve apontar para a pasta que contém `OpenCVConfig.cmake`.
-
-### Erro de DLL do OpenCV
-
-Adicione ao `PATH`:
-
-```text
-D:\opencv\build\x64\vc16\bin
-```
-
-### Erro `LNK` / `cv::`
-
-Compilador incorreto. Use **MSVC (`cl.exe`)**, nunca MinGW.
-
-### `cmake` não encontrado
-
-CMake não está no `PATH` do sistema.
-
----
-
-## ✅ Regra final
-
-Não usar **CMake Tools** do VSCode.  
-Todo build deve ser feito via terminal com MSVC ativo.
+[ADR de testes](docs/adrs/V001-tests.md). Testes unitários sintéticos não medem
+acurácia de visão em iluminação, oclusão ou perspectiva reais.
