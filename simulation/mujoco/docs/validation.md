@@ -1,3 +1,13 @@
+# Current validation update — 2026-10-30
+
+25 tests passed with rendering enabled after main integration and experiment
+infrastructure changes. pip check passed; launcher demo and joint inspection
+replay passed. See [integration report](integration-report.md) for scope and gaps.
+The contact fixture validates synthetic sphere/plane contact only. Robot contacts,
+gripper articulation, physical accuracy and training remain unverified.
+
+Historical validation notes follow.
+
 # Validação MuJoCo — 30/10/2026
 
 ## Atualização upright-chess-v3 — peças

@@ -1,3 +1,5 @@
+[MuJoCo operational guide](simulation/mujoco/docs/mujoco-user-guide.md) | [Develop your RL experiment](simulation/docs/learning/rl-getting-started.md)
+
 # ATOM Chess
 
 ## Simulação e integração

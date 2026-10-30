@@ -1,3 +1,5 @@
+[Current English operational guide](docs/mujoco-user-guide.md) | [Integration report](docs/integration-report.md)
+
 # ATOM no MuJoCo — infraestrutura para desenvolver RL
 
 Modelo, simulação, estados, reset e controle convencional estão disponíveis.

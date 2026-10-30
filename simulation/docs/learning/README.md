@@ -1,3 +1,5 @@
+[Current English RL guide](rl-getting-started.md) | [Dependencies](dependencies.md)
+
 # Preparação para RL — estudo guiado
 
 Comece pelo [guia do usuário de RL](user-guide-rl.md): terminal correto, comandos,

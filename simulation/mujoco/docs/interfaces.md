@@ -1,3 +1,12 @@
+# Current interface update — 2026-10-30
+
+Use the [English operational guide](mujoco-user-guide.md) and
+[RL guide](../../docs/learning/rl-getting-started.md) for current contracts.
+Simulation now also exposes frame_pose and an optional experimental tool_pose.
+build_bundle accepts explicit parameter overrides; Episode/Task handles lifecycle
+without selecting observation/action spaces or rewards. Seven STL assets and
+32 fixed visual pieces are included. Older notes below describe earlier stages.
+
 # Contratos e orientação aos desenvolvedores
 
 ## Fonte, modelo compilado e perfil

@@ -1,38 +1,32 @@
-# P003 — Integrar main preservando a simulação
+# P003 — Integrate main while preserving simulation
 
-Data: 2026-10-30. Estado: aceito. Complementa P001/P002.
+Date: 2026-10-30. Status: accepted. Complements P001/P002.
 
-## Contexto
+## Context
 
-Pedido explícito para integrar main e manter MuJoCo como simulador principal.
-Antes: ros2_simulation 948f16a; origin/main f72c893. Fetch confirmou ambas as
-referências. Única alteração local anterior: simulation/learning/ não versionado.
+The owner explicitly requested main integration and MuJoCo as the primary simulator.
+Initial simulation HEAD: 948f16a; origin/main: f72c893. Fetch confirmed references.
+Preexisting untracked simulation/learning was preserved outside commits.
 
-## Decisão
+## Decision
 
-Merge normal de main, sem rebase/force push, registrado em 8fbc7aa, com dois pais.
-Conflitos: CMake da raiz passa a incluir os quatro módulos da main; acvision usa
-seu CMake atual (os antigos testes FEN foram migrados para acchess); README
-combina navegação de simulação e descrição/licenças da main; Dockerfile movido
-para simulation é preservado como legado, não adotado para executar MuJoCo.
-URDF operacional permanece simulation/src/urdf e o pacote ROS simulation/src.
-O atom_description aninhado e atom_control herdados não são o caminho validado.
-Não foram removidos dados, histórico ou o experimento local de aprendizado.
+Use a normal two-parent merge (8fbc7aa), without rebase or force push. Root CMake
+includes main's four software modules; acvision uses main's current CMake and
+migrated chess-domain tests. README retains simulation navigation and main's
+project/license description. The moved Dockerfile is retained as legacy.
+Operational ROS sources remain simulation/src; nested packages inherited from
+main are not the validated entry point. No simulation sources were discarded.
 
-Build da raiz trata acmotion como target CMake comum mesmo com ROS carregado.
-A descoberta/exportação ament fica restrita ao build standalone: o export
-anterior tentava instalar motion sem exportar acchess e impedia a configuração.
-Empacotamento ROS standalone de motion continua pendente; não foi validado.
+Treat motion as an ordinary CMake target in root builds, even when ROS is sourced.
+Restrict ament discovery/export to standalone builds: automatic export previously
+failed because acchess was missing from the export set. Standalone motion ROS
+packaging remains pending and unverified.
 
-## Validação e consequências
+## Verification and consequences
 
-Após merge: C++ headless 15 suites CTest; ROS 13 casos pytest em quatro suites
-CTest; MuJoCo 13 casos anteriores, incluindo render: aprovados. Após ajuste
-acmotion: C++ 15 suites aprovadas com setup ROS carregado, sem desativar ament
-globalmente. Stockfish ausente: teste UCI não registrado. Firmware não compilado.
-Não equivale a uma partida integrada ou controle do hardware.
-
-Arquivos hardware que diferiam apenas em caixa foram rematerializados conforme
-HEAD após o merge no Windows; nenhuma exclusão local preexistente foi descartada.
-Whitespace e logs gerados herdados de main não foram reformados em massa.
-Revisão funcional/documental subsequente: relatório de integração no módulo MuJoCo.
+After merge: 15 C++ CTest suites, 13 ROS pytest cases in four suites, and the
+original 13 MuJoCo tests passed. After the CMake correction, root C++ tests passed
+with ROS sourced. Stockfish was absent; its UCI test was not registered. Firmware
+and hardware were not tested. These results do not establish an autonomous game.
+Windows case-collision deletions were rematerialized from HEAD after merge;
+preexisting user work was preserved. Legacy logs/whitespace were not mass-reformatted.

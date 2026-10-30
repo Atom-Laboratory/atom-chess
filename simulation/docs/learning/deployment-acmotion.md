@@ -20,8 +20,9 @@ medido. Stockfish decide xadrez; a política de controle não decide lances.
 
 ## Interface real encontrada em main
 
-Inspeção somente leitura de main local f72c893. Não significa que esses módulos
-estejam integrados na branch ros2_simulation. Arquivos examinados:
+Main f72c893 is now merged into ros2_simulation (8fbc7aa). These modules are
+present and their headless tests pass; the policy/hardware bridge remains
+unimplemented. Source files examined:
 software/acmotion/include/motion/{motion_planner,joint_trajectory,
 motion_execution,motion_transport,physical_task}.hpp e README do módulo.
 

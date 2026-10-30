@@ -1,39 +1,20 @@
-# Roadmap verificável
+# Verifiable roadmap
 
-Requisito adicional do responsável: Gazebo para validar ROS com J1/J2/J3/Z,
-garra articulada e peças com contatos. Ver simulation/docs/gazebo-readiness.md.
-Gazebo não está entregue como modelo completo; MuJoCo v3 já contém 32 peças
-visuais. A montagem mecânica será investigada diretamente no CAD disponível,
-conforme orientação do responsável, antes de definir juntas ausentes.
+1. Completed: merge main f72c893 into simulation, preserving both histories and
+   local work; 15 C++ suites and 13 ROS cases passed.
+2. Completed: direct MuJoCo experiment infrastructure, configurable synthetic
+   parameters/tool point, explicit Task/Episode and local provenance; 25 tests pass.
+3. Next personal step: inspect joints, select the tool frame, specify observations,
+   actions, reward, success/failure and metrics; implement and test Task.
+4. Add Gymnasium only after spaces are selected; validate with its checker.
+5. Compare conventional control with personally developed learning on held-out
+   goals/seeds. Training requires explicit participation by the owner.
+6. Extract authoritative CAD frames/zeros/limits/TCP/linkage, masses/inertias and
+   actuator data; implement reviewed collision geometry and contact validation.
+7. Validate gripper/J3 and physical pieces before grasping; validate feedback,
+   homing, limits and independent stop behavior before hardware deployment.
 
-Situação em 30/10/2026: entregas 1 e 2 executadas, com testes C++/ROS e CLI
-aprovados. A etapa 3 permanece pendente: inicialização do RViz foi observada em
-logs, mas montagem não inspecionada visualmente nem calibrada contra o F3D.
-Etapas dependentes de fidelidade física não foram iniciadas.
-
-Após escolha do responsável (ADR S003), MuJoCo passou a ser o backend principal.
-O perfil experimental sem gravidade/contatos está implementado e testado para
-começar o estudo de estados, ações e reset. A fidelidade física da etapa 4
-continua pendente. O próximo exercício de RL pode usar esse protótipo declarado,
-sem promover seus resultados a validação do hardware.
-
-| Ordem | Entrega | Dependência e critério de conclusão |
-|---|---|---|
-| 1 | Auditoria e guias por módulo | Build C++, testes ROS, inventário de lacunas e comandos reproduzíveis; registrar limitações visuais e físicas |
-| 2 | Controle convencional ROS | URDF carregável; comando válido produz evolução de estado e TF, comando inválido rejeitado, reset testado, fonte única de estados |
-| 3 | Conferência visual/mecânica | Inspecionar RViz e montagem F3D; registrar eixos, zeros, unidades, frames de malhas, TCP e limites com fonte |
-| 4 | Backend físico calibrado MuJoCo | Etapa 3, massas/inércias/colisões rastreáveis; substituir perfil sintético e validar gravidade, contatos e estabilidade |
-| 5 | Primeira etapa pessoal de RL | Controle convencional validado; responsável define tarefa, observa estados, implementa ambiente mínimo e testes; sem treinamento automático |
-| 6 | Integração de xadrez | Reconciliação de branches, estado legal, UCI testado, calibração tabuleiro→robô e planejamento de tarefas |
-| 7 | Peças e hardware | Colisões, garra, TCP, parada, homing e limites validados; só então pick/place e sim-to-real |
-
-Riscos: modelo cinemático não representa ferramenta; teste sintético de visão não
-mede qualidade com câmera; caminhos com caixa duplicada dificultam merges;
-artefatos instalados antigos podem mascarar o pacote novo; RL pode explorar
-erros de modelagem. Não usar taxa de sucesso do experimento anterior para aprovar
-nenhum desses critérios. Cobertura de linhas não foi medida.
-
-Pendências de manutenção separadas: extrapolação de cantos, erro de captura URL,
-presets CMake com comentários e vírgula final, Compose com Dockerfile ausente,
-duplicação de caminhos e artefatos versionados. Corrigir cada problema com teste
-ou validação específica, sem misturá-los com a infraestrutura ROS.
+MuJoCo is primary. Legacy Gazebo remains available as historical code, with no
+current dependency justifying a second primary simulator. Full robot fidelity,
+ROS bridge, standalone motion ROS packaging, Stockfish integration validation,
+firmware and physical bench tests remain pending.

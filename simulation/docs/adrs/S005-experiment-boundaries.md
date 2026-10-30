@@ -1,53 +1,44 @@
-# S005 — MuJoCo direto, parâmetros explícitos e episódios sem agente
+# S005 — Direct MuJoCo experiments with explicit task decisions
 
-Data: 2026-10-30. Estado: aceito. Complementa S003/S004 e L001.
+Date: 2026-10-30. Status: accepted. Complements S003/S004 and L001.
 
-## Contexto
+## Context
 
-O responsável quer desenvolver pessoalmente o aprendizado. Main está integrada,
-mas seu contrato acmotion (J1/J2/J3/Z/garra) excede os três eixos do protótipo.
-Não há TCP, inércias medidas, transmissão ou colisões do robô validadas.
+The owner will implement learning personally. Main is integrated, but acmotion's
+J1/J2/J3/Z/gripper contract exceeds this three-axis prototype. Measured TCP,
+inertias, transmissions and robot collisions remain unavailable.
 
-## Decisão
+## Decision
 
-MuJoCo + NumPy pela API Python permanecem a base local CPU. ROS não participa
-de cada passo. Não adicionar Gazebo como segundo simulador principal nem instalar
-frameworks de treinamento antecipadamente. Gazebo/ROS legados permanecem no Git.
+Keep MuJoCo/NumPy direct Python APIs as the local CPU base. ROS is outside the
+physics loop. Retain legacy Gazebo sources without adopting a second primary
+simulator. Defer Gymnasium, PyTorch and SB3 installations until needed.
 
-build_bundle aceita JSON com overrides explícitos das massas/inércias sintéticas,
-ganhos, damping/armature e temporização. Não habilita gravidade/contato via esse
-atalho: primeiro devem existir geometrias de colisão e dinâmica revisadas.
-Cada bundle novo contém configuração completa e hashes; não alterar bundles antigos.
+Allow explicit JSON overrides of synthetic mass/inertia, damping/armature,
+position gains and timing. Each new bundle stores configuration and hashes.
+Gravity/contact overrides are rejected until collision geometry/dynamics exist.
+An optional experimental_tool offset in arm2_link supports tool-point FK study;
+there is no invented default TCP. frame_pose returns world metres and rotation;
+tool_pose is None without an offset, and tcp_calibrated stays false.
 
-Offset opcional experimental_tool em arm2_link permite estudar FK de um ponto
-fora da origem da junta. Não há valor padrão inventado, nem calibração implícita.
-frame_pose retorna posição em metros e matriz de rotação no mundo da cena.
-Sem offset, tool_pose é None. O campo tcp_calibrated permanece false.
+Episode requires a researcher Task and explicit max_steps. Task supplies reset,
+observations, action conversion and reward/termination. Infrastructure handles
+independent seeded streams, stepping, truncation and invalid targets. Errors after
+physics mutation require reset. No default reward, policy or training exists.
+This is not Gymnasium.Env; spaces and checker validation remain future work.
 
-Episode exige Task fornecida pelo pesquisador e max_steps explícito. Task define
-reset/metas, observação, conversão da ação e recompensa/término. A infraestrutura
-cuida de seeds separados, avanço, truncamento e rejeição de ações inválidas.
-Falha após avanço exige reset. Não existe recompensa padrão nem política.
-Não é Gymnasium Env: faltam espaços escolhidos pelo responsável. Um adaptador
-Gymnasium será pequeno após essa escolha, devendo passar pelo check_env oficial.
+Local exclusive JSON records include code revision, dirty/untracked flags,
+versions, manifest and wall time. Conventional demos leave task/algorithm/seed
+null and document deterministic reset. Future task configuration/checkpoints must
+be supplied by the researcher. Dirty/untracked sources are not auto-snapshotted.
 
-Registros locais JSON incluem commit, dirty/untracked, versões, manifest, tempo
-de parede/simulado e resultados. Demos convencionais registram task/algorithm/seed
-como null e reset determinístico; não simulam métricas de treinamento. Escrita
-exclusiva evita sobrescrever resultados. Configuração de tarefa/algoritmo e
-checkpoints serão acrescentados pelo pesquisador quando existirem.
+## Alternatives and consequences
 
-## Alternativas e consequências
-
-ROS em todo step acrescentaria integração sem resolver calibração; fica para
-uma ponte opcional futura. Gymnasium agora imporia espaços/recompensa provisórios
-ou uma dependência sem uso; adiado. PyTorch e SB3 são candidatos documentados,
-não instalados. JSON basta para os pequenos exercícios, sem serviço pago.
-
-Teste sintético esfera/plano valida contato do motor MuJoCo instalado e força
-normal. Não valida colisões do braço: contacts continua None. Manipulação,
-abertura da garra, J3 e transferência para hardware seguem bloqueadas por dados.
-
-Validação: 23 casos pytest com render aprovados, incluindo offsets por composição
-rígida, parâmetros inválidos, episódios/reset/replay, término/truncamento, erro de
-recompensa e registros sem sobrescrita. Nenhum agente ou treinamento executado.
+ROS on every step adds coupling without solving calibration; defer a bridge.
+Premature Gymnasium spaces would silently choose experimental semantics; defer
+formal compatibility. Local JSON suffices before introducing larger trackers.
+The sphere/plane fixture checks engine contacts only, not robot collisions.
+Manipulation and physical deployment remain blocked by mechanical evidence.
+Validation: 25 pytest cases passed with rendering, including rigid tool transforms,
+parameter rejection, episode reset/replay/termination, record preservation,
+repository-wide provenance and Windows UTF-8 BOM input. No training was executed.
