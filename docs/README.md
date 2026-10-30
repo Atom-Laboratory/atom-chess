@@ -20,6 +20,9 @@ documenta somente as relações entre módulos. Referência desta revisão:
 - **Mecânica:** [registro de fontes](mechanics/README.md),
   [ADR M001 — referência CAD](mechanics/adrs/M001-cad.md).
 - **RL futuro:** [trilha](../simulation/docs/learning/README.md),
+  [da política ao acmotion](../simulation/docs/learning/deployment-acmotion.md),
+  [Gazebo completo: requisitos e lacunas](../simulation/docs/gazebo-readiness.md),
+  [ADR L003 — política e integração](../simulation/docs/learning/adrs/L003-policy-motion-and-full-simulation.md),
   [exercício 1](../simulation/mujoco/docs/exercise-01.md),
   [ADR L002 — estudo inicial](../simulation/docs/learning/adrs/L002-first-exercise.md),
   [ADR L001 — participação do responsável](../simulation/docs/learning/adrs/L001-scope.md).

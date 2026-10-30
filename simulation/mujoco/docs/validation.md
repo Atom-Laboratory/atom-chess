@@ -1,5 +1,13 @@
 # Validação MuJoCo — 30/10/2026
 
+## Atualização upright-chess-v3 — peças
+
+13 testes aprovados com render habilitado. Novo teste verifica 32 corpos em casas
+distintas, 16 por cor, oito peões e um rei por cor, centros coincidentes com as
+casas e ausência de junta física nas peças visuais. Demo executada com sucesso;
+render 800×600 inspecionado com as peças na disposição inicial. São corpos fixos
+com contatos desativados; isso não verifica preensão nem simulação de peças soltas.
+
 ## Atualização de cena upright-chess-v2
 
 12 testes aprovados, incluindo render e novo teste de montagem vertical, 64 casas,

@@ -6,7 +6,7 @@ $atomPython = Join-Path $atomModule '.venv\Scripts\python.exe'
 if (-not (Test-Path -LiteralPath $atomPython)) {
     throw 'Crie .venv e instale o pacote seguindo simulation/mujoco/README.md.'
 }
-$atomBundle = Join-Path $atomModule 'runs\upright-chess-v2'
+$atomBundle = Join-Path $atomModule 'runs\upright-chess-v3'
 if (-not (Test-Path -LiteralPath $atomBundle)) {
     & $atomPython -m atom_mujoco.cli build --urdf (Join-Path $atomSimulation 'src\urdf\atom.urdf.xacro') --output $atomBundle
     if ($LASTEXITCODE -ne 0) { throw 'Falha ao compilar o modelo.' }

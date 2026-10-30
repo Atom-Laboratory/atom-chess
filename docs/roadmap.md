@@ -1,5 +1,11 @@
 # Roadmap verificável
 
+Requisito adicional do responsável: Gazebo para validar ROS com J1/J2/J3/Z,
+garra articulada e peças com contatos. Ver simulation/docs/gazebo-readiness.md.
+Gazebo não está entregue como modelo completo; MuJoCo v3 já contém 32 peças
+visuais. A montagem mecânica será investigada diretamente no CAD disponível,
+conforme orientação do responsável, antes de definir juntas ausentes.
+
 Situação em 30/10/2026: entregas 1 e 2 executadas, com testes C++/ROS e CLI
 aprovados. A etapa 3 permanece pendente: inicialização do RViz foi observada em
 logs, mas montagem não inspecionada visualmente nem calibrada contra o F3D.

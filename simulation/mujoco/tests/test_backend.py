@@ -116,3 +116,18 @@ def test_upright_scene_board_and_gripper_follow_arm(sim):
     for index, expected in zip(gripper_ids, local_before):
         np.testing.assert_allclose(d.xmat[arm_id].reshape(3,3).T@(d.geom_xpos[index]-d.xpos[arm_id]), expected, atol=1e-12)
     assert all(m.geom_contype[index] == m.geom_conaffinity[index] == 0 for index in square_ids+gripper_ids)
+
+
+def test_starting_pieces_match_named_square_centers(sim):
+    pieces = sim.manifest['pieces']
+    assert len(pieces) == len({p['initial_square'] for p in pieces}) == 32
+    for color in ('white', 'black'):
+        selected = [p for p in pieces if p['color'] == color]
+        assert len(selected) == 16
+        assert sum(p['kind'] == 'pawn' for p in selected) == 8
+        assert sum(p['kind'] == 'king' for p in selected) == 1
+    for piece in pieces:
+        body = sim.model.body(piece['name']).id
+        site = sim.model.site('square_center_'+piece['initial_square']).id
+        np.testing.assert_allclose(sim.data.xpos[body][:2], sim.data.site_xpos[site][:2], atol=1e-12)
+        assert sim.model.body_jntnum[body] == 0

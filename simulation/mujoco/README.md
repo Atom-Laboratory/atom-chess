@@ -84,5 +84,11 @@ montagem e coordenadas no [ADR S004](../docs/adrs/S004-upright-chess-scene.md).
 O URDF permanece no referencial original; apenas o conjunto MuJoCo recebe a
 transformação Y→Z. A prismática agora desloca verticalmente na cena.
 
+Atualização v3: 32 peças estilizadas na disposição inicial, identificadas por
+cor/tipo/casa no manifest. São referências visuais fixas; ainda não são agarráveis.
+O launcher usa runs/upright-chess-v3, preservando os bundles v1/v2 existentes.
+Veja [integração futura com acmotion](../docs/learning/deployment-acmotion.md) e
+[estado do Gazebo completo](../docs/gazebo-readiness.md).
+
 Comece o estudo pelo [exercício 1: juntas e estados](docs/exercise-01.md), com
 exemplo executável em examples/inspect_joints.py.

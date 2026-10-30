@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 
 import mujoco
 import numpy as np
+from .chess_scene import add_pieces
 
 
 PROFILE = {
@@ -25,7 +26,7 @@ PROFILE = {
 }
 
 # Scene hypotheses only: URDF +Y becomes scene +Z, base bottom rests at Z=0.
-SCENE = dict(name='upright-chess-v2', urdf_to_scene_rotation=[[1, 0, 0], [0, 0, -1], [0, 1, 0]],
+SCENE = dict(name='upright-chess-v3', urdf_to_scene_rotation=[[1, 0, 0], [0, 0, -1], [0, 1, 0]],
              urdf_to_scene_translation_m=[0, 0, .035],
              board_center_m=[.34, -.22, .012], square_size_m=.04,
              gripper_visual_only=True, gripper_origin_in_arm2_m=[-.26, 0, 0],
@@ -109,6 +110,7 @@ def build_bundle(urdf, output):
                           rgba='.88 .81 .65 1' if (rank+file)%2 else '.16 .09 .04 1',
                           contype='0', conaffinity='0')
             ET.SubElement(board, 'site', name='square_center_'+square, pos=text([*xy[:2], .009]), size='.001', rgba='0 0 0 0')
+    pieces = add_pieces(board, side)
     mounting = ET.SubElement(world, 'body', name='robot_mount', pos='0 0 .035',
                              quat=text([math.sqrt(.5), math.sqrt(.5), 0, 0]))
     actuators = ET.SubElement(mjcf, 'actuator')
@@ -199,6 +201,7 @@ def build_bundle(urdf, output):
     manifest = dict(schema=1, source_urdf_sha256=hashlib.sha256(raw).hexdigest(),
                     mujoco_version=mujoco.__version__, profile=PROFILE, scene=SCENE, joints=metadata,
                     tip_frame='arm2_link', tcp_calibrated=False,
+                    pieces=pieces, pieces_physics='fixed-visual-only',
                     assets_sha256={key: hashlib.sha256(value).hexdigest() for key, value in mesh_bytes.items()},
                     model_sha256=hashlib.sha256(xml.encode()).hexdigest())
     (output/'manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
