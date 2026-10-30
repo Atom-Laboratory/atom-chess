@@ -1,0 +1,30 @@
+[0.016s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/atom_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --build /home/enzo/repos/atom-chess/simulation/build/atom_description -- -j12 -l12
+[0.063s] Invoked command in '/home/enzo/repos/atom-chess/simulation/build/atom_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --build /home/enzo/repos/atom-chess/simulation/build/atom_description -- -j12 -l12
+[0.074s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/atom_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --install /home/enzo/repos/atom-chess/simulation/build/atom_description
+[0.083s] -- Install configuration: ""
+[0.083s] -- Execute custom install script
+[0.084s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/urdf/atom.urdf.xacro
+[0.084s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/arm1.stl
+[0.085s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/arm2.stl
+[0.085s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/base.stl
+[0.085s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/gripper_back.stl
+[0.085s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/gripper_hand1.stl
+[0.085s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/gripper_hand2.stl
+[0.085s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/meshes/z_axis.stl
+[0.086s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/ament_index/resource_index/package_run_dependencies/atom_description
+[0.086s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/ament_index/resource_index/parent_prefix_path/atom_description
+[0.086s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/environment/ament_prefix_path.sh
+[0.086s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/environment/ament_prefix_path.dsv
+[0.086s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/environment/path.sh
+[0.087s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/environment/path.dsv
+[0.087s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.bash
+[0.087s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.fish
+[0.087s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.sh
+[0.088s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.zsh
+[0.088s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/local_setup.dsv
+[0.088s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/package.dsv
+[0.101s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/ament_index/resource_index/packages/atom_description
+[0.102s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/cmake/atom_descriptionConfig.cmake
+[0.102s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/cmake/atom_descriptionConfig-version.cmake
+[0.102s] -- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_description/share/atom_description/package.xml
+[0.105s] Invoked command in '/home/enzo/repos/atom-chess/simulation/build/atom_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --install /home/enzo/repos/atom-chess/simulation/build/atom_description

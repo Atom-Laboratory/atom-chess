@@ -1,0 +1,4 @@
+Invoking command in '/home/enzo/repos/atom-chess/simulation/build/atom_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --build /home/enzo/repos/atom-chess/simulation/build/atom_description -- -j12 -l12
+Invoked command in '/home/enzo/repos/atom-chess/simulation/build/atom_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --build /home/enzo/repos/atom-chess/simulation/build/atom_description -- -j12 -l12
+Invoking command in '/home/enzo/repos/atom-chess/simulation/build/atom_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --install /home/enzo/repos/atom-chess/simulation/build/atom_description
+Invoked command in '/home/enzo/repos/atom-chess/simulation/build/atom_description' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --install /home/enzo/repos/atom-chess/simulation/build/atom_description

@@ -1,1 +1,0 @@
-/home/enzo/repos/atom-chess/simulation/src/launch/view_robot.launch.py

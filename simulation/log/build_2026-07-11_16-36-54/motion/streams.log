@@ -1,0 +1,41 @@
+[0.017s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/motion': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/motion -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/motion
+[0.030s] [0mCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+[0.030s]   Compatibility with CMake < 3.10 will be removed from a future version of
+[0.030s]   CMake.
+[0.030s] 
+[0.030s]   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+[0.030s]   to tell CMake that the project requires at least <min> but has been updated
+[0.030s]   to work with policies introduced by <max> or earlier.
+[0.030s] 
+[0.031s] [0m
+[0.235s] -- The C compiler identification is GNU 15.2.0
+[1.044s] -- The CXX compiler identification is GNU 15.2.0
+[1.604s] -- Detecting C compiler ABI info
+[1.818s] -- Detecting C compiler ABI info - done
+[1.833s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.833s] -- Detecting C compile features
+[1.834s] -- Detecting C compile features - done
+[1.848s] -- Detecting CXX compiler ABI info
+[2.075s] -- Detecting CXX compiler ABI info - done
+[2.091s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[2.091s] -- Detecting CXX compile features
+[2.091s] -- Detecting CXX compile features - done
+[2.104s] -- Found ament_cmake: 2.8.7 (/opt/ros/lyrical/share/ament_cmake/cmake)
+[2.554s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[2.721s] -- Configuring done (2.7s)
+[2.722s] [31mCMake Error at CMakeLists.txt:7 (add_library):
+[2.722s]   Cannot find source file:
+[2.722s] 
+[2.722s]     src/dummy.cpp
+[2.723s] 
+[2.723s]   Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm
+[2.723s]   .ccm .cxxm .c++m .h .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90
+[2.723s]   .f95 .f03 .hip .ispc
+[2.723s] 
+[2.723s] [0m
+[2.723s] [31mCMake Error at CMakeLists.txt:7 (add_library):
+[2.723s]   No SOURCES given to target: motion
+[2.723s] 
+[2.723s] [0m
+[2.723s] [0mCMake Generate step failed.  Build files cannot be regenerated correctly.[0m
+[2.729s] Invoked command in '/home/enzo/repos/atom-chess/simulation/build/motion' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/motion -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/motion

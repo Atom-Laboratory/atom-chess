@@ -1,0 +1,142 @@
+[0.000000] (-) TimerEvent: {}
+[0.000512] (-) JobUnselected: {'identifier': 'atom_description'}
+[0.000563] (atom_control) JobQueued: {'identifier': 'atom_control', 'dependencies': OrderedDict()}
+[0.000697] (atom_control) JobStarted: {'identifier': 'atom_control'}
+[0.014387] (atom_control) JobProgress: {'identifier': 'atom_control', 'progress': 'cmake'}
+[0.015403] (atom_control) JobProgress: {'identifier': 'atom_control', 'progress': 'build'}
+[0.016255] (atom_control) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/enzo/repos/atom-chess/simulation/build/atom_control', '--', '-j12', '-l12'], 'cwd': '/home/enzo/repos/atom-chess/simulation/build/atom_control', 'env': OrderedDict({'LESSOPEN': '| /usr/bin/lesspipe %s', 'GZ_SIM_RESOURCE_PATH': '/opt/ros/lyrical/share', 'USER': 'enzo', 'GZ_CONFIG_PATH': '/opt/ros/lyrical/opt/gz_sim_vendor/share/gz:/opt/ros/lyrical/opt/gz_gui_vendor/share/gz:/opt/ros/lyrical/opt/gz_transport_vendor/share/gz:/opt/ros/lyrical/opt/sdformat_vendor/share/gz:/opt/ros/lyrical/opt/gz_rendering_vendor/share/gz:/opt/ros/lyrical/opt/gz_plugin_vendor/share/gz:/opt/ros/lyrical/opt/gz_fuel_tools_vendor/share/gz:/opt/ros/lyrical/opt/gz_msgs_vendor/share/gz:/opt/ros/lyrical/opt/gz_common_vendor/share/gz', 'GIT_ASKPASS': '/home/enzo/.vscode-server/bin/fc3def6774c76082adf699d366f31a557ce5573f/extensions/git/dist/askpass.sh', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/lyrical/opt/gz_sim_vendor/lib:/opt/ros/lyrical/opt/gz_sensors_vendor/lib:/opt/ros/lyrical/opt/gz_gui_vendor/lib:/opt/ros/lyrical/opt/gz_transport_vendor/lib:/opt/ros/lyrical/opt/zenoh_cpp_vendor/lib:/opt/ros/lyrical/opt/gz_physics_vendor/lib:/opt/ros/lyrical/opt/sdformat_vendor/lib:/opt/ros/lyrical/opt/gz_rendering_vendor/lib:/opt/ros/lyrical/opt/gz_plugin_vendor/lib:/opt/ros/lyrical/opt/gz_fuel_tools_vendor/lib:/opt/ros/lyrical/opt/gz_msgs_vendor/lib:/opt/ros/lyrical/opt/gz_common_vendor/lib:/opt/ros/lyrical/opt/gz_math_vendor/lib:/opt/ros/lyrical/opt/gz_utils_vendor/lib:/opt/ros/lyrical/opt/rviz_ogre_vendor/lib:/opt/ros/lyrical/lib/x86_64-linux-gnu:/opt/ros/lyrical/opt/gz_tools_vendor/lib:/opt/ros/lyrical/opt/gz_ogre_next_vendor/lib:/opt/ros/lyrical/opt/gz_dartsim_vendor/lib:/opt/ros/lyrical/opt/gz_cmake_vendor/lib:/opt/ros/lyrical/lib', 'HOME': '/home/enzo', 'OLDPWD': '/home/enzo/repos/atom-chess/simulation', 'TERM_PROGRAM_VERSION': '1.128.0', 'VSCODE_IPC_HOOK_CLI': '/run/user/1000/vscode-ipc-3bc60879-1f9e-4e8c-ba03-e15354d48e20.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/home/enzo/.vscode-server/bin/fc3def6774c76082adf699d366f31a557ce5573f/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/home/enzo/.vscode-server/bin/fc3def6774c76082adf699d366f31a557ce5573f/node', 'VSCODE_PYTHON_AUTOACTIVATE_GUARD': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'WSL_DISTRO_NAME': 'Ubuntu', 'WAYLAND_DISPLAY': 'wayland-0', 'COLCON_PREFIX_PATH': '/home/enzo/repos/atom-chess/simulation/install', 'ROS_DISTRO': 'lyrical', 'LOGNAME': 'enzo', 'NAME': 'DESKTOP-KPSKBV0', 'WSL_INTEROP': '/run/WSL/5941_interop', 'PULSE_SERVER': 'unix:/mnt/wslg/PulseServer', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'TERM': 'xterm-256color', 'PATH': '/opt/ros/lyrical/opt/gz_msgs_vendor/bin:/opt/ros/lyrical/opt/gz_tools_vendor/bin:/opt/ros/lyrical/opt/gz_ogre_next_vendor/bin:/opt/ros/lyrical/bin:/home/enzo/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/enzo/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/enzo/.vscode-server/bin/fc3def6774c76082adf699d366f31a557ce5573f/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/WindowsApps/MicrosoftCorporationII.WindowsSubsystemForLinux_2.7.10.0_x64__8wekyb3d8bbwe:/mnt/c/msys64/ucrt64/bin:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Users/maria/.jdks/corretto-23.0.2/bin:/mnt/c/Program Files/Eclipse Adoptium/jdk-21.0.10.7-hotspot/bin:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files (x86)/ZeroTier/One/:/mnt/c/Users/maria/AppData/Local/Programs/MiKTeX/miktex/bin/x64/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Exercism:/mnt/c/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Common Files/Autodesk Shared/:/mnt/c/Program Files/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files/Neovim/bin:/mnt/c/Program Files/Java/jdk-17:/Docker/host/bin:/mnt/d/opencv/build/x64/vc16/bin:/mnt/c/Program Files/WezTerm:/mnt/c/Program Files/PuTTY/:/mnt/c/Strawberry/perl/bin:/mnt/c/Strawberry/perl/site/bin:/mnt/c/Users/maria/Documents/apache-maven-3.9.14-bin/apache-maven-3.9.14/bin:/mnt/c/Program Files/PowerShell/7/:/mnt/c/Users/maria/.local/bin:/mnt/c/Users/maria/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/maria/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/maria/.ssh:/mnt/c/Users/maria/AppData/Local/GitHubDesktop/bin:/mnt/c/Users/maria/AppData/Local/Programs/MiKTeX/miktex/bin/x64/:/mnt/c/Users/maria/AppData/Roaming/npm:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/JetBrains/IntelliJ IDEA 2025.3.2/bin:/mnt/c/Program Files/JetBrains/CLion 2025.3.2/bin:/mnt/c/Exercism:/mnt/c/Users/maria/.jdks/corretto-23.0.2/bin:/mnt/c/Program Files/Java/jdk-17:/mnt/d/opencv/build/x64/vc16/bin:/mnt/c/Strawberry/perl/bin:/mnt/c/Strawberry/perl/site/bin:/mnt/c/Users/maria/flutter/bin:/mnt/c/Users/maria/Documents/apache-maven-3.9.14-bin/apache-maven-3.9.14/bin:/mnt/c/Users/maria/AppData/Local/spicetify:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.swp=00;90:*.tmp=00;90:*.dpkg-dist=00;90:*.dpkg-old=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-699cada1f5.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/home/enzo/repos/atom-chess/simulation/install/atom_description:/opt/ros/lyrical', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/home/enzo/repos/atom-chess/simulation/build/atom_control', 'QT_QPA_PLATFORM': 'xcb', 'COPILOT_DEBUG_NONCE': '7e465f348095c947c8f0c25c9c6fd606', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/opt/ros/lyrical/opt/gz_sim_vendor/lib/python:/opt/ros/lyrical/opt/gz_transport_vendor/lib/python:/opt/ros/lyrical/opt/sdformat_vendor/lib/python:/opt/ros/lyrical/opt/gz_msgs_vendor/lib/python:/opt/ros/lyrical/opt/gz_math_vendor/lib/python:/opt/ros/lyrical/lib/python3.14/site-packages', 'COLCON': '1', 'WSL2_GUI_APPS_ENABLED': '1', 'HOSTTYPE': 'x86_64', 'CMAKE_PREFIX_PATH': '/home/enzo/repos/atom-chess/simulation/install/atom_description:/opt/ros/lyrical/opt/gz_sim_vendor:/opt/ros/lyrical/opt/gz_sensors_vendor:/opt/ros/lyrical/opt/gz_gui_vendor:/opt/ros/lyrical/opt/gz_transport_vendor:/opt/ros/lyrical/opt/gz_physics_vendor:/opt/ros/lyrical/opt/sdformat_vendor:/opt/ros/lyrical/opt/gz_rendering_vendor:/opt/ros/lyrical/opt/gz_plugin_vendor:/opt/ros/lyrical/opt/gz_fuel_tools_vendor:/opt/ros/lyrical/opt/gz_msgs_vendor:/opt/ros/lyrical/opt/gz_common_vendor:/opt/ros/lyrical/opt/gz_math_vendor:/opt/ros/lyrical/opt/gz_utils_vendor:/opt/ros/lyrical/opt/gz_tools_vendor:/opt/ros/lyrical/opt/gz_ogre_next_vendor:/opt/ros/lyrical/opt/gz_dartsim_vendor:/opt/ros/lyrical/opt/gz_cmake_vendor:/opt/ros/lyrical', 'WSLENV': 'VSCODE_WSL_EXT_LOCATION/up:ELECTRON_RUN_AS_NODE/w:'}), 'shell': False}
+[0.099819] (-) TimerEvent: {}
+[0.112805] (atom_control) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/scara_commander.dir/src/scara_commander.cpp.o\x1b[0m\n'}
+[0.199952] (-) TimerEvent: {}
+[0.300300] (-) TimerEvent: {}
+[0.400656] (-) TimerEvent: {}
+[0.501016] (-) TimerEvent: {}
+[0.601378] (-) TimerEvent: {}
+[0.701726] (-) TimerEvent: {}
+[0.802068] (-) TimerEvent: {}
+[0.902428] (-) TimerEvent: {}
+[1.002819] (-) TimerEvent: {}
+[1.103239] (-) TimerEvent: {}
+[1.203638] (-) TimerEvent: {}
+[1.304028] (-) TimerEvent: {}
+[1.404437] (-) TimerEvent: {}
+[1.504875] (-) TimerEvent: {}
+[1.605305] (-) TimerEvent: {}
+[1.705679] (-) TimerEvent: {}
+[1.806077] (-) TimerEvent: {}
+[1.906473] (-) TimerEvent: {}
+[2.006885] (-) TimerEvent: {}
+[2.107297] (-) TimerEvent: {}
+[2.207706] (-) TimerEvent: {}
+[2.308098] (-) TimerEvent: {}
+[2.408491] (-) TimerEvent: {}
+[2.508856] (-) TimerEvent: {}
+[2.609263] (-) TimerEvent: {}
+[2.709678] (-) TimerEvent: {}
+[2.810075] (-) TimerEvent: {}
+[2.910443] (-) TimerEvent: {}
+[3.010829] (-) TimerEvent: {}
+[3.111250] (-) TimerEvent: {}
+[3.211654] (-) TimerEvent: {}
+[3.312027] (-) TimerEvent: {}
+[3.412476] (-) TimerEvent: {}
+[3.512989] (-) TimerEvent: {}
+[3.613562] (-) TimerEvent: {}
+[3.713985] (-) TimerEvent: {}
+[3.814607] (-) TimerEvent: {}
+[3.915099] (-) TimerEvent: {}
+[4.015535] (-) TimerEvent: {}
+[4.116002] (-) TimerEvent: {}
+[4.216438] (-) TimerEvent: {}
+[4.316900] (-) TimerEvent: {}
+[4.417365] (-) TimerEvent: {}
+[4.517781] (-) TimerEvent: {}
+[4.618190] (-) TimerEvent: {}
+[4.718638] (-) TimerEvent: {}
+[4.819049] (-) TimerEvent: {}
+[4.919454] (-) TimerEvent: {}
+[5.019891] (-) TimerEvent: {}
+[5.120301] (-) TimerEvent: {}
+[5.220781] (-) TimerEvent: {}
+[5.321416] (-) TimerEvent: {}
+[5.421849] (-) TimerEvent: {}
+[5.522378] (-) TimerEvent: {}
+[5.622914] (-) TimerEvent: {}
+[5.723459] (-) TimerEvent: {}
+[5.823854] (-) TimerEvent: {}
+[5.924252] (-) TimerEvent: {}
+[6.024648] (-) TimerEvent: {}
+[6.125074] (-) TimerEvent: {}
+[6.225514] (-) TimerEvent: {}
+[6.325932] (-) TimerEvent: {}
+[6.426353] (-) TimerEvent: {}
+[6.526758] (-) TimerEvent: {}
+[6.627165] (-) TimerEvent: {}
+[6.727584] (-) TimerEvent: {}
+[6.827975] (-) TimerEvent: {}
+[6.928373] (-) TimerEvent: {}
+[7.028781] (-) TimerEvent: {}
+[7.129178] (-) TimerEvent: {}
+[7.229578] (-) TimerEvent: {}
+[7.329964] (-) TimerEvent: {}
+[7.430351] (-) TimerEvent: {}
+[7.530734] (-) TimerEvent: {}
+[7.631236] (-) TimerEvent: {}
+[7.731732] (-) TimerEvent: {}
+[7.832267] (-) TimerEvent: {}
+[7.932732] (-) TimerEvent: {}
+[8.033283] (-) TimerEvent: {}
+[8.133748] (-) TimerEvent: {}
+[8.234179] (-) TimerEvent: {}
+[8.334655] (-) TimerEvent: {}
+[8.435213] (-) TimerEvent: {}
+[8.535689] (-) TimerEvent: {}
+[8.636210] (-) TimerEvent: {}
+[8.736861] (-) TimerEvent: {}
+[8.837297] (-) TimerEvent: {}
+[8.937673] (-) TimerEvent: {}
+[9.038088] (-) TimerEvent: {}
+[9.138471] (-) TimerEvent: {}
+[9.238925] (-) TimerEvent: {}
+[9.339370] (-) TimerEvent: {}
+[9.439765] (-) TimerEvent: {}
+[9.540146] (-) TimerEvent: {}
+[9.640544] (-) TimerEvent: {}
+[9.740977] (-) TimerEvent: {}
+[9.841539] (-) TimerEvent: {}
+[9.941957] (-) TimerEvent: {}
+[9.999254] (atom_control) StdoutLine: {'line': b'[100%] \x1b[1m\x1b[32mLinking CXX executable scara_commander\x1b[0m\n'}
+[10.042146] (-) TimerEvent: {}
+[10.142587] (-) TimerEvent: {}
+[10.243010] (-) TimerEvent: {}
+[10.343397] (-) TimerEvent: {}
+[10.443875] (-) TimerEvent: {}
+[10.544345] (-) TimerEvent: {}
+[10.644848] (-) TimerEvent: {}
+[10.743126] (atom_control) StdoutLine: {'line': b'[100%] Built target scara_commander\n'}
+[10.744922] (-) TimerEvent: {}
+[10.756950] (atom_control) CommandEnded: {'returncode': 0}
+[10.759123] (atom_control) JobProgress: {'identifier': 'atom_control', 'progress': 'install'}
+[10.770249] (atom_control) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/enzo/repos/atom-chess/simulation/build/atom_control'], 'cwd': '/home/enzo/repos/atom-chess/simulation/build/atom_control', 'env': OrderedDict({'LESSOPEN': '| /usr/bin/lesspipe %s', 'GZ_SIM_RESOURCE_PATH': '/opt/ros/lyrical/share', 'USER': 'enzo', 'GZ_CONFIG_PATH': '/opt/ros/lyrical/opt/gz_sim_vendor/share/gz:/opt/ros/lyrical/opt/gz_gui_vendor/share/gz:/opt/ros/lyrical/opt/gz_transport_vendor/share/gz:/opt/ros/lyrical/opt/sdformat_vendor/share/gz:/opt/ros/lyrical/opt/gz_rendering_vendor/share/gz:/opt/ros/lyrical/opt/gz_plugin_vendor/share/gz:/opt/ros/lyrical/opt/gz_fuel_tools_vendor/share/gz:/opt/ros/lyrical/opt/gz_msgs_vendor/share/gz:/opt/ros/lyrical/opt/gz_common_vendor/share/gz', 'GIT_ASKPASS': '/home/enzo/.vscode-server/bin/fc3def6774c76082adf699d366f31a557ce5573f/extensions/git/dist/askpass.sh', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/lyrical/opt/gz_sim_vendor/lib:/opt/ros/lyrical/opt/gz_sensors_vendor/lib:/opt/ros/lyrical/opt/gz_gui_vendor/lib:/opt/ros/lyrical/opt/gz_transport_vendor/lib:/opt/ros/lyrical/opt/zenoh_cpp_vendor/lib:/opt/ros/lyrical/opt/gz_physics_vendor/lib:/opt/ros/lyrical/opt/sdformat_vendor/lib:/opt/ros/lyrical/opt/gz_rendering_vendor/lib:/opt/ros/lyrical/opt/gz_plugin_vendor/lib:/opt/ros/lyrical/opt/gz_fuel_tools_vendor/lib:/opt/ros/lyrical/opt/gz_msgs_vendor/lib:/opt/ros/lyrical/opt/gz_common_vendor/lib:/opt/ros/lyrical/opt/gz_math_vendor/lib:/opt/ros/lyrical/opt/gz_utils_vendor/lib:/opt/ros/lyrical/opt/rviz_ogre_vendor/lib:/opt/ros/lyrical/lib/x86_64-linux-gnu:/opt/ros/lyrical/opt/gz_tools_vendor/lib:/opt/ros/lyrical/opt/gz_ogre_next_vendor/lib:/opt/ros/lyrical/opt/gz_dartsim_vendor/lib:/opt/ros/lyrical/opt/gz_cmake_vendor/lib:/opt/ros/lyrical/lib', 'HOME': '/home/enzo', 'OLDPWD': '/home/enzo/repos/atom-chess/simulation', 'TERM_PROGRAM_VERSION': '1.128.0', 'VSCODE_IPC_HOOK_CLI': '/run/user/1000/vscode-ipc-3bc60879-1f9e-4e8c-ba03-e15354d48e20.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/home/enzo/.vscode-server/bin/fc3def6774c76082adf699d366f31a557ce5573f/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/home/enzo/.vscode-server/bin/fc3def6774c76082adf699d366f31a557ce5573f/node', 'VSCODE_PYTHON_AUTOACTIVATE_GUARD': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'WSL_DISTRO_NAME': 'Ubuntu', 'WAYLAND_DISPLAY': 'wayland-0', 'COLCON_PREFIX_PATH': '/home/enzo/repos/atom-chess/simulation/install', 'ROS_DISTRO': 'lyrical', 'LOGNAME': 'enzo', 'NAME': 'DESKTOP-KPSKBV0', 'WSL_INTEROP': '/run/WSL/5941_interop', 'PULSE_SERVER': 'unix:/mnt/wslg/PulseServer', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'TERM': 'xterm-256color', 'PATH': '/opt/ros/lyrical/opt/gz_msgs_vendor/bin:/opt/ros/lyrical/opt/gz_tools_vendor/bin:/opt/ros/lyrical/opt/gz_ogre_next_vendor/bin:/opt/ros/lyrical/bin:/home/enzo/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/enzo/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/enzo/.vscode-server/bin/fc3def6774c76082adf699d366f31a557ce5573f/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/WindowsApps/MicrosoftCorporationII.WindowsSubsystemForLinux_2.7.10.0_x64__8wekyb3d8bbwe:/mnt/c/msys64/ucrt64/bin:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/java8path:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Users/maria/.jdks/corretto-23.0.2/bin:/mnt/c/Program Files/Eclipse Adoptium/jdk-21.0.10.7-hotspot/bin:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files (x86)/ZeroTier/One/:/mnt/c/Users/maria/AppData/Local/Programs/MiKTeX/miktex/bin/x64/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Exercism:/mnt/c/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Common Files/Autodesk Shared/:/mnt/c/Program Files/Microsoft SQL Server/150/Tools/Binn/:/mnt/c/Program Files/Neovim/bin:/mnt/c/Program Files/Java/jdk-17:/Docker/host/bin:/mnt/d/opencv/build/x64/vc16/bin:/mnt/c/Program Files/WezTerm:/mnt/c/Program Files/PuTTY/:/mnt/c/Strawberry/perl/bin:/mnt/c/Strawberry/perl/site/bin:/mnt/c/Users/maria/Documents/apache-maven-3.9.14-bin/apache-maven-3.9.14/bin:/mnt/c/Program Files/PowerShell/7/:/mnt/c/Users/maria/.local/bin:/mnt/c/Users/maria/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/maria/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/maria/.ssh:/mnt/c/Users/maria/AppData/Local/GitHubDesktop/bin:/mnt/c/Users/maria/AppData/Local/Programs/MiKTeX/miktex/bin/x64/:/mnt/c/Users/maria/AppData/Roaming/npm:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/JetBrains/IntelliJ IDEA 2025.3.2/bin:/mnt/c/Program Files/JetBrains/CLion 2025.3.2/bin:/mnt/c/Exercism:/mnt/c/Users/maria/.jdks/corretto-23.0.2/bin:/mnt/c/Program Files/Java/jdk-17:/mnt/d/opencv/build/x64/vc16/bin:/mnt/c/Strawberry/perl/bin:/mnt/c/Strawberry/perl/site/bin:/mnt/c/Users/maria/flutter/bin:/mnt/c/Users/maria/Documents/apache-maven-3.9.14-bin/apache-maven-3.9.14/bin:/mnt/c/Users/maria/AppData/Local/spicetify:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.swp=00;90:*.tmp=00;90:*.dpkg-dist=00;90:*.dpkg-old=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-699cada1f5.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/home/enzo/repos/atom-chess/simulation/install/atom_description:/opt/ros/lyrical', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/home/enzo/repos/atom-chess/simulation/build/atom_control', 'QT_QPA_PLATFORM': 'xcb', 'COPILOT_DEBUG_NONCE': '7e465f348095c947c8f0c25c9c6fd606', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/opt/ros/lyrical/opt/gz_sim_vendor/lib/python:/opt/ros/lyrical/opt/gz_transport_vendor/lib/python:/opt/ros/lyrical/opt/sdformat_vendor/lib/python:/opt/ros/lyrical/opt/gz_msgs_vendor/lib/python:/opt/ros/lyrical/opt/gz_math_vendor/lib/python:/opt/ros/lyrical/lib/python3.14/site-packages', 'COLCON': '1', 'WSL2_GUI_APPS_ENABLED': '1', 'HOSTTYPE': 'x86_64', 'CMAKE_PREFIX_PATH': '/home/enzo/repos/atom-chess/simulation/install/atom_description:/opt/ros/lyrical/opt/gz_sim_vendor:/opt/ros/lyrical/opt/gz_sensors_vendor:/opt/ros/lyrical/opt/gz_gui_vendor:/opt/ros/lyrical/opt/gz_transport_vendor:/opt/ros/lyrical/opt/gz_physics_vendor:/opt/ros/lyrical/opt/sdformat_vendor:/opt/ros/lyrical/opt/gz_rendering_vendor:/opt/ros/lyrical/opt/gz_plugin_vendor:/opt/ros/lyrical/opt/gz_fuel_tools_vendor:/opt/ros/lyrical/opt/gz_msgs_vendor:/opt/ros/lyrical/opt/gz_common_vendor:/opt/ros/lyrical/opt/gz_math_vendor:/opt/ros/lyrical/opt/gz_utils_vendor:/opt/ros/lyrical/opt/gz_tools_vendor:/opt/ros/lyrical/opt/gz_ogre_next_vendor:/opt/ros/lyrical/opt/gz_dartsim_vendor:/opt/ros/lyrical/opt/gz_cmake_vendor:/opt/ros/lyrical', 'WSLENV': 'VSCODE_WSL_EXT_LOCATION/up:ELECTRON_RUN_AS_NODE/w:'}), 'shell': False}
+[10.779504] (atom_control) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[10.780617] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/lib/atom_control/scara_commander\n'}
+[10.786553] (atom_control) StdoutLine: {'line': b'-- Set non-toolchain portion of runtime path of "/home/enzo/repos/atom-chess/simulation/install/atom_control/lib/atom_control/scara_commander" to ""\n'}
+[10.788524] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/package_run_dependencies/atom_control\n'}
+[10.789573] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/parent_prefix_path/atom_control\n'}
+[10.790309] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/ament_prefix_path.sh\n'}
+[10.790895] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/ament_prefix_path.dsv\n'}
+[10.791133] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/path.sh\n'}
+[10.791563] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/path.dsv\n'}
+[10.791842] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.bash\n'}
+[10.792120] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.fish\n'}
+[10.792405] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.sh\n'}
+[10.792813] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.zsh\n'}
+[10.793077] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.dsv\n'}
+[10.793318] (atom_control) StdoutLine: {'line': b'-- Up-to-date: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/package.dsv\n'}
+[10.793842] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/packages/atom_control\n'}
+[10.794813] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/cmake/atom_controlConfig.cmake\n'}
+[10.795035] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/cmake/atom_controlConfig-version.cmake\n'}
+[10.795251] (atom_control) StdoutLine: {'line': b'-- Installing: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/package.xml\n'}
+[10.797911] (atom_control) CommandEnded: {'returncode': 0}
+[10.822004] (atom_control) JobEnded: {'identifier': 'atom_control', 'rc': 0}
+[10.823318] (-) EventReactorShutdown: {}

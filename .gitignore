@@ -6,6 +6,9 @@
 [Oo]ut/
 [Bb]in/
 [Ll]ib/
+[Ii]nstal/
+[Ll]og/
+
 
 # Arquivos gerados pelo CMake
 CMakeCache.txt
@@ -66,3 +69,6 @@ $RECYCLE.BIN/
 # ==========================================
 # Evita que você suba as DLLs do OpenCV por engano
 opencv_world*.dll
+# Colcon generated artifacts
+install/
+simulation/install/

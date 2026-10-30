@@ -1,0 +1,22 @@
+[100%] Built target scara_commander
+-- Install configuration: ""
+-- Execute custom install script
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/lib/atom_control/scara_commander
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control//config/scara_arm_controller/follow_joint_trajectory/controllers.yaml
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control//launch/robot_sim.launch.py
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/package_run_dependencies/atom_control
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/parent_prefix_path/atom_control
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/path.sh
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/environment/path.dsv
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.bash
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.fish
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.sh
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.zsh
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/local_setup.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/package.dsv
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/ament_index/resource_index/packages/atom_control
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/cmake/atom_controlConfig.cmake
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/cmake/atom_controlConfig-version.cmake
+-- Up-to-date symlink: /home/enzo/repos/atom-chess/simulation/install/atom_control/share/atom_control/package.xml

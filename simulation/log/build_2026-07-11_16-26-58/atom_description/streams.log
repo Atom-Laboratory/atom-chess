@@ -1,0 +1,27 @@
+[0.028s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/atom_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/atom_description -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/atom_description
+[0.065s] [0mCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+[0.065s]   Compatibility with CMake < 3.10 will be removed from a future version of
+[0.065s]   CMake.
+[0.065s] 
+[0.066s]   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+[0.066s]   to tell CMake that the project requires at least <min> but has been updated
+[0.066s]   to work with policies introduced by <max> or earlier.
+[0.066s] 
+[0.066s] [0m
+[0.324s] -- The C compiler identification is GNU 15.2.0
+[1.261s] -- The CXX compiler identification is GNU 15.2.0
+[1.902s] -- Detecting C compiler ABI info
+[2.137s] -- Detecting C compiler ABI info - done
+[2.151s] -- Check for working C compiler: /usr/bin/cc - skipped
+[2.152s] -- Detecting C compile features
+[2.153s] -- Detecting C compile features - done
+[2.168s] -- Detecting CXX compiler ABI info
+[2.392s] -- Detecting CXX compiler ABI info - done
+[2.410s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[2.410s] -- Detecting CXX compile features
+[2.411s] -- Detecting CXX compile features - done
+[2.432s] -- Found ament_cmake: 2.8.7 (/opt/ros/lyrical/share/ament_cmake/cmake)
+[2.886s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[3.071s] -- Configuring done (3.0s)
+[3.085s] -- Generating done (0.0s)
+[3.089s] -- Build files have been written to: /home/enzo/repos/atom-chess/simulation/build/atom_description

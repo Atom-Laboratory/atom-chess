@@ -1,0 +1,794 @@
+#include "board/move_validator.hpp"
+
+#include "board/board_comparator.hpp"
+
+#include <cmath>
+
+namespace ac::chess {
+namespace {
+
+constexpr int boardSize = 8;
+
+/**
+ * @brief Checks whether a square belongs to the 8x8 board domain.
+ * @param square Zero-based board coordinate.
+ * @return true when row and column are both inside [0, 7].
+ */
+bool isInside(Square square)
+{
+    return square.row >= 0 && square.row < boardSize
+        && square.col >= 0 && square.col < boardSize;
+}
+
+/**
+ * @brief Tests whether a piece value represents an empty square.
+ * @param piece Piece value to inspect.
+ * @return true only for the canonical empty Piece{} encoding.
+ */
+bool isEmpty(Piece piece)
+{
+    return piece == Piece{};
+}
+
+/**
+ * @brief Returns the opposing chess color.
+ * @param color White or Black.
+ * @return The opposite concrete color.
+ */
+PieceColor opposite(PieceColor color)
+{
+    return color == PieceColor::White ? PieceColor::Black : PieceColor::White;
+}
+
+/**
+ * @brief Returns the row delta used by pawns of one color.
+ * @param color Pawn color.
+ * @return -1 for White and +1 for Black.
+ */
+int pawnDirection(PieceColor color)
+{
+    return color == PieceColor::White ? -1 : 1;
+}
+
+/**
+ * @brief Returns the initial pawn rank in internal zero-based coordinates.
+ * @param color Pawn color.
+ * @return 6 for White and 1 for Black.
+ */
+int pawnStartRow(PieceColor color)
+{
+    return color == PieceColor::White ? 6 : 1;
+}
+
+/**
+ * @brief Returns the promotion destination row for one color.
+ * @param color Pawn color.
+ * @return 0 for White and 7 for Black.
+ */
+int promotionRow(PieceColor color)
+{
+    return color == PieceColor::White ? 0 : 7;
+}
+
+/**
+ * @brief Returns the home row containing king and rooks for one color.
+ * @param color Side being validated.
+ * @return 7 for White and 0 for Black.
+ */
+int homeRow(PieceColor color)
+{
+    return color == PieceColor::White ? 7 : 0;
+}
+
+/**
+ * @brief Normalizes an integer delta to {-1, 0, +1}.
+ * @param value Signed delta.
+ * @return Direction step.
+ */
+int step(int value)
+{
+    return (value > 0) - (value < 0);
+}
+
+/**
+ * @brief Checks whether a type is a legal pawn-promotion result.
+ * @param type Candidate promoted type.
+ * @return true for knight, bishop, rook or queen.
+ */
+bool isPromotionPiece(PieceType type)
+{
+    return type == PieceType::Knight
+        || type == PieceType::Bishop
+        || type == PieceType::Rook
+        || type == PieceType::Queen;
+}
+
+/**
+ * @brief Verifies that a Board contains exactly one king of one color.
+ * @param board Board to inspect.
+ * @param color King color.
+ * @return true when exactly one matching king exists.
+ */
+bool hasExactlyOneKing(const Board& board, PieceColor color)
+{
+    bool foundKing = false;
+
+    for (int row = 0; row < boardSize; ++row) {
+        for (int col = 0; col < boardSize; ++col) {
+            if (board.pieceAt({row, col}) != Piece{PieceType::King, color}) {
+                continue;
+            }
+
+            if (foundKing) {
+                return false;
+            }
+
+            foundKing = true;
+        }
+    }
+
+    return foundKing;
+}
+
+/**
+ * @brief Validates the king-count invariant for both players.
+ * @param board Board to inspect.
+ * @return true when both colors have exactly one king.
+ */
+bool hasValidKings(const Board& board)
+{
+    return hasExactlyOneKing(board, PieceColor::White)
+        && hasExactlyOneKing(board, PieceColor::Black);
+}
+
+/**
+ * @brief Checks that all intermediate squares between two aligned squares are empty.
+ * @param board Board used for occupancy queries.
+ * @param from Source square.
+ * @param to Destination square.
+ * @return true when no intermediate square is occupied.
+ */
+bool isPathClear(const Board& board, Square from, Square to)
+{
+    if (from == to) {
+        return false;
+    }
+
+    const int rowStep = step(to.row - from.row);
+    const int colStep = step(to.col - from.col);
+
+    for (Square square{from.row + rowStep, from.col + colStep};
+         square != to;
+         square = {square.row + rowStep, square.col + colStep}) {
+        if (!board.isSqrEmpty(square)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * @brief Reconstructs an observed piece placement from raw square changes.
+ * @param previous Authoritative Board before the move.
+ * @param changes Raw changed-square records.
+ * @return Reconstructed Board when every change is structurally consistent;
+ *         std::nullopt for duplicates, invalid coordinates or mismatched before-values.
+ *
+ * Metadata is intentionally copied from previous because observations describe
+ * piece placement only; authoritative metadata changes are committed later by MoveApplier.
+ */
+std::optional<Board> buildObservedBoard(
+    const Board& previous,
+    const std::vector<SquareChange>& changes
+)
+{
+    if (changes.size() < 2 || changes.size() > 4) {
+        return std::nullopt;
+    }
+
+    Board observed = previous;
+
+    for (std::size_t index = 0; index < changes.size(); ++index) {
+        const SquareChange& change = changes[index];
+
+        if (!isInside(change.square)
+            || !isValid(change.before)
+            || !isValid(change.after)
+            || change.before == change.after
+            || previous.pieceAt(change.square) != change.before) {
+            return std::nullopt;
+        }
+
+        for (std::size_t other = index + 1; other < changes.size(); ++other) {
+            if (change.square == changes[other].square) {
+                return std::nullopt;
+            }
+        }
+
+        observed.setPiece(change.square, change.after);
+    }
+
+    return observed;
+}
+
+/**
+ * @brief Infers a normal move, capture or promotion from exactly two changes.
+ * @param changes Candidate square changes.
+ * @param sideToMove Expected moving side.
+ * @return Inferred Move or std::nullopt when source/destination roles are ambiguous.
+ */
+std::optional<Move> inferOrdinaryMove(
+    const std::vector<SquareChange>& changes,
+    PieceColor sideToMove
+)
+{
+    if (changes.size() != 2) {
+        return std::nullopt;
+    }
+
+    const SquareChange* source = nullptr;
+    const SquareChange* destination = nullptr;
+
+    for (const SquareChange& change : changes) {
+        if (change.before.color == sideToMove && isEmpty(change.after)) {
+            if (source != nullptr) {
+                return std::nullopt;
+            }
+            source = &change;
+        }
+
+        if (change.after.color == sideToMove
+            && change.before.color != sideToMove) {
+            if (destination != nullptr) {
+                return std::nullopt;
+            }
+            destination = &change;
+        }
+    }
+
+    if (source == nullptr || destination == nullptr) {
+        return std::nullopt;
+    }
+
+    PieceType promotion = PieceType::None;
+    if (destination->after.type != source->before.type) {
+        if (source->before.type != PieceType::Pawn) {
+            return std::nullopt;
+        }
+        promotion = destination->after.type;
+    }
+
+    return Move{
+        .from = source->square,
+        .to = destination->square,
+        .promotion = promotion,
+        .capture = !isEmpty(destination->before)
+    };
+}
+
+/**
+ * @brief Infers the geometry of an en-passant observation from three changes.
+ * @param changes Candidate source, destination and captured-pawn changes.
+ * @param sideToMove Expected moving side.
+ * @return En-passant Move geometry or std::nullopt when the three-square pattern is invalid.
+ *
+ * This helper only infers the observed pattern. Authorization against the
+ * authoritative en-passant target is performed during movement validation.
+ */
+std::optional<Move> inferEnPassant(
+    const std::vector<SquareChange>& changes,
+    PieceColor sideToMove
+)
+{
+    if (changes.size() != 3) {
+        return std::nullopt;
+    }
+
+    const SquareChange* source = nullptr;
+    const SquareChange* destination = nullptr;
+    const SquareChange* captured = nullptr;
+
+    for (const SquareChange& change : changes) {
+        if (change.before == Piece{PieceType::Pawn, sideToMove}
+            && isEmpty(change.after)) {
+            if (source != nullptr) {
+                return std::nullopt;
+            }
+            source = &change;
+        } else if (isEmpty(change.before)
+            && change.after == Piece{PieceType::Pawn, sideToMove}) {
+            if (destination != nullptr) {
+                return std::nullopt;
+            }
+            destination = &change;
+        } else if (change.before == Piece{PieceType::Pawn, opposite(sideToMove)}
+            && isEmpty(change.after)) {
+            if (captured != nullptr) {
+                return std::nullopt;
+            }
+            captured = &change;
+        }
+    }
+
+    if (source == nullptr || destination == nullptr || captured == nullptr) {
+        return std::nullopt;
+    }
+
+    if (captured->square.row != source->square.row
+        || captured->square.col != destination->square.col) {
+        return std::nullopt;
+    }
+
+    return Move{
+        .from = source->square,
+        .to = destination->square,
+        .capture = true,
+        .enPassant = true
+    };
+}
+
+/**
+ * @brief Infers castling geometry from king and rook source/destination changes.
+ * @param changes Four changed squares representing king and rook relocation.
+ * @param sideToMove Expected moving side.
+ * @return Castle Move geometry or std::nullopt when the pattern is inconsistent.
+ *
+ * Castling rights and attacked-square rules are validated separately.
+ */
+std::optional<Move> inferCastling(
+    const std::vector<SquareChange>& changes,
+    PieceColor sideToMove
+)
+{
+    if (changes.size() != 4) {
+        return std::nullopt;
+    }
+
+    const Piece king{PieceType::King, sideToMove};
+    const Piece rook{PieceType::Rook, sideToMove};
+    const SquareChange* kingSource = nullptr;
+    const SquareChange* kingDestination = nullptr;
+    const SquareChange* rookSource = nullptr;
+    const SquareChange* rookDestination = nullptr;
+
+    for (const SquareChange& change : changes) {
+        if (change.before == king && isEmpty(change.after)) {
+            kingSource = &change;
+        } else if (isEmpty(change.before) && change.after == king) {
+            kingDestination = &change;
+        } else if (change.before == rook && isEmpty(change.after)) {
+            rookSource = &change;
+        } else if (isEmpty(change.before) && change.after == rook) {
+            rookDestination = &change;
+        }
+    }
+
+    if (kingSource == nullptr
+        || kingDestination == nullptr
+        || rookSource == nullptr
+        || rookDestination == nullptr) {
+        return std::nullopt;
+    }
+
+    const int row = homeRow(sideToMove);
+    const bool kingSide = kingDestination->square.col == 6;
+    const int expectedRookSource = kingSide ? 7 : 0;
+    const int expectedRookDestination = kingSide ? 5 : 3;
+
+    if (kingSource->square != Square{row, 4}
+        || kingDestination->square.row != row
+        || (kingDestination->square.col != 6 && kingDestination->square.col != 2)
+        || rookSource->square != Square{row, expectedRookSource}
+        || rookDestination->square != Square{row, expectedRookDestination}) {
+        return std::nullopt;
+    }
+
+    return Move{
+        .from = kingSource->square,
+        .to = kingDestination->square,
+        .castle = true
+    };
+}
+
+/**
+ * @brief Selects the appropriate move-inference strategy by change count.
+ * @param changes Raw changed-square records.
+ * @param sideToMove Expected moving side.
+ * @return Candidate Move or std::nullopt when no supported one-move pattern matches.
+ */
+std::optional<Move> inferMove(
+    const std::vector<SquareChange>& changes,
+    PieceColor sideToMove
+)
+{
+    if (changes.size() == 2) {
+        return inferOrdinaryMove(changes, sideToMove);
+    }
+    if (changes.size() == 3) {
+        return inferEnPassant(changes, sideToMove);
+    }
+    if (changes.size() == 4) {
+        return inferCastling(changes, sideToMove);
+    }
+    return std::nullopt;
+}
+
+/**
+ * @brief Validates pawn geometry, captures, promotion and en-passant metadata.
+ * @param board Authoritative Board before the move.
+ * @param move Candidate pawn move.
+ * @param color Moving pawn color.
+ * @return true when all pawn-specific rules are satisfied.
+ *
+ * En passant is accepted only when move.to equals Board::enPassantTarget().
+ */
+bool isPawnMoveValid(const Board& board, const Move& move, PieceColor color)
+{
+    const int direction = pawnDirection(color);
+    const int rowDelta = move.to.row - move.from.row;
+    const int colDelta = move.to.col - move.from.col;
+    const Piece target = board.pieceAt(move.to);
+
+    if (move.enPassant) {
+        if (!move.capture
+            || !isEmpty(target)
+            || rowDelta != direction
+            || std::abs(colDelta) != 1) {
+            return false;
+        }
+
+        const int requiredRow = color == PieceColor::White ? 3 : 4;
+        const auto enPassantTarget = board.enPassantTarget();
+
+        return move.from.row == requiredRow
+            && enPassantTarget.has_value()
+            && *enPassantTarget == move.to
+            && board.pieceAt({move.from.row, move.to.col})
+                == Piece{PieceType::Pawn, opposite(color)};
+    }
+
+    const bool captures = !isEmpty(target);
+    if (move.capture != captures) {
+        return false;
+    }
+
+    bool validMovement = false;
+    if (captures) {
+        validMovement = rowDelta == direction && std::abs(colDelta) == 1;
+    } else if (colDelta == 0 && rowDelta == direction) {
+        validMovement = true;
+    } else if (colDelta == 0
+        && rowDelta == 2 * direction
+        && move.from.row == pawnStartRow(color)) {
+        validMovement = board.isSqrEmpty({move.from.row + direction, move.from.col});
+    }
+
+    if (!validMovement) {
+        return false;
+    }
+
+    const bool reachesPromotion = move.to.row == promotionRow(color);
+    return reachesPromotion
+        ? isPromotionPiece(move.promotion)
+        : move.promotion == PieceType::None;
+}
+
+/**
+ * @brief Validates castle geometry, rook presence, clear path and castling rights.
+ * @param board Authoritative Board before the move.
+ * @param move Candidate castle move.
+ * @param color Moving side.
+ * @return true when geometry and Board::castlingRights() authorize the castle.
+ *
+ * Attacked-square safety is validated separately by isCastlingPathSafe().
+ */
+bool isCastlingGeometryValid(
+    const Board& board,
+    const Move& move,
+    PieceColor color
+)
+{
+    const int row = homeRow(color);
+    if (move.from != Square{row, 4}
+        || move.to.row != row
+        || (move.to.col != 6 && move.to.col != 2)
+        || move.capture
+        || move.enPassant
+        || move.promotion != PieceType::None) {
+        return false;
+    }
+
+    const bool kingSide = move.to.col == 6;
+    const CastlingRights& rights = board.castlingRights();
+
+    const bool hasRight = color == PieceColor::White
+        ? (kingSide ? rights.whiteKingSide : rights.whiteQueenSide)
+        : (kingSide ? rights.blackKingSide : rights.blackQueenSide);
+
+    if (!hasRight) {
+        return false;
+    }
+
+    const Square rookSquare{row, kingSide ? 7 : 0};
+    if (board.pieceAt(rookSquare) != Piece{PieceType::Rook, color}) {
+        return false;
+    }
+
+    const int firstColumn = kingSide ? 5 : 1;
+    const int lastColumn = kingSide ? 6 : 3;
+    for (int column = firstColumn; column <= lastColumn; ++column) {
+        if (!board.isSqrEmpty({row, column})) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * @brief Validates piece-specific movement rules for one candidate move.
+ * @param board Authoritative Board before the move.
+ * @param move Candidate move.
+ * @param sideToMove Expected moving side.
+ * @return true when movement, destination occupancy and special flags are consistent.
+ */
+bool isMovementValid(
+    const Board& board,
+    const Move& move,
+    PieceColor sideToMove
+)
+{
+    if (!isInside(move.from) || !isInside(move.to) || move.from == move.to) {
+        return false;
+    }
+
+    const Piece moving = board.pieceAt(move.from);
+    const Piece target = board.pieceAt(move.to);
+    if (moving.color != sideToMove
+        || moving.type == PieceType::None
+        || target.color == sideToMove
+        || target.type == PieceType::King) {
+        return false;
+    }
+
+    if (moving.type == PieceType::Pawn) {
+        return isPawnMoveValid(board, move, sideToMove);
+    }
+
+    if (move.promotion != PieceType::None || move.enPassant) {
+        return false;
+    }
+
+    const bool captures = !isEmpty(target);
+    if (move.capture != captures) {
+        return false;
+    }
+
+    const int rowDelta = move.to.row - move.from.row;
+    const int colDelta = move.to.col - move.from.col;
+    const int absRow = std::abs(rowDelta);
+    const int absCol = std::abs(colDelta);
+
+    switch (moving.type) {
+    case PieceType::Knight:
+        return !move.castle
+            && ((absRow == 2 && absCol == 1)
+                || (absRow == 1 && absCol == 2));
+    case PieceType::Bishop:
+        return !move.castle
+            && absRow == absCol
+            && isPathClear(board, move.from, move.to);
+    case PieceType::Rook:
+        return !move.castle
+            && (rowDelta == 0 || colDelta == 0)
+            && isPathClear(board, move.from, move.to);
+    case PieceType::Queen:
+        return !move.castle
+            && (rowDelta == 0 || colDelta == 0 || absRow == absCol)
+            && isPathClear(board, move.from, move.to);
+    case PieceType::King:
+        return move.castle
+            ? isCastlingGeometryValid(board, move, sideToMove)
+            : absRow <= 1 && absCol <= 1;
+    case PieceType::None:
+    case PieceType::Pawn:
+        return false;
+    }
+
+    return false;
+}
+
+/**
+ * @brief Checks whether one piece attacks a target square in the current position.
+ * @param board Board used for occupancy and path checks.
+ * @param from Attacking piece square.
+ * @param target Candidate attacked square.
+ * @return true when the piece attacks target according to chess geometry.
+ *
+ * This function evaluates attacks, not legal moves; king-safety consequences
+ * for the attacking side are intentionally irrelevant here.
+ */
+bool pieceAttacks(const Board& board, Square from, Square target)
+{
+    const Piece piece = board.pieceAt(from);
+    const int rowDelta = target.row - from.row;
+    const int colDelta = target.col - from.col;
+    const int absRow = std::abs(rowDelta);
+    const int absCol = std::abs(colDelta);
+
+    switch (piece.type) {
+    case PieceType::Pawn:
+        return rowDelta == pawnDirection(piece.color) && absCol == 1;
+    case PieceType::Knight:
+        return (absRow == 2 && absCol == 1)
+            || (absRow == 1 && absCol == 2);
+    case PieceType::Bishop:
+        return absRow == absCol && isPathClear(board, from, target);
+    case PieceType::Rook:
+        return (rowDelta == 0 || colDelta == 0)
+            && isPathClear(board, from, target);
+    case PieceType::Queen:
+        return (rowDelta == 0 || colDelta == 0 || absRow == absCol)
+            && isPathClear(board, from, target);
+    case PieceType::King:
+        return absRow <= 1 && absCol <= 1;
+    case PieceType::None:
+        return false;
+    }
+
+    return false;
+}
+
+/**
+ * @brief Checks whether any piece of a color attacks a square.
+ * @param board Position to inspect.
+ * @param square Target square.
+ * @param attacker Attacking color.
+ * @return true when at least one attacker controls the target square.
+ */
+bool isSquareAttacked(const Board& board, Square square, PieceColor attacker)
+{
+    for (int row = 0; row < boardSize; ++row) {
+        for (int col = 0; col < boardSize; ++col) {
+            const Square source{row, col};
+            if (board.pieceAt(source).color == attacker
+                && pieceAttacks(board, source, square)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
+ * @brief Locates the unique king of one color.
+ * @param board Board to inspect.
+ * @param color King color.
+ * @return King square, or std::nullopt when zero or multiple matching kings exist.
+ */
+std::optional<Square> findKing(const Board& board, PieceColor color)
+{
+    std::optional<Square> king;
+
+    for (int row = 0; row < boardSize; ++row) {
+        for (int col = 0; col < boardSize; ++col) {
+            const Square square{row, col};
+            if (board.pieceAt(square) == Piece{PieceType::King, color}) {
+                if (king.has_value()) {
+                    return std::nullopt;
+                }
+                king = square;
+            }
+        }
+    }
+
+    return king;
+}
+
+/**
+ * @brief Checks whether one side has a unique king that is not under attack.
+ * @param board Position to inspect.
+ * @param color Side whose king safety is evaluated.
+ * @return true when a unique king exists and is not attacked.
+ */
+bool isKingSafe(const Board& board, PieceColor color)
+{
+    const std::optional<Square> king = findKing(board, color);
+    return king.has_value()
+        && !isSquareAttacked(board, *king, opposite(color));
+}
+
+/**
+ * @brief Verifies that castling does not start in check or cross an attacked square.
+ * @param board Authoritative Board before the move.
+ * @param move Candidate move.
+ * @param color Moving side.
+ * @return true for non-castling moves, or for castles whose origin/transit are safe.
+ *
+ * Final-square king safety is verified against the reconstructed observed board.
+ */
+bool isCastlingPathSafe(
+    const Board& board,
+    const Move& move,
+    PieceColor color
+)
+{
+    if (!move.castle || !isKingSafe(board, color)) {
+        return !move.castle;
+    }
+
+    Board transit = board;
+    const Square transitSquare{
+        move.from.row,
+        move.from.col + step(move.to.col - move.from.col)
+    };
+    transit.setPiece(move.from, Piece{});
+    transit.setPiece(transitSquare, Piece{PieceType::King, color});
+
+    return !isSquareAttacked(transit, transitSquare, opposite(color));
+}
+
+} // namespace
+
+/**
+ * @brief Board-to-Board validation entry point.
+ *
+ * Computes raw changes with BoardComparator and delegates to the change-list
+ * overload so both public APIs share exactly the same legality pipeline.
+ */
+std::optional<Move> MoveValidator::validate(
+    const Board& previous,
+    const Board& observed,
+    PieceColor sideToMove
+)
+{
+    return validate(
+        previous,
+        BoardComparator::compare(previous, observed),
+        sideToMove
+    );
+}
+
+/**
+ * @brief Core validation pipeline for one observed change set.
+ *
+ * The pipeline validates authoritative side-to-move metadata, reconstructs
+ * observed placement, checks king-count invariants, infers exactly one move,
+ * validates piece rules and history-dependent metadata, checks castling path
+ * safety, then rejects any result that leaves the moving king in check.
+ */
+std::optional<Move> MoveValidator::validate(
+    const Board& previous,
+    const std::vector<SquareChange>& changes,
+    PieceColor sideToMove
+)
+{
+    if (sideToMove == PieceColor::None
+        || previous.sideToMove() != sideToMove) {
+        return std::nullopt;
+    }
+
+    const std::optional<Board> observed = buildObservedBoard(previous, changes);
+    if (!observed.has_value()
+        || !hasValidKings(previous)
+        || !hasValidKings(*observed)) {
+        return std::nullopt;
+    }
+
+    const std::optional<Move> move = inferMove(changes, sideToMove);
+    if (!move.has_value()
+        || !isMovementValid(previous, *move, sideToMove)
+        || !isCastlingPathSafe(previous, *move, sideToMove)) {
+        return std::nullopt;
+    }
+
+    if (!isKingSafe(*observed, sideToMove)) {
+        return std::nullopt;
+    }
+
+    return move;
+}
+
+} // namespace ac::chess

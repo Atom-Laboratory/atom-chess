@@ -1,0 +1,31 @@
+[0.015s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/atom_control': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/atom_control -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/atom_control
+[0.032s] -- Found ament_cmake: 2.8.7 (/opt/ros/lyrical/share/ament_cmake/cmake)
+[0.237s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.244s] -- Found rclcpp: 32.0.0 (/opt/ros/lyrical/share/rclcpp/cmake)
+[0.265s] -- Found rosidl_generator_c: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_c/cmake)
+[0.269s] -- Found rosidl_generator_cpp: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_cpp/cmake)
+[0.278s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.287s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.343s] -- Found rmw_implementation_cmake: 7.10.1 (/opt/ros/lyrical/share/rmw_implementation_cmake/cmake)
+[0.344s] -- Found rmw_fastrtps_cpp: 9.4.8 (/opt/ros/lyrical/share/rmw_fastrtps_cpp/cmake)
+[0.368s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.429s] -- Found rclcpp_action: 32.0.0 (/opt/ros/lyrical/share/rclcpp_action/cmake)
+[0.466s] -- Found control_msgs: 6.9.0 (/opt/ros/lyrical/share/control_msgs/cmake)
+[2.641s] [31mCMake Error at CMakeLists.txt:15 (find_package):
+[2.641s]   By not providing "Findmotion.cmake" in CMAKE_MODULE_PATH this project has
+[2.641s]   asked CMake to find a package configuration file provided by "motion", but
+[2.642s]   CMake did not find one.
+[2.642s] 
+[2.642s]   Could not find a package configuration file provided by "motion" with any
+[2.642s]   of the following names:
+[2.642s] 
+[2.642s]     motionConfig.cmake
+[2.642s]     motion-config.cmake
+[2.642s] 
+[2.643s]   Add the installation prefix of "motion" to CMAKE_PREFIX_PATH or set
+[2.643s]   "motion_DIR" to a directory containing one of the above files.  If "motion"
+[2.643s]   provides a separate development package or SDK, be sure it has been
+[2.643s]   installed.
+[2.643s] 
+[2.643s] [0m
+[2.643s] -- Configuring incomplete, errors occurred!

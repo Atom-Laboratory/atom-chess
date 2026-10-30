@@ -1,0 +1,32 @@
+[0.162s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/atom_control': AMENT_PREFIX_PATH=/home/enzo/repos/atom-chess/simulation/install/motion:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/enzo/repos/atom-chess/simulation/install/motion:/home/enzo/repos/atom-chess/simulation/install/atom_description:/opt/ros/lyrical/opt/gz_sim_vendor:/opt/ros/lyrical/opt/gz_sensors_vendor:/opt/ros/lyrical/opt/gz_gui_vendor:/opt/ros/lyrical/opt/gz_transport_vendor:/opt/ros/lyrical/opt/gz_physics_vendor:/opt/ros/lyrical/opt/sdformat_vendor:/opt/ros/lyrical/opt/gz_rendering_vendor:/opt/ros/lyrical/opt/gz_plugin_vendor:/opt/ros/lyrical/opt/gz_fuel_tools_vendor:/opt/ros/lyrical/opt/gz_msgs_vendor:/opt/ros/lyrical/opt/gz_common_vendor:/opt/ros/lyrical/opt/gz_math_vendor:/opt/ros/lyrical/opt/gz_utils_vendor:/opt/ros/lyrical/opt/gz_tools_vendor:/opt/ros/lyrical/opt/gz_ogre_next_vendor:/opt/ros/lyrical/opt/gz_dartsim_vendor:/opt/ros/lyrical/opt/gz_cmake_vendor:/opt/ros/lyrical LD_LIBRARY_PATH=/home/enzo/repos/atom-chess/simulation/install/motion/lib:${LD_LIBRARY_PATH} /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/atom_control -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/atom_control
+[0.442s] -- The C compiler identification is GNU 15.2.0
+[1.297s] -- The CXX compiler identification is GNU 15.2.0
+[1.903s] -- Detecting C compiler ABI info
+[2.128s] -- Detecting C compiler ABI info - done
+[2.143s] -- Check for working C compiler: /usr/bin/cc - skipped
+[2.143s] -- Detecting C compile features
+[2.144s] -- Detecting C compile features - done
+[2.161s] -- Detecting CXX compiler ABI info
+[2.392s] -- Detecting CXX compiler ABI info - done
+[2.407s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[2.407s] -- Detecting CXX compile features
+[2.408s] -- Detecting CXX compile features - done
+[2.443s] -- Found ament_cmake: 2.8.7 (/opt/ros/lyrical/share/ament_cmake/cmake)
+[2.918s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[3.011s] -- Found rclcpp: 32.0.0 (/opt/ros/lyrical/share/rclcpp/cmake)
+[3.102s] -- Found rosidl_generator_c: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_c/cmake)
+[3.127s] -- Found rosidl_generator_cpp: 5.2.1 (/opt/ros/lyrical/share/rosidl_generator_cpp/cmake)
+[3.170s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[3.202s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[3.336s] -- Found rmw_implementation_cmake: 7.10.1 (/opt/ros/lyrical/share/rmw_implementation_cmake/cmake)
+[3.344s] -- Found rmw_fastrtps_cpp: 9.4.8 (/opt/ros/lyrical/share/rmw_fastrtps_cpp/cmake)
+[3.412s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[3.542s] -- Found rclcpp_action: 32.0.0 (/opt/ros/lyrical/share/rclcpp_action/cmake)
+[3.624s] -- Found control_msgs: 6.9.0 (/opt/ros/lyrical/share/control_msgs/cmake)
+[3.825s] -- Found motion: 0.0.0 (/home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake)
+[3.828s] [31mCMake Error at CMakeLists.txt:20 (ament_target_dependencies):
+[3.828s]   Unknown CMake command "ament_target_dependencies".
+[3.828s] 
+[3.828s] [0m
+[3.828s] -- Configuring incomplete, errors occurred!
+[3.836s] Invoked command in '/home/enzo/repos/atom-chess/simulation/build/atom_control' returned '1': AMENT_PREFIX_PATH=/home/enzo/repos/atom-chess/simulation/install/motion:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/enzo/repos/atom-chess/simulation/install/motion:/home/enzo/repos/atom-chess/simulation/install/atom_description:/opt/ros/lyrical/opt/gz_sim_vendor:/opt/ros/lyrical/opt/gz_sensors_vendor:/opt/ros/lyrical/opt/gz_gui_vendor:/opt/ros/lyrical/opt/gz_transport_vendor:/opt/ros/lyrical/opt/gz_physics_vendor:/opt/ros/lyrical/opt/sdformat_vendor:/opt/ros/lyrical/opt/gz_rendering_vendor:/opt/ros/lyrical/opt/gz_plugin_vendor:/opt/ros/lyrical/opt/gz_fuel_tools_vendor:/opt/ros/lyrical/opt/gz_msgs_vendor:/opt/ros/lyrical/opt/gz_common_vendor:/opt/ros/lyrical/opt/gz_math_vendor:/opt/ros/lyrical/opt/gz_utils_vendor:/opt/ros/lyrical/opt/gz_tools_vendor:/opt/ros/lyrical/opt/gz_ogre_next_vendor:/opt/ros/lyrical/opt/gz_dartsim_vendor:/opt/ros/lyrical/opt/gz_cmake_vendor:/opt/ros/lyrical LD_LIBRARY_PATH=/home/enzo/repos/atom-chess/simulation/install/motion/lib:${LD_LIBRARY_PATH} /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/atom_control -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/atom_control

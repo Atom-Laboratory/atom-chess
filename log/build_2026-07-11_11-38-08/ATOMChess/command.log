@@ -1,2 +1,0 @@
-Invoking command in '/home/enzo/repos/atom-chess/build/ATOMChess': /usr/bin/cmake /home/enzo/repos/atom-chess -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/install/ATOMChess
-Invoked command in '/home/enzo/repos/atom-chess/build/ATOMChess' returned '1': /usr/bin/cmake /home/enzo/repos/atom-chess -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/install/ATOMChess

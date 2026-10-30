@@ -1,0 +1,43 @@
+[0mCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+[0m
+-- Found ament_cmake: 2.8.7 (/opt/ros/lyrical/share/ament_cmake/cmake)
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Configuring done (0.3s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/enzo/repos/atom-chess/simulation/build/motion
+[ 50%] [32mBuilding CXX object CMakeFiles/motion.dir/src/move.cpp.o[0m
+[100%] [1m[32mLinking CXX shared library libmotion.so[0m
+[100%] Built target motion
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/environment/library_path.sh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/environment/library_path.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/include/motion/move.hpp
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/ament_index/resource_index/package_run_dependencies/motion
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/ament_index/resource_index/parent_prefix_path/motion
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/environment/ament_prefix_path.sh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/environment/ament_prefix_path.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/environment/path.sh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/environment/path.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/local_setup.bash
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/local_setup.fish
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/local_setup.sh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/local_setup.zsh
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/local_setup.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/package.dsv
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/ament_index/resource_index/packages/motion
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake/ament_cmake_export_targets-extras.cmake
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake/motionConfig.cmake
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake/motionConfig-version.cmake
+-- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/package.xml
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/motion/lib/libmotion.so
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake/export_motionExport.cmake
+-- Installing: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake/export_motionExport-noconfig.cmake

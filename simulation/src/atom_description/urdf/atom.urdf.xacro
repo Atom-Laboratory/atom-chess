@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<robot name="atom_scara" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <material name="atom_blue">
+        <color rgba="0.1 0.3 0.8 1.0"/>
+    </material>
+
+    <gazebo>
+        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <parameters>$(find atom_control)/config/controllers.yaml</parameters>
+        </plugin>
+    </gazebo>
+
+    <ros2_control name="GazeboSystem" type="system">
+        <hardware>
+            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        </hardware>
+
+        <joint name="joint_base_to_link1">
+            <command_interface name="position">
+                <param name="min">-2.0</param>
+                <param name="max">2.0</param>
+            </command_interface>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+        </joint>
+
+        <joint name="joint_z_axis_arm1">
+            <command_interface name="position">
+                <param name="min">-0.1</param>
+                <param name="max">0.20</param>
+            </command_interface>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+        </joint>
+
+        <joint name="joint_arm1_link_arm2_link">
+            <command_interface name="position">
+                <param name="min">-2.0</param>
+                <param name="max">4.0</param>
+            </command_interface>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity"/>
+        </joint>
+    </ros2_control>
+
+    <link name="world"/>
+
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://atom_description/meshes/base.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="atom_blue"/>
+        </visual>
+        <inertial>
+            <mass value="1.0"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+        </inertial>
+    </link>
+
+    <joint name="fixed_base" type="fixed">
+        <parent link="world"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    </robot>

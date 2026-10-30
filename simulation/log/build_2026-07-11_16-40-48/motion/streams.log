@@ -1,0 +1,49 @@
+[0.017s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/motion': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/motion -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/motion
+[0.030s] [0mCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
+[0.030s]   Compatibility with CMake < 3.10 will be removed from a future version of
+[0.030s]   CMake.
+[0.030s] 
+[0.030s]   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+[0.030s]   to tell CMake that the project requires at least <min> but has been updated
+[0.030s]   to work with policies introduced by <max> or earlier.
+[0.030s] 
+[0.030s] [0m
+[0.037s] -- Found ament_cmake: 2.8.7 (/opt/ros/lyrical/share/ament_cmake/cmake)
+[0.233s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.344s] -- Configuring done (0.3s)
+[0.359s] -- Generating done (0.0s)
+[0.361s] -- Build files have been written to: /home/enzo/repos/atom-chess/simulation/build/motion
+[0.366s] Invoked command in '/home/enzo/repos/atom-chess/simulation/build/motion' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake /home/enzo/repos/atom-chess/simulation/src/motion -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/enzo/repos/atom-chess/simulation/install/motion
+[0.367s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/motion': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --build /home/enzo/repos/atom-chess/simulation/build/motion -- -j12 -l12
+[0.429s] [ 50%] [32mBuilding CXX object CMakeFiles/motion.dir/src/move.cpp.o[0m
+[0.452s] [100%] [1m[32mLinking CXX shared library libmotion.so[0m
+[0.637s] [100%] Built target motion
+[0.651s] Invoked command in '/home/enzo/repos/atom-chess/simulation/build/motion' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --build /home/enzo/repos/atom-chess/simulation/build/motion -- -j12 -l12
+[0.652s] Invoking command in '/home/enzo/repos/atom-chess/simulation/build/motion': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --install /home/enzo/repos/atom-chess/simulation/build/motion
+[0.662s] -- Install configuration: ""
+[0.662s] -- Execute custom install script
+[0.663s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/environment/library_path.sh
+[0.674s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/environment/library_path.dsv
+[0.686s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/include/motion/move.hpp
+[0.698s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/ament_index/resource_index/package_run_dependencies/motion
+[0.709s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/ament_index/resource_index/parent_prefix_path/motion
+[0.721s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/environment/ament_prefix_path.sh
+[0.732s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/environment/ament_prefix_path.dsv
+[0.744s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/environment/path.sh
+[0.756s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/environment/path.dsv
+[0.768s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/local_setup.bash
+[0.780s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/local_setup.fish
+[0.791s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/local_setup.sh
+[0.803s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/local_setup.zsh
+[0.815s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/local_setup.dsv
+[0.827s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/package.dsv
+[0.840s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/ament_index/resource_index/packages/motion
+[0.851s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake/ament_cmake_export_targets-extras.cmake
+[0.863s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.874s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake/motionConfig.cmake
+[0.884s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake/motionConfig-version.cmake
+[0.896s] -- Symlinking: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/package.xml
+[0.907s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/motion/lib/libmotion.so
+[0.908s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake/export_motionExport.cmake
+[0.908s] -- Installing: /home/enzo/repos/atom-chess/simulation/install/motion/share/motion/cmake/export_motionExport-noconfig.cmake
+[0.911s] Invoked command in '/home/enzo/repos/atom-chess/simulation/build/motion' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/lyrical /usr/bin/cmake --install /home/enzo/repos/atom-chess/simulation/build/motion
