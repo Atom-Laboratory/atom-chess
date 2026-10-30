@@ -43,10 +43,11 @@ def viewer(sim):
     print('Q/A: joint 1; W/S: joint 2; E/D: joint 3; R: reset; Space: hold; Esc: close', flush=True)
     with mujoco.viewer.launch_passive(sim.model, sim.data, key_callback=on_key) as window:
         with window.lock():
-            window.cam.lookat[:] = [.15, .08, 0]
-            window.cam.distance = 1.3
-            window.cam.azimuth = 120
-            window.cam.elevation = -25
+            camera = sim.manifest.get('scene', {}).get('camera', {})
+            window.cam.lookat[:] = camera.get('lookat', [.15, .08, 0])
+            window.cam.distance = camera.get('distance', 1.3)
+            window.cam.azimuth = camera.get('azimuth', 120)
+            window.cam.elevation = camera.get('elevation', -25)
         while window.is_running():
             start = time.monotonic()
             while requests:
@@ -101,8 +102,11 @@ def main():
         with mujoco.Renderer(sim.model, height=600, width=800) as renderer:
             camera = mujoco.MjvCamera()
             mujoco.mjv_defaultCamera(camera)
-            camera.lookat[:] = [.15, .08, 0]
-            camera.distance, camera.azimuth, camera.elevation = 1.3, 120, -25
+            settings = sim.manifest.get('scene', {}).get('camera', {})
+            camera.lookat[:] = settings.get('lookat', [.15, .08, 0])
+            camera.distance = settings.get('distance', 1.3)
+            camera.azimuth = settings.get('azimuth', 120)
+            camera.elevation = settings.get('elevation', -25)
             renderer.update_scene(sim.data, camera=camera)
             pixels = renderer.render()
             if np.ptp(pixels) == 0:

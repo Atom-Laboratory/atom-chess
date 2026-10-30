@@ -24,6 +24,13 @@ PROFILE = {
     'physical_calibration': False,
 }
 
+# Scene hypotheses only: URDF +Y becomes scene +Z, base bottom rests at Z=0.
+SCENE = dict(name='upright-chess-v2', urdf_to_scene_rotation=[[1, 0, 0], [0, 0, -1], [0, 1, 0]],
+             urdf_to_scene_translation_m=[0, 0, .035],
+             board_center_m=[.34, -.22, .012], square_size_m=.04,
+             gripper_visual_only=True, gripper_origin_in_arm2_m=[-.26, 0, 0],
+             camera=dict(lookat=[.20, -.08, .20], distance=1.35, azimuth=135, elevation=-25))
+
 
 def numbers(value, size):
     result = np.asarray([float(x) for x in value.split()])
@@ -88,7 +95,22 @@ def build_bundle(urdf, output):
     world = ET.SubElement(mjcf, 'worldbody')
     ET.SubElement(world, 'light', pos='0 -1 2', dir='0 0 -1', directional='true')
     ET.SubElement(world, 'geom', name='reference_floor', type='plane', size='1 1 .01',
-                  pos='0 -.2 -.3', rgba='.2 .24 .3 1', contype='0', conaffinity='0')
+                  pos='0 0 0', rgba='.2 .24 .3 1', contype='0', conaffinity='0')
+    board = ET.SubElement(world, 'body', name='chessboard', pos=text(SCENE['board_center_m']))
+    side = SCENE['square_size_m']
+    ET.SubElement(board, 'geom', name='board_frame', type='box', size=text([4*side+.008, 4*side+.008, .006]),
+                  rgba='.25 .12 .05 1', contype='0', conaffinity='0')
+    for rank in range(8):
+        for file in range(8):
+            square = chr(97+file)+str(rank+1)
+            xy = [(file-3.5)*side, (rank-3.5)*side, .007]
+            ET.SubElement(board, 'geom', name='square_'+square, type='box', pos=text(xy),
+                          size=text([side/2, side/2, .001]),
+                          rgba='.88 .81 .65 1' if (rank+file)%2 else '.16 .09 .04 1',
+                          contype='0', conaffinity='0')
+            ET.SubElement(board, 'site', name='square_center_'+square, pos=text([*xy[:2], .009]), size='.001', rgba='0 0 0 0')
+    mounting = ET.SubElement(world, 'body', name='robot_mount', pos='0 0 .035',
+                             quat=text([math.sqrt(.5), math.sqrt(.5), 0, 0]))
     actuators = ET.SubElement(mjcf, 'actuator')
     materials = {m.get('name'): m.find('color').get('rgba')
                  for m in robot.findall('material') if m.find('color') is not None}
@@ -148,10 +170,21 @@ def build_bundle(urdf, output):
                           contype='0', conaffinity='0', **origin(visual))
         if name == 'arm2_link':
             ET.SubElement(body, 'site', name='arm2_frame', size='.008', rgba='1 .4 .1 1')
+            # STL coordinates share the original assembly frame. Use the same
+            # visual offset as arm2 at q=0; attachment is provisional, not TCP.
+            for part in ('gripper_back', 'gripper_hand1', 'gripper_hand2'):
+                path = source.parent.parent/'meshes'/f'{part}.stl'
+                data = path.read_bytes()
+                filename = part+'.stl'
+                mesh_bytes[filename] = data
+                ET.SubElement(assets, 'mesh', name=part, file=filename, scale='.001 .001 .001')
+                ET.SubElement(body, 'geom', name=part+'_visual', type='mesh', mesh=part,
+                              pos=text(SCENE['gripper_origin_in_arm2_m']), rgba='.9 .43 .1 1',
+                              contype='0', conaffinity='0')
         for child_joint in children.get(name, []):
             visit(child_joint.find('child').get('link'), body, child_joint)
 
-    visit(root_link, world)
+    visit(root_link, mounting)
     if visited != set(links):
         raise ValueError('Disconnected or cyclic links')
     xml = ET.tostring(mjcf, encoding='unicode')
@@ -164,7 +197,7 @@ def build_bundle(urdf, output):
     for filename, data in mesh_bytes.items():
         (output/filename).write_bytes(data)
     manifest = dict(schema=1, source_urdf_sha256=hashlib.sha256(raw).hexdigest(),
-                    mujoco_version=mujoco.__version__, profile=PROFILE, joints=metadata,
+                    mujoco_version=mujoco.__version__, profile=PROFILE, scene=SCENE, joints=metadata,
                     tip_frame='arm2_link', tcp_calibrated=False,
                     assets_sha256={key: hashlib.sha256(value).hexdigest() for key, value in mesh_bytes.items()},
                     model_sha256=hashlib.sha256(xml.encode()).hexdigest())

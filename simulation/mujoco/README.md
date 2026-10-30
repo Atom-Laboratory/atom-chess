@@ -6,7 +6,7 @@ Este pacote não tem recompensa, política neural ou loop de treinamento.
 
 **Perfil experimental sem calibração:** cinemática/malhas herdadas do URDF;
 massas, inércias e ganhos hipotéticos declarados no manifest. Gravidade zero,
-contatos desativados e ferramenta ausente. Serve para estudar o pipeline e o
+contatos desativados e garra apenas visual. Serve para estudar o pipeline e o
 controle do protótipo; não comprova comportamento do braço físico.
 
 ## Instalar no Windows — PowerShell
@@ -36,7 +36,7 @@ visualização/renderização, não para reset/advance e os testes de física.
 & ./simulation/mujoco/scripts/Start-MuJoCo.ps1
 ```
 
-O script usa `.venv`, compila um bundle em `runs/prototype-v1` na primeira vez e
+O script usa `.venv`, compila um bundle em `runs/upright-chess-v2` na primeira vez e
 abre o visualizador. Se a política local bloquear scripts, use os comandos Python
 abaixo; não é necessário alterar a política do sistema.
 
@@ -51,8 +51,8 @@ avançam pelo relógio simulado sem `sleep`.
 Alternativa sem script, no mesmo terminal preparado acima:
 
 ```powershell
-& $atomPy -m atom_mujoco.cli build --urdf simulation/src/urdf/atom.urdf.xacro --output simulation/mujoco/runs/prototype-v1
-& $atomPy -m atom_mujoco.cli view --bundle simulation/mujoco/runs/prototype-v1
+& $atomPy -m atom_mujoco.cli build --urdf simulation/src/urdf/atom.urdf.xacro --output simulation/mujoco/runs/upright-chess-v2
+& $atomPy -m atom_mujoco.cli view --bundle simulation/mujoco/runs/upright-chess-v2
 ```
 
 `build` exige diretório novo e nunca sobrescreve um bundle anterior. Após mudar
@@ -62,8 +62,8 @@ um bundle já existente; confira source_urdf_sha256 no manifest.
 ## Demonstração reproduzível e testes
 
 ```powershell
-& $atomPy -m atom_mujoco.cli demo --bundle simulation/mujoco/runs/prototype-v1 --output simulation/mujoco/runs/demo-01.json
-& $atomPy -m atom_mujoco.cli render --bundle simulation/mujoco/runs/prototype-v1 --output simulation/mujoco/runs/arm.ppm
+& $atomPy -m atom_mujoco.cli demo --bundle simulation/mujoco/runs/upright-chess-v2 --output simulation/mujoco/runs/demo-01.json
+& $atomPy -m atom_mujoco.cli render --bundle simulation/mujoco/runs/upright-chess-v2 --output simulation/mujoco/runs/arm.ppm
 $env:ATOM_TEST_RENDER = '1'
 & $atomPy -m pytest simulation/mujoco/tests -q
 Remove-Item Env:ATOM_TEST_RENDER
@@ -77,6 +77,12 @@ em CI sem contexto, mantenha a variável ausente para executar a suíte headless
 
 Veja [contratos e próximos exercícios](docs/interfaces.md),
 [resultados verificados](docs/validation.md) e [ADR S003](../docs/adrs/S003-mujoco.md).
+
+A cena atual tem braço vertical, tabuleiro 8×8 e as três malhas da garra. A garra
+acompanha o braço, mas ainda não abre/fecha ou segura peças. Veja as escolhas de
+montagem e coordenadas no [ADR S004](../docs/adrs/S004-upright-chess-scene.md).
+O URDF permanece no referencial original; apenas o conjunto MuJoCo recebe a
+transformação Y→Z. A prismática agora desloca verticalmente na cena.
 
 Comece o estudo pelo [exercício 1: juntas e estados](docs/exercise-01.md), com
 exemplo executável em examples/inspect_joints.py.

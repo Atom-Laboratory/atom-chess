@@ -9,6 +9,7 @@ import pytest
 from atom_mujoco.backend import Simulation
 from atom_mujoco.cli import demonstration
 from atom_mujoco.model import build_bundle, origin
+from atom_mujoco.model import SCENE
 import xml.etree.ElementTree as ET
 
 
@@ -18,11 +19,12 @@ def test_compiled_model_fk_matches_independent_urdf_equations(sim):
         a, z, b = rng.uniform(sim.lower, sim.upper)
         state = sim.reset([a, z, b])
         expected = [.04+.22*math.cos(a), z, -.22*math.sin(a)]
-        np.testing.assert_allclose(state['arm2_position'], expected, atol=1e-12)
+        rotation = np.array(SCENE['urdf_to_scene_rotation'])
+        np.testing.assert_allclose(state['arm2_position'], rotation@expected+SCENE['urdf_to_scene_translation_m'], atol=1e-12)
         angle = a+b
         expected_rotation = [[math.cos(angle), 0, math.sin(angle)], [0, 1, 0],
                              [-math.sin(angle), 0, math.cos(angle)]]
-        np.testing.assert_allclose(state['arm2_rotation'], expected_rotation, atol=1e-12)
+        np.testing.assert_allclose(state['arm2_rotation'], rotation@expected_rotation, atol=1e-12)
     assert sim.model.nq == sim.model.nv == sim.model.nu == 3
     assert sim.model.opt.gravity.tolist() == [0., 0., 0.]
     assert sim.model.opt.disableflags & mujoco.mjtDisableBit.mjDSBL_CONTACT
@@ -95,3 +97,22 @@ def test_portable_bundle_hashes_and_no_overwrite(bundle, tmp_path):
     urdf = Path(__file__).resolve().parents[2]/'src/urdf/atom.urdf.xacro'
     with pytest.raises(FileExistsError):
         build_bundle(urdf, bundle)
+
+
+def test_upright_scene_board_and_gripper_follow_arm(sim):
+    m, d = sim.model, sim.data
+    mount = m.body('robot_mount').id
+    # Local +Y of the source assembly is vertical in the scene.
+    np.testing.assert_allclose(d.xmat[mount].reshape(3,3)@[0,1,0], [0,0,1], atol=1e-12)
+    square_ids = [m.geom('square_'+file+str(rank)).id for file in 'abcdefgh' for rank in range(1,9)]
+    assert len(set(square_ids)) == 64
+    board_before = d.geom_xpos[square_ids].copy()
+    arm_id = m.body('arm2_link').id
+    gripper_ids = [m.geom(part+'_visual').id for part in ('gripper_back','gripper_hand1','gripper_hand2')]
+    assert all(m.geom_bodyid[index] == arm_id for index in gripper_ids)
+    local_before = [(d.xmat[arm_id].reshape(3,3).T@(d.geom_xpos[index]-d.xpos[arm_id])) for index in gripper_ids]
+    sim.reset([.4,.1,.8])
+    np.testing.assert_array_equal(d.geom_xpos[square_ids], board_before)
+    for index, expected in zip(gripper_ids, local_before):
+        np.testing.assert_allclose(d.xmat[arm_id].reshape(3,3).T@(d.geom_xpos[index]-d.xpos[arm_id]), expected, atol=1e-12)
+    assert all(m.geom_contype[index] == m.geom_conaffinity[index] == 0 for index in square_ids+gripper_ids)

@@ -6,7 +6,7 @@ e o bundle gerado pelo launcher. Execute no PowerShell, na raiz do repositório:
 
 ```powershell
 & ./simulation/mujoco/scripts/Start-MuJoCo.ps1 -Mode demo
-& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/inspect_joints.py --bundle simulation/mujoco/runs/prototype-v1 --output simulation/mujoco/runs/exercise-01.json
+& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/inspect_joints.py --bundle simulation/mujoco/runs/upright-chess-v2 --output simulation/mujoco/runs/exercise-01.json
 ```
 
 Use um nome novo em --output ao repetir. O script primeiro reinicia em zero,
@@ -49,9 +49,11 @@ será qual tarefa de controle você quer aprender e quais observações ela exig
 
 Depois de fazer suas previsões, use esta conferência:
 
-- Primeira junta, 0,3 rad: deslocamento aproximado [-0,00983, 0, -0,06501] m;
+- Primeira junta, 0,3 rad na cena upright-chess-v2: deslocamento aproximado [-0,00983, 0,06501, 0] m;
   rotação de 0,3 rad.
-- Prismática, 0,08 m: deslocamento [0, 0,08, 0] m, orientação preservada.
+- Prismática, 0,08 m: deslocamento [0, 0, 0,08] m, orientação preservada.
 - Última junta, -0,4 rad: origem final preservada, rotação de 0,4 rad em módulo.
 
 Esses valores vêm da geometria do URDF e não validam o TCP ou a montagem física.
+Bundles antigos prototype-v1 usam Y vertical; a cena v2 aplica [x,y,z]→[x,-z,y+0.035].
+Use o bundle v2 nos comandos acima para comparar com estes resultados atuais.

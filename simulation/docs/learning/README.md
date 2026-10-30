@@ -16,8 +16,9 @@ Decisão pedagógica registrada em [L002](adrs/L002-first-exercise.md).
 
 Leia src/urdf/atom.urdf.xacro e consulte arm2_position/arm2_rotation em observe()
 do MuJoCo. Alternativamente, no modo ROS, observe TF de world até arm2_link. Juntas revolutas
-usam radianos; a prismática usa metros. O eixo de translação atual é Y, não Z,
-apesar do nome. Isso vem do protótipo e precisa de confirmação CAD.
+usam radianos; a prismática usa metros. O eixo de translação do URDF é Y;
+na cena upright-chess-v2 ele é transformado em Z vertical. A geometria ainda
+precisa de confirmação CAD; não confundir mudança de referencial com calibração.
 
 Seu exercício: mover uma junta por vez, registrar posição articular e pose do
 frame arm2_link, prever qual componente muda e comparar com TF. A última junta

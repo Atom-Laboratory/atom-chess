@@ -28,6 +28,15 @@ Geometrias são somente visuais, sem contato; o piso é uma referência gráfica
 Não interpretar `ncon=0` como evidência de movimento livre de colisões.
 O ponto laranja/site arm2_frame representa a origem de arm2_link, não TCP.
 
+Cena upright-chess-v2: mundo URDF [x,y,z] m vira [x,-z,y+0.035] m na cena.
+arm2_position/arm2_rotation são expressos nesse mundo da cena; posições articulares
+continuam nas mesmas unidades e ordem. manifest.scene registra transformação,
+tabuleiro de referência e câmera. Sete STL são incluídos (quatro do URDF e três
+da garra visual). A garra é rígida em arm2_link; não existe controle de abertura.
+As casas têm sites square_center_a1...h8 para inspeção futura, sem calibração de
+alcance ou integração automática com planejamento. Dimensões e montagem provisória
+estão no ADR S004; não há contatos ou objetos manipuláveis.
+
 ## API do backend
 
 ```python

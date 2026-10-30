@@ -1,5 +1,19 @@
 # Validação MuJoCo — 30/10/2026
 
+## Atualização de cena upright-chess-v2
+
+12 testes aprovados, incluindo render e novo teste de montagem vertical, 64 casas,
+tabuleiro estático durante movimento e garra rígida em relação a arm2_link.
+FK comparada com equações independentes após transformação Rx(+90°) e offset
+de altura. Demo executada pelo launcher atualizado, sem excesso de limites no
+cenário de referência e com os mesmos erros articulares finais anteriores.
+Render offscreen 800×600 inspecionado: coluna vertical, tabuleiro e três malhas
+da garra visíveis. Não é inspeção contra o F3D oficial; anexação da garra provisória.
+Contatos e abertura/fechamento da garra não foram implementados.
+
+Registros abaixo descrevem a primeira versão do backend; quatro malhas e 11
+testes eram os valores daquela versão. A cena atual contém sete malhas e 12 testes.
+
 Base: ros2_simulation/a8e3093, sem alteração do URDF ou das malhas originais.
 Ambiente: Windows, Python 3.12.14, MuJoCo 3.17.0, NumPy 2.5.4, pytest 9.2.0.
 Dependências instaladas em venv isolado; lock inclui versões transitivas do
