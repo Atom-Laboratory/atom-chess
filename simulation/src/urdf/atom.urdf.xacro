@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
 <robot name="atom_scara" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- Diagnostic prototype inherited from this branch. Mesh scale, joint
+         origins, axes and limits below are not measured hardware calibration.
+         Authoritative CAD: SCARA Robot.f3d. See ../../docs/mechanical-evidence.md.
+         J3, TCP and the gripper are not represented by this prototype. -->
 
     <material name="atom_blue">
         <color rgba="0.1 0.3 0.8 1.0"/>
