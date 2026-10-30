@@ -77,3 +77,6 @@ em CI sem contexto, mantenha a variável ausente para executar a suíte headless
 
 Veja [contratos e próximos exercícios](docs/interfaces.md),
 [resultados verificados](docs/validation.md) e [ADR S003](../docs/adrs/S003-mujoco.md).
+
+Comece o estudo pelo [exercício 1: juntas e estados](docs/exercise-01.md), com
+exemplo executável em examples/inspect_joints.py.

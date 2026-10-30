@@ -19,6 +19,8 @@ documenta somente as relações entre módulos. Referência desta revisão:
 - **Mecânica:** [registro de fontes](mechanics/README.md),
   [ADR M001 — referência CAD](mechanics/adrs/M001-cad.md).
 - **RL futuro:** [trilha](../simulation/docs/learning/README.md),
+  [exercício 1](../simulation/mujoco/docs/exercise-01.md),
+  [ADR L002 — estudo inicial](../simulation/docs/learning/adrs/L002-first-exercise.md),
   [ADR L001 — participação do responsável](../simulation/docs/learning/adrs/L001-scope.md).
 - **Integração:** [arquitetura](architecture.md), [roadmap](roadmap.md),
   [ADR P001 — escopo de branch](adrs/P001-branch.md).

@@ -11,6 +11,9 @@ o protótipo. [Escopo e experimento anterior](adrs/L001-scope.md).
 
 ## Etapa atual: entender o que o robô simulado representa
 
+Faça o [exercício executável de inspeção das juntas](../../mujoco/docs/exercise-01.md).
+Decisão pedagógica registrada em [L002](adrs/L002-first-exercise.md).
+
 Leia src/urdf/atom.urdf.xacro e consulte arm2_position/arm2_rotation em observe()
 do MuJoCo. Alternativamente, no modo ROS, observe TF de world até arm2_link. Juntas revolutas
 usam radianos; a prismática usa metros. O eixo de translação atual é Y, não Z,

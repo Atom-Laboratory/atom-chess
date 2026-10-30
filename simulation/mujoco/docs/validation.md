@@ -41,6 +41,12 @@ a primeira tentativa tivesse passado.
 
 ## Limites
 
+Exercício 1 executado posteriormente no mesmo ambiente: três metas isoladas,
+cada uma com 200 passos e repetição integral após reset. replay_max_error=0 nos
+três cenários; erros articulares finais abaixo de 1,4e-15 nas unidades de cada
+eixo. Deslocamentos/rotações registrados coincidem com o roteiro exercise-01.md.
+Isso verifica o exemplo público de API sem acrescentar algoritmo de aprendizado.
+
 Viewer nativo foi iniciado e anunciou os atalhos; a ferramenta de captura de
 janelas retornou timeout. Não declarar interação manual dos atalhos aprovada
 por essa ferramenta. A imagem offscreen foi inspecionada diretamente e o teste
