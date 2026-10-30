@@ -1,0 +1,798 @@
+﻿scope,path,size,git_blob,extension
+HEAD,.devcontainer/Dockerfile,1560,66b4ebc03214ceac7dee9d0062fa55d62cc0fb6c,
+HEAD,.devcontainer/devcontainer.json,683,391be58ea0a8d1f58af59d75754433547799ca95,.json
+HEAD,.gitattributes,106,50e10dd4cb875bb0fe7ba38f858b5be013d0a0dc,
+HEAD,.gitignore,1291,b51cf18342ca5576456268fd96052c9446d8998b,
+HEAD,.vscode/extensions.json,118,76de5697f3903ce67b673b82d3ab9f2315f8aecf,.json
+HEAD,.vscode/launch.json,611,c66c63bfebbfc76bc8d072bc8ac37a6496f5e438,.json
+HEAD,.vscode/settings.json,437,7257973201fba484439808fc552c66132bad4672,.json
+HEAD,CMakeLists.txt,110,3e4a19823bc4377b659294077780e2cddfc89300,.txt
+HEAD,CMakePresets.json,947,df4b3a498df969c0e851f3bdf7de558f2f6d4d10,.json
+HEAD,CMakeSettings.json,241,b16f76e76e903171aa5cb7350ddaadafc6f430cf,.json
+HEAD,CmakeUserPresets.json,243,afc9e3c83a9cba195099ad8f8460e573ac65d17c,.json
+HEAD,CppProperties.json,429,68c6285d9b9ff3d6bd76dc13e7167180912a326a,.json
+HEAD,Frame Capture.cpp,791,4cabcec8d7ea9d5ce6f8bd99cc5197f1046c2e82,.cpp
+HEAD,Hardware/.vscode/settings.json,147,e30c1ec71c4adcad4ecdbf08e078e63d831213aa,.json
+HEAD,Hardware/Architechture/DistributedSystem/v0/v0.1/v01distributedSystem.excalidraw,128618,e7fcd384177a4929cac1fba21680adf5dd3b2fdd,.excalidraw
+HEAD,Hardware/Architechture/DistributedSystem/v0/v0.1/v01distributedSystem.png,307624,969b537242052bb8114873a433d385ec1931991f,.png
+HEAD,Hardware/Architechture/DistributedSystem/v0/v0.2/v01distributedSystem.excalidraw,271653,4c33d4ec30742048381b7d702ea3adb87cc00550,.excalidraw
+HEAD,Hardware/Architechture/DistributedSystem/v0/v0.2/v01distributedSystem.png,448032,3be5bd0ee276df54ee4b14844153ab16622ee983,.png
+HEAD,Hardware/Architechture/DistributedSystem/v0/v0.3/v03distributedSystem.SVG,117958,c20a28c2612bb79153d7e81b2fa5ea772b853ee1,.svg
+HEAD,Hardware/Architechture/DistributedSystem/v0/v0.3/v03distributedSystem.excalidraw,328815,2915a3d916e15f530ad2a91e5db0d76738c1dd5b,.excalidraw
+HEAD,Hardware/Architechture/DistributedSystem/v0/v0.4/Interface Adapter Use Case-2026-07-09-220503.pdf,382672,26c3e01d39b8683ee0acda3ac8541d8deffbe898,.pdf
+HEAD,Hardware/Architechture/DistributedSystem/v0/v0.4/Interface Adapter Use Case-2026-07-10-154931.pdf,317233,e977f2a27cbf16c192c5fc963a388d4434fbbc41,.pdf
+HEAD,Hardware/Architechture/FiniteStateMachine/fsm.svg,69669,0c83b63fbda1ab6c1b491ea99624d00f2d20292e,.svg
+HEAD,Hardware/Architechture/FiniteStateMachine/v03distributedSystem.SVG,117958,c20a28c2612bb79153d7e81b2fa5ea772b853ee1,.svg
+HEAD,Hardware/Architechture/FiniteStateMachine/v03distributedSystem_mermaid.png,769807,19355a8124db4870ec9c16f2d5f6297b16b2c2ff,.png
+HEAD,Hardware/Plataforms/Banana Pi M5/Benchmarks/BPIM5/1/doc.md,5995,e9b9e4f5deccbe3328d2dc8b9b0d6398d6d00a93,.md
+HEAD,Hardware/Plataforms/Banana Pi M5/specs.txt,2486,503a32b9a8e6760c231f8ce6e128f8aa9a724601,.txt
+HEAD,Hardware/Project/Models/SCARA Robot.f3d,4048369,a5b1bac260288c36cf2df3f5f4d04f975db71d03,.f3d
+HEAD,Hardware/README.MD,82,91a4a50b1ab5ffeca0f70524dda90b45cbca6ba4,.md
+HEAD,LICENSE,1067,440e6e4b7e02f708735bd90302f65b8d8796ab4c,
+HEAD,README.md,1424,23b563b0e1b93e453fb6b9872a5e101032bb9eac,.md
+HEAD,Software/.env,39,52c1adfba366f85945329465cc36793e8500307a,
+HEAD,Software/.vscode/settings.json,98,96dcf7fb7d2ebe80c895e1f3d3352138496ff8be,.json
+HEAD,Software/README.md,271,fe834a8c4b7c125bbc9979021f2c5aa9a76dd961,.md
+HEAD,Software/acvision/CMakeLists.txt,6030,bed023f69e3faca840bb33119a2b25af5f783bf4,.txt
+HEAD,Software/acvision/README.md,2220,b0ca81c69e79bb3502eacf35064d3da38f24a892,.md
+HEAD,Software/acvision/apps/README.MD,11,a35532852fd7bf75fbf7ddc5add600ecef93e238,.md
+HEAD,Software/acvision/apps/board_detection_demo.cpp,3081,2f26735dd1f249d0d3b0e706c89a97e93803052d,.cpp
+HEAD,Software/acvision/apps/capture_gui.cpp,2453,3d349f04f1ee40f4ea1acd74ab29adefc6f26bec,.cpp
+HEAD,Software/acvision/docs/adrs/V001-tests.md,786,f1a15c78d4234ff133ba9070064580e84e4123e0,.md
+HEAD,Software/acvision/docs/audit.md,1647,84a1c400568db2b26c51f3390c144687549e9356,.md
+HEAD,Software/acvision/include/README.MD,14,29f8fca5a680faf9fb35f8202b8478ebf22d75d0,.md
+HEAD,Software/acvision/include/board_detector/board_detector.hpp,985,74c4f35493cc6fc7638b254365e05f7c09cec1e4,.hpp
+HEAD,Software/acvision/include/camera/camera.hpp,3955,a9353393fc55f7a61a05d9caf9ca61aeb6e96c59,.hpp
+HEAD,Software/acvision/include/fen_generator/fen_generator.hpp,985,9f24fced65951cde931f53768ddde9255dbf7775,.hpp
+HEAD,Software/acvision/include/piece_detector/piece_detector.hpp,2360,86d45eda5550fc6739b41de2da8fe5f66e81646c,.hpp
+HEAD,Software/acvision/simulation/simulator.cpp,2135,c969caadc723439a212afe9df2b9e4bc262bbe17,.cpp
+HEAD,Software/acvision/src/README.MD,15,14643263f2ed766708ca24c0784ed4ea41f8684a,.md
+HEAD,Software/acvision/src/board_detector/board_detector.cpp,5209,1e6cdf5b084fb382c97243859d9abe48a164e493,.cpp
+HEAD,Software/acvision/src/camera/camera.cpp,4248,eca7bd507c0f54137d915c7d55cbaa8555d33568,.cpp
+HEAD,Software/acvision/src/fen_generator/fen_generator.cpp,913,45d8eb634f71c440a3dd3bcac74947e2a25aa20f,.cpp
+HEAD,Software/acvision/src/piece_detector/piece_detector.cpp,2214,33b39e76acd57b25e3304db012eab6285b47de08,.cpp
+HEAD,Software/acvision/tests/README.MD,1557,6b8f353cddc21e430036ec804c1d990b971323d0,.md
+HEAD,Software/acvision/tests/README.md,1557,6b8f353cddc21e430036ec804c1d990b971323d0,.md
+HEAD,Software/acvision/tests/images/chessboard.png,10825,e81c28762dd622bfc02fe0eef88735b1c943399a,.png
+HEAD,Software/acvision/tests/images/no_board.png,86028,5a1466c1220ce18843ace5b06b5d20e1b182f218,.png
+HEAD,Software/acvision/tests/test_board_detector.cpp,4155,1d6f1c3ea2259892c70661e71611ce38d1e53833,.cpp
+HEAD,Software/acvision/tests/test_camera.cpp,766,17d4dc446c4966048eb14418c6888842999a8710,.cpp
+HEAD,Software/acvision/tests/test_fen_generator.cpp,1146,424f5230c1760780da87db9ee8ff9928dbf260c7,.cpp
+HEAD,Software/acvision/tests/test_piece_detector.cpp,1775,a336ffd125bb5e7156b2a7ae25c254d46594a5c8,.cpp
+HEAD,docker-compose.yml,362,7c9182681b2e5fc5b63c2457efc3ec2e753bb34b,.yml
+HEAD,docs/README.md,2656,90729400ed54ee60e81fa978219afc0a31ed4199,.md
+HEAD,docs/adrs/P001-branch.md,917,7496e576198673847bf0ee060ad22ba4d3607a7e,.md
+HEAD,docs/architecture.md,2727,cd3241da602b177050b532201f4c418e107d053b,.md
+HEAD,docs/mechanics/README.md,1386,8ccc0a3847302e8e965bdd519e9f41caff17b95e,.md
+HEAD,docs/mechanics/adrs/M001-cad.md,630,7166e52114a9aa9cf16aac5e604859d312584c4c,.md
+HEAD,docs/mechanics/adrs/M002-gripper-limits.md,1048,47ce86a2e9365bfb51551258d615b83c13c98581,.md
+HEAD,docs/mechanics/evidence/gripper-2026-10-30/joint-limits.png,247524,2c7a88eb5eb7b0f7d622d4dc9e9af6668c7fdebc,.png
+HEAD,docs/mechanics/evidence/gripper-2026-10-30/linkage-front.png,48712,d25cdbaa5469866343870ece5c13ab29ad616b1a,.png
+HEAD,docs/mechanics/evidence/gripper-2026-10-30/linkage-perspective.png,204062,d3da65d2d16b4e195c0213d6f5e4988460d1d656,.png
+HEAD,docs/mechanics/gripper-cad-evidence.md,2559,3062c780b2efa67c8266e7204fcc98517a8ce385,.md
+HEAD,docs/roadmap.md,2977,04a6e185c2ff48732417f5c6fb2a8731c0cc4a28,.md
+HEAD,hardware/.vscode/settings.json,147,e30c1ec71c4adcad4ecdbf08e078e63d831213aa,.json
+HEAD,hardware/Architechture/DistributedSystem/v0/v0.1/v01distributedSystem.excalidraw,128618,e7fcd384177a4929cac1fba21680adf5dd3b2fdd,.excalidraw
+HEAD,hardware/Architechture/DistributedSystem/v0/v0.1/v01distributedSystem.png,307624,969b537242052bb8114873a433d385ec1931991f,.png
+HEAD,hardware/Architechture/DistributedSystem/v0/v0.2/v01distributedSystem.excalidraw,271653,4c33d4ec30742048381b7d702ea3adb87cc00550,.excalidraw
+HEAD,hardware/Architechture/DistributedSystem/v0/v0.2/v01distributedSystem.png,448032,3be5bd0ee276df54ee4b14844153ab16622ee983,.png
+HEAD,hardware/Architechture/DistributedSystem/v0/v0.3/v03distributedSystem.SVG,117958,c20a28c2612bb79153d7e81b2fa5ea772b853ee1,.svg
+HEAD,hardware/Architechture/DistributedSystem/v0/v0.3/v03distributedSystem.excalidraw,328815,2915a3d916e15f530ad2a91e5db0d76738c1dd5b,.excalidraw
+HEAD,hardware/Architechture/DistributedSystem/v0/v0.4/Interface Adapter Use Case-2026-07-09-220503.pdf,382672,26c3e01d39b8683ee0acda3ac8541d8deffbe898,.pdf
+HEAD,hardware/Architechture/DistributedSystem/v0/v0.4/Interface Adapter Use Case-2026-07-10-154931.pdf,317233,e977f2a27cbf16c192c5fc963a388d4434fbbc41,.pdf
+HEAD,hardware/Architechture/FiniteStateMachine/fsm.svg,69669,0c83b63fbda1ab6c1b491ea99624d00f2d20292e,.svg
+HEAD,hardware/Architechture/FiniteStateMachine/v03distributedSystem.SVG,117958,c20a28c2612bb79153d7e81b2fa5ea772b853ee1,.svg
+HEAD,hardware/Architechture/FiniteStateMachine/v03distributedSystem_mermaid.png,769807,19355a8124db4870ec9c16f2d5f6297b16b2c2ff,.png
+HEAD,hardware/Plataforms/Banana Pi M5/Benchmarks/BPIM5/1/doc.md,5995,e9b9e4f5deccbe3328d2dc8b9b0d6398d6d00a93,.md
+HEAD,hardware/Plataforms/Banana Pi M5/specs.txt,2486,503a32b9a8e6760c231f8ce6e128f8aa9a724601,.txt
+HEAD,hardware/Project/Models/SCARA Robot.f3d,4048369,a5b1bac260288c36cf2df3f5f4d04f975db71d03,.f3d
+HEAD,hardware/README.MD,82,91a4a50b1ab5ffeca0f70524dda90b45cbca6ba4,.md
+HEAD,install/.colcon_install_layout,9,3aad5336af1f22b8088508218dceeda3d7bc8cc2,
+HEAD,install/COLCON_IGNORE,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,
+HEAD,install/_local_setup_util_ps1.py,14818,01cdf8bb0386d09eaf1e19c91cce3273500bdf8b,.py
+HEAD,install/_local_setup_util_sh.py,14872,e5443aa2a775ee10ec0adba30b73258deb01f5ae,.py
+HEAD,install/local_setup.bash,3760,03f00256c1a126057ca924bdd48ec74444b0cc10,.bash
+HEAD,install/local_setup.ps1,2045,6f68c8dede9ed4ecb63a4eb6ac2a7450bd18ec3b,.ps1
+HEAD,install/local_setup.sh,4339,e440bdf9db191f249f705b2f46506b07b72b5f58,.sh
+HEAD,install/local_setup.zsh,4155,b6487102f245a7b5ddb2b1da158d6b99ddc91d8b,.zsh
+HEAD,install/setup.bash,1141,9a72e1174d3e153948e9c14e58a61b56ac0f2782,.bash
+HEAD,install/setup.ps1,1167,2ac741bd5e946cae5e9bc2f2f1fd7911c2b022c5,.ps1
+HEAD,install/setup.sh,1913,d67570800c84e2f770958ab247bed88ffc44531a,.sh
+HEAD,install/setup.zsh,1129,942116df7b8c13f051c3aaf7db475ff7a99638fb,.zsh
+HEAD,log/COLCON_IGNORE,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,
+HEAD,log/build_2026-07-11_11-38-08/ATOMChess/command.log,370,78c7a0fbd65d9e26e8dfc5e630df154f78ff0fe9,.log
+HEAD,log/build_2026-07-11_11-38-08/ATOMChess/stderr.log,312,a52e061bfa6215ab3d2a5d456f1106345468b1dc,.log
+HEAD,log/build_2026-07-11_11-38-08/ATOMChess/stdout.log,336,6cbe57cc5f9f2c069c94e003b1c371a99bc321bf,.log
+HEAD,log/build_2026-07-11_11-38-08/ATOMChess/stdout_stderr.log,648,0af87c1cc536cefaf1f45c01194bb01335c22630,.log
+HEAD,log/build_2026-07-11_11-38-08/ATOMChess/streams.log,1180,cad65bde15f67542252638aea32b868a5fd4d5b9,.log
+HEAD,log/build_2026-07-11_11-38-08/events.log,11684,3a0b2f667c4a552cbea836d52cb036b4643bc8d3,.log
+HEAD,log/build_2026-07-11_11-38-08/logger_all.log,11001,58f929d95de726cfe57aa79a14b67234aea57a93,.log
+HEAD,log/latest,12,b57d247c77c0293269460b70b9bb1360f27cf808,
+HEAD,log/latest_build,25,efe3b878a0dbd607be518db14d502a1c5a378390,
+HEAD,setup_env.bat,320,9160b2ad51df1bc08515c609e00e8480b5fcae33,.bat
+HEAD,simulation/.gitignore,132,cd3e50be13b90e2027e98562a33c58763f55e945,
+HEAD,simulation/README.md,5203,a6928c77af3fb70dbacad4bad88a73eb41f239aa,.md
+HEAD,simulation/colcon_ws.code-workspace,43,362d7c25bb405a5cc76d0c7518cc240999a574f4,.code-workspace
+HEAD,simulation/docker.txt,178,42dd830e138b3b54357e89e0d9563100e02b458b,.txt
+HEAD,simulation/docs/adrs/S001-backend.md,1292,9f97708a141f952c313c5dc8a0083f5987863cfd,.md
+HEAD,simulation/docs/adrs/S002-control.md,1311,57dcda3318ebb3e4e1f43c97f9b253068bc2a343,.md
+HEAD,simulation/docs/adrs/S003-mujoco.md,2278,64aec0a7551e37d07d64f572e7b7e7dffb363f00,.md
+HEAD,simulation/docs/adrs/S004-upright-chess-scene.md,2028,91e4df77946662f52f18161b31b92ac4b263a0a3,.md
+HEAD,simulation/docs/audit.md,1804,93c6eddd0a4eea52d50293ebb1aba538c1d632ea,.md
+HEAD,simulation/docs/control.md,3664,68b7cdd9bb9e90217787f30af0991608868aaa38,.md
+HEAD,simulation/docs/gazebo-readiness.md,4650,00be2c75e38db989fa9672ae14e2be0cbae28f44,.md
+HEAD,simulation/docs/learning/README.md,3976,cb2c059c6a11efb3105aa0bdf0130641fa84b418,.md
+HEAD,simulation/docs/learning/adrs/L001-scope.md,1013,c3c700083760f7cbd7db3b7d35d7d6c7d4249fb7,.md
+HEAD,simulation/docs/learning/adrs/L002-first-exercise.md,811,9ee044a01b0248b479216f69d476a6c01902dc9b,.md
+HEAD,simulation/docs/learning/adrs/L003-policy-motion-and-full-simulation.md,1940,9acb5c5f0f2fe6cef96513adadfc914522d8851c,.md
+HEAD,simulation/docs/learning/deployment-acmotion.md,5581,b1cca4f257f372635dbba0b3bb89df4da8af3c96,.md
+HEAD,simulation/docs/learning/user-guide-rl.md,10321,b2715c67a83a1c400aecd3187787f235ddc6316b,.md
+HEAD,simulation/docs/mechanical-evidence.md,2605,66901380ab18a7839b3ddcb2e2838ab4f991e729,.md
+HEAD,simulation/docs/rl-audit.md,3305,22537c08002f8761e983826a7ed4620c5f99e756,.md
+HEAD,simulation/docs/user-guide-gazebo.md,6804,0e3cd7c13a27c31f573edc95601e9442650f64ea,.md
+HEAD,simulation/docs/validation.md,4567,04f67e2598a76a2fb28da2705e237fbf3da7a258,.md
+HEAD,simulation/install/.colcon_install_layout,9,3aad5336af1f22b8088508218dceeda3d7bc8cc2,
+HEAD,simulation/install/COLCON_IGNORE,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,
+HEAD,simulation/install/_local_setup_util_ps1.py,14818,01cdf8bb0386d09eaf1e19c91cce3273500bdf8b,.py
+HEAD,simulation/install/_local_setup_util_sh.py,14872,e5443aa2a775ee10ec0adba30b73258deb01f5ae,.py
+HEAD,simulation/install/atom_description/share/ament_index/resource_index/package_run_dependencies/atom_description,154,4142b6a404bc35fb5cb2a8ea1975800ba4fd2ca0,
+HEAD,simulation/install/atom_description/share/ament_index/resource_index/packages/atom_description,138,841adb7a687acd4367baaf125435d2a936215477,
+HEAD,simulation/install/atom_description/share/ament_index/resource_index/parent_prefix_path/atom_description,148,0158aa309fb8f43fd0ebfbfcc31dfbdfe53b09b4,
+HEAD,simulation/install/atom_description/share/atom_description/cmake/atom_descriptionConfig-version.cmake,115,a315ea892f5cbb4558e384dfdb708aba4fde4082,.cmake
+HEAD,simulation/install/atom_description/share/atom_description/cmake/atom_descriptionConfig.cmake,107,902bd1025d31588764ded0d21c9435afc9fa365f,.cmake
+HEAD,simulation/install/atom_description/share/atom_description/environment/ament_prefix_path.dsv,113,589e854a3297bbdf5332e94baff6e437ae014766,.dsv
+HEAD,simulation/install/atom_description/share/atom_description/environment/ament_prefix_path.sh,96,598aa4354cc16b268a3802f4353481254c66cb30,.sh
+HEAD,simulation/install/atom_description/share/atom_description/environment/path.dsv,100,70ada29a91f5ce27450e37116fa31dc9515ea267,.dsv
+HEAD,simulation/install/atom_description/share/atom_description/environment/path.sh,83,9cf0ec6bda2e70442c4415fc2bedb96869957a6b,.sh
+HEAD,simulation/install/atom_description/share/atom_description/hook/cmake_prefix_path.dsv,41,e119f32cba928c962cb0e9e25ca919bfce4c3e76,.dsv
+HEAD,simulation/install/atom_description/share/atom_description/hook/cmake_prefix_path.ps1,152,d03facc1a43658b232b3db29870b2be3889ff589,.ps1
+HEAD,simulation/install/atom_description/share/atom_description/hook/cmake_prefix_path.sh,142,a948e685ba5b63fd771736a77f467ddc57aed5a6,.sh
+HEAD,simulation/install/atom_description/share/atom_description/launch/__pycache__/view_robot.launch.cpython-314.pyc,1308,91d3d5beea63c1036d048d7447eef5b19d33b305,.pyc
+HEAD,simulation/install/atom_description/share/atom_description/launch/view_robot.launch.py,70,dc251ff7b5e247e40944a5c2dc60f5e71764d7f0,.py
+HEAD,simulation/install/atom_description/share/atom_description/local_setup.bash,108,8970730302be9dd1b6488aaedb8b3c21aed2800f,.bash
+HEAD,simulation/install/atom_description/share/atom_description/local_setup.dsv,107,350e674aeee7c05f0c90c48a37ac85a04ef3f711,.dsv
+HEAD,simulation/install/atom_description/share/atom_description/local_setup.fish,108,ca00d65c58ba65258dab1f74675aa9e8bed0ce6a,.fish
+HEAD,simulation/install/atom_description/share/atom_description/local_setup.sh,106,defd22724abf4e9118b8bfae5e0cf92a5eb2f63d,.sh
+HEAD,simulation/install/atom_description/share/atom_description/local_setup.zsh,107,0ff703b7df24bedc30f6bc34b51201ff392d9060,.zsh
+HEAD,simulation/install/atom_description/share/atom_description/meshes/arm1.stl,58,373cdace1ba09db9bb5da4de31ba8075aa2cbc04,.stl
+HEAD,simulation/install/atom_description/share/atom_description/meshes/arm2.stl,58,a17fca7737698268c14ad244ecf3bdf9c5e968a5,.stl
+HEAD,simulation/install/atom_description/share/atom_description/meshes/base.stl,58,1bdc3fc5d3236aa2a99d455936a978773ec3f7c4,.stl
+HEAD,simulation/install/atom_description/share/atom_description/meshes/gripper_back.stl,66,14f01ce0ab6f92f4f23e23668548035745dc8a2e,.stl
+HEAD,simulation/install/atom_description/share/atom_description/meshes/gripper_hand1.stl,67,9ee36fe3f4722a2159e9a8c00fad790dab96918d,.stl
+HEAD,simulation/install/atom_description/share/atom_description/meshes/gripper_hand2.stl,67,7893f8188eaa01a007ade1690573b906d23f77f4,.stl
+HEAD,simulation/install/atom_description/share/atom_description/meshes/z_axis.stl,60,319669a04625267fee9f13acf5125e2f613e164c,.stl
+HEAD,simulation/install/atom_description/share/atom_description/package.bash,1382,c0858dea897924497c0e87f3761e63cdee42ba16,.bash
+HEAD,simulation/install/atom_description/share/atom_description/package.dsv,400,0319db35a7156a97306044945739c6d055cad74f,.dsv
+HEAD,simulation/install/atom_description/share/atom_description/package.ps1,3261,114e62e9596a6bf283fa356f081e5dec77528965,.ps1
+HEAD,simulation/install/atom_description/share/atom_description/package.sh,2891,38f0e651698f373af0493039611cd6b02f23de79,.sh
+HEAD,simulation/install/atom_description/share/atom_description/package.xml,54,9bea31db1495a6674ae5eed35f2df17eb22d1055,.xml
+HEAD,simulation/install/atom_description/share/atom_description/package.zsh,1666,5d3ff21212bfb54d90123c786bd9790aec5488a7,.zsh
+HEAD,simulation/install/atom_description/share/atom_description/urdf/atom.urdf.xacro,63,e9db2942fcf9fdaebe66cbc81948587814d5fe1a,.xacro
+HEAD,simulation/install/atom_description/share/colcon-core/packages/atom_description,64,c8ffa562b086a9e26908aee93d8bef410688ac68,
+HEAD,simulation/install/local_setup.bash,3760,03f00256c1a126057ca924bdd48ec74444b0cc10,.bash
+HEAD,simulation/install/local_setup.ps1,2045,6f68c8dede9ed4ecb63a4eb6ac2a7450bd18ec3b,.ps1
+HEAD,simulation/install/local_setup.sh,4350,12c99896eb13a2d7fc2a13c1fa552bf0c213250b,.sh
+HEAD,simulation/install/local_setup.zsh,4155,b6487102f245a7b5ddb2b1da158d6b99ddc91d8b,.zsh
+HEAD,simulation/install/setup.bash,1141,9a72e1174d3e153948e9c14e58a61b56ac0f2782,.bash
+HEAD,simulation/install/setup.ps1,1167,2ac741bd5e946cae5e9bc2f2f1fd7911c2b022c5,.ps1
+HEAD,simulation/install/setup.sh,1924,e50e9d6ed0efac5c743413aee68b6c6f82060627,.sh
+HEAD,simulation/install/setup.zsh,1129,942116df7b8c13f051c3aaf7db475ff7a99638fb,.zsh
+HEAD,simulation/log/COLCON_IGNORE,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,
+HEAD,simulation/log/build_2026-07-11_12-56-36/atom_description/command.log,1606,e857671aaade1c3d20bef5f005a9c27fa9c23e45,.log
+HEAD,simulation/log/build_2026-07-11_12-56-36/atom_description/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+HEAD,simulation/log/build_2026-07-11_12-56-36/atom_description/stdout.log,4176,fb2b3a3f7cbaff5934ac584c772d76a58c669777,.log
+HEAD,simulation/log/build_2026-07-11_12-56-36/atom_description/stdout_stderr.log,4176,fb2b3a3f7cbaff5934ac584c772d76a58c669777,.log
+HEAD,simulation/log/build_2026-07-11_12-56-36/atom_description/streams.log,6250,cdc070f63b86b0e01c2dcccc81dd48b7963800a0,.log
+HEAD,simulation/log/build_2026-07-11_12-56-36/events.log,35922,4d82df69c1c7b7d8ae970afb3910273b1aab8eab,.log
+HEAD,simulation/log/build_2026-07-11_12-56-36/logger_all.log,21926,4cfd7cf14c9eda60f4d4248734b21aa485b9aa03,.log
+HEAD,simulation/log/latest,12,b57d247c77c0293269460b70b9bb1360f27cf808,
+HEAD,simulation/log/latest_build,25,86eef02d8e044b6b2c810b8dd2e503fa6096feab,
+HEAD,simulation/mujoco/.gitignore,66,0a5059a8b90bf4d752ed32b84bf5a2952d51ced4,
+HEAD,simulation/mujoco/README.md,4839,aaf664ea061c36d26f6a244c6c30d1dca95226b4,.md
+HEAD,simulation/mujoco/docs/exercise-01.md,3186,6e8103be3bd0bd148bdbaf03995c8105457e5150,.md
+HEAD,simulation/mujoco/docs/interfaces.md,5754,a7708689cf8ee6ec112dea97064336f25342b685,.md
+HEAD,simulation/mujoco/docs/validation.md,4895,1e973048d7190975edca61dd19701466e5a81e7c,.md
+HEAD,simulation/mujoco/examples/inspect_joints.py,2451,99821dc1d4e2407d3b5b203e56e3b2ae091f26dc,.py
+HEAD,simulation/mujoco/pyproject.toml,497,15738d0b98b8649daaa8da7e2aa21c7076a82627,.toml
+HEAD,simulation/mujoco/requirements-windows-py312.lock,253,26b6fa196d6152fb6e05fe4e13bb9c7d5d39feb4,.lock
+HEAD,simulation/mujoco/scripts/Start-MuJoCo.ps1,1076,2fc3141536c4825903bbf8bc801a379c815de564,.ps1
+HEAD,simulation/mujoco/src/atom_mujoco/__init__.py,68,781c5f8c3dacd14f9ed09a0881b6f80f0a89cb2c,.py
+HEAD,simulation/mujoco/src/atom_mujoco/backend.py,4883,b569455ba7296930244cef0615593bf1d042c640,.py
+HEAD,simulation/mujoco/src/atom_mujoco/chess_scene.py,2056,638e69bbdf266bcce698ae47fb3c5e25098bbd63,.py
+HEAD,simulation/mujoco/src/atom_mujoco/cli.py,5256,550cd2dfb94f32a5a6c3d9d356680f52944a5b7d,.py
+HEAD,simulation/mujoco/src/atom_mujoco/model.py,11193,017e44974c2d1252120d96420c458b53f20ce7e6,.py
+HEAD,simulation/mujoco/tests/conftest.py,434,9e095b0afac814cd5a19fcf022439c91e3f71a6f,.py
+HEAD,simulation/mujoco/tests/test_backend.py,6079,1bef2d4091d7c22e133e8dc274243077f322baa8,.py
+HEAD,simulation/mujoco/tests/test_render.py,1089,0b038001226f396d91ae1860372bad8b2d1a140b,.py
+HEAD,simulation/src/CMakeLists.txt,819,0b1dce2f33e5eb1fb79a8107e67f7a9c733716c2,.txt
+HEAD,simulation/src/launch/control_demo.launch.py,1319,fdabd0a12c7b4adff8be1b215febc9e8cfdbaf49,.py
+HEAD,simulation/src/launch/view_robot.launch.py,2665,1db4200c23b862aa8acd7539ce0579f85fe89394,.py
+HEAD,simulation/src/meshes/arm1.stl,2111384,9291435e563c8a1892c6cdabed9b6975c8957cae,.stl
+HEAD,simulation/src/meshes/arm2.stl,1553084,4f401e31de4f69d3091f8036d3c8830e7d84f739,.stl
+HEAD,simulation/src/meshes/base.stl,5013284,d3a1cafab13ea64a8538de9b839a56b2b7fcce61,.stl
+HEAD,simulation/src/meshes/gripper_back.stl,3716484,ce7aef106b7cc5bb3b96908880e62bcec9e7fc38,.stl
+HEAD,simulation/src/meshes/gripper_hand1.stl,107484,d4fb531207ade19d5c9c1ffa7886ce9ccc2beece,.stl
+HEAD,simulation/src/meshes/gripper_hand2.stl,107484,9323a53bcf149f6fc4ab54d5df641a2fe089970f,.stl
+HEAD,simulation/src/meshes/z_axis.stl,1361984,7fd06fd6e0e5e99ee394cce3160801658f0a0b88,.stl
+HEAD,simulation/src/package.xml,1248,72f39aa6bd4249c473b78f21f68baaae4a68935b,.xml
+HEAD,simulation/src/rviz/atom.rviz,1127,fda7fbe055db0e1cee82b9ec607219dbf806c1d3,.rviz
+HEAD,simulation/src/scripts/kinematic_controller.py,5978,142cf4ddaf868ae834f652cc791634600b0d7d29,.py
+HEAD,simulation/src/test/test_control_core.py,1756,95aa5b88ebc2035a5d5c55ef84d358f0a57fb770,.py
+HEAD,simulation/src/test/test_control_launch.py,4550,a147290c600c6e84dfbaee455447804958c250cf,.py
+HEAD,simulation/src/test/test_description.py,2883,e56ed59329293a00de3a3f9d2c9dc89eb1b238e6,.py
+HEAD,simulation/src/test/test_headless_launch.py,4467,1c85f633bc4e0c50405c0a446ef526ac43f5f0bf,.py
+HEAD,simulation/src/urdf/atom.urdf.xacro,2867,e50115403ed9e2a966a77be2846ec4e6ba869303,.xacro
+HEAD,wsl/prep.md,598,7b4e85744a1829939cfe2cacbcadd63170bc1b26,.md
+main,.gitattributes,66,dfe0770424b2a19faf507a501ebfc23be8f54e7b,
+main,.github/CODEOWNERS,131,74b0420829c0bf6d31a37ddcb61a7ea910050577,
+main,.github/PR_REVIEW_TEMPLATE.MD,3296,7fd02b96cde4edbd1a6d06826fa944eac5689927,.md
+main,.github/PULL_REQUEST_TEMPLATE.MD,2154,7fdae7471861fef518cf476207d82d88828d8ed0,.md
+main,.github/workflows/ci.yml,6462,1cf1cc302f91e1517f14679b2278751e700619c1,.yml
+main,.gitignore,1370,7303d306abc9b921eeb636f2e07f23fdec74c51a,
+main,.vscode/extensions.json,118,76de5697f3903ce67b673b82d3ab9f2315f8aecf,.json
+main,.vscode/launch.json,611,c66c63bfebbfc76bc8d072bc8ac37a6496f5e438,.json
+main,.vscode/settings.json,437,7257973201fba484439808fc552c66132bad4672,.json
+main,CMakeLists.txt,623,1d33186cc4aee7fe83a3f8615db99721d6a2cdce,.txt
+main,CMakePresets.json,947,df4b3a498df969c0e851f3bdf7de558f2f6d4d10,.json
+main,CMakeSettings.json,241,b16f76e76e903171aa5cb7350ddaadafc6f430cf,.json
+main,CONTRIBUTING.MD,9435,457030a9b1e3f34d33b0241fca829ad575f69fd6,.md
+main,CmakeUserPresets.json,243,afc9e3c83a9cba195099ad8f8460e573ac65d17c,.json
+main,CppProperties.json,429,68c6285d9b9ff3d6bd76dc13e7167180912a326a,.json
+main,LICENSE,1067,440e6e4b7e02f708735bd90302f65b8d8796ab4c,
+main,README.md,5282,793dc237ce1d32336bd5b91903073765eeb15e3a,.md
+main,firmware/esp32-s3-motion/README.md,2143,520e7f69e1a85e789dfdb2035e52d3f58c587957,.md
+main,firmware/esp32-s3-motion/include/robot_config.hpp,1575,a7299ce74040b2d5ed6b63f68524256a40827dcf,.hpp
+main,firmware/esp32-s3-motion/platformio.ini,284,4e635a29b24918d7ab4be700b445f12889ac734a,.ini
+main,firmware/esp32-s3-motion/src/main.cpp,12830,8f281f9e7c383bd44e2e7b41993ed0f7d0f129ad,.cpp
+main,hardware/.vscode/settings.json,147,e30c1ec71c4adcad4ecdbf08e078e63d831213aa,.json
+main,hardware/Architechture/DistributedSystem/v0/v0.1/v01distributedSystem.excalidraw,128618,e7fcd384177a4929cac1fba21680adf5dd3b2fdd,.excalidraw
+main,hardware/Architechture/DistributedSystem/v0/v0.1/v01distributedSystem.png,307624,969b537242052bb8114873a433d385ec1931991f,.png
+main,hardware/Architechture/DistributedSystem/v0/v0.2/v01distributedSystem.excalidraw,271653,4c33d4ec30742048381b7d702ea3adb87cc00550,.excalidraw
+main,hardware/Architechture/DistributedSystem/v0/v0.2/v01distributedSystem.png,448032,3be5bd0ee276df54ee4b14844153ab16622ee983,.png
+main,hardware/Architechture/DistributedSystem/v0/v0.3/v03distributedSystem.SVG,117958,c20a28c2612bb79153d7e81b2fa5ea772b853ee1,.svg
+main,hardware/Architechture/DistributedSystem/v0/v0.3/v03distributedSystem.excalidraw,328815,2915a3d916e15f530ad2a91e5db0d76738c1dd5b,.excalidraw
+main,hardware/Architechture/DistributedSystem/v0/v0.4/Interface Adapter Use Case-2026-07-09-220503.pdf,382672,26c3e01d39b8683ee0acda3ac8541d8deffbe898,.pdf
+main,hardware/Architechture/DistributedSystem/v0/v0.4/Interface Adapter Use Case-2026-07-10-154931.pdf,317233,e977f2a27cbf16c192c5fc963a388d4434fbbc41,.pdf
+main,hardware/Architechture/DistributedSystem/v0/v0.5/Interface Adapter Use Case-2026-07-16-151202.pdf,426056,2bbbbc1b333d85b3076e213f09597b44f14065b7,.pdf
+main,hardware/Architechture/DistributedSystem/v0/v0.5/Interface Adapter Use Case-2026-07-16-151226.svg,159066,2d14e3399e8ef9ebe4301cbfef5ee8b364cb505b,.svg
+main,hardware/Architechture/DistributedSystem/v0/v0.5/Interface Adapter Use Case-2026-07-16-151231.mmd,2523,a87db65e1a3932ff910f0ca4fdeac143d114f008,.mmd
+main,hardware/Architechture/Eletronic/v0.0/v0.0 eletronic diagram.png,1062713,6a3c9591ff987280d1abf5fe39d9c964a848819f,.png
+main,hardware/Architechture/Eletronic/v0.0/v0.0 eletronic diagram.svg,97337,ea55151cc6e2ed5ffdde7074830dfb77f1ff3025,.svg
+main,hardware/Architechture/FiniteStateMachine/fsm.svg,69669,0c83b63fbda1ab6c1b491ea99624d00f2d20292e,.svg
+main,hardware/Architechture/FiniteStateMachine/v03distributedSystem.SVG,117958,c20a28c2612bb79153d7e81b2fa5ea772b853ee1,.svg
+main,hardware/Architechture/FiniteStateMachine/v03distributedSystem_mermaid.png,769807,19355a8124db4870ec9c16f2d5f6297b16b2c2ff,.png
+main,hardware/LICENSE,2049,55cd08379e27ea18988449528c981fbfdaf20601,
+main,hardware/Onboarding/Eletronics/Stepper Motors/Videos.md,43,7b15cd2e39979740db3a9553807bd1cfa96d0c25,.md
+main,hardware/Plataforms/Banana Pi M5/Benchmarks/BPIM5/1/doc.md,5995,e9b9e4f5deccbe3328d2dc8b9b0d6398d6d00a93,.md
+main,hardware/Plataforms/Banana Pi M5/specs.txt,2486,503a32b9a8e6760c231f8ce6e128f8aa9a724601,.txt
+main,hardware/Project/Banana Pi M5 case/BananaPi M5 Case Lid.3mf,271924,a7c8b6e1eca14b4137ec7114621592c9bce85670,.3mf
+main,hardware/Project/Banana Pi M5 case/BananaPi M5 Case.3mf,483138,3dbaead9cae85f1f8729bc5d93baed0712e2f3e5,.3mf
+main,hardware/README.MD,82,91a4a50b1ab5ffeca0f70524dda90b45cbca6ba4,.md
+main,media/atom_chess_logo.png,280787,26f7300c75539b75ebb2aaed02efbaed60aba8d8,.png
+main,setup_env.bat,320,9160b2ad51df1bc08515c609e00e8480b5fcae33,.bat
+main,setup_env.sh,291,385559bf779cda2882f78d29def77e66dc82654f,.sh
+main,simulation/Dockerfile,865,50f916fe4926e8ac7aa9af76677ad598c893514c,
+main,simulation/colcon_ws.code-workspace,43,362d7c25bb405a5cc76d0c7518cc240999a574f4,.code-workspace
+main,simulation/docker-compose.yml,362,7c9182681b2e5fc5b63c2457efc3ec2e753bb34b,.yml
+main,simulation/docker.txt,178,42dd830e138b3b54357e89e0d9563100e02b458b,.txt
+main,simulation/log/COLCON_IGNORE,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,
+main,simulation/log/build_2026-07-11_12-56-36/atom_description/command.log,1606,e857671aaade1c3d20bef5f005a9c27fa9c23e45,.log
+main,simulation/log/build_2026-07-11_12-56-36/atom_description/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_12-56-36/atom_description/stdout.log,4176,fb2b3a3f7cbaff5934ac584c772d76a58c669777,.log
+main,simulation/log/build_2026-07-11_12-56-36/atom_description/stdout_stderr.log,4176,fb2b3a3f7cbaff5934ac584c772d76a58c669777,.log
+main,simulation/log/build_2026-07-11_12-56-36/atom_description/streams.log,6250,cdc070f63b86b0e01c2dcccc81dd48b7963800a0,.log
+main,simulation/log/build_2026-07-11_12-56-36/events.log,35922,4d82df69c1c7b7d8ae970afb3910273b1aab8eab,.log
+main,simulation/log/build_2026-07-11_12-56-36/logger_all.log,21926,4cfd7cf14c9eda60f4d4248734b21aa485b9aa03,.log
+main,simulation/log/build_2026-07-11_15-19-45/atom_control/command.log,594,c5d1d61ce239ccc0bce0436608d12c48bd325b9b,.log
+main,simulation/log/build_2026-07-11_15-19-45/atom_control/stderr.log,126,648a4360015318af95acc73603811a3adc6683d8,.log
+main,simulation/log/build_2026-07-11_15-19-45/atom_control/stdout.log,1468,251450de89bb1f59a16a85c99661bf4d6bc07fc8,.log
+main,simulation/log/build_2026-07-11_15-19-45/atom_control/stdout_stderr.log,1594,6333b8574003e55cd8e7a6c97e99c64f029c52b0,.log
+main,simulation/log/build_2026-07-11_15-19-45/atom_control/streams.log,2458,db9bfdca0acd8164e292e17e3bbb33262ed6ad18,.log
+main,simulation/log/build_2026-07-11_15-19-45/events.log,13823,895709043bb91aa797cb5d29d2506ab17c247e00,.log
+main,simulation/log/build_2026-07-11_15-19-45/logger_all.log,20300,c07eee291233438ab9cba1b52b5f4880531ad68b,.log
+main,simulation/log/build_2026-07-11_15-43-15/atom_control/command.log,1068,65323e406deea9b8499ceef93f778bd4a6cdd3b5,.log
+main,simulation/log/build_2026-07-11_15-43-15/atom_control/stderr.log,422,46e40e6a22c58eee7ce153b306519b22cfeabdf5,.log
+main,simulation/log/build_2026-07-11_15-43-15/atom_control/stdout.log,1219,00febb417a855db95ac132e759c16a108b71e8b2,.log
+main,simulation/log/build_2026-07-11_15-43-15/atom_control/stdout_stderr.log,1641,34baf391ce494c84305b9bf0b759e069bd806fbc,.log
+main,simulation/log/build_2026-07-11_15-43-15/atom_control/streams.log,2943,5411cdbaf4ea2f6fe85c252d554df20582c2c328,.log
+main,simulation/log/build_2026-07-11_15-43-15/events.log,22220,397041ac6b941beafc21c496776806aa5f1cf22f,.log
+main,simulation/log/build_2026-07-11_15-43-15/logger_all.log,20932,7c79fa663dcfce01a051b76ff2fe8ceb11a22ea8,.log
+main,simulation/log/build_2026-07-11_15-54-07/atom_control/command.log,926,682025a4c0426c6d02db9e45810df10ce39325c5,.log
+main,simulation/log/build_2026-07-11_15-54-07/atom_control/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_15-54-07/atom_control/stdout.log,2395,a0b404561afac281f7f664164b9e14be181df94b,.log
+main,simulation/log/build_2026-07-11_15-54-07/atom_control/stdout_stderr.log,2395,a0b404561afac281f7f664164b9e14be181df94b,.log
+main,simulation/log/build_2026-07-11_15-54-07/atom_control/streams.log,3578,069e6ca55aadbf3239dd3e9caeaded144d346a30,.log
+main,simulation/log/build_2026-07-11_15-54-07/events.log,25730,323c3763b28b1aff82f74c11ffd2d87ededfa648,.log
+main,simulation/log/build_2026-07-11_15-54-07/logger_all.log,24619,04049d09bdd03f83ec712911adb7cb12506d744f,.log
+main,simulation/log/build_2026-07-11_16-26-58/atom_control/command.log,658,8989d6977d7ff520ccff586019fc4e882d85fe29,.log
+main,simulation/log/build_2026-07-11_16-26-58/atom_control/stderr.log,622,92132bed0e13e9a6452f95014019d0637592240b,.log
+main,simulation/log/build_2026-07-11_16-26-58/atom_control/stdout.log,1068,da186b368b3a1edf702e1f1013ac3b16fa89d77d,.log
+main,simulation/log/build_2026-07-11_16-26-58/atom_control/stdout_stderr.log,1690,41aa1b4d56390e5b78eedfbf5cb6b8f04646290a,.log
+main,simulation/log/build_2026-07-11_16-26-58/atom_control/streams.log,2636,325a38ab1a964e6313948e5e61f16a7a577d366a,.log
+main,simulation/log/build_2026-07-11_16-26-58/atom_description/command.log,335,c94286033d389fde77460250608337dbcbcecdf1,.log
+main,simulation/log/build_2026-07-11_16-26-58/atom_description/stderr.log,378,98f5b8b776c6ac812171c3ee7e53434aeb730c50,.log
+main,simulation/log/build_2026-07-11_16-26-58/atom_description/stdout.log,833,f9742f5363671ba3962cf0856761e2896dc3987c,.log
+main,simulation/log/build_2026-07-11_16-26-58/atom_description/stdout_stderr.log,1211,de9b281f43d20bacb29ab6a362345f1c459ebba0,.log
+main,simulation/log/build_2026-07-11_16-26-58/atom_description/streams.log,1789,9a21636cff399a695c255778b069d53697343418,.log
+main,simulation/log/build_2026-07-11_16-26-58/events.log,26082,4867f01c2f1c22dbc9433d161784aeeb16c24ba0,.log
+main,simulation/log/build_2026-07-11_16-26-58/logger_all.log,24098,ea12ab42dd59cf65d7dec99bee0b9e326fd1e4ff,.log
+main,simulation/log/build_2026-07-11_16-28-22/atom_control/command.log,323,5fcc9b3174379f8f550575377a17ea70544a7e78,.log
+main,simulation/log/build_2026-07-11_16-28-22/atom_control/stderr.log,622,7b40ddbc3020b35730014ddca42d68ca0cf4ed6c,.log
+main,simulation/log/build_2026-07-11_16-28-22/atom_control/stdout.log,1068,da186b368b3a1edf702e1f1013ac3b16fa89d77d,.log
+main,simulation/log/build_2026-07-11_16-28-22/atom_control/stdout_stderr.log,1690,4d535ed79bda36aeceddda955f0c6149a5cf2f1b,.log
+main,simulation/log/build_2026-07-11_16-28-22/atom_control/streams.log,2292,342cae5d37f6af3b81ee0dd2b661a293dfef27a3,.log
+main,simulation/log/build_2026-07-11_16-28-22/atom_description/command.log,958,120d8cfb4e0abfc43ce5b8c3647b1b40a6d5a530,.log
+main,simulation/log/build_2026-07-11_16-28-22/atom_description/stderr.log,407,4966d173c9b67e70985c91d262980cda2f512523,.log
+main,simulation/log/build_2026-07-11_16-28-22/atom_description/stdout.log,1169,a5538937692ce3ea25384124f410a195eb708fd6,.log
+main,simulation/log/build_2026-07-11_16-28-22/atom_description/stdout_stderr.log,1576,271789b5747371eb9dd777abdc93a4c41db732c0,.log
+main,simulation/log/build_2026-07-11_16-28-22/atom_description/streams.log,2741,bfe132211ced99934a0599901c42e0e28bb66821,.log
+main,simulation/log/build_2026-07-11_16-28-22/events.log,35139,e77b0e531aaec88c4cb7bb404d769911134742ec,.log
+main,simulation/log/build_2026-07-11_16-28-22/logger_all.log,23779,75f75182c885c6415f0478e3bd2ffbf7c0883e09,.log
+main,simulation/log/build_2026-07-11_16-28-28/atom_control/command.log,323,5fcc9b3174379f8f550575377a17ea70544a7e78,.log
+main,simulation/log/build_2026-07-11_16-28-28/atom_control/stderr.log,622,7b40ddbc3020b35730014ddca42d68ca0cf4ed6c,.log
+main,simulation/log/build_2026-07-11_16-28-28/atom_control/stdout.log,1068,da186b368b3a1edf702e1f1013ac3b16fa89d77d,.log
+main,simulation/log/build_2026-07-11_16-28-28/atom_control/stdout_stderr.log,1690,4d535ed79bda36aeceddda955f0c6149a5cf2f1b,.log
+main,simulation/log/build_2026-07-11_16-28-28/atom_control/streams.log,2292,d99b6307dcba2d989575d297587bfb144c4810f0,.log
+main,simulation/log/build_2026-07-11_16-28-28/atom_description/command.log,958,120d8cfb4e0abfc43ce5b8c3647b1b40a6d5a530,.log
+main,simulation/log/build_2026-07-11_16-28-28/atom_description/stderr.log,407,4966d173c9b67e70985c91d262980cda2f512523,.log
+main,simulation/log/build_2026-07-11_16-28-28/atom_description/stdout.log,1241,ba12281e2136d3c5033fa6ccda977d675d803d56,.log
+main,simulation/log/build_2026-07-11_16-28-28/atom_description/stdout_stderr.log,1648,2a6f56767ab1ae8a951ecc94e3b62a9e2b14bbbc,.log
+main,simulation/log/build_2026-07-11_16-28-28/atom_description/streams.log,2813,df816e7620f978393373e02d01078a8466b13843,.log
+main,simulation/log/build_2026-07-11_16-28-28/events.log,35151,0351d390b0e65b40ef38c4727457ff32fb33b179,.log
+main,simulation/log/build_2026-07-11_16-28-28/logger_all.log,23364,27206b8c1d915e731364d71524207d4b2c6f8001,.log
+main,simulation/log/build_2026-07-11_16-31-14/atom_control/command.log,658,8989d6977d7ff520ccff586019fc4e882d85fe29,.log
+main,simulation/log/build_2026-07-11_16-31-14/atom_control/stderr.log,622,7b40ddbc3020b35730014ddca42d68ca0cf4ed6c,.log
+main,simulation/log/build_2026-07-11_16-31-14/atom_control/stdout.log,1068,da186b368b3a1edf702e1f1013ac3b16fa89d77d,.log
+main,simulation/log/build_2026-07-11_16-31-14/atom_control/stdout_stderr.log,1690,4d535ed79bda36aeceddda955f0c6149a5cf2f1b,.log
+main,simulation/log/build_2026-07-11_16-31-14/atom_control/streams.log,2636,29ac6abcb34d8b7571a2d29d4e2d4eddab2a7b80,.log
+main,simulation/log/build_2026-07-11_16-31-14/atom_description/command.log,958,5999cb39251057265406859bae18049187c27227,.log
+main,simulation/log/build_2026-07-11_16-31-14/atom_description/stderr.log,378,98f5b8b776c6ac812171c3ee7e53434aeb730c50,.log
+main,simulation/log/build_2026-07-11_16-31-14/atom_description/stdout.log,3488,9696f0272aaa8386568f6a976be238e9ac2c6de9,.log
+main,simulation/log/build_2026-07-11_16-31-14/atom_description/stdout_stderr.log,3866,5e9bd45d7081c352b529e3af991d101297d93abf,.log
+main,simulation/log/build_2026-07-11_16-31-14/atom_description/streams.log,5220,457142538fc1451b9aad56538e9eac95d49bb07b,.log
+main,simulation/log/build_2026-07-11_16-31-14/events.log,38677,b46f47ec4cce5487f47d1b0a692c4652a0de42e5,.log
+main,simulation/log/build_2026-07-11_16-31-14/logger_all.log,30443,4bc348c7834511681fe46a9c1749c35a03987157,.log
+main,simulation/log/build_2026-07-11_16-31-23/atom_control/command.log,658,8989d6977d7ff520ccff586019fc4e882d85fe29,.log
+main,simulation/log/build_2026-07-11_16-31-23/atom_control/stderr.log,622,7b40ddbc3020b35730014ddca42d68ca0cf4ed6c,.log
+main,simulation/log/build_2026-07-11_16-31-23/atom_control/stdout.log,1068,da186b368b3a1edf702e1f1013ac3b16fa89d77d,.log
+main,simulation/log/build_2026-07-11_16-31-23/atom_control/stdout_stderr.log,1690,4d535ed79bda36aeceddda955f0c6149a5cf2f1b,.log
+main,simulation/log/build_2026-07-11_16-31-23/atom_control/streams.log,2636,6c641e8f1a4ef2a6a324cc4eb1f406dcbdf94511,.log
+main,simulation/log/build_2026-07-11_16-31-23/atom_description/command.log,958,5999cb39251057265406859bae18049187c27227,.log
+main,simulation/log/build_2026-07-11_16-31-23/atom_description/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_16-31-23/atom_description/stdout.log,3280,616f5fac70b67cbfe3444af98255bb8f5241864f,.log
+main,simulation/log/build_2026-07-11_16-31-23/atom_description/stdout_stderr.log,3280,616f5fac70b67cbfe3444af98255bb8f5241864f,.log
+main,simulation/log/build_2026-07-11_16-31-23/atom_description/streams.log,4508,b54b7db79b84945cfb0dd3570aca36683d4edbfe,.log
+main,simulation/log/build_2026-07-11_16-31-23/events.log,37227,38b97d019ccc88bd9a94fe50ab407ee89c2a19e5,.log
+main,simulation/log/build_2026-07-11_16-31-23/logger_all.log,30443,4a19f0c28a4b2f8f7fbdf4cf1d520663b40ccc21,.log
+main,simulation/log/build_2026-07-11_16-34-37/atom_control/command.log,658,8989d6977d7ff520ccff586019fc4e882d85fe29,.log
+main,simulation/log/build_2026-07-11_16-34-37/atom_control/stderr.log,622,7b40ddbc3020b35730014ddca42d68ca0cf4ed6c,.log
+main,simulation/log/build_2026-07-11_16-34-37/atom_control/stdout.log,1573,af278908b8759ab102271ae84f486c7655881506,.log
+main,simulation/log/build_2026-07-11_16-34-37/atom_control/stdout_stderr.log,2195,87da811bf6eb492158c90080cf108f67f9bd2007,.log
+main,simulation/log/build_2026-07-11_16-34-37/atom_control/streams.log,3249,ef1198f5a09f4c72e94d7bc2d72e9c89bacaa594,.log
+main,simulation/log/build_2026-07-11_16-34-37/atom_description/command.log,958,5999cb39251057265406859bae18049187c27227,.log
+main,simulation/log/build_2026-07-11_16-34-37/atom_description/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_16-34-37/atom_description/stdout.log,3280,616f5fac70b67cbfe3444af98255bb8f5241864f,.log
+main,simulation/log/build_2026-07-11_16-34-37/atom_description/stdout_stderr.log,3280,616f5fac70b67cbfe3444af98255bb8f5241864f,.log
+main,simulation/log/build_2026-07-11_16-34-37/atom_description/streams.log,4508,0806b938515d969b7168742cd0b0530d3a8306c0,.log
+main,simulation/log/build_2026-07-11_16-34-37/events.log,39268,00c8359af904bd40bf7247d8025343ebf4f59913,.log
+main,simulation/log/build_2026-07-11_16-34-37/logger_all.log,29598,ba5997be509bd810d92018dee8332fb83135fc9a,.log
+main,simulation/log/build_2026-07-11_16-35-31/atom_control/command.log,658,8989d6977d7ff520ccff586019fc4e882d85fe29,.log
+main,simulation/log/build_2026-07-11_16-35-31/atom_control/stderr.log,622,7b40ddbc3020b35730014ddca42d68ca0cf4ed6c,.log
+main,simulation/log/build_2026-07-11_16-35-31/atom_control/stdout.log,1068,da186b368b3a1edf702e1f1013ac3b16fa89d77d,.log
+main,simulation/log/build_2026-07-11_16-35-31/atom_control/stdout_stderr.log,1690,4d535ed79bda36aeceddda955f0c6149a5cf2f1b,.log
+main,simulation/log/build_2026-07-11_16-35-31/atom_control/streams.log,2636,ca93649df4e3b82842940e58b875d5714bff3ccd,.log
+main,simulation/log/build_2026-07-11_16-35-31/atom_description/command.log,958,5999cb39251057265406859bae18049187c27227,.log
+main,simulation/log/build_2026-07-11_16-35-31/atom_description/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_16-35-31/atom_description/stdout.log,3280,616f5fac70b67cbfe3444af98255bb8f5241864f,.log
+main,simulation/log/build_2026-07-11_16-35-31/atom_description/stdout_stderr.log,3280,616f5fac70b67cbfe3444af98255bb8f5241864f,.log
+main,simulation/log/build_2026-07-11_16-35-31/atom_description/streams.log,4508,540b8d1afa20e1c952b45ea4ca22c80c92942d52,.log
+main,simulation/log/build_2026-07-11_16-35-31/events.log,37287,5d3ef45928066a5f27bedb63dc60d3bc89112657,.log
+main,simulation/log/build_2026-07-11_16-35-31/logger_all.log,29598,f250b8512ecc57a9205f3f08e9d0689581b0d29d,.log
+main,simulation/log/build_2026-07-11_16-36-54/atom_description/command.log,958,5999cb39251057265406859bae18049187c27227,.log
+main,simulation/log/build_2026-07-11_16-36-54/atom_description/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_16-36-54/atom_description/stdout.log,3280,616f5fac70b67cbfe3444af98255bb8f5241864f,.log
+main,simulation/log/build_2026-07-11_16-36-54/atom_description/stdout_stderr.log,3280,616f5fac70b67cbfe3444af98255bb8f5241864f,.log
+main,simulation/log/build_2026-07-11_16-36-54/atom_description/streams.log,4508,a7e64ebae9c5fa1633f22af93b04f0c1bb0da486,.log
+main,simulation/log/build_2026-07-11_16-36-54/events.log,37624,7ddc5e5c771b450af4e9f476f837bd71143a3b23,.log
+main,simulation/log/build_2026-07-11_16-36-54/logger_all.log,33827,9555f1276688889d7c33b32c5357b31f6b52948e,.log
+main,simulation/log/build_2026-07-11_16-36-54/motion/command.log,622,dce621fa7f790f8385d29af1243f5fd412068647,.log
+main,simulation/log/build_2026-07-11_16-36-54/motion/stderr.log,832,5420d5d85a50fbd51f5ee8ae3400941b95c16a38,.log
+main,simulation/log/build_2026-07-11_16-36-54/motion/stdout.log,708,54c1b6b69d49cb85ca5a74fd9cd43ddf4d23f80a,.log
+main,simulation/log/build_2026-07-11_16-36-54/motion/stdout_stderr.log,1540,01a2da301dee2e688d52996cfbcb4dfe929266d9,.log
+main,simulation/log/build_2026-07-11_16-36-54/motion/streams.log,2531,975c3cf295d5aa87dd18ef0aab034dc91d5d8930,.log
+main,simulation/log/build_2026-07-11_16-40-48/atom_control/command.log,2520,4452ed24444f2d5f3854443d77ff0c49d4e51e83,.log
+main,simulation/log/build_2026-07-11_16-40-48/atom_control/stderr.log,126,9013c37b3e875ff88e01cad04e424b4aed405066,.log
+main,simulation/log/build_2026-07-11_16-40-48/atom_control/stdout.log,1671,0a53b1634ce65799ca2fc3f0e62f5fab7fa4abd5,.log
+main,simulation/log/build_2026-07-11_16-40-48/atom_control/stdout_stderr.log,1797,fcc74065de9b73310181ee33680e5bb32475082c,.log
+main,simulation/log/build_2026-07-11_16-40-48/atom_control/streams.log,4605,9b6c0cbdc78f3ecb7d7bcc8afbb51312ddb1e1bd,.log
+main,simulation/log/build_2026-07-11_16-40-48/atom_description/command.log,958,5999cb39251057265406859bae18049187c27227,.log
+main,simulation/log/build_2026-07-11_16-40-48/atom_description/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_16-40-48/atom_description/stdout.log,3280,616f5fac70b67cbfe3444af98255bb8f5241864f,.log
+main,simulation/log/build_2026-07-11_16-40-48/atom_description/stdout_stderr.log,3280,616f5fac70b67cbfe3444af98255bb8f5241864f,.log
+main,simulation/log/build_2026-07-11_16-40-48/atom_description/streams.log,4508,7097763ba32e7ed66f453afc8a2dabd23ec06b20,.log
+main,simulation/log/build_2026-07-11_16-40-48/events.log,71607,03d32b0b06adf32e5a2cd8d9efce18d8cf5db4d6,.log
+main,simulation/log/build_2026-07-11_16-40-48/logger_all.log,44261,760ac18a32b5c92d7d5aa1d0cea36086d0139d44,.log
+main,simulation/log/build_2026-07-11_16-40-48/motion/command.log,1500,8a6de4cd8bbb25315aace5c046269a4e1ac81539,.log
+main,simulation/log/build_2026-07-11_16-40-48/motion/stderr.log,378,98f5b8b776c6ac812171c3ee7e53434aeb730c50,.log
+main,simulation/log/build_2026-07-11_16-40-48/motion/stdout.log,3162,dc751d6efb72c33c0d8d7426e99c77fec637bd96,.log
+main,simulation/log/build_2026-07-11_16-40-48/motion/stdout_stderr.log,3540,7fe92f60db555419311cf72d02d7ef1df5727dc6,.log
+main,simulation/log/build_2026-07-11_16-40-48/motion/streams.log,5481,84f5a83c660a8483e9a2b3ce8ed0f147735d6e5f,.log
+main,simulation/log/build_2026-07-11_16-50-29/atom_control/command.log,2520,4452ed24444f2d5f3854443d77ff0c49d4e51e83,.log
+main,simulation/log/build_2026-07-11_16-50-29/atom_control/stderr.log,126,4f0677534ffc232fc5dc96166496f64a7750bbba,.log
+main,simulation/log/build_2026-07-11_16-50-29/atom_control/stdout.log,1671,0a53b1634ce65799ca2fc3f0e62f5fab7fa4abd5,.log
+main,simulation/log/build_2026-07-11_16-50-29/atom_control/stdout_stderr.log,1797,ba3f31950cddb47c52117ef23f2ff886d352c0f3,.log
+main,simulation/log/build_2026-07-11_16-50-29/atom_control/streams.log,4605,9d0ed51e98f109c6ae2e529bb12674f45fa2c123,.log
+main,simulation/log/build_2026-07-11_16-50-29/events.log,14519,c0e4539339b59ebfaea8517ec4e1e10771da3278,.log
+main,simulation/log/build_2026-07-11_16-50-29/logger_all.log,23204,b207851197ec88b2f085c9a8c89c3d0d99a0c951,.log
+main,simulation/log/build_2026-07-11_16-52-18/atom_control/command.log,2520,4452ed24444f2d5f3854443d77ff0c49d4e51e83,.log
+main,simulation/log/build_2026-07-11_16-52-18/atom_control/stderr.log,126,4f0677534ffc232fc5dc96166496f64a7750bbba,.log
+main,simulation/log/build_2026-07-11_16-52-18/atom_control/stdout.log,1166,a136b44dc6a2a91e615ab174acf9eedffbca71b7,.log
+main,simulation/log/build_2026-07-11_16-52-18/atom_control/stdout_stderr.log,1292,e0ebc35e5160f832cb9db04963fe11f14437c238,.log
+main,simulation/log/build_2026-07-11_16-52-18/atom_control/streams.log,3992,be7f3affbd0170479a0fab131c33fc9235229d19,.log
+main,simulation/log/build_2026-07-11_16-52-18/events.log,12508,11b689cd5dd090a6b2d64ed6a3deab49018ff6ea,.log
+main,simulation/log/build_2026-07-11_16-52-18/logger_all.log,23204,587af2dce37d6c75de442a964d0e54fb869c9000,.log
+main,simulation/log/build_2026-07-11_16-56-14/atom_control/command.log,7170,b8fcedcfeb4a979424cd0c8ac475982cbfd56b44,.log
+main,simulation/log/build_2026-07-11_16-56-14/atom_control/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_16-56-14/atom_control/stdout.log,4340,78c6800d748386743b1f51ea42258eef89f59f01,.log
+main,simulation/log/build_2026-07-11_16-56-14/atom_control/stdout_stderr.log,4340,78c6800d748386743b1f51ea42258eef89f59f01,.log
+main,simulation/log/build_2026-07-11_16-56-14/atom_control/streams.log,12058,18042eaa9a28ade47d4c0fea39c7aa5707dab640,.log
+main,simulation/log/build_2026-07-11_16-56-14/events.log,39961,efbde1b4b3fb1fa8d5fb10f93e7d3bdc1800e710,.log
+main,simulation/log/build_2026-07-11_16-56-14/logger_all.log,31999,a6e5a2e59aa417a3d001526611c28828a8676e63,.log
+main,simulation/log/build_2026-07-11_16-59-52/atom_control/command.log,4146,582f3487e4ff1316e91787bd940fa0de544ce1c5,.log
+main,simulation/log/build_2026-07-11_16-59-52/atom_control/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_16-59-52/atom_control/stdout.log,2557,0b704f703ceea15fd7198f1a8ba65e86520798d7,.log
+main,simulation/log/build_2026-07-11_16-59-52/atom_control/stdout_stderr.log,2557,0b704f703ceea15fd7198f1a8ba65e86520798d7,.log
+main,simulation/log/build_2026-07-11_16-59-52/atom_control/streams.log,6937,01ca89dd88dd5970dbb1828017416545f4b3622b,.log
+main,simulation/log/build_2026-07-11_16-59-52/events.log,23417,6d4a320d091fe86544489fbe4a95291cc2a41c07,.log
+main,simulation/log/build_2026-07-11_16-59-52/logger_all.log,28817,2d889a31146401a814a1872134e2d114795b6e55,.log
+main,simulation/log/build_2026-07-11_17-09-01/atom_description/command.log,958,5999cb39251057265406859bae18049187c27227,.log
+main,simulation/log/build_2026-07-11_17-09-01/atom_description/stderr.log,378,98f5b8b776c6ac812171c3ee7e53434aeb730c50,.log
+main,simulation/log/build_2026-07-11_17-09-01/atom_description/stdout.log,3746,748f19b0af15fde923149bd572d8478a3b53590a,.log
+main,simulation/log/build_2026-07-11_17-09-01/atom_description/stdout_stderr.log,4124,e0c72361b37542ae00720b77c5672f88f13c5cc7,.log
+main,simulation/log/build_2026-07-11_17-09-01/atom_description/streams.log,5487,e1937437fa192c2dffea59b19dde22db0f5d938b,.log
+main,simulation/log/build_2026-07-11_17-09-01/events.log,26238,ff857831a3e3596a2d8a0c70d7e78dd54402afee,.log
+main,simulation/log/build_2026-07-11_17-09-01/logger_all.log,25621,94aaf5093002e6638754faea3dd7cd4d7cc72520,.log
+main,simulation/log/build_2026-07-11_17-10-33/atom_description/command.log,958,5999cb39251057265406859bae18049187c27227,.log
+main,simulation/log/build_2026-07-11_17-10-33/atom_description/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_17-10-33/atom_description/stdout.log,3873,49be2cdcd8d0b67f2452c6530ff1b656fbaaaa42,.log
+main,simulation/log/build_2026-07-11_17-10-33/atom_description/stdout_stderr.log,3873,49be2cdcd8d0b67f2452c6530ff1b656fbaaaa42,.log
+main,simulation/log/build_2026-07-11_17-10-33/atom_description/streams.log,5164,e4982b18890a3a8d56d95a0cf20a1634811bf66d,.log
+main,simulation/log/build_2026-07-11_17-10-33/events.log,25525,8093e9d46bd9491e3df9649f500074871c5ce829,.log
+main,simulation/log/build_2026-07-11_17-10-33/logger_all.log,25621,30559ea22bb186628e2b2b56f9f94a0cbbbacd51,.log
+main,simulation/log/build_2026-07-11_17-15-04/atom_description/command.log,958,5999cb39251057265406859bae18049187c27227,.log
+main,simulation/log/build_2026-07-11_17-15-04/atom_description/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_17-15-04/atom_description/stdout.log,3679,a113a8b95a22deef00a152efaa54464461166c6a,.log
+main,simulation/log/build_2026-07-11_17-15-04/atom_description/stdout_stderr.log,3679,a113a8b95a22deef00a152efaa54464461166c6a,.log
+main,simulation/log/build_2026-07-11_17-15-04/atom_description/streams.log,4934,cca4d23a8ca387e1ea749a7baa8fec86d38b0df3,.log
+main,simulation/log/build_2026-07-11_17-15-04/events.log,24983,f3dab2f1bfda7432797dde54a850996a02764698,.log
+main,simulation/log/build_2026-07-11_17-15-04/logger_all.log,25621,639833cbd59c49d9187fb0012cf5bdefb1ff3df0,.log
+main,simulation/log/build_2026-07-11_17-31-43/atom_description/command.log,958,5999cb39251057265406859bae18049187c27227,.log
+main,simulation/log/build_2026-07-11_17-31-43/atom_description/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_17-31-43/atom_description/stdout.log,3687,07b8b94c8b7cbc4899e5aa77913f55d67d3299b8,.log
+main,simulation/log/build_2026-07-11_17-31-43/atom_description/stdout_stderr.log,3687,07b8b94c8b7cbc4899e5aa77913f55d67d3299b8,.log
+main,simulation/log/build_2026-07-11_17-31-43/atom_description/streams.log,4942,814efdaafa33c22c2b29d611d31a9fd859d53984,.log
+main,simulation/log/build_2026-07-11_17-31-43/events.log,24969,305e1c83e1e39bfd3f8234147ee6df989f4a685e,.log
+main,simulation/log/build_2026-07-11_17-31-43/logger_all.log,25621,a122e06f59dd8d23c041f96ab84b7f42828da961,.log
+main,simulation/log/build_2026-07-11_17-32-22/atom_description/command.log,958,5999cb39251057265406859bae18049187c27227,.log
+main,simulation/log/build_2026-07-11_17-32-22/atom_description/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_17-32-22/atom_description/stdout.log,3687,07b8b94c8b7cbc4899e5aa77913f55d67d3299b8,.log
+main,simulation/log/build_2026-07-11_17-32-22/atom_description/stdout_stderr.log,3687,07b8b94c8b7cbc4899e5aa77913f55d67d3299b8,.log
+main,simulation/log/build_2026-07-11_17-32-22/atom_description/streams.log,4942,94bacae9bc29cdf9b0a5931e9958b3f4dda0c23d,.log
+main,simulation/log/build_2026-07-11_17-32-22/events.log,24991,17b97a6b4283f0bd247e455c99e7ec0fdacd8c82,.log
+main,simulation/log/build_2026-07-11_17-32-22/logger_all.log,25621,04e097d0197a413d75a7f26f5d20b45c688c6ad6,.log
+main,simulation/log/build_2026-07-11_17-34-33/atom_description/command.log,958,5999cb39251057265406859bae18049187c27227,.log
+main,simulation/log/build_2026-07-11_17-34-33/atom_description/stderr.log,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,.log
+main,simulation/log/build_2026-07-11_17-34-33/atom_description/stdout.log,3687,07b8b94c8b7cbc4899e5aa77913f55d67d3299b8,.log
+main,simulation/log/build_2026-07-11_17-34-33/atom_description/stdout_stderr.log,3687,07b8b94c8b7cbc4899e5aa77913f55d67d3299b8,.log
+main,simulation/log/build_2026-07-11_17-34-33/atom_description/streams.log,4942,9f5faf1465fcd1cb788e381137b6ce48087b13a8,.log
+main,simulation/log/build_2026-07-11_17-34-33/events.log,24991,c2b1aebc67f7d384886054fd2f97a03fed09c0cc,.log
+main,simulation/log/build_2026-07-11_17-34-33/logger_all.log,25621,fd1d4c8b763f1384e1c8e876d19b3f514c6f1d8e,.log
+main,simulation/log/latest,12,b57d247c77c0293269460b70b9bb1360f27cf808,
+main,simulation/log/latest_build,25,86eef02d8e044b6b2c810b8dd2e503fa6096feab,
+main,simulation/src/CMakeLists.txt,378,3d2031cc4912e7079c39e3650ce7e01232680238,.txt
+main,simulation/src/atom_control/CMakeLists.txt,733,788ac7651742c0320df95796a0e33f58b3a1058c,.txt
+main,simulation/src/atom_control/config/scara_arm_controller/follow_joint_trajectory/controllers.yaml,485,0ea758bb2600a6733a5c17b92fdc9526069641df,.yaml
+main,simulation/src/atom_control/launch/robot_sim.launch.py,2569,320f2187d1da62ccfd1190d6e8f4850788288400,.py
+main,simulation/src/atom_control/log/COLCON_IGNORE,0,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,
+main,simulation/src/atom_control/log/latest,11,17156673eca47dcfd024ad3b82cf41fb9dbe4fc1,
+main,simulation/src/atom_control/log/latest_list,24,3223ffb5ba32cf510d4250150f20e9e069832fc9,
+main,simulation/src/atom_control/log/list_2026-07-11_14-58-07/logger_all.log,4081,3c932565508ce1c1d055c5336530408925cb55f8,.log
+main,simulation/src/atom_control/package.xml,688,e84fba59f6774f049a91f875467a4226f6ab0909,.xml
+main,simulation/src/atom_control/src/scara_commander.cpp,3445,3e8e034ca96592eec46ac8dcb6c84eaf6c968c89,.cpp
+main,simulation/src/atom_description/CMakeLists.txt,211,d5c64c098c2d6ed1be48c9d5f8c12dd09818e714,.txt
+main,simulation/src/atom_description/launch/display.launch.py,1091,c27927cdb762c1ad687729fe702b2bed1588cf43,.py
+main,simulation/src/atom_description/launch/gazebo.launch.py,2138,e2895468b7b1fb1c4b5b5324d0bfa66e018297ab,.py
+main,simulation/src/atom_description/launch/view_robot.launch.py,1090,20e2a87c3a56c6dadd6fe7e1caf85d9bd745e7dc,.py
+main,simulation/src/atom_description/meshes/arm1.stl,2111384,9291435e563c8a1892c6cdabed9b6975c8957cae,.stl
+main,simulation/src/atom_description/meshes/arm2.stl,1553084,4f401e31de4f69d3091f8036d3c8830e7d84f739,.stl
+main,simulation/src/atom_description/meshes/base.stl,5013284,d3a1cafab13ea64a8538de9b839a56b2b7fcce61,.stl
+main,simulation/src/atom_description/meshes/gripper_back.stl,3716484,ce7aef106b7cc5bb3b96908880e62bcec9e7fc38,.stl
+main,simulation/src/atom_description/meshes/gripper_hand1.stl,107484,d4fb531207ade19d5c9c1ffa7886ce9ccc2beece,.stl
+main,simulation/src/atom_description/meshes/gripper_hand2.stl,107484,9323a53bcf149f6fc4ab54d5df641a2fe089970f,.stl
+main,simulation/src/atom_description/meshes/z_axis.stl,1361984,7fd06fd6e0e5e99ee394cce3160801658f0a0b88,.stl
+main,simulation/src/atom_description/package.xml,570,429de2bb20322e8753f1efdcda95da566f832989,.xml
+main,simulation/src/atom_description/urdf/atom.urdf.xacro,2555,529cb08d6dd854b29154193f292f3bf61d3a6e63,.xacro
+main,simulation/src/launch/view_robot.launch.py,1136,883292630714b854aa853d2d974f48578fffda57,.py
+main,simulation/src/meshes/arm1.stl,2111384,9291435e563c8a1892c6cdabed9b6975c8957cae,.stl
+main,simulation/src/meshes/arm2.stl,1553084,4f401e31de4f69d3091f8036d3c8830e7d84f739,.stl
+main,simulation/src/meshes/base.stl,5013284,d3a1cafab13ea64a8538de9b839a56b2b7fcce61,.stl
+main,simulation/src/meshes/gripper_back.stl,3716484,ce7aef106b7cc5bb3b96908880e62bcec9e7fc38,.stl
+main,simulation/src/meshes/gripper_hand1.stl,107484,d4fb531207ade19d5c9c1ffa7886ce9ccc2beece,.stl
+main,simulation/src/meshes/gripper_hand2.stl,107484,9323a53bcf149f6fc4ab54d5df641a2fe089970f,.stl
+main,simulation/src/meshes/z_axis.stl,1361984,7fd06fd6e0e5e99ee394cce3160801658f0a0b88,.stl
+main,simulation/src/motion,21,6c42b18544108b81ff4fc1cc2e7047da4ddc11d8,
+main,simulation/src/package.xml,649,cdd2360dcec1dc981756d2834dc5d3c8800fa5bb,.xml
+main,simulation/src/urdf/atom.urdf.xacro,2551,dc2408ac3dc7e43856d9cc232035b4a48a449ba1,.xacro
+main,software/.env,39,52c1adfba366f85945329465cc36793e8500307a,
+main,software/.vscode/settings.json,98,96dcf7fb7d2ebe80c895e1f3d3352138496ff8be,.json
+main,software/README.md,1206,d2bc46ab2449a9cd87c28ee778c841f9f38b2e8f,.md
+main,software/acchess/CMakeLists.txt,5316,9275a63d433ba076c8bec8e8798cd91c8a7260af,.txt
+main,software/acchess/apps/chess.demo.cpp,533,61a8dae578f480f85651445f54b8b53040c0544f,.cpp
+main,software/acchess/assets/board.png,2570,2b27728e656027b5629e7dfdfc3fce16dc75a53a,.png
+main,software/acchess/assets/pieces/bb.png,1375,103ef0f4461b4931ee40ad9d29f80702346a5330,.png
+main,software/acchess/assets/pieces/bk.png,2529,5d94e6681c61551a9463575e83c55fe72c8d73d4,.png
+main,software/acchess/assets/pieces/bn.png,1907,bc9e5c042c71fc7be584cbfaba98f12d03a5070a,.png
+main,software/acchess/assets/pieces/bp.png,894,1b4abc21ac5257f8268f6e88b935f0f5154555b9,.png
+main,software/acchess/assets/pieces/bq.png,2624,70dfaff7af0167399fe1ea56f91823543913d658,.png
+main,software/acchess/assets/pieces/br.png,858,f6670ce3764cd9a9d86d61c59427580e0f2d92be,.png
+main,software/acchess/assets/pieces/svg-pieces/Chess_bdt45.svg,1270,e88c40606203ec97c9bc237a68dc658f0f0a4910,.svg
+main,software/acchess/assets/pieces/svg-pieces/Chess_blt45.svg,1270,3a8eaa28623371c1b2e4d15f40d2504607f03492,.svg
+main,software/acchess/assets/pieces/svg-pieces/Chess_kdt45.svg,1456,ba2ac9fbcef040d1ba98f9802f779197d7cb9b61,.svg
+main,software/acchess/assets/pieces/svg-pieces/Chess_klt45.svg,700,632ca1afee7acd7c4535bba30f80015f53ce0438,.svg
+main,software/acchess/assets/pieces/svg-pieces/Chess_ndt45.svg,1598,04541a8658fdd23cce144277f62a3632f005535d,.svg
+main,software/acchess/assets/pieces/svg-pieces/Chess_nlt45.svg,1306,a5f31c6a8aa70c1a92640112cef5ce4112741703,.svg
+main,software/acchess/assets/pieces/svg-pieces/Chess_pdt45.svg,766,b534de8f724f4fbeb01ac04b9f6cbb9408c6babc,.svg
+main,software/acchess/assets/pieces/svg-pieces/Chess_plt45.svg,766,b265fe1b41d1bd3bbe1ec07df4f881c6e26c985c,.svg
+main,software/acchess/assets/pieces/svg-pieces/Chess_qdt45.svg,1422,e55773452c6721d8d177702852c7aa912cde2c87,.svg
+main,software/acchess/assets/pieces/svg-pieces/Chess_qlt45.svg,1087,8df7c8f92b5227eaa8db8d326e094c0a9b8d3a07,.svg
+main,software/acchess/assets/pieces/svg-pieces/Chess_rdt45.svg,1818,4eec43c42b1bc84a3985a8f3556d4a7c03b51f84,.svg
+main,software/acchess/assets/pieces/svg-pieces/Chess_rlt45.svg,1173,0574ca673c1432d0ea022ac95cd280b521f52cc7,.svg
+main,software/acchess/assets/pieces/wb.png,2110,fdd94c20055128bb7415d28acbfc05dd6052c837,.png
+main,software/acchess/assets/pieces/wk.png,2363,6a574cce4e31e045f88268a037b7f6ebad44d862,.png
+main,software/acchess/assets/pieces/wn.png,2279,f746210cc6c1130036071b4decec0750ac94cd40,.png
+main,software/acchess/assets/pieces/wp.png,1541,0ad3c04272816f774d7e1973d12599b3b12e5846,.png
+main,software/acchess/assets/pieces/wq.png,3337,7330c083a5be294315ecaf3696ae8619a4518ca4,.png
+main,software/acchess/assets/pieces/wr.png,1016,5a297be476fe3983b4cc7e05a39281756b1eb387,.png
+main,software/acchess/include/board/board.hpp,6661,e6ae3968e8636d3fe2b986f462cb0862e461e9cf,.hpp
+main,software/acchess/include/board/board_comparator.hpp,617,4a193978b39511572ca8e7def7252913cc25138a,.hpp
+main,software/acchess/include/board/move.hpp,315,c76c838e89e6e3682baa2ef519f704b8c2365fe9,.hpp
+main,software/acchess/include/board/move_applier.hpp,1968,5c7a8dd1c7b3d0c71c6949e09a45a30841b870e5,.hpp
+main,software/acchess/include/board/move_validator.hpp,2212,ff9d98e257ef3edb7f033c03012b9693dba97e10,.hpp
+main,software/acchess/include/board/piece.hpp,590,a299bad8f954dcb785769d1f692975f4e975d3f8,.hpp
+main,software/acchess/include/board/square.hpp,188,489463efbca41fb51381820b20ff43e56939bd74,.hpp
+main,software/acchess/include/board/square_change.hpp,334,502c721b8ce850233e9585e878a3bc2d1357c6ea,.hpp
+main,software/acchess/include/engine/stockfish_uci.hpp,3054,b36d8b891e764fefeeaefc3144d4bcbceb444fc5,.hpp
+main,software/acchess/include/fen_generator/fen_generator.hpp,2051,238e5489ac43c283a3038015da32b4dc1f69be0b,.hpp
+main,software/acchess/include/utils/path.hpp,189,466c2b71fd1b459d7d4fb4c6991957075af22f9c,.hpp
+main,software/acchess/include/viewer/renderer.hpp,658,d22b9906e0bb4614fce5db1ed1dd0843c25ace03,.hpp
+main,software/acchess/include/viewer/texture_manager.hpp,247,a1caf8d8bdcd23c21334d3d02b9f7d9501ca423f,.hpp
+main,software/acchess/src/board/board.cpp,4677,ead2960c83a0a8a81eabdaa1623e037f0153caf5,.cpp
+main,software/acchess/src/board/board_comparator.cpp,803,87d7dc723e8f1879a9b3ace7d9e05bdbfc044491,.cpp
+main,software/acchess/src/board/move.cpp,326,6d2d40bc8ace25da776188119157a95c78e0bd99,.cpp
+main,software/acchess/src/board/move_applier.cpp,3781,789cef22b20f06ad2b1efcec06fe7c6aff33c054,.cpp
+main,software/acchess/src/board/move_validator.cpp,23583,b8f3565624933e53413be8f5bb43c2e37198a9a0,.cpp
+main,software/acchess/src/board/piece.cpp,26,0d85eb0da93ef4c07352cfffafca2d8e6f89b514,.cpp
+main,software/acchess/src/board/square.cpp,245,f8e82f93fd43418c724a23704aac686c08c3185a,.cpp
+main,software/acchess/src/engine/stockfish_uci.cpp,5144,c26b798349af58e84f801aba1771ead2b4b89366,.cpp
+main,software/acchess/src/fen_generator/fen_generator.cpp,2777,103ffc63487837701f7294afd5d74bff949c8cb6,.cpp
+main,software/acchess/src/utils/path.cpp,287,964e16a5fe96fc856c1d977e6d37abddfa6a8018,.cpp
+main,software/acchess/src/viewer/renderer.cpp,2876,41affd4339fd9bd3ec0d9e6e95c2679190abc041,.cpp
+main,software/acchess/src/viewer/texture_manager.cpp,272,bae1723788c1a99e0835794ee10e18adbc1b3bed,.cpp
+main,software/acchess/tests/test_board.cpp,4221,6f5211ce94dfe25718f2f1ab30b454a1cdd4197d,.cpp
+main,software/acchess/tests/test_board_comparator.cpp,4565,3a0573d6f049216d073506c774eaa0b53d1d43e4,.cpp
+main,software/acchess/tests/test_fen_generator.cpp,1562,8ec17a9d81302e66fd0cf9afceb2b8aaf9fe29f5,.cpp
+main,software/acchess/tests/test_move_applier.cpp,5656,d8a4214397ec9788c2995af66507300ee744bd0b,.cpp
+main,software/acchess/tests/test_move_validator.cpp,22873,3624dc7da651aa053313682ec845e718d961a07a,.cpp
+main,software/acchess/tests/test_stockfish_uci.cpp,1004,e7619d67b398ef9421d9bf03de74a7891c1dfa00,.cpp
+main,software/acmotion/CMakeLists.txt,3559,9ebc9cab836db0cf6f9151a4696879e32fd79507,.txt
+main,software/acmotion/README.md,3815,e408bd5c5f392bb75bd95c6dd9dbf9f0f9724cda,.md
+main,software/acmotion/docs/dejan-scara-bringup.md,10382,bf0b698e56b72f738cae588f94a0fec0ceab6775,.md
+main,software/acmotion/docs/physical-calibration-template.md,4456,041eed2f704cb38a4b3d04591060b583e9b975b9,.md
+main,software/acmotion/docs/physical-integration-runbook.md,7458,4bc6e986a1b869853a86c01d1ca4bd7609b43737,.md
+main,software/acmotion/include/motion/coordinate_mapper.hpp,6708,999c833539571767aebde507d8c1b74dc7474abf,.hpp
+main,software/acmotion/include/motion/graveyard_allocator.hpp,4139,23f719a00f518c459576f08d4179646b45a40e34,.hpp
+main,software/acmotion/include/motion/inverse_kinematics.hpp,4321,1e0ab34ccbab3c7a63f6367d5a17e82b53deed44,.hpp
+main,software/acmotion/include/motion/joint_trajectory.hpp,1459,65e97e20b99a7d581e4860221a6a732458d98918,.hpp
+main,software/acmotion/include/motion/motion_execution.hpp,5139,1c57a9debb7b11a21ca04e624f6ec807b60df934,.hpp
+main,software/acmotion/include/motion/motion_planner.hpp,5236,db72aea5122fa7e45e8cb8d3c39fae9ca5b331a8,.hpp
+main,software/acmotion/include/motion/motion_protocol.hpp,3008,9b1ba8a971e9c29ed2e419f19154ea177d42b46a,.hpp
+main,software/acmotion/include/motion/motion_transport.hpp,1450,60d4ab2a153bc6466bce56d3338b334695b02169,.hpp
+main,software/acmotion/include/motion/physical_task.hpp,2052,3f71b60a6b5c4e6812faeee555f70a6d1c38810f,.hpp
+main,software/acmotion/include/motion/task_planner.hpp,3516,5620b13415144fdde0abdf60afb45c6acad95c2f,.hpp
+main,software/acmotion/package.xml,513,b40bbcb49e75557d74d1aeebd664d7104a45f30b,.xml
+main,software/acmotion/scripts/build_and_test.sh,823,36eb0276fda525263211ed6711b9334187440eba,.sh
+main,software/acmotion/scripts/preflight_linux.sh,1013,7b29e3804196f28bdaf5b3995957a5784b8148e6,.sh
+main,software/acmotion/scripts/serial_monitor.py,1776,5d18ee0912c612e93d68249fbc46ea8c2eec53ec,.py
+main,software/acmotion/scripts/setup_linux.sh,822,d08fe189ba92920ecd80937ee2c68ad5f8828f89,.sh
+main,software/acmotion/src/coordinate_mapper.cpp,11655,d0c2d3ad4c79c06e2d793285d6977084ea998860,.cpp
+main,software/acmotion/src/graveyard_allocator.cpp,3748,3506b099f36393cb1ab5515bb16245b4079bd1f9,.cpp
+main,software/acmotion/src/inverse_kinematics.cpp,4168,2710c2bd5a2da5884ce977d10eb3973b44188422,.cpp
+main,software/acmotion/src/motion_execution.cpp,5304,93e3e83df2264f8ba4903b6911fc92ca30c2a66c,.cpp
+main,software/acmotion/src/motion_planner.cpp,3613,fae1ef92b2f5c0a377ad0d5896933ec65b0da125,.cpp
+main,software/acmotion/src/motion_protocol.cpp,5979,b6713bad3232b9ca54c1eda71b6813be63c721ad,.cpp
+main,software/acmotion/src/task_planner.cpp,5824,e8910bf8e280d352e7e6c02dad3bdef04f529d71,.cpp
+main,software/acmotion/tests/test_coordinate_mapper.cpp,2500,cf4008eb5a2dc578fd6d55805f8a1b2cb1d15f19,.cpp
+main,software/acmotion/tests/test_graveyard_allocator.cpp,1501,30278b6f463fae484db6b099488aac0736a8a9e9,.cpp
+main,software/acmotion/tests/test_inverse_kinematics.cpp,4293,33d35602932c0c26eb4e2f05f98be09b46493dbb,.cpp
+main,software/acmotion/tests/test_motion_execution.cpp,4728,59a5cb0d0d5adc28106fd0fda5e4b58249799214,.cpp
+main,software/acmotion/tests/test_motion_planner.cpp,3853,d6f905f169f8655bb47dd722c7577a8bbeea05e1,.cpp
+main,software/acmotion/tests/test_motion_protocol.cpp,2655,45f10aebd0865efe884828ffc06f5c1292da710b,.cpp
+main,software/acmotion/tests/test_task_planner.cpp,7067,0ac846b3689574bb2822c50f0a7104eecab20ecc,.cpp
+main,software/acvision/CMakeLists.txt,5829,fbf2096fa6d3a81b79b3b85cefc450ad7eff562e,.txt
+main,software/acvision/README.md,2806,124226f42315aff13552c943df9811eecb8ec7c7,.md
+main,software/acvision/apps/README.MD,11,a35532852fd7bf75fbf7ddc5add600ecef93e238,.md
+main,software/acvision/apps/benchmark_piece_detector.cpp,9730,7d3259b6c246972e21294dc8fc64a8d23f39e807,.cpp
+main,software/acvision/apps/board_demo.cpp,3588,b3db2ce2d82653ec7771cf976cf252de856a67ae,.cpp
+main,software/acvision/apps/capture_gui.cpp,2590,34e76d8fc912008a9bf57b23c82027166a756b62,.cpp
+main,software/acvision/apps/color_calibrator.cpp,4560,f1174ece5c9787822e8ac2a7b71299e8496b7ac7,.cpp
+main,software/acvision/include/README.MD,14,29f8fca5a680faf9fb35f8202b8478ebf22d75d0,.md
+main,software/acvision/include/board_observation/board_observation.hpp,714,d2b12c6ed852164231ecb96ef060d1883394d82d,.hpp
+main,software/acvision/include/board_vision/board_vision.hpp,1135,cd16aeb13bfe2fd20fb0be770372191356c2ee67,.hpp
+main,software/acvision/include/camera/camera.hpp,5727,63c76014fb30dc021d1acd997e17f87e3f2513c3,.hpp
+main,software/acvision/include/homography/homography.hpp,306,dee78d346b2ea08b3caf75e17f8f0d38e2940197,.hpp
+main,software/acvision/include/piece_detector/piece_detector.hpp,2505,83b41667ae56b8bfab9376eb65ebc3983fd34b55,.hpp
+main,software/acvision/include/piece_detector/piece_detector_config.hpp,2795,7426f1ea8fca65186ff88ef94a160dab9eca9fbd,.hpp
+main,software/acvision/simulation/simulator.cpp,2516,e98c9c49c976bd90ff39d04446132120d5a67223,.cpp
+main,software/acvision/src/README.MD,15,14643263f2ed766708ca24c0784ed4ea41f8684a,.md
+main,software/acvision/src/board_vision/board_vision.cpp,6932,9e4f0bac8a03862bec0f0476ded4b65b6583127b,.cpp
+main,software/acvision/src/camera/camera.cpp,6128,418e29ef0445b635b5469ee082d0cc7973f195ae,.cpp
+main,software/acvision/src/homography/homography.cpp,1471,700d42503eade17ededfc42a007fd8e12bfe5b1b,.cpp
+main,software/acvision/src/piece_detector/piece_detector.cpp,3140,3dff1dbb0182942307d49fddc3e8f53333a7b574,.cpp
+main,software/acvision/tests/README.MD,1557,6b8f353cddc21e430036ec804c1d990b971323d0,.md
+main,software/acvision/tests/README.md,1557,6b8f353cddc21e430036ec804c1d990b971323d0,.md
+main,software/acvision/tests/dataset/gabarito.txt,3885,e2d3f094fcc699a188a9912efd68ce539ea7747f,.txt
+main,software/acvision/tests/dataset/img01.jpg,3425811,82821d6545250a27604c72b07c81ca4525b88db6,.jpg
+main,software/acvision/tests/dataset/img02.jpg,4316023,ad02c085dfcd144565d4b628556471bd8db0257e,.jpg
+main,software/acvision/tests/dataset/img03.jpg,3812236,7ee09dd67eff9bdb61b33dd1f9aa15e518823d56,.jpg
+main,software/acvision/tests/dataset/img04.jpg,4077683,d953d94f727b6f3fc06cd3b6cff440c20fe26fef,.jpg
+main,software/acvision/tests/dataset/img05.jpg,1338610,e8ad8dd7a92a0e03940ff22cf267e9bf9a01955d,.jpg
+main,software/acvision/tests/dataset/img06.jpg,2382280,5810836e101b9253b964f873a963bc209226d1d4,.jpg
+main,software/acvision/tests/dataset/img07.jpg,3014999,8b6e79c5d8d41d83296f39e80ac45f597e2173b6,.jpg
+main,software/acvision/tests/dataset/img08.jpg,3262269,00f3539566aefc44d7853c0b178db85bee16c192,.jpg
+main,software/acvision/tests/dataset/img09.jpg,3363620,70cabd854b144f8507f1ed64a79e8b077f456354,.jpg
+main,software/acvision/tests/dataset/img10.jpg,4391808,cf5a1240931503c656edd61da090c813e485e997,.jpg
+main,software/acvision/tests/dataset/img11.jpg,4348797,214ceb6f9fb30d663eba98a1f4e675407b6f7b6a,.jpg
+main,software/acvision/tests/dataset/img12.jpg,4462280,3fb1ce41829eda957587408a5e6370b328236e76,.jpg
+main,software/acvision/tests/dataset/img13.jpg,4057516,0135621be61151d4ea5b6134de07d8cf0feffa8a,.jpg
+main,software/acvision/tests/dataset/img14.jpg,3506401,48692c1ac45eb302ccbe71bb196812368a537bca,.jpg
+main,software/acvision/tests/dataset/img15.jpg,3823420,238c0af3156149da206022acf78b25946aed3b23,.jpg
+main,software/acvision/tests/dataset/img16.jpg,3434217,9fb62fdb8d6bc4ebaf029a0873adc3aedb1e5e74,.jpg
+main,software/acvision/tests/dataset/img17.jpg,4031214,8ccd571070ddce595ffbefcdb8bba5820a5d20cb,.jpg
+main,software/acvision/tests/dataset/img18.jpg,4367571,48aae68787d03eda740ed00813eda8c8dad6c465,.jpg
+main,software/acvision/tests/dataset/img19.jpg,2651808,dc5591d08af14ca55bfc3711843250230eb08f3b,.jpg
+main,software/acvision/tests/dataset/img20.jpg,4184527,4e5dd8c8e987be66c18b329457f2036319b50010,.jpg
+main,software/acvision/tests/dataset/img21.jpg,3398587,197d2fa2b72cd61f0dfa9ccd94ef0c30d4cd3a14,.jpg
+main,software/acvision/tests/dataset/img22.jpg,2934158,0b0a58636cc3eefaacde25d7dbf5c003d64f9246,.jpg
+main,software/acvision/tests/dataset/img23.jpg,4117203,95dee0106df7bbae1bf83cd3c1de7c20845e91ae,.jpg
+main,software/acvision/tests/dataset/img24.jpg,3025843,3a64c3a9e8b51e62b2a097dceb46fdcd72f381bc,.jpg
+main,software/acvision/tests/dataset/img25.jpg,2683487,30fd4834211d1f088988f14c6f08163568e2a16c,.jpg
+main,software/acvision/tests/dataset/img26.jpg,3088003,d41a940bdeddc2adcb8e978cd3683888611cb570,.jpg
+main,software/acvision/tests/dataset/img27.jpg,3722500,cb1e9f3c9ace6cb2e6ec33ebdfd5eff55e651f51,.jpg
+main,software/acvision/tests/dataset/img28.jpg,3754654,05c35851e0b3fe3ca5480136f2bdea1d0fa57050,.jpg
+main,software/acvision/tests/dataset/img29.jpg,4117646,234d02645e79e042c4ac1b22aabe57a70f089c7b,.jpg
+main,software/acvision/tests/dataset/img30.jpg,4184749,7d4e96361c9f48c51f3dd1b3fd10fe0c82808386,.jpg
+main,software/acvision/tests/dataset/img31.jpg,4283879,bfb604ff14897100b214cc3507de1e9138719939,.jpg
+main,software/acvision/tests/dataset/img32.jpg,3903388,bfa7c93131abf7ef38ad02ec65d33db71cc3d5cf,.jpg
+main,software/acvision/tests/dataset/img33.jpg,3936457,9c52beea898986f42bfe396b79de47bb358f8dc8,.jpg
+main,software/acvision/tests/dataset/img34.jpg,2994412,2fea36f9ce77feed67b0acdda465df2a8c2cf32a,.jpg
+main,software/acvision/tests/dataset/img35.jpg,2651679,86d75bca18d6e134a3c72505cc241ee271c20b12,.jpg
+main,software/acvision/tests/dataset/img36.jpg,3499017,ad769b03a474eac138688f8de42ee3c93d826250,.jpg
+main,software/acvision/tests/dataset/img37.jpg,3767450,d69c70418001a123894c0e0ad0403ad1f70720f9,.jpg
+main,software/acvision/tests/dataset/img38.jpg,2829755,4a255af3d6666db0b4b1c379476d905f6984e29e,.jpg
+main,software/acvision/tests/dataset/img39.jpg,3733661,08be50c3bc0a57686a5d501f87eaf6590d180342,.jpg
+main,software/acvision/tests/dataset/img40.jpg,3474454,9c5cadf8ca513a3d8e098d0e8c8af0e4ce464494,.jpg
+main,software/acvision/tests/dataset/img41.jpg,3505582,d12a946644d5457c14919cdd0fcf5c472d497e63,.jpg
+main,software/acvision/tests/dataset/img42.jpg,3637186,3176614a11112095d235ca7a5a527570958cec18,.jpg
+main,software/acvision/tests/dataset/img43.jpg,4073691,caa3ba0b768368e30bad008b59336c20bf973a02,.jpg
+main,software/acvision/tests/dataset/img44.jpg,4538015,e143947fb4cebced9e5169cbc03c54ad0d174291,.jpg
+main,software/acvision/tests/dataset/img45.jpg,4117583,63e29f3b77af88267436ad2c1ae3a359f6df0974,.jpg
+main,software/acvision/tests/dataset/img46.jpg,3386389,5db5c99c31416d586992b383033f6afb6a0eefa0,.jpg
+main,software/acvision/tests/dataset/img47.jpg,3056487,d3f3d0b1939da69d757d4f7beb0e5ecce44175dd,.jpg
+main,software/acvision/tests/dataset/img48.jpg,3205582,253fdbec8e006656267604dbc31b0d4a829320a9,.jpg
+main,software/acvision/tests/dataset/img49.jpg,3367102,3e95fa7f479d404beadf32d01775a83cc1b92f5a,.jpg
+main,software/acvision/tests/dataset/img50.jpg,2898669,c716fa3fd301b3f34337affc58f94b182923c5bf,.jpg
+main,software/acvision/tests/dataset/img51.jpg,2953293,da38d5d3034ce7804ee96b6cb69d40636fba3673,.jpg
+main,software/acvision/tests/dataset/img52.jpg,2861650,d027bdd4e4ec8e3ab1b951eeff39c68ebdf8edcf,.jpg
+main,software/acvision/tests/dataset/img53.jpg,3569679,a3ad8d4ae0cea131e58e737a6612ae7e9d0cc7a5,.jpg
+main,software/acvision/tests/dataset/img54.jpg,3925583,97e16f2fc0b5f6e3d03e0b7ba47da80262740bc5,.jpg
+main,software/acvision/tests/dataset/img55.jpg,2803361,539f43b3b9f2f72a8fd46dfae7c2f0d8ad9b94b0,.jpg
+main,software/acvision/tests/dataset/img56.jpg,3464472,1f2e9fd77b226e6de1e97656d79ad1ee07fc603d,.jpg
+main,software/acvision/tests/dataset/img57.jpg,3525087,aa1ef3f12f788808a7b98cf1aad0478039ce2fd8,.jpg
+main,software/acvision/tests/images/chessboard.png,10825,e81c28762dd622bfc02fe0eef88735b1c943399a,.png
+main,software/acvision/tests/images/no_board.png,86028,5a1466c1220ce18843ace5b06b5d20e1b182f218,.png
+main,software/acvision/tests/test_board_detector.cpp,4155,1d6f1c3ea2259892c70661e71611ce38d1e53833,.cpp
+main,software/acvision/tests/test_board_geometry.cpp,1580,ca4b28d0c61479d05724c8cfb2df81e55e44f92f,.cpp
+main,software/acvision/tests/test_camera.cpp,592,30f5561347072420f7ede521a4995e6867494344,.cpp
+main,software/acvision/tests/test_camera_min_max.cpp,1762,c49e56efddbab50c55b7ceeeca3dc75a187dd2fa,.cpp
+main,software/acvision/tests/test_piece_detector.cpp,3256,5a58fd82b0956927b51acbc947555a46ac328d8a,.cpp
+main,software/docs/adrs/ADR-001-cmake-ctest-integration.md,1865,811aa9df2dce575caa49d224b2c131e9fbd09646,.md
+main,software/docs/adrs/ADR-002-acmotion-sbc-esp32-boundary.md,2634,d735b2f0e92811c867ff9a4546e4c149b55aafe1,.md
+main,software/docs/adrs/ADR-003-task-planner-physical-task-boundary.md,2201,563aa3929acdbc23fe5deca9fa871069de81cfa0,.md
+main,software/docs/adrs/ADR-004-inverse-kinematics-on-sbc.md,3321,6be9a063cb04c946f65ddf21bb65d5faf35d75db,.md
+main,software/docs/adrs/ADR-005-acm1-motion-protocol.md,3185,476e04d85e71bcad38a89faa72ae19ddd9a7bf12,.md
+main,software/docs/ci-cd.md,2514,ea35a8a786101f7813676aaad74aaac3fd8d752b,.md
+main,software/integration/CMakeLists.txt,390,fcc2d4e484cf8c3d3726a0736cc4e4e387bb2f9e,.txt
+main,software/integration/include/integration/observation_interpreter.hpp,2094,cac7b1382acf8c18921e77e46bef9c9f0902fefb,.hpp
+main,software/integration/src/observation_interpreter.cpp,4314,942acf579b08468def3b768ccaf3c8ddf4a26054,.cpp
+main,software/integration/tests/CMakeLists.txt,723,14418422b4f5a23e72198fd8c5b0a91bd0883db4,.txt
+main,software/integration/tests/test_observation_interpreter.cpp,8452,fd93f1b5d909eb276dec3ae321fd3be7396b970f,.cpp
+main,wsl/prep.md,598,7b4e85744a1829939cfe2cacbcadd63170bc1b26,.md
+CAD-external,.gitattributes,68,,
+CAD-external,SCARA Robot.f3d,4048369,,.f3d
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy.zip,28627142,,.zip
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/Base drawing - for base holes.pdf,15996,,.pdf
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/Laser Engraving Mode - STL and editable files.zip,924512,,.zip
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files.zip,21528212,,.zip
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model.STEP,22794217,,.step
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot Arm - STL Files - updated.zip,1849952,,.zip
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Arduino UNO case p1.SLDPRT,177487,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Arduino UNO case p2.SLDPRT,145841,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Arm 1 Cover.SLDPRT,118955,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Arm 1.SLDPRT,254020,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Arm 2 Cover.SLDPRT,189591,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Arm 2.SLDPRT,308682,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Ball Bearing 30x42x7mm.SLDPRT,121766,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Ball Bearing 35x47x7mm.SLDPRT,117970,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Ball Bearing 608 - 8x22x7mm.SLDPRT,112935,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Base cover.SLDPRT,82706,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Base.SLDPRT,513008,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Gripper Cover.SLDPRT,112446,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Gripper End.SLDPRT,80473,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Gripper Hand Left.SLDPRT,71075,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Gripper Hand Right.SLDPRT,74587,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Gripper link 1.SLDPRT,58982,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Gripper link 2.SLDPRT,73746,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Gripper Mechanism Slider.SLDPRT,106181,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Gripper Mechanism.SLDASM,306121,,.sldasm
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Gripper rail 6mm.SLDPRT,34781,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Gripper to J3 connector.SLDPRT,121068,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/GT2 Belt 200mm.SLDPRT,65076,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/GT2 Belt 300mm 2.SLDPRT,62557,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/GT2 Belt 300mm.SLDPRT,61453,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/GT2 Belt 400mm 2.SLDPRT,62151,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/GT2 Belt 400mm.SLDPRT,58638,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/GT2 Pulley - 110 teeth - J1.SLDPRT,1292323,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/GT2 Pulley - 22 - 80 teeth.SLDPRT,1195770,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/GT2 Pulley - 23 - 80 teeth.SLDPRT,1210695,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/GT2 Pulley - 90 teeth - J3.SLDPRT,1093311,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/GT2 Pulley - 92 teeth - J2.SLDPRT,1076068,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/GT2 Pulley - Parametric.SLDPRT,312582,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/J1 coupler.SLDPRT,197033,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/J2 Coupler.SLDPRT,190482,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/J3 Coupler.SLDPRT,171991,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Lead Screw D8mm L380mm.SLDPRT,42342,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Lead Screw Nut 8mm.SLDPRT,87117,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Linear Bearing 10x19x29mm.SLDPRT,147719,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/M4 50mm - Bolts.SLDPRT,81506,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/M4 50mm - Bolts.step,48411,,.step
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/M4 60mm - Bolts.SLDPRT,77649,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/M4 60mm - Bolts.step,48411,,.step
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/M4 Lock nut.SLDPRT,150721,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/M4 Lock nut.step,47430,,.step
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/M8 45mm - Bolts.SLDPRT,69578,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/M8 45mm - Bolts.step,26564,,.step
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/M8 Lock nut.SLDPRT,149663,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/M8 Lock nut.step,47404,,.step
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/M8 Washer.SLDPRT,61741,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Micro switch.SLDPRT,117532,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Micro switch.step,80178,,.step
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/NEMA 17 Stepper L24mm - 20mm shaft.SLDPRT,213052,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/NEMA 17 Stepper L24mm - 20mm shaft.step,211511,,.step
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/SCARA Robot.SLDASM,6650000,,.sldasm
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Servo Holder.SLDPRT,155367,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Servo MG996R Horn.SLDPRT,61253,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Servo MG996R Horn.step,20765,,.step
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Servo Motor MG996R 3D Model.SLDPRT,210281,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Servo Motor MG996R 3D Model.step,179945,,.step
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Smooth Rod Clamp.SLDPRT,95847,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Smooth Rod D10mm L400mm.SLDPRT,35415,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Stepper NEMA 17 -  20mm shaft.SLDPRT,239333,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Stepper NEMA 17 -  20mm shaft.step,272399,,.step
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Thrust Bearing - 40x60x13.SLDPRT,1313117,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Thrust Bearing 35x52x12mm.SLDPRT,1130535,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Top cover.SLDPRT,152410,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Wide gripper end - Left side.SLDPRT,90416,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Wide gripper end.SLDPRT,99733,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Z-axis Bottom Plate.SLDPRT,118892,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Z-axis Mount Platform.SLDPRT,253619,,.sldprt
+CAD-external,Base3DProject/scara-robot-arm20240812-1-wyhchy/HowToMechatronics/scara-robot-arm/SCARA Robot 3D Model - Solidworks Files/Z-axis Top Plate.SLDPRT,165034,,.sldprt

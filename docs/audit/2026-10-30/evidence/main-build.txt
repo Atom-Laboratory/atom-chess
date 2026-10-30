@@ -1,0 +1,32 @@
+-- The C compiler identification is GNU 15.2.0
+-- The CXX compiler identification is GNU 15.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found OpenCV: /usr (found version "4.10.0")
+CMake Warning at software/acchess/CMakeLists.txt:29 (message):
+  Stockfish executable not found! Make sure it is installed via apt.
+
+
+-- Stockfish not found: test_stockfish_uci will not be registered.
+-- Configuring done (39.6s)
+CMake Error in software/acmotion/CMakeLists.txt:
+  install(EXPORT "export_motion" ...) includes target "motion" which requires
+  target "acchess" that is not in any export set.
+
+
+-- Generating done (6.3s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    FETCHCONTENT_SOURCE_DIR_GOOGLETEST
+
+
+CMake Generate step failed.  Build files cannot be regenerated correctly.

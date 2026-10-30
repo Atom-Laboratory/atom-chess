@@ -1,5 +1,8 @@
 # ATOM Chess
 
+[Auditoria geral de engenharia — 30/10/2026](docs/audit/2026-10-30/README.md):
+estado por subsistema, BOM, evidências, lacunas e plano para CAD próprio.
+
 Guias do usuário: [Gazebo](simulation/docs/user-guide-gazebo.md) e
 [primeiros passos em RL](simulation/docs/learning/user-guide-rl.md).
 

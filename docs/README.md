@@ -6,6 +6,8 @@ documenta somente as relações entre módulos. Referência desta revisão:
 
 ## Guias para começar
 
+Diagnóstico geral atual: [auditoria de engenharia A–G, BOM e lacunas](audit/2026-10-30/README.md).
+
 - [Usar o Gazebo no Windows/WSL](../simulation/docs/user-guide-gazebo.md).
 - [Começar RL com o MuJoCo do ATOM](../simulation/docs/learning/user-guide-rl.md).
 

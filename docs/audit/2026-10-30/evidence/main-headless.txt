@@ -1,0 +1,143 @@
+-- The C compiler identification is GNU 15.2.0
+-- The CXX compiler identification is GNU 15.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found OpenCV: /usr (found version "4.10.0")
+CMake Warning at software/acchess/CMakeLists.txt:29 (message):
+  Stockfish executable not found! Make sure it is installed via apt.
+
+
+-- Stockfish not found: test_stockfish_uci will not be registered.
+-- Configuring done (11.2s)
+-- Generating done (5.4s)
+-- Build files have been written to: /mnt/c/Users/maria/Documents/Codex/2026-10-27/files-pasted-by-the-user-atom/work/audit-main-headless
+[  1%] Building CXX object software/acvision/CMakeFiles/acvision.dir/src/camera/camera.cpp.o
+[  3%] Building CXX object software/acvision/CMakeFiles/acvision.dir/src/board_vision/board_vision.cpp.o
+[  4%] Building CXX object software/acvision/CMakeFiles/acvision.dir/src/piece_detector/piece_detector.cpp.o
+[  6%] Building CXX object software/acchess/CMakeFiles/acchess.dir/src/board/board.cpp.o
+[  7%] Building CXX object software/acchess/CMakeFiles/acchess.dir/src/board/board_comparator.cpp.o
+[  9%] Building CXX object software/acchess/CMakeFiles/acchess.dir/src/board/move.cpp.o
+[ 10%] Building CXX object software/acvision/CMakeFiles/acvision.dir/src/homography/homography.cpp.o
+[ 12%] Building CXX object software/acchess/CMakeFiles/acchess.dir/src/board/move_applier.cpp.o
+[ 14%] Building CXX object software/acchess/CMakeFiles/acchess.dir/src/board/move_validator.cpp.o
+[ 15%] Building CXX object software/acchess/CMakeFiles/acchess.dir/src/board/piece.cpp.o
+[ 17%] Building CXX object software/acchess/CMakeFiles/acchess.dir/src/board/square.cpp.o
+[ 18%] Building CXX object software/acchess/CMakeFiles/acchess.dir/src/fen_generator/fen_generator.cpp.o
+[ 20%] Building CXX object software/acchess/CMakeFiles/acchess.dir/src/utils/path.cpp.o
+[ 21%] Building CXX object software/acchess/CMakeFiles/acchess.dir/src/engine/stockfish_uci.cpp.o
+[ 23%] Linking CXX shared library ../../lib/libacvision.so
+[ 25%] Linking CXX static library ../../lib/libacchess.a
+[ 25%] Built target acvision
+[ 28%] Building CXX object software/acvision/CMakeFiles/color_calibrator.dir/apps/color_calibrator.cpp.o
+[ 28%] Building CXX object software/acvision/CMakeFiles/board_demo.dir/apps/board_demo.cpp.o
+[ 29%] Building CXX object software/acvision/CMakeFiles/benchmark_piece_detector.dir/apps/benchmark_piece_detector.cpp.o
+[ 29%] Built target acchess
+[ 31%] Building CXX object software/acvision/CMakeFiles/simulator.dir/simulation/simulator.cpp.o
+[ 32%] Linking CXX executable ../../bin/board_demo
+[ 34%] Linking CXX executable ../../bin/color_calibrator
+[ 35%] Linking CXX executable ../../bin/benchmark_piece_detector
+[ 37%] Linking CXX executable ../../bin/simulator
+[ 37%] Built target board_demo
+[ 39%] Building CXX object software/acvision/CMakeFiles/test_piece_detector.dir/tests/test_piece_detector.cpp.o
+[ 39%] Built target color_calibrator
+[ 40%] Building CXX object software/acvision/CMakeFiles/test_board_geometry.dir/tests/test_board_geometry.cpp.o
+[ 40%] Built target benchmark_piece_detector
+[ 40%] Built target simulator
+[ 42%] Building CXX object software/acvision/CMakeFiles/test_camera_min_max.dir/tests/test_camera_min_max.cpp.o
+[ 43%] Building CXX object software/acchess/CMakeFiles/test_board.dir/tests/test_board.cpp.o
+[ 45%] Linking CXX executable ../../bin/test_piece_detector
+[ 46%] Linking CXX executable ../../bin/test_board
+[ 48%] Linking CXX executable ../../bin/test_board_geometry
+[ 50%] Linking CXX executable ../../bin/test_camera_min_max
+[ 50%] Built target test_board
+[ 51%] Building CXX object software/acchess/CMakeFiles/test_board_comparator.dir/tests/test_board_comparator.cpp.o
+[ 51%] Built target test_piece_detector
+[ 53%] Building CXX object software/acchess/CMakeFiles/test_move_applier.dir/tests/test_move_applier.cpp.o
+[ 53%] Built target test_board_geometry
+[ 54%] Building CXX object software/acchess/CMakeFiles/test_fen_generator.dir/tests/test_fen_generator.cpp.o
+[ 54%] Built target test_camera_min_max
+[ 56%] Building CXX object software/acmotion/CMakeFiles/motion.dir/src/motion_planner.cpp.o
+[ 57%] Linking CXX executable ../../bin/test_board_comparator
+[ 59%] Linking CXX executable ../../bin/test_move_applier
+[ 60%] Building CXX object software/acmotion/CMakeFiles/motion.dir/src/coordinate_mapper.cpp.o
+[ 62%] Linking CXX executable ../../bin/test_fen_generator
+[ 62%] Built target test_board_comparator
+[ 62%] Built target test_move_applier
+[ 64%] Building CXX object software/acmotion/CMakeFiles/motion.dir/src/graveyard_allocator.cpp.o
+[ 65%] Building CXX object software/integration/CMakeFiles/acintegration.dir/src/observation_interpreter.cpp.o
+[ 65%] Built target test_fen_generator
+[ 67%] Building CXX object software/acmotion/CMakeFiles/motion.dir/src/task_planner.cpp.o
+[ 68%] Linking CXX static library libacintegration.a
+[ 70%] Building CXX object software/acmotion/CMakeFiles/motion.dir/src/motion_protocol.cpp.o
+[ 71%] Building CXX object software/acmotion/CMakeFiles/motion.dir/src/motion_execution.cpp.o
+[ 71%] Built target acintegration
+[ 73%] Building CXX object software/acmotion/CMakeFiles/motion.dir/src/inverse_kinematics.cpp.o
+[ 75%] Building CXX object software/integration/tests/CMakeFiles/test_observation_interpreter.dir/test_observation_interpreter.cpp.o
+[ 76%] Linking CXX static library libmotion.a
+[ 76%] Built target motion
+[ 79%] Building CXX object software/acmotion/CMakeFiles/test_motion_planner.dir/tests/test_motion_planner.cpp.o
+[ 79%] Building CXX object software/acmotion/CMakeFiles/test_graveyard_allocator.dir/tests/test_graveyard_allocator.cpp.o
+[ 81%] Building CXX object software/acmotion/CMakeFiles/test_coordinate_mapper.dir/tests/test_coordinate_mapper.cpp.o
+[ 82%] Linking CXX executable test_observation_interpreter
+[ 84%] Linking CXX executable test_graveyard_allocator
+[ 85%] Linking CXX executable test_coordinate_mapper
+[ 87%] Linking CXX executable test_motion_planner
+[ 87%] Built target test_coordinate_mapper
+[ 87%] Built target test_motion_planner
+[ 87%] Built target test_graveyard_allocator
+[ 89%] Building CXX object software/acmotion/CMakeFiles/test_task_planner.dir/tests/test_task_planner.cpp.o
+[ 90%] Building CXX object software/acmotion/CMakeFiles/test_motion_protocol.dir/tests/test_motion_protocol.cpp.o
+[ 92%] Building CXX object software/acmotion/CMakeFiles/test_motion_execution.dir/tests/test_motion_execution.cpp.o
+[ 92%] Built target test_observation_interpreter
+[ 93%] Building CXX object software/acmotion/CMakeFiles/test_inverse_kinematics.dir/tests/test_inverse_kinematics.cpp.o
+[ 95%] Linking CXX executable test_motion_protocol
+[ 96%] Linking CXX executable test_task_planner
+[ 98%] Linking CXX executable test_inverse_kinematics
+[100%] Linking CXX executable test_motion_execution
+[100%] Built target test_motion_protocol
+[100%] Built target test_inverse_kinematics
+[100%] Built target test_task_planner
+[100%] Built target test_motion_execution
+Test project /mnt/c/Users/maria/Documents/Codex/2026-10-27/files-pasted-by-the-user-atom/work/audit-main-headless
+      Start  1: test_piece_detector
+ 1/15 Test  #1: test_piece_detector ..............   Passed    0.39 sec
+      Start  2: test_board_geometry
+ 2/15 Test  #2: test_board_geometry ..............   Passed    0.19 sec
+      Start  3: test_camera_min_max
+ 3/15 Test  #3: test_camera_min_max ..............   Passed    0.11 sec
+      Start  4: test_board
+ 4/15 Test  #4: test_board .......................   Passed    0.01 sec
+      Start  5: test_board_comparator
+ 5/15 Test  #5: test_board_comparator ............   Passed    0.01 sec
+      Start  6: test_move_applier
+ 6/15 Test  #6: test_move_applier ................   Passed    0.01 sec
+      Start  7: test_fen_generator
+ 7/15 Test  #7: test_fen_generator ...............   Passed    0.01 sec
+      Start  8: test_motion_planner
+ 8/15 Test  #8: test_motion_planner ..............   Passed    0.01 sec
+      Start  9: test_coordinate_mapper
+ 9/15 Test  #9: test_coordinate_mapper ...........   Passed    0.03 sec
+      Start 10: test_graveyard_allocator
+10/15 Test #10: test_graveyard_allocator .........   Passed    0.01 sec
+      Start 11: test_task_planner
+11/15 Test #11: test_task_planner ................   Passed    0.01 sec
+      Start 12: test_motion_protocol
+12/15 Test #12: test_motion_protocol .............   Passed    0.01 sec
+      Start 13: test_motion_execution
+13/15 Test #13: test_motion_execution ............   Passed    0.01 sec
+      Start 14: test_inverse_kinematics
+14/15 Test #14: test_inverse_kinematics ..........   Passed    0.01 sec
+      Start 15: test_observation_interpreter
+15/15 Test #15: test_observation_interpreter .....   Passed    0.02 sec
+
+100% tests passed, 0 tests failed out of 15
+
+Total Test time (real) =   1.01 sec
