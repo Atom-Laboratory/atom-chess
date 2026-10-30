@@ -97,10 +97,10 @@ test 1
 1: rootdir: /mnt
 1: plugins: launch_testing-3.9.7, ament_xmllint-0.20.6, ament_flake8-0.20.6, ament_mypy-0.20.6, launch_testing_ros-0.29.8, ament_lint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, colcon-core-0.21.0, typeguard-4.4.4, cov-5.0.0
 1: collected 2 items
-1: 
+1:
 1: ../../../../../../../../../../../f/Users/EHD/Github/Atom/atom-chess/simulation/src/test/test_description.py . [ 50%]
 1: .                                                                        [100%]
-1: 
+1:
 1: - generated xml file: /mnt/c/Users/maria/Documents/Codex/2026-10-27/files-pasted-by-the-user-atom/work/atom-simulation-ws/build/atom_description/test_results/atom_description/description.xunit.xml -
 1: ============================== 2 passed in 3.72s ===============================
 1: -- run_test.py: return code 0
@@ -122,9 +122,9 @@ test 2
 2: rootdir: /mnt
 2: plugins: launch_testing-3.9.7, ament_xmllint-0.20.6, ament_flake8-0.20.6, ament_mypy-0.20.6, launch_testing_ros-0.29.8, ament_lint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, colcon-core-0.21.0, typeguard-4.4.4, cov-5.0.0
 2: collected 1 item
-2: 
+2:
 2: ../../../../../../../../../../../f/Users/EHD/Github/Atom/atom-chess/simulation/src/test/test_headless_launch.py . [100%]
-2: 
+2:
 2: - generated xml file: /mnt/c/Users/maria/Documents/Codex/2026-10-27/files-pasted-by-the-user-atom/work/atom-simulation-ws/build/atom_description/test_results/atom_description/headless_launch.xunit.xml -
 2: ============================== 1 passed in 4.42s ===============================
 2: -- run_test.py: return code 0
@@ -146,10 +146,10 @@ test 3
 3: rootdir: /mnt
 3: plugins: launch_testing-3.9.7, ament_xmllint-0.20.6, ament_flake8-0.20.6, ament_mypy-0.20.6, launch_testing_ros-0.29.8, ament_lint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, colcon-core-0.21.0, typeguard-4.4.4, cov-5.0.0
 3: collected 9 items
-3: 
+3:
 3: ../../../../../../../../../../../f/Users/EHD/Github/Atom/atom-chess/simulation/src/test/test_control_core.py . [ 11%]
 3: ........                                                                 [100%]
-3: 
+3:
 3: - generated xml file: /mnt/c/Users/maria/Documents/Codex/2026-10-27/files-pasted-by-the-user-atom/work/atom-simulation-ws/build/atom_description/test_results/atom_description/control_core.xunit.xml -
 3: ============================== 9 passed in 1.90s ===============================
 3: -- run_test.py: return code 0
@@ -171,9 +171,9 @@ test 4
 4: rootdir: /mnt
 4: plugins: launch_testing-3.9.7, ament_xmllint-0.20.6, ament_flake8-0.20.6, ament_mypy-0.20.6, launch_testing_ros-0.29.8, ament_lint-0.20.6, ament_copyright-0.20.6, ament_pep257-0.20.6, colcon-core-0.21.0, typeguard-4.4.4, cov-5.0.0
 4: collected 1 item
-4: 
+4:
 4: ../../../../../../../../../../../f/Users/EHD/Github/Atom/atom-chess/simulation/src/test/test_control_launch.py . [100%]
-4: 
+4:
 4: - generated xml file: /mnt/c/Users/maria/Documents/Codex/2026-10-27/files-pasted-by-the-user-atom/work/atom-simulation-ws/build/atom_description/test_results/atom_description/control_launch.xunit.xml -
 4: ============================== 1 passed in 4.03s ===============================
 4: -- run_test.py: return code 0
