@@ -36,7 +36,7 @@ visualização/renderização, não para reset/advance e os testes de física.
 & ./simulation/mujoco/scripts/Start-MuJoCo.ps1
 ```
 
-O script usa `.venv`, compila um bundle em `runs/upright-chess-v2` na primeira vez e
+O script usa `.venv`, compila um bundle em `runs/upright-chess-v3` na primeira vez e
 abre o visualizador. Se a política local bloquear scripts, use os comandos Python
 abaixo; não é necessário alterar a política do sistema.
 
@@ -51,8 +51,8 @@ avançam pelo relógio simulado sem `sleep`.
 Alternativa sem script, no mesmo terminal preparado acima:
 
 ```powershell
-& $atomPy -m atom_mujoco.cli build --urdf simulation/src/urdf/atom.urdf.xacro --output simulation/mujoco/runs/upright-chess-v2
-& $atomPy -m atom_mujoco.cli view --bundle simulation/mujoco/runs/upright-chess-v2
+& $atomPy -m atom_mujoco.cli build --urdf simulation/src/urdf/atom.urdf.xacro --output simulation/mujoco/runs/upright-chess-v3
+& $atomPy -m atom_mujoco.cli view --bundle simulation/mujoco/runs/upright-chess-v3
 ```
 
 `build` exige diretório novo e nunca sobrescreve um bundle anterior. Após mudar
@@ -62,8 +62,8 @@ um bundle já existente; confira source_urdf_sha256 no manifest.
 ## Demonstração reproduzível e testes
 
 ```powershell
-& $atomPy -m atom_mujoco.cli demo --bundle simulation/mujoco/runs/upright-chess-v2 --output simulation/mujoco/runs/demo-01.json
-& $atomPy -m atom_mujoco.cli render --bundle simulation/mujoco/runs/upright-chess-v2 --output simulation/mujoco/runs/arm.ppm
+& $atomPy -m atom_mujoco.cli demo --bundle simulation/mujoco/runs/upright-chess-v3 --output simulation/mujoco/runs/demo-01.json
+& $atomPy -m atom_mujoco.cli render --bundle simulation/mujoco/runs/upright-chess-v3 --output simulation/mujoco/runs/arm.ppm
 $env:ATOM_TEST_RENDER = '1'
 & $atomPy -m pytest simulation/mujoco/tests -q
 Remove-Item Env:ATOM_TEST_RENDER

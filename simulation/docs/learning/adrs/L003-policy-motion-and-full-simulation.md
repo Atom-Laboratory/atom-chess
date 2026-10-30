@@ -1,5 +1,10 @@
 # L003 — Política, acmotion e validação completa no Gazebo
 
+Documentação operacional associada: [guia Gazebo](../../user-guide-gazebo.md) e
+[guia de início em RL](../user-guide-rl.md). Guias distinguem comandos verificados,
+procedimentos de referência e recursos pendentes; não fornecem agente/reward
+prontos nem apresentam peças visuais como objetos agarráveis.
+
 Data: 30/10/2026. Estado: aceito para requisitos e limites; implementação de
 integração/garra dinâmica pendente de dados mecânicos.
 

@@ -4,6 +4,13 @@ Cada módulo mantém seu guia, relatório de auditoria, testes e decisões. A ra
 documenta somente as relações entre módulos. Referência desta revisão:
 30/10/2026, branch `ros2_simulation`, base `e6c9b1e` com alterações locais herdadas.
 
+## Guias para começar
+
+- [Usar o Gazebo no Windows/WSL](../simulation/docs/user-guide-gazebo.md).
+- [Começar RL com o MuJoCo do ATOM](../simulation/docs/learning/user-guide-rl.md).
+
+## Documentação técnica por módulo
+
 - **Visão:** [guia e contratos](../Software/acvision/README.md),
   [auditoria](../Software/acvision/docs/audit.md),
   [ADR V001 — testes independentes de câmera](../Software/acvision/docs/adrs/V001-tests.md).

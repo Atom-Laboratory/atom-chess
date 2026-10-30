@@ -1,5 +1,8 @@
 # Visualização diagnóstica do ATOM
 
+Guias de uso: [Gazebo no Ubuntu/WSL](docs/user-guide-gazebo.md) e
+[começar RL no MuJoCo/Windows](docs/learning/user-guide-rl.md).
+
 Para preparar experimentos de aprendizado, use agora o [módulo MuJoCo](mujoco/README.md).
 Ele executa diretamente no Windows e dispensa ROS/RViz no laço de simulação.
 Este guia continua descrevendo a infraestrutura ROS existente.

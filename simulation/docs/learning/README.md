@@ -1,5 +1,8 @@
 # Preparação para RL — estudo guiado
 
+Comece pelo [guia do usuário de RL](user-guide-rl.md): terminal correto, comandos,
+leitura de resultados e primeira tarefa pessoal de definição do ambiente.
+
 Infraestrutura disponível: [MuJoCo](../../mujoco/README.md), com
 [reset/advance/observe](../../mujoco/docs/interfaces.md), controle convencional
 e testes. Comece por ela para os novos exercícios; ROS continua disponível para

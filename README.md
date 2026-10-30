@@ -1,5 +1,8 @@
 # ATOM Chess
 
+Guias do usuário: [Gazebo](simulation/docs/user-guide-gazebo.md) e
+[primeiros passos em RL](simulation/docs/learning/user-guide-rl.md).
+
 Projeto de robô para xadrez. Esta branch, `ros2_simulation`, contém a biblioteca
 de visão `acvision` e a descrição ROS 2 do braço. Ainda não existe uma partida
 autônoma integrada. O URDF é um protótipo sem calibração física.

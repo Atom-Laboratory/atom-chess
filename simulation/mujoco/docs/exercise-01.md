@@ -6,7 +6,7 @@ e o bundle gerado pelo launcher. Execute no PowerShell, na raiz do repositório:
 
 ```powershell
 & ./simulation/mujoco/scripts/Start-MuJoCo.ps1 -Mode demo
-& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/inspect_joints.py --bundle simulation/mujoco/runs/upright-chess-v2 --output simulation/mujoco/runs/exercise-01.json
+& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/inspect_joints.py --bundle simulation/mujoco/runs/upright-chess-v3 --output simulation/mujoco/runs/exercise-01.json
 ```
 
 Use um nome novo em --output ao repetir. O script primeiro reinicia em zero,

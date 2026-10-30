@@ -1,5 +1,10 @@
 # Gazebo — requisito de integração completa e lacunas reais
 
+[Guia do usuário: abrir e conhecer o Gazebo](user-guide-gazebo.md).
+Atualização de validação: servidor executou shapes.sdf por 20 iterações com
+`gz sim -s -r --iterations 20`, código de saída 0. GUI e braço completo continuam
+fora dessa validação; o mundo de formas não é o ATOM.
+
 Atualização após capturas do responsável: limite CAD de uma junta da garra
 confirmado visualmente em -45°..+10°, revoluta Z local. Rest está desabilitado.
 Ver [evidências e identificação pendente](../../docs/mechanics/gripper-cad-evidence.md).
