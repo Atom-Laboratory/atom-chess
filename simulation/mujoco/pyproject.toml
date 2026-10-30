@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atom-mujoco"
+version = "0.1.0"
+description = "MuJoCo infrastructure for the uncalibrated ATOM prototype"
+requires-python = ">=3.12"
+dependencies = ["mujoco==3.17.0", "numpy>=2,<3"]
+
+[project.optional-dependencies]
+test = ["pytest>=9,<10"]
+
+[project.scripts]
+atom-mujoco = "atom_mujoco.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
