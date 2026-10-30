@@ -1,5 +1,9 @@
 # Mecânica — fontes e lacunas
 
+Atualização: [capturas e limites CAD da garra](gripper-cad-evidence.md), com
+junta revoluta em Z local de -45° a +10°. Nome/frame e acoplamento ainda precisam
+de extração da montagem. [ADR M002](adrs/M002-gripper-limits.md).
+
 Fonte oficial confirmada: SCARA Robot.f3d no repositório 3DSCARAROBOT.
 [Registro detalhado de evidências](../../simulation/docs/mechanical-evidence.md)
 mantido no caminho original para preservar referências anteriores.

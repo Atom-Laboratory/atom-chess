@@ -1,5 +1,10 @@
 # Gazebo — requisito de integração completa e lacunas reais
 
+Atualização após capturas do responsável: limite CAD de uma junta da garra
+confirmado visualmente em -45°..+10°, revoluta Z local. Rest está desabilitado.
+Ver [evidências e identificação pendente](../../docs/mechanics/gripper-cad-evidence.md).
+O nome/frame dessa junta e o vínculo dos dedos ainda não foram extraídos.
+
 Orientação adicional do responsável: extrair os dados do próprio modelo CAD
 disponível, sem depender de ele fornecer uma tabela pronta. Investigação iniciada:
 Fusion360.exe localizado na instalação webdeploy e iniciado; chegou à janela
