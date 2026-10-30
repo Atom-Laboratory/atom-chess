@@ -129,10 +129,17 @@ endforeach()
 # ==========================================
 # AUTOMATED TESTS (tests Folder)
 # ==========================================
-enable_testing()
+if(PROJECT_IS_TOP_LEVEL)
+    include(CTest)
+endif()
+option(ACVISION_BUILD_HARDWARE_TESTS "Build tests requiring a connected camera" OFF)
+
+if(BUILD_TESTING)
 
 # 1. Faz o download automático do Google Test (Padrão Sênior)
 include(FetchContent)
+find_package(GTest QUIET)
+if(NOT TARGET GTest::gtest_main)
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
@@ -141,12 +148,16 @@ FetchContent_Declare(
 # Força o GTest a usar o mesmo C-Runtime (CRT) dinâmico do MSVC no Windows
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
+endif()
 
 set(TEST_LIST
-    "test_camera"
+    "test_board_detector"
     "test_piece_detector"
     "test_fen_generator"
 )
+if(ACVISION_BUILD_HARDWARE_TESTS)
+    list(APPEND TEST_LIST "test_camera")
+endif()
 
 foreach(test_name ${TEST_LIST})
     set(test_src "tests/${test_name}.cpp")
@@ -168,7 +179,7 @@ foreach(test_name ${TEST_LIST})
 
             target_compile_definitions(${test_name}
                 PRIVATE
-                    TEST_IMAGES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/images"
+                    TEST_IMAGES_DIR="${CMAKE_CURRENT_BINARY_DIR}/test-images"
             )
         endif()
         
@@ -186,6 +197,7 @@ foreach(test_name ${TEST_LIST})
         endif()
     endif()
 endforeach()
+endif()
 
 # ==========================================
 # Configuração de IDE
