@@ -12,6 +12,10 @@ documenta somente as relações entre módulos. Referência desta revisão:
   [contratos de controle](../simulation/docs/control.md),
   [ADR S001 — backend](../simulation/docs/adrs/S001-backend.md),
   [ADR S002 — controle](../simulation/docs/adrs/S002-control.md).
+- **MuJoCo:** [guia](../simulation/mujoco/README.md),
+  [contratos](../simulation/mujoco/docs/interfaces.md),
+  [validação](../simulation/mujoco/docs/validation.md),
+  [ADR S003 — escolha e hipóteses](../simulation/docs/adrs/S003-mujoco.md).
 - **Mecânica:** [registro de fontes](mechanics/README.md),
   [ADR M001 — referência CAD](mechanics/adrs/M001-cad.md).
 - **RL futuro:** [trilha](../simulation/docs/learning/README.md),

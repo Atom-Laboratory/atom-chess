@@ -17,6 +17,13 @@ e CAD, não drivers executáveis. Há caminhos versionados que diferem apenas em
 maiúsculas; Windows não os representa independentemente. Não normalizar esses
 caminhos sem revisão em filesystem sensível a caixa.
 
+O backend principal para experimentos de controle é agora `simulation/mujoco`:
+converte o URDF em MJCF/manifest/STL, executa física experimental em passos
+explícitos e oferece reset/advance/observe, visualização e logs. Não depende de
+ROS ou do código anterior de RL. A ligação desse backend com o controle ROS é
+futura; os dois modos não trocam estados automaticamente. Contatos e gravidade
+estão desativados no perfil sintético atual, com massas/inércias declaradas.
+
 ## Arquitetura pretendida, ainda não integrada
 
 Visão estima observações; núcleo de xadrez mantém estado legal e consulta

@@ -2,6 +2,9 @@
 
 Data: 30/10/2026. Estado: aceito para infraestrutura cinemática; física adiada.
 
+Atualização: preferência por Gazebo substituída por [S003](S003-mujoco.md),
+após solicitação do responsável. Demais limites do protótipo continuam válidos.
+
 Contexto: já há URDF/RViz e ROS Lyrical; faltam inércias, colisões e calibração.
 
 Decisão: preservar URDF, robot_state_publisher e RViz, adicionar somente controle

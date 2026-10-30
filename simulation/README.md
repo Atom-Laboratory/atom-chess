@@ -1,5 +1,9 @@
 # Visualização diagnóstica do ATOM
 
+Para preparar experimentos de aprendizado, use agora o [módulo MuJoCo](mujoco/README.md).
+Ele executa diretamente no Windows e dispensa ROS/RViz no laço de simulação.
+Este guia continua descrevendo a infraestrutura ROS existente.
+
 Documentação deste módulo: [auditoria](docs/audit.md),
 [controle convencional e interfaces](docs/control.md), [validação](docs/validation.md),
 [preparação pessoal para RL](docs/learning/README.md).

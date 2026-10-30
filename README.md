@@ -10,6 +10,7 @@ autônoma integrada. O URDF é um protótipo sem calibração física.
 |---|---|
 | Visão C++/OpenCV | [Guia](Software/acvision/README.md), [auditoria](Software/acvision/docs/audit.md) |
 | ROS 2 e controle simulado | [Guia](simulation/README.md), [auditoria](simulation/docs/audit.md) |
+| MuJoCo e preparação de experimentos | [Instalação, visualização e testes](simulation/mujoco/README.md) |
 | Mecânica | [Fontes e lacunas](docs/mechanics/README.md) |
 | Preparação para RL | [Trilha de estudo](simulation/docs/learning/README.md) |
 | Projeto e integração | [Arquitetura](docs/architecture.md), [roadmap](docs/roadmap.md) |

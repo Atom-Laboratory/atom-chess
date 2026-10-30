@@ -1,5 +1,10 @@
 # Preparação para RL — estudo guiado
 
+Infraestrutura disponível: [MuJoCo](../../mujoco/README.md), com
+[reset/advance/observe](../../mujoco/docs/interfaces.md), controle convencional
+e testes. Comece por ela para os novos exercícios; ROS continua disponível para
+estudo de integração. O agente e a formulação do ambiente continuam seus.
+
 O agente será desenvolvido por você. Não é necessário instalar Gymnasium,
 PyTorch ou Stable-Baselines3 para executar ROS, consultar estados ou controlar
 o protótipo. [Escopo e experimento anterior](adrs/L001-scope.md).
