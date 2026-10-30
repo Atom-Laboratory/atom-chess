@@ -1,5 +1,11 @@
 # Auditoria ROS e simulação — 30/10/2026
 
+Atualização após implementação: controlador convencional, comandos, estados,
+stop/reset e mudanças TF aprovados em teste real ROS e CLI. Consulte
+[contratos](control.md) e [evidências finais](validation.md). O diagnóstico abaixo
+registra a base anterior ao novo controlador; física e inspeção visual continuam
+pendentes.
+
 Pacote único atom_description em src, sem pacotes filhos. URDF: world, base_link,
 z_axis_link, arm1_link e arm2_link; duas revolutas e uma prismática. Sete STL no
 diretório, quatro usados no URDF; garra não montada. Sem collision, inertial,

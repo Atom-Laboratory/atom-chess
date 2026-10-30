@@ -1,4 +1,39 @@
-# Validação do primeiro incremento
+# Validação por incremento
+
+## Controle convencional — 30/10/2026
+
+Build colcon, Xacro e check_urdf aprovados. Quatro suítes CTest, contendo 13
+casos pytest, aprovadas. colcon soma os wrappers e reporta 17 testes, sem erros,
+falhas ou skips; não são 17 cenários independentes.
+
+Comandos CLI também executados: publicação única da meta, leitura de JointState
+e status, stop e reset (ambos success=True). Foi necessário explicitar o tipo
+na chamada topic echo para evitar uma falha inicial de descoberta de tipo;
+docs/control.md contém os comandos corrigidos. RViz inicializou OpenGL 4.5 no
+launch de controle; isso não resolve a pendência de inspeção visual.
+
+Controle testado em DDS real: recebimento da meta [0.3, 0.08, -0.4], posições
+intermediárias/finais, mudança de translação e rotação TF, rejeição de comando
+fora de limite sem alterar meta, parada durante movimento e reset para zero.
+Núcleo: ordenação por nomes, limites/velocidade, não finitos, dt inválido,
+duplicação, parada e reset. A primeira execução falhou em comparação array/lista
+do teste; corrigida a asserção, suíte completa aprovada.
+
+| Critério solicitado | Resultado |
+|---|---|
+| Carregar modelo | Verificado com Xacro/check_urdf e ROS |
+| Iniciar ROS | Dois launches exercitados sem GUI |
+| Visualizar montagem | Pendente de inspeção visual; ver limitação WSLg abaixo |
+| Consultar estados | Verificado por subscription real |
+| Comandos chegarem ao controlador | Verificado por status e resposta articular |
+| Movimento e resultado | Verificado numericamente nos estados e TF; observação visual pendente |
+| Reprodução | Build, testes e comandos em README e docs/control.md |
+
+Não declarar simulação física completa: URDF sem inércias/colisões; CAD e TCP
+não calibrados. Nenhum treinamento foi executado nesta revisão. Commits locais
+agora autorizados pelo responsável; informações de Git abaixo são históricas.
+
+## Primeiro incremento — registro histórico
 
 Data: 27/10/2026. Branch: `ros2_simulation`, baseada em `e6c9b1e`.
 

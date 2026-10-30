@@ -1,5 +1,13 @@
 # Visualização diagnóstica do ATOM
 
+Documentação deste módulo: [auditoria](docs/audit.md),
+[controle convencional e interfaces](docs/control.md), [validação](docs/validation.md),
+[preparação pessoal para RL](docs/learning/README.md).
+
+Para comandar movimento após o build: `ros2 launch atom_description control_demo.launch.py`.
+Esse launch usa o controlador cinemático como única fonte de estados. Não o execute
+simultaneamente ao launch de sliders abaixo. Não é simulação física.
+
 Esta primeira etapa carrega o protótipo já existente na branch `ros2_simulation`
 com RViz e publicação de estados/TF. A referência mecânica oficial, confirmada
 pelo responsável em 27/10/2026, é `SCARA Robot.f3d` no repositório `3DSCARAROBOT`.

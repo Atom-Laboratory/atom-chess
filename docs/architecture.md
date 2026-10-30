@@ -7,7 +7,9 @@ cantos; separadamente, células fornecidas pelo chamador → ocupação/cor → 
 simplificada. As aplicações são demonstrações; não há pipeline completo de
 reconstrução da partida. `simulation/src` é um único pacote ament_cmake,
 `atom_description`: URDF → robot_state_publisher → TF → RViz, com estados
-articulares fornecidos por um único publicador por execução.
+articulares fornecidos por um único publicador por execução. Em control_demo,
+o servo convencional recebe metas nomeadas e publica estados; em view_robot,
+os estados vêm dos sliders ou do publicador padrão. Os modos são exclusivos.
 
 Não existe comunicação entre acvision e ROS nesta revisão. `Frame Capture.cpp`
 é um experimento legado fora do CMake. `Hardware`/`hardware` contém referências

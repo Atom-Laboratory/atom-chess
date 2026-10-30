@@ -1,5 +1,10 @@
 # Roadmap verificável
 
+Situação em 30/10/2026: entregas 1 e 2 executadas, com testes C++/ROS e CLI
+aprovados. A etapa 3 permanece pendente: inicialização do RViz foi observada em
+logs, mas montagem não inspecionada visualmente nem calibrada contra o F3D.
+Etapas dependentes de fidelidade física não foram iniciadas.
+
 | Ordem | Entrega | Dependência e critério de conclusão |
 |---|---|---|
 | 1 | Auditoria e guias por módulo | Build C++, testes ROS, inventário de lacunas e comandos reproduzíveis; registrar limitações visuais e físicas |
