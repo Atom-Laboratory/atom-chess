@@ -5,6 +5,12 @@ Ambiente: Windows, Python 3.12.14, MuJoCo 3.17.0, NumPy 2.5.4, pytest 9.2.0.
 Dependências instaladas em venv isolado; lock inclui versões transitivas do
 ambiente verificado. Não houve instalação de framework de treinamento.
 
+Reprodução local final: ambiente padrão simulation/mujoco/.venv instalado pelo
+lock, instalação editable aprovada, Start-MuJoCo.ps1 -Mode demo executado do
+checkout. O script compilou runs/prototype-v1, executou o movimento e gravou JSON
+com os mesmos resultados. Ambientes, bundles e resultados gerados estão ignorados
+no Git; fontes, lock, testes, documentação e ADR estão versionados.
+
 ## Executado
 
 - Compilação real do bundle MJCF e quatro malhas STL, três juntas e atuadores.

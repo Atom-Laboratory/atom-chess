@@ -11,7 +11,8 @@ o protótipo. [Escopo e experimento anterior](adrs/L001-scope.md).
 
 ## Etapa atual: entender o que o robô simulado representa
 
-Leia src/urdf/atom.urdf.xacro e observe TF de world até arm2_link. Juntas revolutas
+Leia src/urdf/atom.urdf.xacro e consulte arm2_position/arm2_rotation em observe()
+do MuJoCo. Alternativamente, no modo ROS, observe TF de world até arm2_link. Juntas revolutas
 usam radianos; a prismática usa metros. O eixo de translação atual é Y, não Z,
 apesar do nome. Isso vem do protótipo e precisa de confirmação CAD.
 
@@ -20,8 +21,9 @@ frame arm2_link, prever qual componente muda e comparar com TF. A última junta
 altera orientação dessa origem sem deslocá-la; o TCP ainda não existe.
 Critério: explicar as três respostas e distinguir erro do modelo de erro de
 controle. Erro comum: chamar o frame final de ponta da garra ou assumir eixo Z
-pelo nome da junta. Arquivos: URDF, RViz e interface de controle ROS documentada
-no guia de simulação. Não escrever recompensa ou rede neural ainda.
+pelo nome da junta. Arquivos: URDF e atom_mujoco/backend.py; contratos e atalhos
+no guia MuJoCo. O exercício dispensa ROS/RViz. Não escrever recompensa ou rede
+neural ainda.
 
 ## Próximas etapas, sem implementação antecipada
 
