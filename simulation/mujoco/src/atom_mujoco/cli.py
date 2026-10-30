@@ -94,7 +94,7 @@ def main():
             child.add_argument('--seconds', type=float, default=4.)
     args = parser.parse_args()
     if args.command == 'build':
-        parameters = json.loads(args.parameters.read_text(encoding='utf-8')) if args.parameters else None
+        parameters = json.loads(args.parameters.read_text(encoding='utf-8-sig')) if args.parameters else None
         print(json.dumps(build_bundle(args.urdf, args.output, parameters=parameters), indent=2))
         return
     sim = Simulation(args.bundle)

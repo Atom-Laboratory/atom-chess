@@ -29,7 +29,7 @@ def provenance():
                                            stderr=subprocess.DEVNULL, timeout=10).decode().strip()
         revision = git('rev-parse', 'HEAD')
         tracked_dirty = bool(git('status', '--porcelain', '--untracked-files=no'))
-        untracked = bool(git('ls-files', '--others', '--exclude-standard'))
+        untracked = bool(git('ls-files', '--others', '--exclude-standard', '--', ':/'))
     except (OSError, subprocess.SubprocessError):
         revision, tracked_dirty, untracked = None, None, None
     return {'utc': datetime.now(timezone.utc).isoformat(), 'git_commit': revision,

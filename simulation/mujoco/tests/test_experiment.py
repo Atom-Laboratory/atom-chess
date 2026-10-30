@@ -1,6 +1,7 @@
 """Infrastructure tests with toy tasks, not a reaching formulation or agent."""
 from pathlib import Path
 import json
+import subprocess
 
 import mujoco
 import numpy as np
@@ -115,3 +116,32 @@ def test_record_roundtrip_no_overwrite_and_nonfinite_rejected(tmp_path):
     with pytest.raises(ValueError):
         save_record(tmp_path/'bad.json', {'value': float('nan')})
     assert not (tmp_path/'bad.json').exists()
+
+
+def test_provenance_sees_untracked_files_outside_package(tmp_path, monkeypatch):
+    from atom_mujoco import recording
+    def git(*args):
+        subprocess.run(['git', '-C', str(tmp_path), *args], check=True, capture_output=True)
+    git('init')
+    (tmp_path/'tracked.txt').write_text('fixture')
+    git('add', 'tracked.txt')
+    git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-m', 'fixture')
+    package = tmp_path/'package'
+    package.mkdir()
+    monkeypatch.setattr(recording, '__file__', str(package/'recording.py'))
+    assert recording.provenance()['untracked_present'] is False
+    (tmp_path/'task.py').write_text('# researcher task outside package')
+    metadata = recording.provenance()
+    assert metadata['untracked_present'] is True
+    assert metadata['tracked_dirty'] is False
+
+
+def test_cli_parameters_accept_windows_utf8_bom(tmp_path, monkeypatch, capsys):
+    from atom_mujoco.cli import main
+    source = Path(__file__).resolve().parents[2]/'src/urdf/atom.urdf.xacro'
+    config = tmp_path/'config.json'
+    config.write_text('{"actuator_kp": 40}', encoding='utf-8-sig')
+    monkeypatch.setattr('sys.argv', ['atom-mujoco', 'build', '--urdf', str(source),
+                                   '--output', str(tmp_path/'bundle'), '--parameters', str(config)])
+    main()
+    assert json.loads(capsys.readouterr().out)['profile']['actuator_kp'] == 40
