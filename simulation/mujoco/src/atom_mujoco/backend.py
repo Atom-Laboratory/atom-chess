@@ -11,7 +11,7 @@ class Simulation:
     def __init__(self, bundle):
         bundle = Path(bundle)
         self.manifest = json.loads((bundle/'manifest.json').read_text(encoding='utf-8'))
-        if self.manifest['schema'] != 1 or self.manifest['profile']['name'] != 'uncalibrated-zero-gravity-v1':
+        if self.manifest['schema'] != 1 or self.manifest['profile']['name'] not in ('uncalibrated-zero-gravity-v1', 'interactive-gravity-v1'):
             raise ValueError('Unsupported bundle schema/profile')
         for name, digest in dict(self.manifest['assets_sha256'], **{'model.xml': self.manifest['model_sha256']}).items():
             path = (bundle/name).resolve()
@@ -56,6 +56,8 @@ class Simulation:
             position = rng.uniform(center-half_width, center+half_width)
         elif position is None:
             position = np.clip(np.zeros_like(self.lower), self.lower, self.upper)
+            if self.manifest['profile']['contacts']:
+                position[1] = .12
         value = self.validate(position)
         mujoco.mj_resetData(self.model, self.data)
         self.data.qpos[:] = value
@@ -90,7 +92,16 @@ class Simulation:
                     joint_limit_excess=np.maximum(0, np.maximum(self.lower-self.data.qpos, self.data.qpos-self.upper)),
                     tool_pose=(self.frame_pose('experimental_tool')
                                if self.manifest.get('experimental_tool_offset_m') is not None else None),
-                    contacts=None, profile=self.manifest['profile']['name'])
+                    contacts=self.contact_report() if self.manifest['profile']['contacts'] else None,
+                    profile=self.manifest['profile']['name'])
+
+    def contact_report(self):
+        result = []
+        for contact in self.data.contact:
+            result.append(dict(geom1=mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1),
+                               geom2=mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2),
+                               distance_m=float(contact.dist)))
+        return result
 
     def frame_pose(self, site='arm2_frame'):
         """World position (m) and rotation matrix of a named site, not a calibrated TCP."""

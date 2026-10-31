@@ -1,3 +1,9 @@
+# Current interactive profile: v4
+
+The default launcher now enables experimental gravity, environment contacts and
+moving fingers with a visible control panel. Follow the [v4 controls and developer guide](docs/interactive-controls.md).
+Previous three-axis/zero-gravity notes below remain applicable to v3 diagnostic bundles.
+
 [Current English operational guide](docs/mujoco-user-guide.md) | [Integration report](docs/integration-report.md)
 
 # ATOM no MuJoCo — infraestrutura para desenvolver RL

@@ -27,13 +27,15 @@ def demonstration(sim, seconds):
     started = time.perf_counter()
     sim.reset()
     # Software test scenario, not a calibrated manipulation target.
-    goal = np.clip(np.array([.3, .08, -.4]), sim.lower, sim.upper)
+    goal = sim.target.copy()
+    goal[:3] = [.3, .08, -.4]
+    goal = np.clip(goal, sim.lower, sim.upper)
     trajectory = [serializable(sim.observe())]
     for _ in range(round(seconds/sim.dt)):
         trajectory.append(serializable(sim.advance(goal)))
     error = np.abs(sim.data.qpos-goal)
     return dict(schema=1, mode='conventional_position_control',
-                provenance=provenance(), seed=None, reset='zero-clipped-to-limits',
+                provenance=provenance(), seed=None, reset=('raised-interactive-home' if sim.manifest['profile']['contacts'] else 'zero-clipped-to-limits'),
                 task=None, algorithm=None, episodes=1, checkpoints=[],
                 wall_time_s=time.perf_counter()-started,
                 mujoco_version=mujoco.__version__, python=platform.python_version(),
@@ -41,41 +43,13 @@ def demonstration(sim, seconds):
                 final_error=error.tolist(), max_joint_limit_excess=np.max([
                     s['joint_limit_excess'] for s in trajectory], axis=0).tolist(),
                 finite=all(np.isfinite(s['position']).all() for s in trajectory),
-                contacts=None, trajectory=trajectory)
+                contacts=sim.observe()['contacts'], trajectory=trajectory)
 
 
 def viewer(sim):
-    import mujoco.viewer
-    # Q/A, W/S, E/D adjust target by a fraction of each prototype range.
-    target = sim.target.copy()
-    requests = []
-    def on_key(key):
-        requests.append(key)
-    print('Q/A: joint 1; W/S: joint 2; E/D: joint 3; R: reset; Space: hold; Esc: close', flush=True)
-    with mujoco.viewer.launch_passive(sim.model, sim.data, key_callback=on_key) as window:
-        with window.lock():
-            camera = sim.manifest.get('scene', {}).get('camera', {})
-            window.cam.lookat[:] = camera.get('lookat', [.15, .08, 0])
-            window.cam.distance = camera.get('distance', 1.3)
-            window.cam.azimuth = camera.get('azimuth', 120)
-            window.cam.elevation = camera.get('elevation', -25)
-        while window.is_running():
-            start = time.monotonic()
-            while requests:
-                key = requests.pop(0)
-                if key == ord('R'):
-                    sim.reset()
-                    target = sim.target.copy()
-                elif key == 32:
-                    target = np.clip(sim.data.qpos.copy(), sim.lower, sim.upper)
-                else:
-                    for i, pair in enumerate(('QA', 'WS', 'ED')):
-                        if key in map(ord, pair):
-                            target[i] += (1 if key == ord(pair[0]) else -1)*.05*(sim.upper[i]-sim.lower[i])
-                            target = np.clip(target, sim.lower, sim.upper)
-            sim.advance(target)
-            window.sync()
-            time.sleep(max(0, sim.dt-(time.monotonic()-start)))
+    from .controls import run_viewer
+    return run_viewer(sim)
+
 
 
 def main():
@@ -85,6 +59,7 @@ def main():
     build.add_argument('--urdf', required=True, type=Path)
     build.add_argument('--output', required=True, type=Path)
     build.add_argument('--parameters', type=Path, help='JSON overrides; experimental, not calibration')
+    build.add_argument('--interactive', action='store_true', help='Experimental gravity/contact/gripper profile')
     for command in ('demo', 'view', 'render'):
         child = sub.add_parser(command)
         child.add_argument('--bundle', type=Path, required=True)
@@ -95,7 +70,7 @@ def main():
     args = parser.parse_args()
     if args.command == 'build':
         parameters = json.loads(args.parameters.read_text(encoding='utf-8-sig')) if args.parameters else None
-        print(json.dumps(build_bundle(args.urdf, args.output, parameters=parameters), indent=2))
+        print(json.dumps(build_bundle(args.urdf, args.output, parameters=parameters, interactive=args.interactive), indent=2))
         return
     sim = Simulation(args.bundle)
     if args.command == 'view':

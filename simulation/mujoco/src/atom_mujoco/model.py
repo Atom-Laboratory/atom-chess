@@ -59,7 +59,7 @@ def origin(element):
     return {'pos': text(pos), 'quat': text(quat)}
 
 
-def build_bundle(urdf, output, *, parameters=None):
+def build_bundle(urdf, output, *, parameters=None, interactive=False):
     """Emit a portable MJCF/mesh bundle; refuse unknown geometry/topology."""
     profile = copy.deepcopy(PROFILE)
     parameters = dict(parameters or {})
@@ -215,6 +215,10 @@ def build_bundle(urdf, output, *, parameters=None):
     visit(root_link, mounting)
     if visited != set(links):
         raise ValueError('Disconnected or cyclic links')
+    scene = copy.deepcopy(SCENE)
+    if interactive:
+        from .interactive_model import configure
+        scene.update(configure(mjcf, metadata, profile))
     xml = ET.tostring(mjcf, encoding='unicode')
     mujoco.MjModel.from_xml_string(xml, mesh_bytes)  # Compile before writing output.
     output = Path(output)
@@ -225,10 +229,10 @@ def build_bundle(urdf, output, *, parameters=None):
     for filename, data in mesh_bytes.items():
         (output/filename).write_bytes(data)
     manifest = dict(schema=1, source_urdf_sha256=hashlib.sha256(raw).hexdigest(),
-                    mujoco_version=mujoco.__version__, profile=profile, scene=SCENE, joints=metadata,
+                    mujoco_version=mujoco.__version__, profile=profile, scene=scene, joints=metadata,
                     tip_frame='arm2_link', tcp_calibrated=False,
                     experimental_tool_offset_m=tool_offset.tolist() if tool_offset is not None else None,
-                    pieces=pieces, pieces_physics='fixed-visual-only',
+                    pieces=pieces, pieces_physics='fixed-collidable' if interactive else 'fixed-visual-only',
                     assets_sha256={key: hashlib.sha256(value).hexdigest() for key, value in mesh_bytes.items()},
                     model_sha256=hashlib.sha256(xml.encode()).hexdigest())
     (output/'manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
