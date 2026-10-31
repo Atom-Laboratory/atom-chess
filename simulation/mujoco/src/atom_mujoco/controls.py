@@ -42,12 +42,18 @@ def run_viewer(sim):
     def change(index, sign):
         target = jog([v.get() for v in values], sim.lower, sim.upper, index, sign)
         values[index].set(float(target[index]))
+        if index >= 3 and len(values) == 5:
+            values[3].set(float(target[index]))
+            values[4].set(float(target[index]))
     for i, name in enumerate(sim.names):
+        if i == 4:
+            continue
         row = ttk.Frame(panel)
         row.pack(fill='x', padx=10, pady=4)
         ttk.Label(row, text=name, width=31).pack(side='left')
         ttk.Button(row, text='−', width=3, command=lambda i=i: change(i, -1)).pack(side='left')
-        ttk.Scale(row, from_=float(sim.lower[i]), to=float(sim.upper[i]), variable=values[i]).pack(side='left', fill='x', expand=True)
+        ttk.Scale(row, from_=float(sim.lower[i]), to=float(sim.upper[i]), variable=values[i],
+                  command=(lambda value: values[4].set(float(value))) if i == 3 else None).pack(side='left', fill='x', expand=True)
         ttk.Button(row, text='+', width=3, command=lambda i=i: change(i, 1)).pack(side='left')
     def fingers(value):
         for i in range(3, len(values)):
@@ -93,7 +99,10 @@ def run_viewer(sim):
                             sim.reset()
                             set_values(sim.target)
                         elif key == 32:
-                            set_values(np.clip(sim.data.qpos, sim.lower, sim.upper))
+                            hold = np.clip(sim.observe()['position'], sim.lower, sim.upper)
+                            if len(hold) == 5:
+                                hold[3:] = np.mean(hold[3:])
+                            set_values(hold)
                         elif key == ord('V'):
                             camera()
                         elif key == ord('P'):

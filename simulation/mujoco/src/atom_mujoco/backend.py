@@ -11,7 +11,7 @@ class Simulation:
     def __init__(self, bundle):
         bundle = Path(bundle)
         self.manifest = json.loads((bundle/'manifest.json').read_text(encoding='utf-8'))
-        if self.manifest['schema'] != 1 or self.manifest['profile']['name'] not in ('uncalibrated-zero-gravity-v1', 'interactive-gravity-v1'):
+        if self.manifest['schema'] != 1 or self.manifest['profile']['name'] not in ('uncalibrated-zero-gravity-v1', 'interactive-gravity-v1', 'interactive-gravity-v2'):
             raise ValueError('Unsupported bundle schema/profile')
         for name, digest in dict(self.manifest['assets_sha256'], **{'model.xml': self.manifest['model_sha256']}).items():
             path = (bundle/name).resolve()
@@ -23,10 +23,13 @@ class Simulation:
         self.lower = np.array([j['lower'] for j in self.manifest['joints']])
         self.upper = np.array([j['upper'] for j in self.manifest['joints']])
         self.speed = np.array([j['velocity'] for j in self.manifest['joints']])
-        if self.model.nq != len(self.names) or self.model.nu != len(self.names):
+        if self.model.nu != len(self.names):
             raise ValueError('Unsupported model dimensions')
+        self.joint_ids = np.array([mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_JOINT, name) for name in self.names])
+        self.qadr = self.model.jnt_qposadr[self.joint_ids]
+        self.vadr = self.model.jnt_dofadr[self.joint_ids]
         actual_names = [mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_JOINT, i)
-                        for i in range(self.model.njnt)]
+                        for i in self.joint_ids]
         if actual_names != self.names:
             raise ValueError('Model/manifest joint order mismatch')
         self.substeps = int(self.manifest['profile']['control_substeps'])
@@ -44,6 +47,8 @@ class Simulation:
             raise ValueError('Expected one finite position per joint')
         if np.any(value < self.lower) or np.any(value > self.upper):
             raise ValueError('Position outside prototype joint limits')
+        if self.manifest['profile']['name'] == 'interactive-gravity-v2' and not np.isclose(value[3], value[4], atol=1e-10):
+            raise ValueError('Coupled fingers require equal targets')
         return value
 
     def reset(self, position=None, *, seed=None, randomize=False):
@@ -54,13 +59,15 @@ class Simulation:
             center = (self.lower+self.upper)/2
             half_width = (self.upper-self.lower)*.2
             position = rng.uniform(center-half_width, center+half_width)
+            if self.manifest['profile']['name'] == 'interactive-gravity-v2':
+                position[4] = position[3]
         elif position is None:
             position = np.clip(np.zeros_like(self.lower), self.lower, self.upper)
             if self.manifest['profile']['contacts']:
                 position[1] = .12
         value = self.validate(position)
         mujoco.mj_resetData(self.model, self.data)
-        self.data.qpos[:] = value
+        self.data.qpos[self.qadr] = value
         self.reference = value.copy()
         self.target = value.copy()
         self.data.ctrl[:] = value
@@ -84,12 +91,12 @@ class Simulation:
         return self.observe()
 
     def observe(self):
-        return dict(time_s=float(self.data.time), position=self.data.qpos.copy(),
-                    velocity=self.data.qvel.copy(), reference=self.reference.copy(),
+        return dict(time_s=float(self.data.time), position=self.data.qpos[self.qadr].copy(),
+                    velocity=self.data.qvel[self.vadr].copy(), reference=self.reference.copy(),
                     target=self.target.copy(), actuator_force=self.data.actuator_force.copy(),
                     arm2_position=self.data.site_xpos[self.site_id].copy(),
                     arm2_rotation=self.data.site_xmat[self.site_id].reshape(3, 3).copy(),
-                    joint_limit_excess=np.maximum(0, np.maximum(self.lower-self.data.qpos, self.data.qpos-self.upper)),
+                    joint_limit_excess=np.maximum(0, np.maximum(self.lower-self.data.qpos[self.qadr], self.data.qpos[self.qadr]-self.upper)),
                     tool_pose=(self.frame_pose('experimental_tool')
                                if self.manifest.get('experimental_tool_offset_m') is not None else None),
                     contacts=self.contact_report() if self.manifest['profile']['contacts'] else None,

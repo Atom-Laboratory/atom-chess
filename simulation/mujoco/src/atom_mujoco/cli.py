@@ -33,7 +33,7 @@ def demonstration(sim, seconds):
     trajectory = [serializable(sim.observe())]
     for _ in range(round(seconds/sim.dt)):
         trajectory.append(serializable(sim.advance(goal)))
-    error = np.abs(sim.data.qpos-goal)
+    error = np.abs(sim.observe()['position']-goal)
     return dict(schema=1, mode='conventional_position_control',
                 provenance=provenance(), seed=None, reset=('raised-interactive-home' if sim.manifest['profile']['contacts'] else 'zero-clipped-to-limits'),
                 task=None, algorithm=None, episodes=1, checkpoints=[],

@@ -1,3 +1,9 @@
+# Current default: v5 dynamic pieces and coupled fingers
+
+See the [v5 operating and developer steps](grasping-v5.md). The launcher now builds
+interactive-chess-v5: movable pieces, shared finger control and contact-based
+grip/release. Earlier v4 static-piece descriptions below are historical.
+
 # Interactive controls, gravity and contacts
 
 ## Blue capsules or balloons after keyboard input

@@ -232,7 +232,7 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
                     mujoco_version=mujoco.__version__, profile=profile, scene=scene, joints=metadata,
                     tip_frame='arm2_link', tcp_calibrated=False,
                     experimental_tool_offset_m=tool_offset.tolist() if tool_offset is not None else None,
-                    pieces=pieces, pieces_physics='fixed-collidable' if interactive else 'fixed-visual-only',
+                    pieces=pieces, pieces_physics='free-rigid-bodies' if interactive else 'fixed-visual-only',
                     assets_sha256={key: hashlib.sha256(value).hexdigest() for key, value in mesh_bytes.items()},
                     model_sha256=hashlib.sha256(xml.encode()).hexdigest())
     (output/'manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')

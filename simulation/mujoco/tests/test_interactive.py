@@ -44,7 +44,8 @@ def test_bidirectional_controls_and_clamping():
 
 def test_gravity_fingers_and_return(interactive):
     sim = interactive
-    assert sim.model.nq == sim.model.nu == 5
+    assert sim.model.nu == 5
+    assert sim.model.nq == 5+32*7
     np.testing.assert_allclose(sim.model.opt.gravity, [0,0,-9.81])
     assert not sim.model.opt.disableflags & mujoco.mjtDisableBit.mjDSBL_CONTACT
     for opening in (.02, -.01, .02):
@@ -78,3 +79,42 @@ def test_robot_environment_contacts_are_reported(interactive):
     assert not sim.data.warning.number.any()
     sim.reset()
     assert sim.data.time == 0
+
+
+def test_dynamic_pawn_contact_grasp_lift_release_and_reset(interactive):
+    sim = interactive
+    sim.reset([0, .0115, 0, 0, 0])
+    # Explicit isolated fixture: relocate other pieces and place a pawn under
+    # the fingers. No pose edits occur after the experiment starts below.
+    for i, piece in enumerate(sim.manifest['pieces']):
+        body = sim.model.body(piece['name']).id
+        address = sim.model.jnt_qposadr[sim.model.body_jntadr[body]]
+        sim.data.qpos[address:address+3] = [2+i*.04, 2, .001]
+    body = sim.model.body('white_pawn_a2').id
+    address = sim.model.jnt_qposadr[sim.model.body_jntadr[body]]
+    sim.data.qpos[address:address+3] = [.373, -.0905, .0182]
+    mujoco.mj_forward(sim.model, sim.data)
+    goal = sim.target.copy()
+    for _ in range(100):
+        sim.advance(goal)
+    initial = sim.data.xpos[body].copy()
+    goal[3:] = -.01
+    for _ in range(100):
+        sim.advance(goal)
+    assert any('finger_' in str(contact) and 'white_pawn_a2' in str(contact)
+               for contact in sim.contact_report())
+    goal[1] += .08
+    for _ in range(200):
+        state = sim.advance(goal)
+    assert sim.data.xpos[body, 2] > initial[2]+.06
+    assert abs(state['position'][3]-state['position'][4]) < 1e-5
+    goal[3:] = .02
+    for _ in range(150):
+        sim.advance(goal)
+    assert abs(sim.data.xpos[body, 2]-initial[2]) < .002
+    sim.reset()
+    assert sim.data.time == 0
+    assert np.linalg.norm(sim.data.xpos[body, :2]-initial[:2]) > .05
+    np.testing.assert_array_equal(sim.data.qvel, 0)
+    with pytest.raises(ValueError, match='equal targets'):
+        sim.advance([0, .12, 0, -.01, .02])

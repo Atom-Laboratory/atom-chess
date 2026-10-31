@@ -1,3 +1,9 @@
+# Current default: v5 dynamic pieces and coupled fingers
+
+See the [v5 operating and developer steps](docs/grasping-v5.md). The launcher now builds
+interactive-chess-v5: movable pieces, shared finger control and contact-based
+grip/release. Earlier v4 static-piece descriptions below are historical.
+
 # Current interactive profile: v4
 
 The default launcher now enables experimental gravity, environment contacts and
