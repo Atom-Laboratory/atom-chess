@@ -5,7 +5,22 @@ import numpy as np
 import pytest
 
 from atom_mujoco.backend import Simulation
-from atom_mujoco.controls import jog
+from atom_mujoco.controls import jog, clean_view_options
+
+
+def test_robot_shortcuts_cannot_leave_diagnostic_balloons_enabled():
+    options = mujoco.MjvOption()
+    # Native shortcuts run in addition to our key callback.
+    options.flags[:] = 1
+    options.geomgroup[:] = 1
+    clean_view_options(options)
+    for flag in (mujoco.mjtVisFlag.mjVIS_AUTOCONNECT,
+                 mujoco.mjtVisFlag.mjVIS_CONTACTPOINT,
+                 mujoco.mjtVisFlag.mjVIS_CONTACTFORCE,
+                 mujoco.mjtVisFlag.mjVIS_INERTIA):
+        assert not options.flags[flag]
+    assert not options.geomgroup[3]
+    assert options.flags[mujoco.mjtVisFlag.mjVIS_STATIC]
 from atom_mujoco.model import build_bundle
 
 

@@ -1,5 +1,14 @@
 # Interactive controls, gravity and contacts
 
+## Blue capsules or balloons after keyboard input
+
+The native MuJoCo A shortcut enables Auto Connect while ATOM uses A to reverse
+the first joint. Native C also toggles contact markers while closing the gripper.
+The control viewer now restores clean rendering every frame, hiding these debug
+overlays without disabling physics or contact detection. Restart the viewer after
+updating the code; no bundle rebuild is needed. Native diagnostic toggles are
+intentionally not retained in this control mode. Camera mouse controls still work.
+
 ## Start on Windows
 
 1. Close old MuJoCo viewers. Each window has independent simulation state.

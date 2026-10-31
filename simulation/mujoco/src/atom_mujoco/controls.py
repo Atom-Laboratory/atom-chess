@@ -6,6 +6,16 @@ import mujoco
 import numpy as np
 
 
+def clean_view_options(options):
+    """Robot-control keys also reach MuJoCo's native diagnostic shortcuts.
+
+    A enables Auto Connect (large blue capsules), C shows contact markers, etc.
+    Restore normal rendering each frame without changing camera or physics.
+    """
+    mujoco.mjv_defaultOption(options)
+    options.geomgroup[3] = 0
+
+
 def jog(target, lower, upper, index, direction, fraction=.01):
     result = np.array(target, copy=True)
     result[index] = np.clip(result[index] + direction*fraction*(upper[index]-lower[index]),
@@ -71,7 +81,7 @@ def run_viewer(sim):
                 window.cam.elevation = settings['elevation']
             with window.lock():
                 camera()
-                window.opt.geomgroup[3] = 0
+                clean_view_options(window.opt)
             while window.is_running() and not closed:
                 start = time.monotonic()
                 panel.update_idletasks()
@@ -97,6 +107,7 @@ def run_viewer(sim):
                     if not paused.get():
                         sim.advance([value.get() for value in values])
                     state = sim.observe()
+                    clean_view_options(window.opt)
                 # sync acquires the viewer lock internally; never nest it.
                 window.sync()
                 contacts = state['contacts']
