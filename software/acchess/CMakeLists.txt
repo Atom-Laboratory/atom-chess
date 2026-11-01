@@ -133,6 +133,7 @@ if(BUILD_TESTING)
         test_board
         test_board_comparator
         test_move_applier
+        test_move_validator
         test_fen_generator
     )
 
