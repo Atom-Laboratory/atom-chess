@@ -2,6 +2,7 @@
 
 #include "board/board.hpp"
 #include "board/move.hpp"
+#include "fen_generator/fen_generator.hpp"
 #include "board_observation/board_observation.hpp"
 #include "integration/observation_interpreter.hpp"
 
@@ -189,4 +190,214 @@ TEST(ObservationInterpreterTest, ValidatesAndAppliesEnPassantCapture) {
     EXPECT_EQ(board.pieceAt(chess::Square{3, 3}).type, chess::PieceType::None);
     EXPECT_EQ(board.pieceAt(chess::Square{2, 3}), (chess::Piece{chess::PieceType::Pawn, chess::PieceColor::White}));
     EXPECT_EQ(board.sideToMove(), chess::PieceColor::Black);
+}
+
+TEST(ObservationInterpreterTest, RejectsInconsistentNoChangeAtEverySquare) {
+    chess::Board board;
+    board.setCastlingRights({false, true, false, true});
+    board.setEnPassantTarget(chess::Square{2, 3});
+    board.setHalfmoveClock(9);
+    board.setFullmoveNumber(23);
+    const chess::Board original = board;
+    const auto fen = chess::FenGenerator::generate(board);
+
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            SCOPED_TRACE(row * 8 + col);
+            auto observation = observationFromBoard(board);
+            auto& cell = observation.cells[row][col];
+            cell = cell == CellObservationState::EMPTY
+                ? CellObservationState::WHITE : CellObservationState::EMPTY;
+            const auto result = interpretObservation(board, observation, observation);
+            EXPECT_EQ(result.status, ObservationValidationResult::Status::AmbiguousObservation);
+            EXPECT_FALSE(result.move.has_value());
+            EXPECT_EQ(board, original);
+            EXPECT_EQ(chess::FenGenerator::generate(board), fen);
+        }
+    }
+}
+
+TEST(ObservationInterpreterTest, RejectsLegalMoveWithAnUnchangedBaselineMismatch) {
+    chess::Board board;
+    const chess::Board original = board;
+    auto previous = observationFromBoard(board);
+    previous.cells[0][0] = CellObservationState::EMPTY;
+    auto current = previous;
+    current.cells[6][4] = CellObservationState::EMPTY;
+    current.cells[4][4] = CellObservationState::WHITE;
+
+    const auto result = interpretObservation(board, previous, current);
+    EXPECT_EQ(result.status, ObservationValidationResult::Status::AmbiguousObservation);
+    EXPECT_FALSE(result.move.has_value());
+    EXPECT_EQ(board, original);
+}
+
+TEST(ObservationInterpreterTest, RejectsAdditionalChangesOutsideTheMove) {
+    chess::Board board;
+    const chess::Board original = board;
+    const auto previous = observationFromBoard(board);
+
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            if ((row == 6 || row == 4) && col == 4) {
+                continue;
+            }
+            SCOPED_TRACE(row * 8 + col);
+            auto current = previous;
+            current.cells[6][4] = CellObservationState::EMPTY;
+            current.cells[4][4] = CellObservationState::WHITE;
+            auto& extra = current.cells[row][col];
+            extra = extra == CellObservationState::EMPTY
+                ? CellObservationState::BLACK : CellObservationState::EMPTY;
+            const auto result = interpretObservation(board, previous, current);
+            EXPECT_NE(result.status, ObservationValidationResult::Status::ValidMove);
+            EXPECT_FALSE(result.move.has_value());
+            EXPECT_EQ(board, original);
+        }
+    }
+}
+
+TEST(ObservationInterpreterTest, RejectsUnknownCellStatesWithoutMutation) {
+    chess::Board board;
+    const chess::Board original = board;
+    const auto previous = observationFromBoard(board);
+    auto current = previous;
+    current.cells[6][4] = CellObservationState::EMPTY;
+    // NOLINTNEXTLINE(clang-analyzer-optin.core.EnumCastOutOfRange) -- Deliberately malformed sensor input.
+    current.cells[4][4] = static_cast<CellObservationState>(99);
+    const auto result = interpretObservation(board, previous, current);
+    EXPECT_NE(result.status, ObservationValidationResult::Status::ValidMove);
+    EXPECT_FALSE(result.move.has_value());
+    EXPECT_EQ(board, original);
+}
+
+TEST(ObservationInterpreterTest, PreservesAllFenFieldsOnIllegalMove) {
+    chess::Board board;
+    board.setSideToMove(chess::PieceColor::Black);
+    board.setCastlingRights({false, true, true, false});
+    board.setEnPassantTarget(chess::Square{5, 4});
+    board.setHalfmoveClock(8);
+    board.setFullmoveNumber(23);
+    const chess::Board original = board;
+    const auto fen = chess::FenGenerator::generate(board);
+    const auto previous = observationFromBoard(board);
+    auto current = previous;
+    current.cells[1][4] = CellObservationState::EMPTY;
+    current.cells[4][4] = CellObservationState::BLACK;
+
+    const auto result = interpretObservation(board, previous, current);
+    EXPECT_EQ(result.status, ObservationValidationResult::Status::IllegalMove);
+    EXPECT_FALSE(result.move.has_value());
+    EXPECT_EQ(board, original);
+    EXPECT_EQ(chess::FenGenerator::generate(board), fen);
+}
+
+TEST(ObservationInterpreterTest, CommitsBlackMoveMetadataExactlyOnce) {
+    chess::Board board;
+    board.setSideToMove(chess::PieceColor::Black);
+    board.setHalfmoveClock(8);
+    board.setFullmoveNumber(23);
+    const auto previous = observationFromBoard(board);
+    auto current = previous;
+    current.cells[0][6] = CellObservationState::EMPTY;
+    current.cells[2][5] = CellObservationState::BLACK;
+
+    const auto result = interpretObservation(board, previous, current);
+    ASSERT_EQ(result.status, ObservationValidationResult::Status::ValidMove);
+    EXPECT_EQ(chess::FenGenerator::generate(board),
+        "rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 9 24");
+    const chess::Board committed = board;
+    const auto repeated = interpretObservation(board, previous, current);
+    EXPECT_EQ(repeated.status, ObservationValidationResult::Status::AmbiguousObservation);
+    EXPECT_EQ(board, committed);
+}
+
+TEST(ObservationInterpreterTest, RejectsUnconfirmedPromotionsWithAndWithoutCapture) {
+    for (const auto color : {chess::PieceColor::White, chess::PieceColor::Black}) {
+        for (const bool capture : {false, true}) {
+            SCOPED_TRACE(static_cast<int>(color));
+            SCOPED_TRACE(capture);
+            chess::Board board;
+            board.clear();
+            board.setPiece({7, 4}, {chess::PieceType::King, chess::PieceColor::White});
+            board.setPiece({0, 4}, {chess::PieceType::King, chess::PieceColor::Black});
+            board.setSideToMove(color);
+            const int sourceRow = color == chess::PieceColor::White ? 1 : 6;
+            const int targetRow = color == chess::PieceColor::White ? 0 : 7;
+            const int targetCol = capture ? 1 : 0;
+            board.setPiece({sourceRow, 0}, {chess::PieceType::Pawn, color});
+            if (capture) {
+                const auto opponent = color == chess::PieceColor::White
+                    ? chess::PieceColor::Black : chess::PieceColor::White;
+                board.setPiece({targetRow, targetCol}, {chess::PieceType::Rook, opponent});
+            }
+            const chess::Board original = board;
+            const auto previous = observationFromBoard(board);
+            auto current = previous;
+            current.cells[sourceRow][0] = CellObservationState::EMPTY;
+            current.cells[targetRow][targetCol] = color == chess::PieceColor::White
+                ? CellObservationState::WHITE : CellObservationState::BLACK;
+            const auto result = interpretObservation(board, previous, current);
+            EXPECT_EQ(result.status, ObservationValidationResult::Status::IllegalMove);
+            EXPECT_FALSE(result.move.has_value());
+            EXPECT_EQ(board, original);
+            const auto evaluation = evaluateObservation(board, previous, current);
+            EXPECT_EQ(evaluation.result.status, ObservationValidationResult::Status::IllegalMove);
+            EXPECT_FALSE(evaluation.candidateBoard.has_value());
+            EXPECT_EQ(board, original);
+        }
+    }
+}
+
+TEST(ObservationInterpreterTest, EvaluatesCandidateWithoutChangingAnyInput) {
+    const chess::Board board;
+    const auto previous = observationFromBoard(board);
+    auto current = previous;
+    current.cells[6][4] = CellObservationState::EMPTY;
+    current.cells[4][4] = CellObservationState::WHITE;
+    const auto originalCurrent = current;
+    const auto fen = chess::FenGenerator::generate(board);
+
+    const auto evaluation = evaluateObservation(board, previous, current);
+    ASSERT_EQ(evaluation.result.status, ObservationValidationResult::Status::ValidMove);
+    ASSERT_TRUE(evaluation.result.move.has_value());
+    ASSERT_TRUE(evaluation.candidateBoard.has_value());
+    EXPECT_EQ(chess::FenGenerator::generate(board), fen);
+    EXPECT_EQ(previous.cells, observationFromBoard(board).cells);
+    EXPECT_EQ(current.cells, originalCurrent.cells);
+    EXPECT_EQ(observationFromBoard(*evaluation.candidateBoard).cells, current.cells);
+    EXPECT_EQ(chess::FenGenerator::generate(*evaluation.candidateBoard),
+        "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1");
+
+    chess::Board committed = board;
+    const auto result = interpretObservation(committed, previous, current);
+    EXPECT_EQ(result.status, evaluation.result.status);
+    EXPECT_EQ(result.move, evaluation.result.move);
+    EXPECT_EQ(committed, *evaluation.candidateBoard);
+}
+
+TEST(ObservationInterpreterTest, EvaluationReturnsNoCandidateForNoChangeOrFailure) {
+    const chess::Board board;
+    const auto previous = observationFromBoard(board);
+    const auto fen = chess::FenGenerator::generate(board);
+    const auto unchanged = evaluateObservation(board, previous, previous);
+    EXPECT_EQ(unchanged.result.status, ObservationValidationResult::Status::NoChange);
+    EXPECT_FALSE(unchanged.result.move.has_value());
+    EXPECT_FALSE(unchanged.candidateBoard.has_value());
+
+    auto illegal = previous;
+    illegal.cells[6][4] = CellObservationState::EMPTY;
+    illegal.cells[3][4] = CellObservationState::WHITE;
+    const auto rejected = evaluateObservation(board, previous, illegal);
+    EXPECT_EQ(rejected.result.status, ObservationValidationResult::Status::IllegalMove);
+    EXPECT_FALSE(rejected.result.move.has_value());
+    EXPECT_FALSE(rejected.candidateBoard.has_value());
+
+    auto inconsistent = previous;
+    inconsistent.cells[0][0] = CellObservationState::EMPTY;
+    const auto ambiguous = evaluateObservation(board, inconsistent, inconsistent);
+    EXPECT_EQ(ambiguous.result.status, ObservationValidationResult::Status::AmbiguousObservation);
+    EXPECT_FALSE(ambiguous.result.move.has_value());
+    EXPECT_FALSE(ambiguous.candidateBoard.has_value());
+    EXPECT_EQ(chess::FenGenerator::generate(board), fen);
 }
