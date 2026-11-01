@@ -36,6 +36,18 @@ struct ObservationEvaluation {
 };
 
 /**
+ * @brief Trusted operator declaration that the pawn was physically replaced.
+ * @note This is not camera evidence. The caller confirms both the observed move
+ *       and the actual replacement piece; only Queen/Rook/Bishop/Knight are legal.
+ *       It carries no authentication, session identity or concurrency protection.
+ */
+struct PromotionConfirmation {
+    chess::Square from; ///< Pawn source square in the official position.
+    chess::Square to; ///< Square where the replacement was physically placed.
+    chess::PieceType promotedType; ///< Operator-confirmed replacement type.
+};
+
+/**
  * @brief Pure helper that computes SquareChanges from visual diffs against the authoritative board.
  *
  * @param officialBoard Authoritative game state before the move.
@@ -70,6 +82,24 @@ struct ObservationEvaluation {
 );
 
 /**
+ * @brief Evaluates an explicitly confirmed promotion without mutating any input.
+ * @param officialBoard Trusted position before the pawn move.
+ * @param previousObservation Baseline matching all 64 official squares.
+ * @param currentObservation Complete occupancy/color after physical replacement.
+ * @param confirmation Trusted declaration of the replacement and exact move.
+ * @return Checked candidate only if MoveValidator accepts that exact promotion;
+ *         invalid/unrelated confirmations return IllegalMove (inconsistent
+ *         observations may instead return AmbiguousObservation).
+ * @note Uses the same candidate/projection checks as unconfirmed evaluation.
+ */
+[[nodiscard]] ObservationEvaluation evaluateObservation(
+    const chess::Board& officialBoard,
+    const ac::BoardObservation& previousObservation,
+    const ac::BoardObservation& currentObservation,
+    const PromotionConfirmation& confirmation
+);
+
+/**
  * @brief Interprets physical board observations and updates the authoritative Board state if valid.
  *
  * @param officialBoard Authoritative game state to be validated against and updated.
@@ -84,6 +114,21 @@ ObservationValidationResult interpretObservation(
     chess::Board& officialBoard,
     const ac::BoardObservation& previousObservation,
     const ac::BoardObservation& currentObservation
+);
+
+/**
+ * @brief Evaluates an operator-confirmed promotion and commits its candidate once.
+ * @param officialBoard Position to replace only on ValidMove.
+ * @param previousObservation Baseline matching the official board.
+ * @param currentObservation Complete visual state after replacement.
+ * @param confirmation Trusted declaration, not visual piece identification.
+ * @return Same result as confirmed evaluateObservation; failure preserves all FEN fields.
+ */
+ObservationValidationResult interpretObservation(
+    chess::Board& officialBoard,
+    const ac::BoardObservation& previousObservation,
+    const ac::BoardObservation& currentObservation,
+    const PromotionConfirmation& confirmation
 );
 
 } // namespace ac::integration
