@@ -1,5 +1,7 @@
 #pragma once
+#include <chrono>
 #include <string>
+#include <string_view>
 
 #if defined(_WIN32) || defined(_MSC_VER)
 using pid_t = int;
@@ -9,73 +11,57 @@ using pid_t = int;
 
 namespace ac::chess::engine {
 
+/** @brief Success means valid UCI syntax, not chess legality; only it carries a move. */
+enum class UciStatus {
+    Success, NoMove, Timeout, EndOfFile, ReadError, WriteError,
+    MalformedResponse, BufferLimit, NotInitialized, InvalidRequest, Unsupported
+};
+/** @brief NoMove and all errors carry an empty move string. */
+struct UciResult { UciStatus status; std::string move; };
+
 /**
- * @brief Class responsible for communicating with the Stockfish chess engine using the UCI protocol via Linux Pipes.
- * 
- * @details Inter-Process Communication (IPC) implementation using POSIX pipes.
- * This class creates a bidirectional communication channel between the main application (parent process)
- * and the Stockfish engine (child process).
- * 
- * Mechanism:
- * 1. Two unidirectional pipes are created: `m_pipe_in` (Parent -> Child) and `m_pipe_out` (Child -> Parent).
- * 2. fork() is called to duplicate the current process.
- * 3. In the Child Process: 
- *    - STDIN is redirected to read from `m_pipe_in`.
- *    - STDOUT is redirected to write to `m_pipe_out`.
- *    - execlp() replaces the child process image with the Stockfish executable.
- * 4. In the Parent Process:
- *    - write() is used on `m_pipe_in` to send UCI commands to the engine.
- *    - read() (with a select() timeout) is used on `m_pipe_out` to asynchronously capture engine responses.
+ * @brief Serialized Linux UCI session with bounded I/O and exclusive child ownership.
+ * @note Not thread-safe. A failed exchange closes the session; call init() before
+ *       reuse. Late results from a timed-out search cannot enter another session.
+ *       No global signal disposition is changed.
  */
 class StockfishUCI {
 public:
-    /**
-     * @brief Constructs the Stockfish engine interface.
-     * @param engine_path The absolute system path to the Stockfish executable.
-     */
+    /** @brief Creates a session with a five-second total exchange budget. */
     StockfishUCI(const std::string& engine_path);
-    
     /**
-     * @brief Destroys the interface, ensuring the child process is gracefully terminated to prevent zombies.
+     * @brief Creates a session with a total I/O budget per handshake/search, up to 24 hours.
+     * @throws std::invalid_argument for non-positive or excessive timeout.
+     * @note Cleanup may use 150 ms of graceful waiting before SIGKILL/reaping.
      */
+    StockfishUCI(const std::string& engine_path, std::chrono::milliseconds timeout);
     ~StockfishUCI();
-    /**
-     * @brief Idempotent shutdown to gracefully clean up pipes and child processes.
-     */
+    StockfishUCI(const StockfishUCI&) = delete;
+    StockfishUCI& operator=(const StockfishUCI&) = delete;
+    /** @brief Idempotent cleanup; escalates if the child ignores quit. */
     void shutdown() noexcept;
-
-    /**
-     * @brief Initializes the pipes, forks the process, and performs the UCI handshake.
-     * @return true if the engine is successfully loaded and responds with "readyok", false otherwise.
-     */
+    /** @brief Starts/restarts the child, requiring complete uciok then readyok lines. */
     bool init();
-
     /**
-     * @brief Requests the engine to calculate the best move for a given board state.
-     * @param fen_state The current board configuration in standard FEN notation.
-     * @param depth The search depth for the engine (default is 15 plies).
-     * @return std::string The best move calculated by the engine (e.g., "e2e4").
+     * @brief Returns a move token, explicit NoMove, or a typed failure.
+     * @param fen_state Single-line FEN, at most 4096 bytes; no chess semantics checked here.
+     * @param depth Positive search depth.
+     * @note One steady-clock deadline covers writes and all fragments/info.
+     *       Limits: 4096 bytes per line, 1 MiB per response.
      */
+    [[nodiscard]] UciResult request_best_move(const std::string& fen_state, int depth = 15);
+    /** @brief Legacy API delegates to typed operation; NoMove/errors return empty. */
     std::string get_best_move(const std::string& fen_state, int depth = 15);
-
 private:
+    using Deadline = std::chrono::steady_clock::time_point;
+    UciStatus send_command(std::string_view command, Deadline deadline);
+    UciResult read_output(std::string_view expected, Deadline deadline);
     std::string m_engine_path;
-    int m_pipe_in[2];
-    int m_pipe_out[2];
-    pid_t m_process_id;
-
-    /**
-     * @brief Sends a raw string command to the Stockfish process via the input pipe.
-     * @param command The standard UCI command to be executed (newline appended automatically).
-     */
-    void send_command(const std::string& command);
-
-    /**
-     * @brief Reads the standard output pipe from the Stockfish process until a stop word is matched.
-     * @param stop_word The keyword indicating the end of a multi-line response (e.g., "bestmove" or "readyok").
-     * @return std::string The parsed string containing the desired data.
-     */
-    std::string read_output(const std::string& stop_word);
+    std::chrono::milliseconds m_timeout;
+    int m_pipe_in[2]{-1, -1};
+    int m_pipe_out[2]{-1, -1};
+    pid_t m_process_id{-1};
+    bool m_ready{false};
+    std::string m_output_buffer;
 };
-
 } // namespace ac::chess::engine
