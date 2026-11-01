@@ -27,3 +27,7 @@ target_link_libraries(test_observation_interpreter PRIVATE
 )
 
 add_test(NAME test_observation_interpreter COMMAND test_observation_interpreter)
+
+add_executable(test_engine_move test_engine_move.cpp)
+target_link_libraries(test_engine_move PRIVATE acintegration GTest::gtest_main)
+add_test(NAME test_engine_move COMMAND test_engine_move)

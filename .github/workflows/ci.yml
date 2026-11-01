@@ -117,6 +117,7 @@ jobs:
       - name: Cppcheck
         run: |
           cppcheck \
+            --library=googletest \
             --enable=warning,performance,portability \
             --error-exitcode=1 \
             --inline-suppr \

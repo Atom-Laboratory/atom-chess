@@ -1,5 +1,6 @@
 add_library(acintegration
     src/observation_interpreter.cpp
+    src/engine_move.cpp
 )
 
 target_include_directories(acintegration PUBLIC
