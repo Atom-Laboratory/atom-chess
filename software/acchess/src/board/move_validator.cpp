@@ -434,6 +434,7 @@ bool isPawnMoveValid(const Board& board, const Move& move, PieceColor color)
 
     if (move.enPassant) {
         if (!move.capture
+            || move.promotion != PieceType::None
             || !isEmpty(target)
             || rowDelta != direction
             || std::abs(colDelta) != 1) {

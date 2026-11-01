@@ -133,6 +133,29 @@ TEST(EngineMoveTest, EnPassantRequiresCurrentMetadataAndCapturedPawn) {
     expectLegal(black, "e4f3", Move{.from = {4, 4}, .to = {5, 5}, .capture = true, .enPassant = true});
 }
 
+TEST(EngineMoveTest, EnPassantRejectsEveryPromotionChoiceWithoutMutation) {
+    for (const auto side : {PieceColor::White, PieceColor::Black}) {
+        auto board = kings(side);
+        const bool white = side == PieceColor::White;
+        const Square source{white ? 3 : 4, 4};
+        const Square target{white ? 2 : 5, 3};
+        board.setPiece(source, {PieceType::Pawn, side});
+        board.setPiece({source.row, target.col},
+            {PieceType::Pawn, white ? PieceColor::Black : PieceColor::White});
+        board.setEnPassantTarget(target);
+        const auto original = board;
+        const auto fen = FenGenerator::generate(board);
+        for (const auto promotion : {PieceType::Pawn, PieceType::Knight, PieceType::Bishop,
+                                    PieceType::Rook, PieceType::Queen, PieceType::King}) {
+            SCOPED_TRACE(static_cast<int>(promotion));
+            EXPECT_FALSE(MoveValidator::validate(board,
+                Move{.from = source, .to = target, .promotion = promotion}).has_value());
+            EXPECT_EQ(board, original);
+            EXPECT_EQ(FenGenerator::generate(board), fen);
+        }
+    }
+}
+
 TEST(EngineMoveTest, PromotionsRequireExplicitAllowedTypeForBothColorsAndCaptures) {
     struct Promotion { char suffix; PieceType type; };
     const Promotion promotions[] = {{'q', PieceType::Queen}, {'r', PieceType::Rook},
