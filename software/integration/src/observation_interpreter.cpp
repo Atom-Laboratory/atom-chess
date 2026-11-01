@@ -7,6 +7,23 @@ namespace ac::integration {
 
 namespace {
 
+/** @brief Checks occupancy/color on every square, rejecting unknown cell values. */
+bool matchesObservation(const chess::Board& board, const ac::BoardObservation& observation) {
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            const auto color = board.pieceAt({row, col}).color;
+            const auto expected = color == chess::PieceColor::White
+                ? ac::CellObservationState::WHITE
+                : color == chess::PieceColor::Black
+                    ? ac::CellObservationState::BLACK : ac::CellObservationState::EMPTY;
+            if (observation.cells[row][col] != expected) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 chess::PieceColor toPieceColor(ac::CellObservationState state) {
     switch (state) {
         case ac::CellObservationState::WHITE:
@@ -94,20 +111,24 @@ std::vector<chess::SquareChange> extractSquareChanges(
     return changes;
 }
 
-ObservationValidationResult interpretObservation(
-    chess::Board& officialBoard,
+ObservationEvaluation evaluateObservation(
+    const chess::Board& officialBoard,
     const ac::BoardObservation& previousObservation,
     const ac::BoardObservation& currentObservation
 ) {
+    if (!matchesObservation(officialBoard, previousObservation)) {
+        return {{ObservationValidationResult::Status::AmbiguousObservation, std::nullopt}, std::nullopt};
+    }
+
     auto changes = extractSquareChanges(officialBoard, previousObservation, currentObservation);
 
     if (changes.empty()) {
-        return {ObservationValidationResult::Status::NoChange, std::nullopt};
+        return {{ObservationValidationResult::Status::NoChange, std::nullopt}, std::nullopt};
     }
 
     // Um lance válido no xadrez envolve 2 casas (normal/captura), 3 (en-passant) ou 4 (roque)
     if (changes.size() != 2 && changes.size() != 3 && changes.size() != 4) {
-        return {ObservationValidationResult::Status::AmbiguousObservation, std::nullopt};
+        return {{ObservationValidationResult::Status::AmbiguousObservation, std::nullopt}, std::nullopt};
     }
 
     auto validatedMove = chess::MoveValidator::validate(
@@ -117,12 +138,28 @@ ObservationValidationResult interpretObservation(
     );
 
     if (!validatedMove.has_value()) {
-        return {ObservationValidationResult::Status::IllegalMove, std::nullopt};
+        return {{ObservationValidationResult::Status::IllegalMove, std::nullopt}, std::nullopt};
     }
 
-    chess::MoveApplier::apply(officialBoard, *validatedMove);
+    chess::Board candidate = officialBoard;
+    chess::MoveApplier::apply(candidate, *validatedMove);
+    if (!matchesObservation(candidate, currentObservation)) {
+        return {{ObservationValidationResult::Status::AmbiguousObservation, std::nullopt}, std::nullopt};
+    }
 
-    return {ObservationValidationResult::Status::ValidMove, validatedMove};
+    return {{ObservationValidationResult::Status::ValidMove, validatedMove}, candidate};
+}
+
+ObservationValidationResult interpretObservation(
+    chess::Board& officialBoard,
+    const ac::BoardObservation& previousObservation,
+    const ac::BoardObservation& currentObservation
+) {
+    const auto evaluation = evaluateObservation(officialBoard, previousObservation, currentObservation);
+    if (evaluation.candidateBoard.has_value()) {
+        officialBoard = *evaluation.candidateBoard;
+    }
+    return evaluation.result;
 }
 
 } // namespace ac::integration
