@@ -147,6 +147,19 @@ if(BUILD_TESTING)
         endif()
     endforeach()
 
+    # Exercise IPC with a controlled child even when Stockfish is not installed.
+    if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        add_executable(fake_uci_engine tests/fake_uci_engine.cpp)
+        add_executable(test_uci_protocol tests/test_uci_protocol.cpp)
+        target_link_libraries(test_uci_protocol PRIVATE acchess GTest::gtest_main)
+        target_compile_definitions(test_uci_protocol PRIVATE
+            FAKE_UCI_ENGINE_PATH="$<TARGET_FILE:fake_uci_engine>"
+        )
+        add_dependencies(test_uci_protocol fake_uci_engine)
+        add_test(NAME test_uci_protocol COMMAND test_uci_protocol)
+        set_tests_properties(test_uci_protocol PROPERTIES TIMEOUT 30)
+    endif()
+
     # Stockfish is an external integration dependency. Only the UCI integration
     # test is conditional on the executable being available.
     if(STOCKFISH_EXECUTABLE)
