@@ -38,13 +38,9 @@ MotionExecutionResult MotionExecution::waitForEvent(
     }
 
     const auto event = MotionProtocol::parseEvent(*line);
-    if (!event.has_value() || event->sequence != sequence) {
+    if (!event.has_value()) {
         state_ = MotionExecutionState::Error;
         return MotionExecutionResult::ProtocolError;
-    }
-
-    if (event->type == expected) {
-        return MotionExecutionResult::Success;
     }
 
     switch (event->type) {
@@ -56,12 +52,28 @@ MotionExecutionResult MotionExecution::waitForEvent(
             state_ = MotionExecutionState::SafeStop;
             return MotionExecutionResult::LimitTriggered;
 
+        default:
+            break;
+    }
+
+    if (event->sequence != sequence) {
+        state_ = MotionExecutionState::Error;
+        return MotionExecutionResult::ProtocolError;
+    }
+    if (event->type == expected) {
+        return MotionExecutionResult::Success;
+    }
+
+    switch (event->type) {
         case ControllerEventType::Error:
             state_ = MotionExecutionState::Error;
             return MotionExecutionResult::ControllerError;
 
         case ControllerEventType::Ack:
         case ControllerEventType::Done:
+        case ControllerEventType::Cancelled:
+        case ControllerEventType::EmergencyStop:
+        case ControllerEventType::LimitTriggered:
             state_ = MotionExecutionState::Error;
             return MotionExecutionResult::ProtocolError;
     }
@@ -79,6 +91,9 @@ MotionExecutionResult MotionExecution::waitForEvent(
 MotionExecutionResult MotionExecution::execute(
     const std::vector<JointSegment>& trajectory)
 {
+    if (state_ != MotionExecutionState::Idle && state_ != MotionExecutionState::Completed) {
+        return MotionExecutionResult::RecoveryRequired;
+    }
     if (trajectory.empty()) {
         throw std::invalid_argument("Motion trajectory must not be empty");
     }
@@ -135,14 +150,11 @@ MotionExecutionResult MotionExecution::execute(
 }
 
 /**
- * @brief Requests cancellation of the active/last in-flight sequence.
+ * @brief Confirms logical cancellation of a possibly outstanding failed sequence.
  */
 bool MotionExecution::cancel()
 {
-    if (activeSequence_ == 0
-        || state_ == MotionExecutionState::Idle
-        || state_ == MotionExecutionState::Completed
-        || state_ == MotionExecutionState::SafeStop) {
+    if (activeSequence_ == 0 || state_ != MotionExecutionState::Error) {
         return false;
     }
 
@@ -150,13 +162,18 @@ bool MotionExecution::cancel()
         MotionProtocol::encodeCancel(activeSequence_)
     );
 
-    if (sent) {
-        state_ = MotionExecutionState::Cancelled;
-    } else {
+    if (!sent) {
         state_ = MotionExecutionState::Error;
+        return false;
     }
 
-    return sent;
+    state_ = MotionExecutionState::CancelRequested;
+    const auto result = waitForEvent(activeSequence_, ControllerEventType::Cancelled, doneTimeout_);
+    if (result != MotionExecutionResult::Success) {
+        return false;
+    }
+    state_ = MotionExecutionState::Cancelled;
+    return true;
 }
 
 /**

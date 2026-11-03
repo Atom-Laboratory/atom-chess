@@ -18,7 +18,8 @@ enum class ControllerEventType {
     Done,          ///< Command completed successfully.
     Error,         ///< Controller rejected/failed the command.
     EmergencyStop, ///< Emergency stop became active.
-    LimitTriggered ///< Limit/endstop interrupted execution.
+    LimitTriggered,///< Limit/endstop interrupted execution.
+    Cancelled      ///< Matching cancellation ended STEP scheduling, not proof of physical stop.
 };
 
 /**
@@ -51,6 +52,7 @@ struct ControllerEvent {
  * @code
  * ACM1|42|ACK
  * ACM1|42|DONE
+ * ACM1|42|CANCELLED
  * ACM1|42|ERR|7
  * ACM1|42|ESTOP
  * ACM1|42|LIMIT

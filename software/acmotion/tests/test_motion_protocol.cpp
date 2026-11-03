@@ -36,12 +36,14 @@ TEST(MotionProtocolTest, ParsesControllerEvents)
     const auto error = MotionProtocol::parseEvent("ACM1|4|ERR|17\n");
     const auto estop = MotionProtocol::parseEvent("ACM1|4|ESTOP\n");
     const auto limit = MotionProtocol::parseEvent("ACM1|4|LIMIT\n");
+    const auto cancelled = MotionProtocol::parseEvent("ACM1|4|CANCELLED\r\n");
 
     ASSERT_TRUE(ack.has_value());
     ASSERT_TRUE(done.has_value());
     ASSERT_TRUE(error.has_value());
     ASSERT_TRUE(estop.has_value());
     ASSERT_TRUE(limit.has_value());
+    ASSERT_TRUE(cancelled.has_value());
 
     EXPECT_EQ(ack->type, ControllerEventType::Ack);
     EXPECT_EQ(done->type, ControllerEventType::Done);
@@ -49,6 +51,8 @@ TEST(MotionProtocolTest, ParsesControllerEvents)
     EXPECT_EQ(error->errorCode, 17);
     EXPECT_EQ(estop->type, ControllerEventType::EmergencyStop);
     EXPECT_EQ(limit->type, ControllerEventType::LimitTriggered);
+    EXPECT_EQ(cancelled->type, ControllerEventType::Cancelled);
+    EXPECT_EQ(cancelled->sequence, 4u);
 }
 
 TEST(MotionProtocolTest, RejectsMalformedOrUnsupportedFrames)
@@ -58,6 +62,10 @@ TEST(MotionProtocolTest, RejectsMalformedOrUnsupportedFrames)
     EXPECT_FALSE(MotionProtocol::parseEvent("ACM1|0|ACK").has_value());
     EXPECT_FALSE(MotionProtocol::parseEvent("ACM1|1|ERR|abc").has_value());
     EXPECT_FALSE(MotionProtocol::parseEvent("ACM1|1|UNKNOWN").has_value());
+    EXPECT_FALSE(MotionProtocol::parseEvent("ACM1|1|CANCELLED|extra").has_value());
+    EXPECT_FALSE(MotionProtocol::parseEvent("ACM1|0|CANCELLED").has_value());
+    EXPECT_FALSE(MotionProtocol::parseEvent("ACM1|-1|CANCELLED").has_value());
+    EXPECT_FALSE(MotionProtocol::parseEvent("ACM1|4294967296|CANCELLED").has_value());
 }
 
 TEST(MotionProtocolTest, RejectsInvalidSegment)

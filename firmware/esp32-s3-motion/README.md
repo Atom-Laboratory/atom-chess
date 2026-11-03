@@ -83,6 +83,33 @@ A matching:
 ACM1|<active-seq>|CANCEL
 ```
 
-stops further STEP generation for the active segment and returns a terminal response. Additional SEG commands received while a segment is active are rejected rather than executed re-entrantly.
+discards the four step targets/speeds and returns `ACM1|<active-seq>|CANCELLED`.
+`DONE` is reserved for normal segment completion. Wrong-sequence CANCEL is
+rejected without cancelling the active segment. Idle CANCEL, including after
+normal completion, returns `ERR|105`, not a cancellation acknowledgement.
+Additional SEG commands during active motion are rejected rather than re-entered.
+
+Cancellation, ESTOP and LIMIT latch motion inhibition. Further SEG commands are
+rejected (`ERR|104`) even after the input clears. ESTOP/LIMIT take priority over
+cancel at each polling boundary. The serial reader is shared between idle/active
+paths, bounds work per poll, and discards overlong/NUL-containing frames through
+their newline; empty fields and unsigned-number overflow are rejected.
+
+`CANCELLED` confirms request acceptance and logical termination together, only
+after discarding targets; there is no separate CANCEL ACK. It does not certify
+deceleration, physical standstill, driver disable or power removal. The servo
+gripper retains its command. `AccelStepper::stop()` alone would only schedule a
+deceleration; this firmware clears software targets/speeds and exits the loop.
+
+Host and firmware must be upgraded together. The ACM1 frame format remains, but
+old hosts/firmware do not implement this cancellation contract. See
+[ADR-005](../../software/docs/adrs/ADR-005-acm1-motion-protocol.md) for compatibility
+and the deliberately unsupported concurrent host cancellation path (PR 4B).
+
+There is no protocol unlock/resume command. A reboot alone is not proof of safe
+recovery: inspect hardware, reconcile/home positions and resynchronize the host
+session under an explicit recovery policy before deliberately restarting.
+The shipped `configured=false` setting is unchanged. PlatformIO build success
+does not validate any physical stop or safety input.
 
 The physical E-stop must still be wired as an independent hardware safety mechanism; software cancellation is not a substitute for it.
