@@ -253,7 +253,12 @@ class Playground:
             if execution is not None:
                 execution.fault(str(error))
             if task is not None and self.physical.operations[task.task_id].status in ('pending', 'executing'):
-                self.physical.fail(task.task_id, str(error))
+                # Collision preflight uses separate MuJoCo data and issues no
+                # controller commands. It leaves the observed scene untouched.
+                collision_report = result.get('collision_report')
+                rejected_in_preflight = collision_report is not None and not collision_report['valid']
+                self.physical.fail(task.task_id, str(error),
+                                   reconciliation_required=not rejected_in_preflight)
         result['physical_revision'] = self.physical.confirmed.revision
         result['reconciliation_required'] = self.physical.reconciliation_required
         result.update(wall_time_s=time.perf_counter()-started, history=self.history)

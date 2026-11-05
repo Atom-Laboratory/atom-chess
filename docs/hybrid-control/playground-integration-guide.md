@@ -58,9 +58,9 @@ reflect convex-hull overapproximation; it is not proof of a real CAD collision.
 Do not disable this check to label the deterministic pipeline qualified for RL.
 
 For reproduction of the earlier isolated manipulation evidence only, pass
-`--diagnostic-unchecked` directly to the Python example. Results carry
-`collision_checked=false` and `training_eligible=false`. The PowerShell launcher
-does not enable this bypass. The physical capture/return tests explicitly use
+`-DiagnosticUnchecked` with the PowerShell launcher in playground mode, or pass
+`--diagnostic-unchecked` to the Python example. Results carry
+`collision_checked=false` and `training_eligible=false`. The physical capture/return tests explicitly use
 diagnostic mode; collision tests independently verify rejection without motion.
 
 Use **Inspect trajectory / confirmed occupancy** to inspect all planned phases

@@ -193,12 +193,12 @@ class PhysicalBoardState:
             raise ValueError('Operation is not in the required state')
         return operation
 
-    def fail(self, operation_id, reason):
+    def fail(self, operation_id, reason, *, reconciliation_required=True):
         if self._active != operation_id:
             raise ValueError('Operation is not active')
         self._operations[operation_id] = replace(self._operations[operation_id], status='failed', detail=reason)
         self._active = None
-        self._blocked = True
+        self._blocked = self._blocked or reconciliation_required
 
     def invalidate(self):
         """External/manual manipulation makes the last confirmed state uncertain."""

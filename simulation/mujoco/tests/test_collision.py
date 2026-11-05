@@ -46,3 +46,7 @@ def test_preflight_does_not_mutate_live_scene(tmp_path):
     assert 'COLLISION_PREFLIGHT_FAILED' in result['error_code']
     np.testing.assert_array_equal(playground.sim.data.qpos,before)
     assert playground.physical.confirmed.revision == 0
+    assert not result['reconciliation_required']
+    retry = playground.execute(operation='MOVE', source='e2', target='e3')
+    assert 'COLLISION_PREFLIGHT_FAILED' in retry['error_code']
+    np.testing.assert_array_equal(playground.sim.data.qpos,before)

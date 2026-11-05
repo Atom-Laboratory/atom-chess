@@ -1,5 +1,11 @@
-param([ValidateSet('view', 'demo', 'playground')][string]$Mode = 'view')
+param(
+    [ValidateSet('view', 'demo', 'playground')][string]$Mode = 'view',
+    [switch]$DiagnosticUnchecked
+)
 $ErrorActionPreference = 'Stop'
+if ($DiagnosticUnchecked -and $Mode -ne 'playground') {
+    throw '-DiagnosticUnchecked requires -Mode playground.'
+}
 $atomModule = Split-Path $PSScriptRoot -Parent
 $atomSimulation = Split-Path $atomModule -Parent
 $atomPython = Join-Path $atomModule '.venv\Scripts\python.exe'
@@ -19,7 +25,9 @@ if (-not (Test-Path -LiteralPath $atomBundle)) {
 if ($Mode -eq 'view') {
     & $atomPython -m atom_mujoco.cli view --bundle $atomBundle
 } elseif ($Mode -eq 'playground') {
-    & $atomPython (Join-Path $atomModule 'examples\simulation_playground.py') --bundle $atomBundle
+    $atomPlaygroundOptions = @()
+    if ($DiagnosticUnchecked) { $atomPlaygroundOptions += '--diagnostic-unchecked' }
+    & $atomPython (Join-Path $atomModule 'examples\simulation_playground.py') --bundle $atomBundle @atomPlaygroundOptions
 } else {
     $atomResult = Join-Path $atomModule ('runs\demo-' + [guid]::NewGuid().ToString('N') + '.json')
     & $atomPython -m atom_mujoco.cli demo --bundle $atomBundle --output $atomResult
