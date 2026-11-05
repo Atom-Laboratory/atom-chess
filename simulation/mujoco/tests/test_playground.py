@@ -49,7 +49,7 @@ def test_experimental_board_e2_e3_physically_moves_pawn(tmp_path):
     bundle = tmp_path/'playground'
     build_bundle(module.parent/'src/urdf/atom.urdf.xacro', bundle,
                  interactive=True, parameters=parameters)
-    playground = Playground(bundle)
+    playground = Playground(bundle, diagnostic_unchecked=True)
     result = playground.execute_request(dict(schema=1, operation='MOVE', source='e2', target='e3'))
     assert result['status'] == 'COMPLETED_SIMULATION_ORACLE', result['error_code']
     assert result['grasp_confirmed'] and result['release_confirmed']

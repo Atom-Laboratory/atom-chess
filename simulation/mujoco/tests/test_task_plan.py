@@ -22,7 +22,7 @@ def scene(tmp_path):
     params = json.loads((module/'examples/playground-board.json').read_text())
     params['graveyard_slots'] = {'slot_0': [.24, -.10, .012]}
     build_bundle(module.parent/'src/urdf/atom.urdf.xacro', tmp_path/'scene', parameters=params, interactive=True)
-    return Playground(tmp_path/'scene')
+    return Playground(tmp_path/'scene', diagnostic_unchecked=True)
 
 
 def test_graveyard_in_physics_and_observation(scene):

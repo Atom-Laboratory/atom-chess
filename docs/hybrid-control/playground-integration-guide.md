@@ -27,7 +27,7 @@ From the repository root in Windows PowerShell:
 Choose Source and Target, then Execute MOVE. No piece selection is required.
 Each successful transfer updates the confirmed physical revision. A second request
 uses the resulting scene without resetting. For the experimental board fixture,
-the regression exercises E2 to E3 and back to E2 with all 32 dynamic pieces.
+the diagnostic regression exercises E2 to E3 and back to E2 with all 32 dynamic pieces.
 This is limited manipulation evidence, not proof that every square is reachable.
 
 ## Feedback and failure
@@ -46,8 +46,28 @@ process-local state is not a durable hardware transaction. A failed simulation
 does not roll back physics, and stopping physics calls is not a hardware stop.
 
 Result JSON identifies the simulation oracle, physical revision, failure detail
-and phase history. RL remains unavailable. At this increment, complete swept
-collision checking and recovery remain subsequent work.
+and phase history. RL remains unavailable. The default now requires nominal swept
+preflight; see [P010](../adrs/P010-conservative-swept-preflight.md). Runtime contact
+monitoring is also enabled. The checker reports structural exclusions, phase,
+geometry names, joint configuration and distance. Unresolved checks fail closed.
+
+**Known blocking geometry:** the current E2 descent intersects the conservative
+finger hull with the D1 queen head (about 2.8 mm in the tested fixture). The normal
+Playground therefore refuses this trajectory before physics advances. This may
+reflect convex-hull overapproximation; it is not proof of a real CAD collision.
+Do not disable this check to label the deterministic pipeline qualified for RL.
+
+For reproduction of the earlier isolated manipulation evidence only, pass
+`--diagnostic-unchecked` directly to the Python example. Results carry
+`collision_checked=false` and `training_eligible=false`. The PowerShell launcher
+does not enable this bypass. The physical capture/return tests explicitly use
+diagnostic mode; collision tests independently verify rejection without motion.
+
+Use **Inspect trajectory / confirmed occupancy** to inspect all planned phases
+and confirmed state. **Execute Chess Core request file** consumes exported JSON.
+The checker proves nominal geometric interval separation under its model and
+rigid-grasp assumptions, not dynamic or hardware safety. Controller tracking,
+collision shape repair and full workspace qualification remain unresolved.
 
 ## Captures and Graveyard
 
@@ -74,7 +94,7 @@ object remains confirmed in the Graveyard and the composite result is FAILED wit
 move completed. The existing C++ allocator still requires application-level
 reservation rollback/reconciliation; the serializer does not mutate it.
 
-`test_task_plan.py` includes a two-transfer physics regression with 32 objects:
+`test_task_plan.py` includes a diagnostic two-transfer physics regression with 32 objects:
 a black pawn is initialized on E3, physically removed to slot_0, and the E2 pawn
 then physically moved to E3. This does not establish collision safety, CAD fidelity
 or reachability of every Graveyard slot. No pose edits occur during that execution.

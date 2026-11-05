@@ -12,13 +12,16 @@ from .scene_feedback import SceneFeedback
 from .supervision import TaskLedger, Execution, Evidence
 from .motion_controller import MotionController
 from .task_plan import validate_plan
+from .collision import SceneCollision
 
 
 class Playground:
-    def __init__(self, bundle, on_step=None):
+    def __init__(self, bundle, on_step=None, *, diagnostic_unchecked=False):
         self.sim = Simulation(bundle)
         self.history = []
         self.on_step = on_step
+        self.diagnostic_unchecked = diagnostic_unchecked
+        self.planned_trajectory = []
         self.feedback = SceneFeedback(self.sim)
         self.controller = MotionController(self.sim)
         self.ledger = TaskLedger(':memory:')
@@ -92,12 +95,14 @@ class Playground:
         started = time.perf_counter()
         sim = self.sim
         self.history = []
+        self.planned_trajectory = []
         execution = task = None
         result = dict(schema=1, task_id=uuid.uuid4().hex, operation=operation,
                       piece_id=piece_id, source=source.lower(), target=target.lower(),
                       controller=controller, checkpoint=None, seed=seed, status='FAILED',
                       grasp_confirmed=False, release_confirmed=False, visual_confirmed=False,
                       verification_source='simulation_oracle', error_code=None,
+                      collision_checked=False, training_eligible=False,
                       reward=None, provenance=provenance(), manifest=sim.manifest)
         try:
             if controller != 'baseline':
@@ -159,6 +164,14 @@ class Playground:
                     result['failed_waypoint'] = waypoint
                     square = source.upper() if len(solutions) < 3 else target.upper()
                     raise ValueError(f'{error} ({waypoint} at {square}). Check board placement against the arm workspace.') from error
+            if not self.diagnostic_unchecked:
+                collision = SceneCollision(sim)
+                result['collision_report'] = collision.check_plan(
+                    solutions, piece_id, np.array([destination[0], destination[1], origin[2]+support_delta]))
+                result['collision_checked'] = True
+                self.planned_trajectory = result['collision_report']['trajectory']
+                if not result['collision_report']['valid']:
+                    raise ValueError('COLLISION_PREFLIGHT_FAILED: '+str(result['collision_report']['failure']))
             gate({'plan_valid'})
             def move(q, phase, opening, steps=180):
                 goal = q.copy()
@@ -166,6 +179,13 @@ class Playground:
                 settled = False
                 for step in range(max(steps, 600)):
                     state = self.controller.step(goal)
+                    if not self.diagnostic_unchecked:
+                        unexpected = collision.unexpected_contacts(piece_id, phase)
+                        if unexpected:
+                            result['runtime_collision'] = unexpected
+                            raise ValueError('UNEXPECTED_RUNTIME_CONTACT')
+                    if phase in ('LIFTING', 'TRANSPORTING') and not self.feedback.grip_contacts(piece_id):
+                        raise ValueError('GRIP_LOST_DURING_'+phase)
                     self.history.append(dict(phase=phase, time_s=state['time_s'],
                                              position=state['position'].tolist(),
                                              target=goal.tolist(), piece_position=sim.data.xpos[body].tolist()))
@@ -216,6 +236,7 @@ class Playground:
             self.physical.observe(Observation(task.task_id, self.observation_sequence, float(sim.data.time), snapshot))
             self.physical.commit(task.task_id, execution, now_s=float(sim.data.time))
             result['status'] = 'COMPLETED_SIMULATION_ORACLE'
+            result['training_eligible'] = False  # Qualification suite and calibrated coverage still required.
         except (ValueError, RuntimeError, KeyError) as error:
             result['error_code'] = str(error)
             if execution is not None:

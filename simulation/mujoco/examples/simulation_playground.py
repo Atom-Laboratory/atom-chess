@@ -16,8 +16,10 @@ def main():
     parser.add_argument('--request', type=Path, help='Versioned JSON from the Chess Core integration adapter')
     parser.add_argument('--controller', default='baseline')
     parser.add_argument('--output', type=Path)
+    parser.add_argument('--diagnostic-unchecked', action='store_true',
+                        help='Explicit experimental manipulation without swept preflight; never RL qualification')
     args = parser.parse_args()
-    playground = Playground(args.bundle)
+    playground = Playground(args.bundle, diagnostic_unchecked=args.diagnostic_unchecked)
     if args.headless:
         result = (playground.execute_request(json.loads(args.request.read_text())) if args.request
                   else playground.execute(operation='MOVE', source=args.source,
@@ -28,6 +30,7 @@ def main():
         return
     import tkinter as tk
     from tkinter import ttk
+    from tkinter import filedialog
     import mujoco.viewer
     from atom_mujoco.controls import clean_view_options
     root = tk.Tk()
@@ -37,7 +40,8 @@ def main():
                                      ('Target',target,[f+str(r) for r in range(1,9) for f in 'abcdefgh'])]:
         ttk.Label(root,text=label).pack()
         ttk.Combobox(root,textvariable=variable,values=options,state='readonly',width=40).pack()
-    ttk.Label(root,text='Controller: Deterministic Baseline\nTrained RL Policy: unavailable (no validated checkpoint)').pack(pady=8)
+    ttk.Label(root,text='Controller: Deterministic Baseline\nTrained RL Policy: unavailable (no validated checkpoint)\n'
+              +('DIAGNOSTIC: collision preflight bypassed' if args.diagnostic_unchecked else 'Swept preflight required')).pack(pady=8)
     status = ttk.Label(root,text='Ready. Verification uses simulation oracle, not a camera.',wraplength=500)
     status.pack(padx=12,pady=8)
     with mujoco.viewer.launch_passive(playground.sim.model, playground.sim.data,
@@ -77,6 +81,32 @@ def main():
                 button.configure(state='normal')
         button=ttk.Button(root,text='Execute MOVE',command=execute)
         button.pack(pady=8)
+        def inspect():
+            window=tk.Toplevel(root)
+            window.title('Trajectory and physical state')
+            text=tk.Text(window,width=110,height=35)
+            text.pack(fill='both',expand=True)
+            text.insert('end',json.dumps(dict(trajectory=playground.planned_trajectory,
+                        occupancy=dict(playground.physical.confirmed.occupancy),
+                        revision=playground.physical.confirmed.revision,
+                        reconciliation_required=playground.physical.reconciliation_required),indent=2))
+            text.configure(state='disabled')
+        ttk.Button(root,text='Inspect trajectory / confirmed occupancy',command=inspect).pack(pady=4)
+        def load_plan():
+            path=filedialog.askopenfilename(title='Load Chess Core request',filetypes=[('JSON requests','*.json')])
+            if not path:
+                return
+            button.configure(state='disabled')
+            try:
+                result=playground.execute_request(json.loads(Path(path).read_text()))
+                output=args.bundle.parent/('playground-'+uuid.uuid4().hex+'.json')
+                playground.save(output,result)
+                status.configure(text=f"{result['status']}: {result['error_code']}\nSaved {output}")
+            except (ValueError,OSError) as error:
+                status.configure(text=str(error))
+            finally:
+                button.configure(state='normal')
+        ttk.Button(root,text='Execute Chess Core request file',command=load_plan).pack(pady=4)
         def refresh():
             if not viewer.is_running():
                 root.destroy()
