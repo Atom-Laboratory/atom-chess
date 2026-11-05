@@ -4,10 +4,62 @@
 #include <gtest/gtest.h>
 
 #include "integration/board_move_adapter.hpp"
+#include "integration/engine_turn_planner.hpp"
+#include "board/move_applier.hpp"
+#include "board/move_validator.hpp"
+#include "fen_generator/fen_generator.hpp"
 #include "motion/task_planner.hpp"
 
 namespace ac::integration {
 namespace {
+
+TEST(EngineTurnPlanner, ValidatesUciAndDerivesSpecialMoveFlags)
+{
+    chess::Board board;
+    EXPECT_FALSE(chess::MoveValidator::validateUci(board, "e2e5"));
+    EXPECT_FALSE(chess::MoveValidator::validateUci(board, "e7e5"));
+    EXPECT_FALSE(chess::MoveValidator::validateUci(board, "e2e4q"));
+    const auto apply = [&](std::string_view token) {
+        const auto move = chess::MoveValidator::validateUci(board, token);
+        ASSERT_TRUE(move.has_value());
+        chess::MoveApplier::apply(board, *move);
+    };
+    apply("e2e4");
+    apply("a7a6");
+    apply("e4e5");
+    apply("d7d5");
+    const auto capture = chess::MoveValidator::validateUci(board, "e5d6");
+    ASSERT_TRUE(capture.has_value());
+    EXPECT_TRUE(capture->capture);
+    EXPECT_TRUE(capture->enPassant);
+    EXPECT_FALSE(chess::MoveValidator::validateUci(board, "e5d6q"));
+}
+
+#ifdef ATOM_TEST_STOCKFISH
+TEST(EngineTurnPlanner, PlansTwoRealEngineTurnsWithoutCommittingBoard)
+{
+    motion::CoordinateMapper mapper("");
+    mapper.calibrateBoard({0.0, 0.0}, {70.0, 0.0});
+    motion::GraveyardAllocator graveyard(mapper);
+    motion::TaskPlanner planner(mapper, graveyard);
+    chess::engine::StockfishUCI engine(ATOM_TEST_STOCKFISH);
+    ASSERT_TRUE(engine.init());
+    chess::Board board;
+    for (int ply = 0; ply < 2; ++ply) {
+        const auto before = chess::FenGenerator::generate(board);
+        const auto plan = planEngineTurn(board, engine, planner, 5);
+        ASSERT_EQ(plan.engineStatus, chess::engine::UciStatus::Success);
+        ASSERT_TRUE(plan.validatedMove.has_value());
+        ASSERT_EQ(plan.tasks.size(), 1U);
+        EXPECT_EQ(plan.tasks[0].boardSource, plan.validatedMove->from);
+        EXPECT_EQ(plan.tasks[0].boardTarget, plan.validatedMove->to);
+        EXPECT_NO_THROW((void)serializeBoardMove(plan.tasks));
+        EXPECT_EQ(chess::FenGenerator::generate(board), before);
+        // The test advances the logical position explicitly between queries.
+        chess::MoveApplier::apply(board, *plan.validatedMove);
+    }
+}
+#endif
 
 TEST(BoardMoveAdapter, AdaptsRealTaskPlannerOutputFromChessCore)
 {

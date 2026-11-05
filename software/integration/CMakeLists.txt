@@ -1,5 +1,6 @@
 add_library(acintegration
     src/board_move_adapter.cpp
+    src/engine_turn_planner.cpp
     src/observation_interpreter.cpp
 )
 
