@@ -94,7 +94,7 @@ def configure(root, metadata, profile):
         for i, geom in enumerate(list(body.findall('geom'))):
             if geom.get('type') != 'mesh':
                 continue
-            if body.get('name', '').startswith('gripper_hand'):
+            if body.get('name', '').startswith('gripper_hand') or geom.get('name') == 'gripper_back_visual':
                 continue
             # Separate invisible convex collision mesh from visual triangles.
             attributes = dict(geom.attrib)

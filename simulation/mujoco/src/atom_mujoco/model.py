@@ -248,6 +248,22 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
     if interactive:
         from .interactive_model import configure
         scene.update(configure(mjcf, metadata, profile))
+        collision_dir = source.parent.parent / 'meshes/gripper_collision'
+        collision_manifest = json.loads((collision_dir / 'manifest.json').read_text())
+        for part, record in collision_manifest.items():
+            raw = (source.parent.parent / 'meshes' / (part+'.stl')).read_bytes()
+            if hashlib.sha256(raw).hexdigest() != record['source_sha256']:
+                raise ValueError('Stale gripper decomposition')
+            body = mjcf.find('.//body[@name="'+(part+'_moving' if part != 'gripper_back' else 'arm2_link')+'"]')
+            for hull in record['hulls']:
+                mesh_name = Path(hull).stem
+                mesh_bytes[hull] = (collision_dir / hull).read_bytes()
+                ET.SubElement(assets, 'mesh', name=mesh_name, file=hull, scale='.001 .001 .001')
+                ET.SubElement(body, 'geom', name=mesh_name+'_collision_hull', type='mesh', mesh=mesh_name,
+                              pos='-.26 0 0', group='3', rgba='0 0 0 0', contype='1', conaffinity='6',
+                              friction='.8 .01 .001', solref='.01 1')
+        scene['gripper_collision_geometry'] = 'CoACD decomposition of supplied STL, experimental tolerance'
+
     if official_visuals:
         export_dir = source.parents[3] / 'hardware/Project/chess_pieces/exports'
         export_manifest = json.loads((export_dir / 'manifest.json').read_text(encoding='utf-8'))

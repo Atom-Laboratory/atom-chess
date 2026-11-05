@@ -82,7 +82,7 @@ class SceneCollision:
         for geom in range(model.ngeom):
             name = model.geom(geom).name or ''
             if ('_collision_' in name or name.startswith('finger_')
-                    or name in ('gripper_hand1_visual', 'gripper_hand2_visual')):
+                    or name.endswith('_collision_hull')):
                 self.robot.append(geom)
             elif model.geom_contype[geom] and model.geom_bodyid[geom] not in {
                     model.geom_bodyid[g] for g in self.robot}:
@@ -111,7 +111,7 @@ class SceneCollision:
         others = [g for g in self.environment if model.geom_bodyid[g] != body]
         pairs = self.pairs + [(g,h) for g in selected for h in others]
         checker = SweptChecker(model, sim.data.qpos, sim.joint_ids, pairs)
-        pads = [g for g in self.robot if model.geom(g).name.startswith(('finger_', 'gripper_hand'))]
+        pads = [g for g in self.robot if model.geom(g).name in ('finger_1_pad', 'finger_2_pad')]
         support = [g for g in others if model.geom(g).name == 'board_frame'
                    or model.geom(g).name.startswith('graveyard_support_')]
         # Selected piece resting support is allowed; support collision during transport is not.

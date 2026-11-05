@@ -1,0 +1,83 @@
+{
+  "gripper_hand1": {
+    "source_sha256": "e60d1aeb67c59edb023a3bfcedad1afb7288a2022c884b918956137159063b5a",
+    "hulls": [
+      "gripper_hand1_0.obj",
+      "gripper_hand1_1.obj",
+      "gripper_hand1_2.obj",
+      "gripper_hand1_3.obj",
+      "gripper_hand1_4.obj",
+      "gripper_hand1_5.obj",
+      "gripper_hand1_6.obj",
+      "gripper_hand1_7.obj",
+      "gripper_hand1_8.obj",
+      "gripper_hand1_9.obj",
+      "gripper_hand1_10.obj",
+      "gripper_hand1_11.obj",
+      "gripper_hand1_12.obj",
+      "gripper_hand1_13.obj",
+      "gripper_hand1_14.obj",
+      "gripper_hand1_15.obj",
+      "gripper_hand1_16.obj",
+      "gripper_hand1_17.obj",
+      "gripper_hand1_18.obj",
+      "gripper_hand1_19.obj",
+      "gripper_hand1_20.obj"
+    ]
+  },
+  "gripper_hand2": {
+    "source_sha256": "ff9404c16c6e9fdd919a28ffbf61835c8aab4618bab61e461aac5b3a5fa0edc9",
+    "hulls": [
+      "gripper_hand2_0.obj",
+      "gripper_hand2_1.obj",
+      "gripper_hand2_2.obj",
+      "gripper_hand2_3.obj",
+      "gripper_hand2_4.obj",
+      "gripper_hand2_5.obj",
+      "gripper_hand2_6.obj",
+      "gripper_hand2_7.obj",
+      "gripper_hand2_8.obj",
+      "gripper_hand2_9.obj",
+      "gripper_hand2_10.obj",
+      "gripper_hand2_11.obj",
+      "gripper_hand2_12.obj",
+      "gripper_hand2_13.obj",
+      "gripper_hand2_14.obj",
+      "gripper_hand2_15.obj",
+      "gripper_hand2_16.obj",
+      "gripper_hand2_17.obj",
+      "gripper_hand2_18.obj",
+      "gripper_hand2_19.obj",
+      "gripper_hand2_20.obj"
+    ]
+  },
+  "gripper_back": {
+    "source_sha256": "4f582b4950315ab9c77b12fc23022a9b3ba59bc6f7f6c9bb2d3a3c31738bf7a4",
+    "hulls": [
+      "gripper_back_0.obj",
+      "gripper_back_1.obj",
+      "gripper_back_2.obj",
+      "gripper_back_3.obj",
+      "gripper_back_4.obj",
+      "gripper_back_5.obj",
+      "gripper_back_6.obj",
+      "gripper_back_7.obj",
+      "gripper_back_8.obj",
+      "gripper_back_9.obj",
+      "gripper_back_10.obj",
+      "gripper_back_11.obj",
+      "gripper_back_12.obj",
+      "gripper_back_13.obj",
+      "gripper_back_14.obj",
+      "gripper_back_15.obj",
+      "gripper_back_16.obj",
+      "gripper_back_17.obj",
+      "gripper_back_18.obj",
+      "gripper_back_19.obj",
+      "gripper_back_20.obj",
+      "gripper_back_21.obj",
+      "gripper_back_22.obj",
+      "gripper_back_23.obj"
+    ]
+  }
+}
