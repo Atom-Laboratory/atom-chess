@@ -15,8 +15,8 @@ if (-not (Test-Path -LiteralPath $atomPython)) {
 $atomBundle = Join-Path $atomModule 'runs\interactive-chess-v6'
 $atomBuildOptions = @()
 if ($Mode -eq 'playground') {
-    $atomBundle = Join-Path $atomModule 'runs\playground-gripper-hulls-v1'
-    $atomBuildOptions = @('--parameters', (Join-Path $atomModule 'examples\playground-official-visuals.json'))
+    $atomBundle = Join-Path $atomModule 'runs\playground-reachable-board-v1'
+    $atomBuildOptions = @('--parameters', (Join-Path $atomModule 'examples\playground-reachable-board.json'))
 }
 if (-not (Test-Path -LiteralPath $atomBundle)) {
     & $atomPython -m atom_mujoco.cli build --urdf (Join-Path $atomSimulation 'src\urdf\atom.urdf.xacro') --output $atomBundle --interactive @atomBuildOptions

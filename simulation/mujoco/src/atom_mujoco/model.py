@@ -65,7 +65,7 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
     parameters = dict(parameters or {})
     allowed = {'mass_kg_per_moving_body', 'diagonal_inertia_kg_m2',
                'joint_damping', 'joint_armature', 'actuator_kp', 'actuator_kv',
-               'timestep_s', 'control_substeps', 'tool_offset_in_arm2_m', 'board_center_m', 'graveyard_slots', 'official_piece_visuals'}
+               'timestep_s', 'control_substeps', 'tool_offset_in_arm2_m', 'board_center_m', 'graveyard_slots', 'official_piece_visuals', 'square_size_m'}
     if parameters.keys() - allowed:
         raise ValueError('Unknown or unsupported physical parameter')
     official_visuals = parameters.pop('official_piece_visuals', False)
@@ -80,6 +80,9 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
                 or np.asarray(centre).shape != (3,) or not np.isfinite(centre).all()
                 or centre[2] < .006):
             raise ValueError('Invalid experimental Graveyard slot')
+    square_size = float(parameters.pop('square_size_m', SCENE['square_size_m']))
+    if not math.isfinite(square_size) or square_size <= 0:
+        raise ValueError('square_size_m must be finite and positive')
     board_center = np.asarray(parameters.pop('board_center_m', SCENE['board_center_m']), dtype=float)
     if board_center.shape != (3,) or not np.isfinite(board_center).all():
         raise ValueError('board_center_m requires three finite metres')
@@ -88,7 +91,7 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
         if tool_offset.shape != (3,) or not np.isfinite(tool_offset).all():
             raise ValueError('tool_offset_in_arm2_m requires three finite metres')
     profile.update(parameters)
-    for key in allowed - {'tool_offset_in_arm2_m', 'diagonal_inertia_kg_m2', 'board_center_m', 'graveyard_slots', 'official_piece_visuals'}:
+    for key in allowed - {'tool_offset_in_arm2_m', 'diagonal_inertia_kg_m2', 'board_center_m', 'graveyard_slots', 'official_piece_visuals', 'square_size_m'}:
         value = profile[key]
         if isinstance(value, bool) or not np.isscalar(value) or not np.isfinite(value) or value <= 0:
             raise ValueError(f'{key} must be finite and positive')
@@ -135,7 +138,7 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
     ET.SubElement(world, 'geom', name='reference_floor', type='plane', size='1 1 .01',
                   pos='0 0 0', rgba='.2 .24 .3 1', contype='0', conaffinity='0')
     board = ET.SubElement(world, 'body', name='chessboard', pos=text(board_center))
-    side = SCENE['square_size_m']
+    side = square_size
     ET.SubElement(board, 'geom', name='board_frame', type='box', size=text([4*side+.008, 4*side+.008, .006]),
                   rgba='.25 .12 .05 1', contype='0', conaffinity='0')
     for rank in range(8):
@@ -242,6 +245,7 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
     if visited != set(links):
         raise ValueError('Disconnected or cyclic links')
     scene = copy.deepcopy(SCENE)
+    scene['square_size_m'] = square_size
     scene['board_center_m'] = board_center.tolist()
     scene['graveyard_slots'] = graveyard
     scene['graveyard_geometry_provenance'] = 'experimental 36 mm square supports, 12 mm thick; not CAD calibrated'
