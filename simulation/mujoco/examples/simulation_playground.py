@@ -1,0 +1,94 @@
+"""Launch ATOM Chess Simulation Playground, or execute a headless task."""
+import argparse
+import json
+import uuid
+from pathlib import Path
+
+from atom_mujoco.playground import Playground
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--bundle', required=True, type=Path)
+    parser.add_argument('--headless', action='store_true')
+    parser.add_argument('--source', default='e2')
+    parser.add_argument('--target', default='e3')
+    parser.add_argument('--piece', default='white_pawn_e2')
+    parser.add_argument('--controller', default='baseline')
+    parser.add_argument('--output', type=Path)
+    args = parser.parse_args()
+    playground = Playground(args.bundle)
+    if args.headless:
+        result = playground.execute(operation='MOVE', piece_id=args.piece, source=args.source,
+                                    target=args.target, controller=args.controller)
+        if args.output:
+            playground.save(args.output, result)
+        print(json.dumps({k:v for k,v in result.items() if k not in ('history','manifest')}, indent=2))
+        return
+    import tkinter as tk
+    from tkinter import ttk
+    import mujoco.viewer
+    from atom_mujoco.controls import clean_view_options
+    root = tk.Tk()
+    root.title('ATOM Chess Simulation Playground')
+    piece, source, target = tk.StringVar(value=args.piece), tk.StringVar(value=args.source), tk.StringVar(value=args.target)
+    for label, variable, options in [('Piece',piece,[p['name'] for p in playground.sim.manifest['pieces']]),
+                                     ('Source',source,[f+str(r) for r in range(1,9) for f in 'abcdefgh']),
+                                     ('Target',target,[f+str(r) for r in range(1,9) for f in 'abcdefgh'])]:
+        ttk.Label(root,text=label).pack()
+        ttk.Combobox(root,textvariable=variable,values=options,state='readonly',width=40).pack()
+    ttk.Label(root,text='Controller: Deterministic Baseline\nTrained RL Policy: unavailable (no validated checkpoint)').pack(pady=8)
+    status = ttk.Label(root,text='Ready. Verification uses simulation oracle, not a camera.',wraplength=500)
+    status.pack(padx=12,pady=8)
+    with mujoco.viewer.launch_passive(playground.sim.model, playground.sim.data,
+                                     show_left_ui=False,show_right_ui=False) as viewer:
+        original_advance, original_reset = playground.sim.advance, playground.sim.reset
+        def locked_advance(*a, **kw):
+            with viewer.lock():
+                return original_advance(*a, **kw)
+        def locked_reset(*a, **kw):
+            with viewer.lock():
+                return original_reset(*a, **kw)
+        playground.sim.advance, playground.sim.reset = locked_advance, locked_reset
+        settings=playground.sim.manifest['scene']['camera']
+        with viewer.lock():
+            viewer.cam.lookat[:]=settings['lookat']
+            viewer.cam.distance=settings['distance']
+            viewer.cam.azimuth=settings['azimuth']
+            viewer.cam.elevation=settings['elevation']
+        def render(phase,state):
+            with viewer.lock():
+                clean_view_options(viewer.opt)
+            viewer.sync()
+            status.configure(text=f"{phase} | t={state['time_s']:.2f}s | q={state['position'].round(3)}")
+            root.update_idletasks()
+        playground.on_step=render
+        def execute():
+            button.configure(state='disabled')
+            try:
+                result=playground.execute(operation='MOVE',piece_id=piece.get(),source=source.get(),target=target.get())
+                output=args.bundle.parent/('playground-'+uuid.uuid4().hex+'.json')
+                playground.save(output,result)
+                status.configure(text=f"{result['status']}: {result['error_code']}\nSaved {output}")
+                render_state=playground.sim.observe()
+                with viewer.lock():
+                    clean_view_options(viewer.opt)
+                viewer.sync()
+            finally:
+                button.configure(state='normal')
+        button=ttk.Button(root,text='Execute MOVE',command=execute)
+        button.pack(pady=8)
+        def refresh():
+            if not viewer.is_running():
+                root.destroy()
+                return
+            with viewer.lock():
+                clean_view_options(viewer.opt)
+            viewer.sync()
+            root.after(40,refresh)
+        root.after(40,refresh)
+        root.mainloop()
+
+
+if __name__ == '__main__':
+    main()
