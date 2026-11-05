@@ -44,6 +44,43 @@ def main():
               +('DIAGNOSTIC: collision preflight bypassed' if args.diagnostic_unchecked else 'Swept preflight required')).pack(pady=8)
     status = ttk.Label(root,text='Ready. Verification uses simulation oracle, not a camera.',wraplength=500)
     status.pack(padx=12,pady=8)
+    manual_mode = tk.BooleanVar(value=False)
+    manual_pause = tk.BooleanVar(value=False)
+    def change_mode():
+        try:
+            if manual_mode.get():
+                playground.manual.enter()
+            else:
+                playground.manual.leave()
+            button.configure(state='disabled' if manual_mode.get() else 'normal')
+        except ValueError as error:
+            manual_mode.set(playground.manual.active)
+            status.configure(text=str(error))
+    ttk.Checkbutton(root,text='Manual control (focus this window)',variable=manual_mode,
+                    command=change_mode).pack()
+    ttk.Label(root,text='Hold A/D: J1 | W/S: Z | J/L: J2 | O/C: open/close').pack()
+    def key_event(event, down):
+        if manual_mode.get():
+            playground.manual.key(event.keysym.lower(),down)
+    root.bind('<KeyPress>',lambda event:key_event(event,True))
+    root.bind('<KeyRelease>',lambda event:key_event(event,False))
+    root.bind('<FocusOut>',lambda event:playground.manual.pressed.clear())
+    ttk.Checkbutton(root,text='Pause manual physics',variable=manual_pause,
+                    command=lambda:setattr(playground.manual,'paused',manual_pause.get())).pack()
+    def stop_manual():
+        playground.manual.stop()
+        status.configure(text='Simulation stopped. Explicit reset required; no hardware stop implied.')
+    ttk.Button(root,text='Stop manual simulation',command=stop_manual).pack()
+    def reset_experiment():
+        if any(op.status in ('pending','executing') for op in playground.physical.operations.values()):
+            status.configure(text='Cannot reset an active operation.')
+            return
+        playground.reset()
+        manual_mode.set(False)
+        manual_pause.set(False)
+        button.configure(state='normal')
+        status.configure(text='New experiment initialized. Previous physical scene replaced.')
+    ttk.Button(root,text='Reset experiment to initial scene',command=reset_experiment).pack()
     with mujoco.viewer.launch_passive(playground.sim.model, playground.sim.data,
                                      show_left_ui=False,show_right_ui=False) as viewer:
         original_advance, original_reset = playground.sim.advance, playground.sim.reset
@@ -111,10 +148,19 @@ def main():
             if not viewer.is_running():
                 root.destroy()
                 return
+            if playground.manual.active:
+                try:
+                    state=playground.manual.tick()
+                    if state is not None:
+                        status.configure(text=f"MANUAL | q={state['position'].round(3)} | "
+                            f"reconciliation required | {playground.manual.observation_error or 'observation available'}")
+                except (ValueError,RuntimeError) as error:
+                    playground.manual.stop()
+                    status.configure(text=str(error))
             with viewer.lock():
                 clean_view_options(viewer.opt)
             viewer.sync()
-            root.after(40,refresh)
+            root.after(max(1,int(playground.sim.dt*1000)),refresh)
         root.after(40,refresh)
         root.mainloop()
 
