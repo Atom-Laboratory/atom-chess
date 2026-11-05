@@ -1,8 +1,10 @@
 #include "board/move_validator.hpp"
 
 #include "board/board_comparator.hpp"
+#include "board/move_applier.hpp"
 
 #include <cmath>
+#include <limits>
 
 namespace ac::chess {
 namespace {
@@ -432,6 +434,7 @@ bool isPawnMoveValid(const Board& board, const Move& move, PieceColor color)
 
     if (move.enPassant) {
         if (!move.capture
+            || move.promotion != PieceType::None
             || !isEmpty(target)
             || rowDelta != direction
             || std::abs(colDelta) != 1) {
@@ -731,6 +734,35 @@ bool isCastlingPathSafe(
 }
 
 } // namespace
+
+std::optional<Move> MoveValidator::validate(const Board& previous, const Move& proposal)
+{
+    if (!isInside(proposal.from) || !isInside(proposal.to) || proposal.from == proposal.to) {
+        return std::nullopt;
+    }
+    const Piece moving = previous.pieceAt(proposal.from);
+    const bool targetEmpty = previous.isSqrEmpty(proposal.to);
+    Move canonical{.from = proposal.from, .to = proposal.to, .promotion = proposal.promotion};
+    canonical.castle = moving.type == PieceType::King
+        && proposal.from.row == proposal.to.row && std::abs(proposal.to.col - proposal.from.col) == 2;
+    canonical.enPassant = moving.type == PieceType::Pawn && targetEmpty
+        && proposal.from.col != proposal.to.col;
+    canonical.capture = !targetEmpty || canonical.enPassant;
+
+    // Reuse geometry checks before materializing special moves on a disposable copy.
+    if (!isMovementValid(previous, canonical, previous.sideToMove())) {
+        return std::nullopt;
+    }
+    // MoveApplier increments int counters: reject an unrepresentable successor before copying it.
+    if ((moving.color == PieceColor::Black && previous.fullmoveNumber() == std::numeric_limits<int>::max())
+        || (moving.type != PieceType::Pawn && !canonical.capture
+            && previous.halfmoveClock() == std::numeric_limits<int>::max())) {
+        return std::nullopt;
+    }
+    Board candidate = previous;
+    MoveApplier::apply(candidate, canonical);
+    return validate(previous, candidate, previous.sideToMove());
+}
 
 /**
  * @brief Board-to-Board validation entry point.

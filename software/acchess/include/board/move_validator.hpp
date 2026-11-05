@@ -26,6 +26,18 @@ namespace ac::chess {
 class MoveValidator {
 public:
     /**
+     * @brief Canonicalizes and validates a move proposal against authoritative state.
+     * @param previous Trusted official position; never modified.
+     * @param proposal Source, destination and explicit promotion choice. Incoming
+     *        capture/castle/enPassant flags are ignored and derived from previous.
+     * @return Canonical legal move, or nullopt for any invalid/illegal proposal.
+     * @note Uses the existing geometry and full transition-validation pipeline.
+     *       No promotion choice is inferred; only standard chess is supported.
+     *       A successor whose FEN counters overflow Board's int storage is rejected.
+     */
+    [[nodiscard]] static std::optional<Move> validate(const Board& previous, const Move& proposal);
+
+    /**
      * @brief Validates a newly observed Board against the previous state.
      * @param previous Authoritative Board before the observed move.
      * @param observed Newly observed Board to interpret.
