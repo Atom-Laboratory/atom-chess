@@ -77,6 +77,19 @@ def main():
         selection_label.configure(text=f'Blue source: {source.get()}   |   Gold target: {target.get()}')
 
     def pick(endpoint):
+        if manual_mode.get():
+            status.configure(text='Switch off manual control before selecting a chess move.')
+            return
+        if not endpoint.startswith('graveyard:'):
+            identity = playground.physical.confirmed.occupancy[endpoint]
+            if identity:
+                record = next(p for p in playground.sim.manifest['pieces'] if p['name']==identity)
+                side = 'white' if len(playground.chess_history)%2==0 else 'black'
+                if record['color']==side:
+                    source.set(endpoint)
+                    selecting.set('target')
+                    refresh_grid()
+                    return
         if selecting.get() == 'source':
             source.set(endpoint)
             selecting.set('target')
@@ -84,6 +97,8 @@ def main():
             target.set(endpoint)
             selecting.set('source')
         refresh_grid()
+        if selecting.get() == 'source' and not endpoint.startswith('graveyard:') and not source.get().startswith('graveyard:'):
+            root.after_idle(execute)
 
     def add_tile(frame, row, col, endpoint, label, background, available=True):
         tile = tk.Button(frame, width=6, foreground='#171717', command=lambda: pick(endpoint),
@@ -236,8 +251,12 @@ def main():
                 if any(endpoint.startswith('graveyard:') for endpoint in (origin,destination)):
                     request = dict(schema=2,operation='PLAN',transfers=[dict(source=origin,target=destination)])
                 else:
-                    request = dict(schema=1,operation='MOVE',source=origin,target=destination)
-                result=playground.execute_request(request)
+                    request = None
+                if request is None:
+                    from atom_mujoco.chess_commands import execute_chess_move
+                    result = execute_chess_move(playground, origin, destination)
+                else:
+                    result=playground.execute_request(request)
                 output=args.bundle.parent/('playground-'+uuid.uuid4().hex+'.json')
                 playground.save(output,result)
                 status.configure(text=f"{result['status']}: {result['error_code']}\nSaved {output}")
@@ -296,6 +315,31 @@ def main():
         ttk.Button(controls_panel, text='Execute C++ trajectory (P015)',
                    command=load_trajectory).pack(pady=4)
 
+        camera_windows = []
+        def show_camera():
+            from atom_mujoco.virtual_camera import VirtualCamera
+            camera = VirtualCamera(playground.sim)
+            window = tk.Toplevel(root)
+            window.title('Virtual RGB camera - perception input, unverified')
+            label = ttk.Label(window)
+            label.pack()
+            entry = [window, camera]
+            camera_windows.append(entry)
+            def close():
+                camera_windows.remove(entry)
+                camera.close()
+                window.destroy()
+            window.protocol('WM_DELETE_WINDOW', close)
+            def capture():
+                if entry not in camera_windows:
+                    return
+                rgb = camera.frame()
+                ppm = b'P6\n640 480\n255\n'+rgb.tobytes()
+                label.image = tk.PhotoImage(data=ppm, format='PPM')
+                label.configure(image=label.image)
+                window.after(200, capture)
+            capture()
+        ttk.Button(controls_panel, text='Open virtual RGB camera', command=show_camera).pack(pady=4)
         def refresh():
             if not viewer.is_running():
                 root.destroy()

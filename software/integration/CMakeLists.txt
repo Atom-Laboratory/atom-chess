@@ -23,3 +23,6 @@ endif()
 
 add_executable(export_mujoco_trajectory src/export_mujoco_trajectory.cpp)
 target_link_libraries(export_mujoco_trajectory PRIVATE motion)
+
+add_executable(chess_move_request src/chess_move_request.cpp)
+target_link_libraries(chess_move_request PRIVATE motion)

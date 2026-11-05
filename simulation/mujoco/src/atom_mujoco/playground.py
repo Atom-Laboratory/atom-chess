@@ -39,6 +39,7 @@ class Playground:
         limits = self.feedback.limits
         self.physical = PhysicalBoardState(snapshot, position_tolerance_m=limits.bystander_position_m,
                                            angle_tolerance_rad=limits.bystander_angle_rad)
+        self.chess_history = []
         self.manual = ManualControl(self)
         return state
 
