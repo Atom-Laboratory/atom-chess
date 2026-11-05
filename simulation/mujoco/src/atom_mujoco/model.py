@@ -65,9 +65,12 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
     parameters = dict(parameters or {})
     allowed = {'mass_kg_per_moving_body', 'diagonal_inertia_kg_m2',
                'joint_damping', 'joint_armature', 'actuator_kp', 'actuator_kv',
-               'timestep_s', 'control_substeps', 'tool_offset_in_arm2_m', 'board_center_m', 'graveyard_slots'}
+               'timestep_s', 'control_substeps', 'tool_offset_in_arm2_m', 'board_center_m', 'graveyard_slots', 'official_piece_visuals'}
     if parameters.keys() - allowed:
         raise ValueError('Unknown or unsupported physical parameter')
+    official_visuals = parameters.pop('official_piece_visuals', False)
+    if type(official_visuals) is not bool:
+        raise ValueError('official_piece_visuals must be boolean')
     tool_offset = parameters.pop('tool_offset_in_arm2_m', None)
     graveyard = parameters.pop('graveyard_slots', {})
     if not isinstance(graveyard, dict):
@@ -85,7 +88,7 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
         if tool_offset.shape != (3,) or not np.isfinite(tool_offset).all():
             raise ValueError('tool_offset_in_arm2_m requires three finite metres')
     profile.update(parameters)
-    for key in allowed - {'tool_offset_in_arm2_m', 'diagonal_inertia_kg_m2', 'board_center_m', 'graveyard_slots'}:
+    for key in allowed - {'tool_offset_in_arm2_m', 'diagonal_inertia_kg_m2', 'board_center_m', 'graveyard_slots', 'official_piece_visuals'}:
         value = profile[key]
         if isinstance(value, bool) or not np.isscalar(value) or not np.isfinite(value) or value <= 0:
             raise ValueError(f'{key} must be finite and positive')
@@ -239,6 +242,29 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
     if interactive:
         from .interactive_model import configure
         scene.update(configure(mjcf, metadata, profile))
+    if official_visuals:
+        export_dir = source.parents[3] / 'hardware/Project/chess_pieces/exports'
+        export_manifest = json.loads((export_dir / 'manifest.json').read_text(encoding='utf-8'))
+        for kind, record in export_manifest['pieces'].items():
+            filename = kind + ('.obj' if kind == 'knight' else '.stl')
+            data = (export_dir / filename).read_bytes()
+            digest = record['obj_sha256'] if kind == 'knight' else record['sha256']
+            if hashlib.sha256(data).hexdigest() != digest:
+                raise ValueError('Official piece mesh hash mismatch: ' + kind)
+            mesh_bytes[filename] = data
+            ET.SubElement(assets, 'mesh', name='official_'+kind, file=filename, scale='.001 .001 .001')
+        for record in pieces:
+            body = mjcf.find('.//body[@name="'+record['name']+'"]')
+            old_geoms = list(body.findall('geom'))
+            rgba = old_geoms[0].get('rgba')
+            for geom in old_geoms:
+                geom.set('rgba', '0 0 0 0')
+                geom.set('group', '3')
+            ET.SubElement(body, 'geom', name=record['name']+'_official_visual',
+                          type='mesh', mesh='official_'+record['kind'], rgba=rgba,
+                          contype='0', conaffinity='0')
+        scene['piece_visual_geometry'] = 'official exported meshes in millimetres'
+        scene['piece_collision_geometry'] = 'legacy experimental primitives'
     xml = ET.tostring(mjcf, encoding='unicode')
     mujoco.MjModel.from_xml_string(xml, mesh_bytes)  # Compile before writing output.
     output = Path(output)

@@ -2,6 +2,7 @@
 import argparse
 import json
 import uuid
+import time
 from pathlib import Path
 
 from atom_mujoco.playground import Playground
@@ -212,7 +213,12 @@ def main():
                                         np.array(rgba,dtype=np.float32))
                     scene.ngeom += 1
             viewer.sync()
+        render_clock = [time.perf_counter()]
         def render(phase,state):
+            elapsed = time.perf_counter() - render_clock[0]
+            if elapsed < playground.sim.dt:
+                time.sleep(playground.sim.dt - elapsed)
+            render_clock[0] = time.perf_counter()
             sync_view()
             status.configure(text=f"{phase} | t={state['time_s']:.2f}s | q={state['position'].round(3)}")
             root.update_idletasks()
