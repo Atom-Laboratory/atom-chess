@@ -10,3 +10,5 @@ preserves confirmed physical progress and blocks further chess dispatch.
 Promotion is rejected before movement until replacement is available.
 The bridge uses synthetic XY solely for decomposition. MuJoCo endpoints come
 from the configured scene. This is task integration, not C++ trajectory playback.
+
+Selection requires explicit Confirm MOVE before dispatch. Source/target clicks only update the proposal and visual overlays.

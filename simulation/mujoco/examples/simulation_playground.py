@@ -97,8 +97,6 @@ def main():
             target.set(endpoint)
             selecting.set('source')
         refresh_grid()
-        if selecting.get() == 'source' and not endpoint.startswith('graveyard:') and not source.get().startswith('graveyard:'):
-            root.after_idle(execute)
 
     def add_tile(frame, row, col, endpoint, label, background, available=True):
         tile = tk.Button(frame, width=6, foreground='#171717', command=lambda: pick(endpoint),
@@ -266,7 +264,7 @@ def main():
             finally:
                 refresh_grid()
                 button.configure(state='normal')
-        button=ttk.Button(controls_panel,text='Execute MOVE',command=execute)
+        button=ttk.Button(controls_panel,text='Confirm MOVE',command=execute)
         button.pack(pady=8)
         def inspect():
             window=tk.Toplevel(root)
