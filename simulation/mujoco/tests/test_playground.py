@@ -91,6 +91,29 @@ def test_adapter_owns_observation_sequence_and_immutable_frames(playground):
     assert playground.physical.confirmed.revision == 0
 
 
+def test_manual_limits_stop_and_state_invalidation(playground):
+    manual = playground.manual
+    confirmed = playground.physical.confirmed
+    manual.enter()
+    result = playground.execute(operation='MOVE', source='e2', target='e3')
+    assert result['error_code'] == 'MANUAL_MODE_OWNS_ROBOT'
+    before = manual.target.copy()
+    manual.key('d', True)
+    manual.tick()
+    delta = manual.target-before
+    assert 0 < delta[0] <= playground.sim.speed[0]*playground.sim.dt
+    assert playground.physical.confirmed is confirmed
+    assert playground.physical.reconciliation_required
+    assert manual.latest is not None
+    manual.stop()
+    time = playground.sim.data.time
+    assert manual.tick() is None
+    assert playground.sim.data.time == time
+    manual.leave()
+    with pytest.raises(ValueError, match='latched'):
+        manual.enter()
+
+
 def test_feedback_detects_external_piece_displacement(playground):
     sim = playground.sim
     body = sim.model.body('white_pawn_e2').id

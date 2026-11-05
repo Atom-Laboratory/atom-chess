@@ -200,6 +200,12 @@ class PhysicalBoardState:
         self._active = None
         self._blocked = True
 
+    def invalidate(self):
+        """External/manual manipulation makes the last confirmed state uncertain."""
+        if self._active is not None:
+            raise ValueError('An operation owns the physical state')
+        self._blocked = True
+
     def observe(self, observation):
         self._require(observation.operation_id, 'executing')
         if (type(observation.sequence) is not int or observation.sequence <= self._sequence

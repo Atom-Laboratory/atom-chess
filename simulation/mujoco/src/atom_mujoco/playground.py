@@ -13,6 +13,7 @@ from .supervision import TaskLedger, Execution, Evidence
 from .motion_controller import MotionController
 from .task_plan import validate_plan
 from .collision import SceneCollision
+from .teleoperation import ManualControl
 
 
 class Playground:
@@ -38,6 +39,7 @@ class Playground:
         limits = self.feedback.limits
         self.physical = PhysicalBoardState(snapshot, position_tolerance_m=limits.bystander_position_m,
                                            angle_tolerance_rad=limits.bystander_angle_rad)
+        self.manual = ManualControl(self)
         return state
 
     def execute_request(self, request):
@@ -105,6 +107,8 @@ class Playground:
                       collision_checked=False, training_eligible=False,
                       reward=None, provenance=provenance(), manifest=sim.manifest)
         try:
+            if self.manual.active:
+                raise ValueError('MANUAL_MODE_OWNS_ROBOT')
             if controller != 'baseline':
                 raise ValueError('RL_POLICY_UNAVAILABLE: no trained validated checkpoint')
             if operation not in ('MOVE', 'TRANSFER'):
