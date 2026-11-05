@@ -85,7 +85,7 @@ def main():
         (('J1 − (←)', 'left'), ('J1 + (→)', 'right')),
         (('Z down (↓)', 'down'), ('Z up (↑)', 'up')),
         (('J2 − (PgUp)', 'prior'), ('J2 + (PgDn)', 'next')),
-        (('Open (Home)', 'home'), ('Close (End)', 'end')),
+        (('Open (O)', 'o'), ('Close (C)', 'c')),
     )):
         for column, (label, key) in enumerate(controls):
             jog_button = ttk.Button(jog_panel, text=label, takefocus=False)

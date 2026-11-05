@@ -17,7 +17,7 @@ manual mode is selected. Pause and simulation stop freeze timer-driven physics.
 Reset is an explicit new experiment, never cancellation or recovery of a task.
 
 The console captures jog shortcuts only while its dedicated keyboard control
-has focus. Arrows control J1 and Z, Page Up/Down control J2, and Home/End open
+has focus. Arrows control J1 and Z, Page Up/Down control J2, and O/C open
 and close the gripper. The mouse jog buttons use the same held-input path.
 The native 3D viewer retains its own camera and visualization controls.
 
