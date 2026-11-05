@@ -75,6 +75,22 @@ def test_request_rejects_extra_identity_and_unknown_schema(playground):
     assert playground.physical.confirmed.revision == 0
 
 
+def test_adapter_owns_observation_sequence_and_immutable_frames(playground):
+    from dataclasses import FrozenInstanceError
+    first = playground.feedback.observation('operation-one', 0)
+    second = playground.feedback.observation('operation-two', 0)
+    assert second.sequence == first.sequence + 1
+    assert second.operation_id == 'operation-two'
+    assert len(first.snapshot.pieces) == 32
+    assert len(first.snapshot.occupancy) == 64
+    with pytest.raises(FrozenInstanceError):
+        first.frames['grasp_center'].position = (0, 0, 0)
+    with pytest.raises(ValueError):
+        playground.feedback.observation('', 0)
+    assert playground.feedback.observation('operation-three', 0).sequence == second.sequence + 1
+    assert playground.physical.confirmed.revision == 0
+
+
 def test_feedback_detects_external_piece_displacement(playground):
     sim = playground.sim
     body = sim.model.body('white_pawn_e2').id

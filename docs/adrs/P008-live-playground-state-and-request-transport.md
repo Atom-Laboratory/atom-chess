@@ -10,6 +10,12 @@ That prevents sequences and discards failed or successful physical outcomes.
 
 ## Decision
 
+Feedback follow-up: the adapter owns its monotonically increasing observation
+sequence and samples snapshots itself. Callers cannot bind an old supplied
+snapshot to fresh robot telemetry. Frame values are immutable Pose records.
+These observations supply evidence only; P005 and P007 retain completion and
+commit responsibilities. A failed sample does not consume a sequence number.
+
 Use a versioned JSON MOVE envelope at the boundary and expose the same consumer
 to headless execution and GUI controls. Add C++ serialization to the P006 adapter.
 Scene initialization is explicit and separate from execution. Observe all piece

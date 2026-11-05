@@ -35,8 +35,9 @@ class SceneFeedback:
     def __init__(self, sim, limits=None):
         self.sim = sim
         self.limits = limits or FeedbackLimits()
+        self._sequence = 0
 
-    def snapshot(self, revision, *, operation_id=None, sequence=0, timestamp_s=None):
+    def snapshot(self, revision):
         sim, limits = self.sim, self.limits
         sites = {s: sim.data.site_xpos[sim.model.site('square_center_'+s).id] for s in SQUARES}
         # Interactive board collider, not decorative square surfaces, supports pieces.
@@ -76,15 +77,14 @@ class SceneFeedback:
                             else Location('board', matches[0]))
             pieces.append(Piece(identity, pose, location))
         snapshot = Snapshot(revision, tuple(pieces), frozenset(graveyard))
-        if operation_id is None:
-            return snapshot
-        return self.observation(operation_id, sequence, timestamp_s, snapshot)
+        return snapshot
 
-    def observation(self, operation_id, sequence, timestamp_s, snapshot):
+    def observation(self, operation_id, revision):
         """Bind an immutable full snapshot and robot/tool telemetry to one operation."""
-        if not operation_id or type(sequence) is not int or sequence < 0:
-            raise ValueError('Operation identity and nonnegative sequence required')
-        timestamp = float(self.sim.data.time if timestamp_s is None else timestamp_s)
+        if not isinstance(operation_id, str) or not operation_id:
+            raise ValueError('Operation identity required')
+        snapshot = self.snapshot(revision)
+        timestamp = float(self.sim.data.time)
         if not math.isfinite(timestamp):
             raise ValueError('Finite observation timestamp required')
         sim = self.sim
@@ -94,14 +94,14 @@ class SceneFeedback:
         frames = {}
         for name in ('arm2_frame', 'grasp_center'):
             site = sim.model.site(name).id
-            frames[name] = dict(position_m=tuple(sim.data.site_xpos[site]),
-                                orientation_wxyz=tuple(self._site_quaternion(site)))
+            frames[name] = Pose(tuple(sim.data.site_xpos[site]), tuple(self._site_quaternion(site)))
         joints = MappingProxyType({name: float(sim.data.qpos[address])
                                    for name,address in zip(sim.names,sim.qadr)})
         gripper = MappingProxyType(dict(opening=tuple(float(v) for v in sim.data.qpos[sim.qadr[3:5]]),
                                          held_identity=next((p.identity for p in snapshot.pieces
                                                              if p.location.kind == 'gripper'), None)))
-        return FeedbackObservation(operation_id, sequence, timestamp, snapshot,
+        self._sequence += 1
+        return FeedbackObservation(operation_id, self._sequence, timestamp, snapshot,
                                    MappingProxyType(frames), joints, gripper)
 
     def _site_quaternion(self, site):
