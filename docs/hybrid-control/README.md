@@ -1,5 +1,10 @@
 # Hybrid robotic manipulation: phase 1 audit and architecture
 
+Implementation update: see [developer guide and phase status](developer-guide.md)
+for task/evidence contracts, persistent duplicate protection, execution gates and
+the reproducible conventional joint baseline. Proposed diagrams below remain
+target architecture; they do not imply full hardware or learned-policy delivery.
+
 Date: 2026-11-05. Audited simulation baseline a953c71; fetched main 8d9894c.
 Main was inspected as a reference, not merged during this audit. Preexisting
 untracked simulation/learning remains preserved and is not the selected pipeline.
