@@ -21,6 +21,8 @@ TEST(BoardMoveAdapter, AdaptsRealTaskPlannerOutputFromChessCore)
     const auto request = adaptBoardMove(plan);
     EXPECT_EQ(request.source, "e2");
     EXPECT_EQ(request.target, "e3");
+    EXPECT_EQ(serializeBoardMove(plan),
+        R"({"schema":1,"operation":"MOVE","source":"e2","target":"e3"})");
 }
 
 TEST(BoardMoveAdapter, RejectsWholeCapturePlanAndUnsupportedSingletons)

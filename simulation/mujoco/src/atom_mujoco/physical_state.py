@@ -192,26 +192,31 @@ class PhysicalBoardState:
                     or observation.timestamp_s < execution.entered
                     or not 0 <= now_s-observation.timestamp_s <= execution.max_age):
                 raise ValueError('Fresh post-release full observation required')
-            previous, candidate = self.confirmed, observation.snapshot
-            if (candidate.by_id.keys() != previous.by_id.keys()
-                    or candidate.graveyard_slots != previous.graveyard_slots):
-                raise ValueError('Physical inventory changed')
-            for identity, before in previous.by_id.items():
-                after = candidate.by_id[identity]
-                if identity == operation.task.piece_id:
-                    if after.location != Location('board', operation.task.target_square):
-                        raise ValueError('Transferred piece not at destination')
-                else:
-                    dot = abs(sum(a*b for a, b in zip(before.pose.orientation, after.pose.orientation)))
-                    angle = 2*math.acos(min(1., dot))
-                    if (after.location != before.location
-                            or math.dist(before.pose.position, after.pose.position) > self._position_tolerance
-                            or angle > self._angle_tolerance):
-                        raise ValueError('Unaffected piece changed location or pose')
-            self._confirmed = replace(candidate, revision=previous.revision+1)
+            self.verify_candidate(operation_id, observation.snapshot)
+            self._confirmed = replace(observation.snapshot, revision=self.confirmed.revision+1)
             self._operations[operation_id] = replace(operation, status='completed')
             self._active = None
             return self.confirmed
         except ValueError as error:
             self.fail(operation_id, str(error))
             raise
+
+    def verify_candidate(self, operation_id, candidate):
+        """Check full-board evidence before asserting P005 whole_board_matches."""
+        operation = self._require(operation_id, 'executing')
+        previous = self.confirmed
+        if (candidate.revision != previous.revision or candidate.by_id.keys() != previous.by_id.keys()
+                or candidate.graveyard_slots != previous.graveyard_slots):
+            raise ValueError('Physical inventory or revision changed')
+        for identity, before in previous.by_id.items():
+            after = candidate.by_id[identity]
+            if identity == operation.task.piece_id:
+                if after.location != Location('board', operation.task.target_square):
+                    raise ValueError('Transferred piece not at destination')
+            else:
+                dot = abs(sum(a*b for a, b in zip(before.pose.orientation, after.pose.orientation)))
+                angle = 2*math.acos(min(1., dot))
+                if (after.location != before.location
+                        or math.dist(before.pose.position, after.pose.position) > self._position_tolerance
+                        or angle > self._angle_tolerance):
+                    raise ValueError('Unaffected piece changed location or pose')

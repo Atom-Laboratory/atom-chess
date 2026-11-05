@@ -24,8 +24,9 @@ calibration, and available gripper and collision geometry is approximate.
    last confirmed snapshot on failure and record uncertain live observations
    separately. Resolve square-only requests against that snapshot.
    See the [state adapter guide](physical-state-guide.md). This is an in-memory
-   contract; live scene classification and Playground wiring are not implemented.
-3. Define backend transport and route Playground source/target selection through
+   contract; [P008](../adrs/P008-live-playground-state-and-request-transport.md)
+   adds live scene classification and Playground wiring.
+3. P008 defines backend transport and routes Playground source/target selection through
    the same request interface. Separate explicit scene initialization from
    execution so that verified moves can form a sequence.
 4. Define Graveyard geometry and transactional slot reservations. Map the

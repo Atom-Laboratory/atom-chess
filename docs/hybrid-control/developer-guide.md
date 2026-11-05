@@ -7,7 +7,8 @@ physical chess robot. No neural model or trained-policy benchmark exists yet.
 
 The [physical state guide](physical-state-guide.md) describes the P007 confirmed
 snapshot store, square-only source resolution and feedback-gated transactions.
-It remains separate from the live Playground until the backend adapter increment.
+The [Playground adapter guide](playground-integration-guide.md) covers the live
+simulation oracle, square-only request transport and persistent scene sequences.
 
 `simulation/mujoco/src/atom_mujoco/supervision.py` provides immutable MoveTask
 and Evidence records, SQLite TaskLedger and an evidence-gated Execution state

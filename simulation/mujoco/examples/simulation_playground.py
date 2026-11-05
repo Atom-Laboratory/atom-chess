@@ -13,14 +13,15 @@ def main():
     parser.add_argument('--headless', action='store_true')
     parser.add_argument('--source', default='e2')
     parser.add_argument('--target', default='e3')
-    parser.add_argument('--piece', default='white_pawn_e2')
+    parser.add_argument('--request', type=Path, help='Versioned JSON from the Chess Core integration adapter')
     parser.add_argument('--controller', default='baseline')
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     playground = Playground(args.bundle)
     if args.headless:
-        result = playground.execute(operation='MOVE', piece_id=args.piece, source=args.source,
-                                    target=args.target, controller=args.controller)
+        result = (playground.execute_request(json.loads(args.request.read_text())) if args.request
+                  else playground.execute(operation='MOVE', source=args.source,
+                                          target=args.target, controller=args.controller))
         if args.output:
             playground.save(args.output, result)
         print(json.dumps({k:v for k,v in result.items() if k not in ('history','manifest')}, indent=2))
@@ -31,9 +32,8 @@ def main():
     from atom_mujoco.controls import clean_view_options
     root = tk.Tk()
     root.title('ATOM Chess Simulation Playground')
-    piece, source, target = tk.StringVar(value=args.piece), tk.StringVar(value=args.source), tk.StringVar(value=args.target)
-    for label, variable, options in [('Piece',piece,[p['name'] for p in playground.sim.manifest['pieces']]),
-                                     ('Source',source,[f+str(r) for r in range(1,9) for f in 'abcdefgh']),
+    source, target = tk.StringVar(value=args.source), tk.StringVar(value=args.target)
+    for label, variable, options in [('Source',source,[f+str(r) for r in range(1,9) for f in 'abcdefgh']),
                                      ('Target',target,[f+str(r) for r in range(1,9) for f in 'abcdefgh'])]:
         ttk.Label(root,text=label).pack()
         ttk.Combobox(root,textvariable=variable,values=options,state='readonly',width=40).pack()
@@ -66,7 +66,7 @@ def main():
         def execute():
             button.configure(state='disabled')
             try:
-                result=playground.execute(operation='MOVE',piece_id=piece.get(),source=source.get(),target=target.get())
+                result=playground.execute_request(dict(schema=1,operation='MOVE',source=source.get(),target=target.get()))
                 output=args.bundle.parent/('playground-'+uuid.uuid4().hex+'.json')
                 playground.save(output,result)
                 status.configure(text=f"{result['status']}: {result['error_code']}\nSaved {output}")

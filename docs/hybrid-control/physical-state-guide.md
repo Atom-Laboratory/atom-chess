@@ -1,8 +1,8 @@
 # Physical state developer guide
 
 This implements [P007](../adrs/P007-confirmed-physical-board-state.md). It is a
-backend-neutral state contract in `atom_mujoco.physical_state`, not yet wired to
-the Playground. Running the GUI still uses its previous per-request reset path.
+backend-neutral state contract in `atom_mujoco.physical_state`, now consumed by
+the [live Playground adapter](playground-integration-guide.md).
 The tests use synthetic snapshots and supplied oracle assertions, not physical
 manipulation evidence. Do not use them to claim successful captures or safety.
 

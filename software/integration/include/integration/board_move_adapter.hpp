@@ -18,4 +18,7 @@ struct BoardMoveRequest {
     std::span<const motion::PhysicalTask> plan
 );
 
+// Versioned JSON accepted by the MuJoCo Playground request consumer.
+[[nodiscard]] std::string serializeBoardMove(std::span<const motion::PhysicalTask> plan);
+
 }

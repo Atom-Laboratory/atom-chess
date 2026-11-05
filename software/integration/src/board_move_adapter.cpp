@@ -27,4 +27,12 @@ BoardMoveRequest adaptBoardMove(std::span<const motion::PhysicalTask> plan)
     return {algebraic(*task.boardSource), algebraic(*task.boardTarget)};
 }
 
+std::string serializeBoardMove(std::span<const motion::PhysicalTask> plan)
+{
+    const auto request = adaptBoardMove(plan);
+    // Both endpoints are generated from validated board indices, not raw input.
+    return "{\"schema\":1,\"operation\":\"MOVE\",\"source\":\"" + request.source
+        + "\",\"target\":\"" + request.target + "\"}";
+}
+
 }

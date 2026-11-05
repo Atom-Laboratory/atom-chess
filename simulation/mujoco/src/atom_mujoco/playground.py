@@ -7,6 +7,10 @@ import numpy as np
 
 from .backend import Simulation
 from .recording import provenance, save_record
+from .physical_state import PhysicalBoardState, Observation
+from .scene_feedback import SceneFeedback
+from .supervision import TaskLedger, Execution, Evidence
+from .motion_controller import MotionController
 
 
 class Playground:
@@ -14,10 +18,32 @@ class Playground:
         self.sim = Simulation(bundle)
         self.history = []
         self.on_step = on_step
+        self.feedback = SceneFeedback(self.sim)
+        self.controller = MotionController(self.sim)
+        self.ledger = TaskLedger(':memory:')
+        self.physical = None
+        self.observation_sequence = 0
+        self.reset()
 
     def reset(self, seed=0):
         self.history = []
-        return self.sim.reset(seed=seed)
+        state = self.sim.reset(seed=seed)
+        for _ in range(60):
+            state = self.sim.advance(self.sim.target)
+        snapshot = self.feedback.snapshot(0)
+        limits = self.feedback.limits
+        self.physical = PhysicalBoardState(snapshot, position_tolerance_m=limits.bystander_position_m,
+                                           angle_tolerance_rad=limits.bystander_angle_rad)
+        return state
+
+    def execute_request(self, request):
+        """Consume the same schema produced by the C++ Chess Core adapter."""
+        if (not isinstance(request, dict) or set(request) != {'schema', 'operation', 'source', 'target'}
+                or type(request['schema']) is not int or request['schema'] != 1
+                or request['operation'] != 'MOVE'
+                or not all(isinstance(request[k], str) for k in ('source', 'target'))):
+            raise ValueError('Unsupported movement envelope')
+        return self.execute(operation='MOVE', source=request['source'], target=request['target'])
 
     def solve(self, point, initial=None):
         """Damped numerical IK on a separate MjData; never mutate live physics."""
@@ -48,9 +74,11 @@ class Playground:
                 q[:3] = np.clip(q[:3]+np.clip(delta, -.08, .08), sim.lower[:3], sim.upper[:3])
         raise ValueError(f'Unreachable grasp point: best residual {best[0]:.4f} m')
 
-    def execute(self, *, operation, piece_id, source, target, controller='baseline', seed=0):
+    def execute(self, *, operation, source, target, piece_id=None, controller='baseline', seed=0):
         started = time.perf_counter()
         sim = self.sim
+        self.history = []
+        execution = task = None
         result = dict(schema=1, task_id=uuid.uuid4().hex, operation=operation,
                       piece_id=piece_id, source=source.lower(), target=target.lower(),
                       controller=controller, checkpoint=None, seed=seed, status='FAILED',
@@ -64,14 +92,28 @@ class Playground:
                 raise ValueError('UNSUPPORTED_OPERATION')
             if source.lower() == target.lower():
                 raise ValueError('INVALID_DESTINATION')
-            piece = next((p for p in sim.manifest['pieces'] if p['name'] == piece_id), None)
-            if piece is None:
-                raise ValueError('UNKNOWN_PIECE')
             if sim.manifest['pieces_physics'] != 'free-rigid-bodies':
                 raise ValueError('DYNAMIC_PIECES_REQUIRED')
-            self.reset(seed)
-            for _ in range(60):
-                sim.advance(sim.target)
+            task = self.physical.request_move(source.lower(), target.lower(), operation_id=result['task_id'],
+                                             expected_revision=self.physical.confirmed.revision, timeout_s=120.)
+            if piece_id is not None and piece_id != task.piece_id:
+                raise ValueError('SOURCE_IDENTITY_MISMATCH')
+            piece_id = result['piece_id'] = task.piece_id
+            piece = next(p for p in sim.manifest['pieces'] if p['name'] == piece_id)
+            self.physical.start(task.task_id)
+            execution = Execution(task, self.ledger, now_s=float(sim.data.time), max_age_s=.1, allow_oracle=True)
+            def gate(signals):
+                before = execution.state
+                role, _ = execution.GATES[before]
+                execution.advance(Evidence('simulation_oracle:'+role, float(sim.data.time),
+                                          len(self.history)+list(execution.GATES).index(before),
+                                          frozenset(signals), task.expected_board_revision), now_s=float(sim.data.time))
+                if execution.state == before or execution.state in ('FAILED', 'ABORTED'):
+                    raise ValueError('SUPERVISION_GATE_FAILED: '+before)
+            observed = self.feedback.snapshot(self.physical.confirmed.revision)
+            if observed.occupancy != self.physical.confirmed.occupancy:
+                raise ValueError('PHYSICAL_STATE_CHANGED: reconciliation required')
+            gate({'preconditions_valid'})
             body = sim.model.body(piece_id).id
             source_site = sim.model.site('square_center_'+source.lower()).id
             target_site = sim.model.site('square_center_'+target.lower()).id
@@ -85,9 +127,8 @@ class Playground:
                     if np.linalg.norm(pos[:2]-destination[:2]) < .02:
                         raise ValueError('DESTINATION_OCCUPIED')
             # Experimental waypoint for gripping the simulated pawn stem.
-            if piece['kind'] != 'pawn':
-                raise ValueError('PIECE_GEOMETRY_NOT_VALIDATED: baseline currently supports pawns')
-            grip = origin+np.array([0, 0, .018])
+            stem = sim.model.geom(piece_id+'_stem').id
+            grip = origin+np.array([0, 0, sim.model.geom_pos[stem, 2]-sim.model.geom_size[stem, 1]/4])
             place = np.array([destination[0], destination[1], grip[2]])
             waypoints = [('source approach', grip+[0,0,.07]), ('grasp', grip),
                          ('lift', grip+[0,0,.07]), ('destination approach', place+[0,0,.07]),
@@ -100,39 +141,71 @@ class Playground:
                     result['failed_waypoint'] = waypoint
                     square = source.upper() if len(solutions) < 3 else target.upper()
                     raise ValueError(f'{error} ({waypoint} at {square}). Check board placement against the arm workspace.') from error
+            gate({'plan_valid'})
             def move(q, phase, opening, steps=180):
                 goal = q.copy()
                 goal[3:] = opening
-                for _ in range(steps):
-                    state = sim.advance(goal)
+                settled = False
+                for step in range(max(steps, 600)):
+                    state = self.controller.step(goal)
                     self.history.append(dict(phase=phase, time_s=state['time_s'],
                                              position=state['position'].tolist(),
                                              target=goal.tolist(), piece_position=sim.data.xpos[body].tolist()))
                     if self.on_step:
                         self.on_step(phase, state)
+                    settled = (np.max(np.abs(state['position'][:3]-goal[:3])) <= .005
+                               and np.max(np.abs(state['velocity'][:3])) <= .01)
+                    if step+1 >= steps and settled:
+                        break
+                if not settled:
+                    raise ValueError('ROBOT_NOT_SETTLED: '+phase)
                 return state
             move(solutions[0], 'APPROACHING', sim.upper[3])
+            gate({'approach_settled'})
             move(solutions[1], 'GRASPING', sim.upper[3])
             move(solutions[1], 'VERIFYING_GRASP', sim.lower[3], 100)
-            contacts = sim.contact_report()
-            result['grasp_confirmed'] = all(any(f'finger_{i}_pad' in str(c) and piece_id in str(c) for c in contacts) for i in (1,2))
-            if not result['grasp_confirmed']:
+            gate({'close_acknowledged'})
+            result['grasp_confirmed'] = self.feedback.grip_contacts(piece_id)
+            if not result['grasp_confirmed'] or not self.feedback.settled(piece_id):
                 raise ValueError('GRASP_FAILED')
+            gate({'contact', 'piece_stable'})
             move(solutions[2], 'LIFTING', sim.lower[3])
-            if sim.data.xpos[body,2] < origin[2]+.04:
+            if sim.data.xpos[body,2] < origin[2]+.04 or not self.feedback.grip_contacts(piece_id):
                 raise ValueError('LIFT_FAILED')
+            gate({'lift_confirmed', 'grip_stable'})
             move(solutions[3], 'TRANSPORTING', sim.lower[3])
+            if not self.feedback.grip_contacts(piece_id):
+                raise ValueError('TRANSPORT_GRIP_LOST')
+            gate({'destination_reached', 'grip_stable'})
             move(solutions[4], 'PLACING', sim.lower[3])
+            gate({'placement_settled'})
+            if (np.linalg.norm(sim.data.xpos[body,:2]-destination[:2]) > .012
+                    or abs(sim.data.xpos[body,2]-origin[2]) > .004):
+                raise ValueError('PLACEMENT_NOT_SUPPORTED_OR_ALIGNED')
+            gate({'supported', 'aligned'})
             move(solutions[4], 'RELEASING', sim.upper[3], 100)
+            gate({'open_acknowledged'})
             move(solutions[3], 'VERIFYING_RELEASE', sim.upper[3])
             final = sim.data.xpos[body].copy()
             result['position_error_m'] = float(np.linalg.norm(final[:2]-destination[:2]))
-            result['release_confirmed'] = not any('finger_' in str(c) and piece_id in str(c) for c in sim.contact_report())
+            result['release_confirmed'] = self.feedback.released(piece_id)
             if result['position_error_m'] > .015 or abs(final[2]-origin[2]) > .01 or not result['release_confirmed']:
                 raise ValueError('PLACEMENT_FAILED')
+            snapshot = self.feedback.snapshot(task.expected_board_revision)
+            self.physical.verify_candidate(task.task_id, snapshot)
+            gate({'released', 'whole_board_matches'})
+            self.observation_sequence += 1
+            self.physical.observe(Observation(task.task_id, self.observation_sequence, float(sim.data.time), snapshot))
+            self.physical.commit(task.task_id, execution, now_s=float(sim.data.time))
             result['status'] = 'COMPLETED_SIMULATION_ORACLE'
         except (ValueError, RuntimeError, KeyError) as error:
             result['error_code'] = str(error)
+            if execution is not None:
+                execution.fault(str(error))
+            if task is not None and self.physical.operations[task.task_id].status in ('pending', 'executing'):
+                self.physical.fail(task.task_id, str(error))
+        result['physical_revision'] = self.physical.confirmed.revision
+        result['reconciliation_required'] = self.physical.reconciliation_required
         result.update(wall_time_s=time.perf_counter()-started, history=self.history)
         return result
 
