@@ -401,3 +401,163 @@ TEST(ObservationInterpreterTest, EvaluationReturnsNoCandidateForNoChangeOrFailur
     EXPECT_FALSE(ambiguous.candidateBoard.has_value());
     EXPECT_EQ(chess::FenGenerator::generate(board), fen);
 }
+
+namespace {
+
+chess::Board promotionPosition(chess::PieceColor color, bool capture) {
+    chess::Board board;
+    board.clear();
+    board.setPiece({7, 4}, {chess::PieceType::King, chess::PieceColor::White});
+    board.setPiece({0, 4}, {chess::PieceType::King, chess::PieceColor::Black});
+    board.setSideToMove(color);
+    const bool white = color == chess::PieceColor::White;
+    board.setPiece({white ? 1 : 6, capture ? 1 : 0}, {chess::PieceType::Pawn, color});
+    if (capture) {
+        board.setPiece({white ? 0 : 7, 0}, {chess::PieceType::Rook,
+            white ? chess::PieceColor::Black : chess::PieceColor::White});
+    }
+    board.setEnPassantTarget(chess::Square{white ? 2 : 5, 3});
+    board.setHalfmoveClock(9);
+    board.setFullmoveNumber(23);
+    return board;
+}
+
+BoardObservation observeConfirmedMove(const chess::Board& board, const PromotionConfirmation& confirmation) {
+    auto observation = observationFromBoard(board);
+    observation.cells[confirmation.from.row][confirmation.from.col] = CellObservationState::EMPTY;
+    observation.cells[confirmation.to.row][confirmation.to.col] = board.sideToMove() == chess::PieceColor::White
+        ? CellObservationState::WHITE : CellObservationState::BLACK;
+    return observation;
+}
+
+void expectRejectedConfirmation(const chess::Board& original,
+    const BoardObservation& previous, const BoardObservation& current,
+    const PromotionConfirmation& confirmation) {
+    const auto evaluation = evaluateObservation(original, previous, current, confirmation);
+    EXPECT_NE(evaluation.result.status, ObservationValidationResult::Status::ValidMove);
+    EXPECT_FALSE(evaluation.result.move.has_value());
+    EXPECT_FALSE(evaluation.candidateBoard.has_value());
+    auto board = original;
+    const auto result = interpretObservation(board, previous, current, confirmation);
+    EXPECT_EQ(result.status, evaluation.result.status);
+    EXPECT_EQ(board, original);
+    EXPECT_EQ(chess::FenGenerator::generate(board), chess::FenGenerator::generate(original));
+}
+
+} // namespace
+
+TEST(ConfirmedPromotionTest, SupportsEveryPieceColorAndCaptureWithoutDoubleApplication) {
+    struct Replacement {
+        chess::PieceType type;
+        char whiteFen;
+        char blackFen;
+    };
+    const Replacement replacements[] = {
+        {chess::PieceType::Queen, 'Q', 'q'}, {chess::PieceType::Rook, 'R', 'r'},
+        {chess::PieceType::Bishop, 'B', 'b'}, {chess::PieceType::Knight, 'N', 'n'}
+    };
+    for (const auto color : {chess::PieceColor::White, chess::PieceColor::Black}) {
+        for (const bool capture : {false, true}) {
+            for (const auto replacement : replacements) {
+                SCOPED_TRACE(static_cast<int>(color));
+                SCOPED_TRACE(capture);
+                SCOPED_TRACE(static_cast<int>(replacement.type));
+                const bool white = color == chess::PieceColor::White;
+                auto board = promotionPosition(color, capture);
+                const auto original = board;
+                const PromotionConfirmation confirmation{
+                    {white ? 1 : 6, capture ? 1 : 0}, {white ? 0 : 7, 0}, replacement.type};
+                const auto previous = observationFromBoard(board);
+                const auto current = observeConfirmedMove(board, confirmation);
+
+                const auto evaluation = evaluateObservation(board, previous, current, confirmation);
+                ASSERT_EQ(evaluation.result.status, ObservationValidationResult::Status::ValidMove);
+                ASSERT_TRUE(evaluation.result.move.has_value());
+                ASSERT_TRUE(evaluation.candidateBoard.has_value());
+                EXPECT_EQ(board, original);
+                EXPECT_EQ(evaluation.result.move->promotion, replacement.type);
+                EXPECT_EQ(evaluation.result.move->capture, capture);
+                EXPECT_EQ(observationFromBoard(*evaluation.candidateBoard).cells, current.cells);
+                const std::string expectedFen = white
+                    ? std::string(1, replacement.whiteFen) + "3k3/8/8/8/8/8/8/4K3 b "
+                        + (capture ? "KQk" : "KQkq") + " - 0 23"
+                    : "4k3/8/8/8/8/8/8/" + std::string(1, replacement.blackFen) + "3K3 w "
+                        + (capture ? "Kkq" : "KQkq") + " - 0 24";
+                EXPECT_EQ(chess::FenGenerator::generate(*evaluation.candidateBoard), expectedFen);
+
+                EXPECT_EQ(interpretObservation(board, previous, current).status,
+                    ObservationValidationResult::Status::IllegalMove);
+                EXPECT_EQ(board, original);
+                EXPECT_EQ(interpretObservation(board, previous, current, confirmation).status,
+                    ObservationValidationResult::Status::ValidMove);
+                EXPECT_EQ(board, *evaluation.candidateBoard);
+                EXPECT_EQ(chess::FenGenerator::generate(board), expectedFen);
+                const auto committed = board;
+                expectRejectedConfirmation(committed, previous, current, confirmation);
+            }
+        }
+    }
+}
+
+TEST(ConfirmedPromotionTest, RejectsInvalidReplacementTypes) {
+    const auto board = promotionPosition(chess::PieceColor::White, false);
+    const auto previous = observationFromBoard(board);
+    for (const auto type : {chess::PieceType::None, chess::PieceType::Pawn, chess::PieceType::King}) {
+        SCOPED_TRACE(static_cast<int>(type));
+        const PromotionConfirmation confirmation{{1, 0}, {0, 0}, type};
+        expectRejectedConfirmation(board, previous, observeConfirmedMove(board, confirmation), confirmation);
+    }
+}
+
+TEST(ConfirmedPromotionTest, RejectsIllegalMovesAndNonPawnSources) {
+    struct InvalidMove {
+        chess::PieceType sourceType;
+        chess::Square from;
+        chess::Square to;
+        chess::PieceType replacement;
+    };
+    const InvalidMove cases[] = {
+        {chess::PieceType::Pawn, {2, 0}, {1, 0}, chess::PieceType::Queen}, // Not the last rank.
+        {chess::PieceType::Pawn, {2, 0}, {0, 0}, chess::PieceType::Queen}, // Illegal double advance.
+        {chess::PieceType::Pawn, {1, 1}, {0, 0}, chess::PieceType::Queen}, // Diagonal without capture.
+        {chess::PieceType::Queen, {1, 0}, {0, 0}, chess::PieceType::Queen}, // Same type is not promotion.
+        {chess::PieceType::Rook, {1, 0}, {0, 0}, chess::PieceType::Queen} // Cannot replace a rook.
+    };
+    for (const auto test : cases) {
+        SCOPED_TRACE(static_cast<int>(test.sourceType));
+        SCOPED_TRACE(test.from.row);
+        auto board = promotionPosition(chess::PieceColor::White, false);
+        board.setPiece({1, 0}, {});
+        board.setPiece(test.from, {test.sourceType, chess::PieceColor::White});
+        const PromotionConfirmation confirmation{test.from, test.to, test.replacement};
+        expectRejectedConfirmation(board, observationFromBoard(board),
+            observeConfirmedMove(board, confirmation), confirmation);
+    }
+}
+
+TEST(ConfirmedPromotionTest, RejectsConfirmationForDifferentMoveOrNoMove) {
+    const auto board = promotionPosition(chess::PieceColor::White, false);
+    const auto previous = observationFromBoard(board);
+    const PromotionConfirmation actual{{1, 0}, {0, 0}, chess::PieceType::Queen};
+    const auto current = observeConfirmedMove(board, actual);
+    for (const auto confirmation : {
+        PromotionConfirmation{{1, 1}, {0, 0}, chess::PieceType::Queen},
+        PromotionConfirmation{{1, 0}, {0, 1}, chess::PieceType::Queen},
+        PromotionConfirmation{{-1, 0}, {8, 0}, chess::PieceType::Queen}}) {
+        expectRejectedConfirmation(board, previous, current, confirmation);
+    }
+    expectRejectedConfirmation(board, previous, previous, actual);
+}
+
+TEST(ConfirmedPromotionTest, RejectsInconsistentBaselineAndExtraVisualChanges) {
+    const auto board = promotionPosition(chess::PieceColor::White, false);
+    const PromotionConfirmation confirmation{{1, 0}, {0, 0}, chess::PieceType::Queen};
+    const auto previous = observationFromBoard(board);
+    const auto current = observeConfirmedMove(board, confirmation);
+    auto inconsistent = previous;
+    inconsistent.cells[4][4] = CellObservationState::WHITE;
+    auto extra = current;
+    extra.cells[4][4] = CellObservationState::WHITE;
+    expectRejectedConfirmation(board, inconsistent, extra, confirmation);
+    expectRejectedConfirmation(board, previous, extra, confirmation);
+}

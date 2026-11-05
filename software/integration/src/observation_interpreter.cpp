@@ -111,10 +111,14 @@ std::vector<chess::SquareChange> extractSquareChanges(
     return changes;
 }
 
-ObservationEvaluation evaluateObservation(
+namespace {
+
+/** @brief Shared evaluation path; a declaration supplies identity, never legality. */
+ObservationEvaluation evaluateObservationImpl(
     const chess::Board& officialBoard,
     const ac::BoardObservation& previousObservation,
-    const ac::BoardObservation& currentObservation
+    const ac::BoardObservation& currentObservation,
+    const PromotionConfirmation* confirmation
 ) {
     if (!matchesObservation(officialBoard, previousObservation)) {
         return {{ObservationValidationResult::Status::AmbiguousObservation, std::nullopt}, std::nullopt};
@@ -123,12 +127,22 @@ ObservationEvaluation evaluateObservation(
     auto changes = extractSquareChanges(officialBoard, previousObservation, currentObservation);
 
     if (changes.empty()) {
-        return {{ObservationValidationResult::Status::NoChange, std::nullopt}, std::nullopt};
+        const auto status = confirmation ? ObservationValidationResult::Status::IllegalMove
+                                         : ObservationValidationResult::Status::NoChange;
+        return {{status, std::nullopt}, std::nullopt};
     }
 
     // Um lance válido no xadrez envolve 2 casas (normal/captura), 3 (en-passant) ou 4 (roque)
     if (changes.size() != 2 && changes.size() != 3 && changes.size() != 4) {
         return {{ObservationValidationResult::Status::AmbiguousObservation, std::nullopt}, std::nullopt};
+    }
+
+    if (confirmation) {
+        for (auto& change : changes) {
+            if (change.square == confirmation->to) {
+                change.after.type = confirmation->promotedType;
+            }
+        }
     }
 
     auto validatedMove = chess::MoveValidator::validate(
@@ -137,7 +151,11 @@ ObservationEvaluation evaluateObservation(
         officialBoard.sideToMove()
     );
 
-    if (!validatedMove.has_value()) {
+    if (!validatedMove.has_value()
+        || (confirmation && (validatedMove->promotion == chess::PieceType::None
+            || validatedMove->promotion != confirmation->promotedType
+            || validatedMove->from != confirmation->from
+            || validatedMove->to != confirmation->to))) {
         return {{ObservationValidationResult::Status::IllegalMove, std::nullopt}, std::nullopt};
     }
 
@@ -150,16 +168,54 @@ ObservationEvaluation evaluateObservation(
     return {{ObservationValidationResult::Status::ValidMove, validatedMove}, candidate};
 }
 
+/** @brief Single mutation boundary shared by both public interpretation overloads. */
+ObservationValidationResult interpretObservationImpl(
+    chess::Board& officialBoard,
+    const ac::BoardObservation& previousObservation,
+    const ac::BoardObservation& currentObservation,
+    const PromotionConfirmation* confirmation
+) {
+    const auto evaluation = evaluateObservationImpl(officialBoard, previousObservation, currentObservation, confirmation);
+    if (evaluation.candidateBoard.has_value()) {
+        officialBoard = *evaluation.candidateBoard;
+    }
+    return evaluation.result;
+}
+
+} // namespace
+
+ObservationEvaluation evaluateObservation(
+    const chess::Board& officialBoard,
+    const ac::BoardObservation& previousObservation,
+    const ac::BoardObservation& currentObservation
+) {
+    return evaluateObservationImpl(officialBoard, previousObservation, currentObservation, nullptr);
+}
+
+ObservationEvaluation evaluateObservation(
+    const chess::Board& officialBoard,
+    const ac::BoardObservation& previousObservation,
+    const ac::BoardObservation& currentObservation,
+    const PromotionConfirmation& confirmation
+) {
+    return evaluateObservationImpl(officialBoard, previousObservation, currentObservation, &confirmation);
+}
+
 ObservationValidationResult interpretObservation(
     chess::Board& officialBoard,
     const ac::BoardObservation& previousObservation,
     const ac::BoardObservation& currentObservation
 ) {
-    const auto evaluation = evaluateObservation(officialBoard, previousObservation, currentObservation);
-    if (evaluation.candidateBoard.has_value()) {
-        officialBoard = *evaluation.candidateBoard;
-    }
-    return evaluation.result;
+    return interpretObservationImpl(officialBoard, previousObservation, currentObservation, nullptr);
+}
+
+ObservationValidationResult interpretObservation(
+    chess::Board& officialBoard,
+    const ac::BoardObservation& previousObservation,
+    const ac::BoardObservation& currentObservation,
+    const PromotionConfirmation& confirmation
+) {
+    return interpretObservationImpl(officialBoard, previousObservation, currentObservation, &confirmation);
 }
 
 } // namespace ac::integration
