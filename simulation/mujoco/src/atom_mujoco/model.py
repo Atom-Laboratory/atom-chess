@@ -251,6 +251,31 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
             digest = record['obj_sha256'] if kind == 'knight' else record['sha256']
             if hashlib.sha256(data).hexdigest() != digest:
                 raise ValueError('Official piece mesh hash mismatch: ' + kind)
+            # Cluster visual vertices on a 0.3 mm grid. Physics uses separate proxies.
+            if filename.endswith('.obj'):
+                vertices, faces = [], []
+                for line in data.decode('ascii').splitlines():
+                    if line.startswith('v '):
+                        vertices.append([float(v) for v in line.split()[1:4]])
+                    elif line.startswith('f '):
+                        faces.append([int(v)-1 for v in line.split()[1:4]])
+                vertices, faces = np.asarray(vertices), np.asarray(faces)
+            else:
+                dtype = np.dtype([('normal','<f4',(3,)),('points','<f4',(3,3)),('attr','<u2')])
+                triangles = np.frombuffer(data, dtype=dtype, offset=84)['points']
+                vertices = triangles.reshape(-1,3)
+                faces = np.arange(len(vertices)).reshape(-1,3)
+            _, inverse = np.unique(np.floor(vertices / .3).astype(np.int64), axis=0, return_inverse=True)
+            counts = np.bincount(inverse)
+            reduced = np.column_stack([np.bincount(inverse, weights=vertices[:,axis])/counts for axis in range(3)])
+            mapped = inverse[faces]
+            mapped = mapped[(mapped[:,0]!=mapped[:,1]) & (mapped[:,1]!=mapped[:,2]) & (mapped[:,0]!=mapped[:,2])]
+            _, unique = np.unique(np.sort(mapped,axis=1), axis=0, return_index=True)
+            mapped = mapped[np.sort(unique)]
+            lines = ['v %.8g %.8g %.8g' % tuple(v) for v in reduced]
+            lines += ['f %d %d %d' % tuple(f+1) for f in mapped]
+            filename = kind+'_visual_lod.obj'
+            data = ('\n'.join(lines)+'\n').encode('ascii')
             mesh_bytes[filename] = data
             ET.SubElement(assets, 'mesh', name='official_'+kind, file=filename, scale='.001 .001 .001')
         for record in pieces:
@@ -263,7 +288,7 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
             ET.SubElement(body, 'geom', name=record['name']+'_official_visual',
                           type='mesh', mesh='official_'+record['kind'], rgba=rgba,
                           contype='0', conaffinity='0')
-        scene['piece_visual_geometry'] = 'official exported meshes in millimetres'
+        scene['piece_visual_geometry'] = 'official meshes, 0.3 mm vertex-clustered visual LOD'
         scene['piece_collision_geometry'] = 'legacy experimental primitives'
     xml = ET.tostring(mjcf, encoding='unicode')
     mujoco.MjModel.from_xml_string(xml, mesh_bytes)  # Compile before writing output.

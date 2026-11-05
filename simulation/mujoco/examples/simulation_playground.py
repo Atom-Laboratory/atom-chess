@@ -214,11 +214,15 @@ def main():
                     scene.ngeom += 1
             viewer.sync()
         render_clock = [time.perf_counter()]
+        display_clock = [0.]
         def render(phase,state):
             elapsed = time.perf_counter() - render_clock[0]
             if elapsed < playground.sim.dt:
                 time.sleep(playground.sim.dt - elapsed)
             render_clock[0] = time.perf_counter()
+            if time.perf_counter() - display_clock[0] < 1/30:
+                return
+            display_clock[0] = time.perf_counter()
             sync_view()
             status.configure(text=f"{phase} | t={state['time_s']:.2f}s | q={state['position'].round(3)}")
             root.update_idletasks()
