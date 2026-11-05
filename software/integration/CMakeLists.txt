@@ -20,3 +20,6 @@ target_compile_features(acintegration PUBLIC cxx_std_20)
 if(BUILD_TESTING)
     add_subdirectory(tests)
 endif()
+
+add_executable(export_mujoco_trajectory src/export_mujoco_trajectory.cpp)
+target_link_libraries(export_mujoco_trajectory PRIVATE motion)

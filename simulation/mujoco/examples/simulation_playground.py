@@ -18,16 +18,27 @@ def main():
     parser.add_argument('--output', type=Path)
     parser.add_argument('--diagnostic-unchecked', action='store_true',
                         help='Explicit experimental manipulation without swept preflight; never RL qualification')
+    parser.add_argument('--execute-trajectory', type=Path,
+                        help='Execute an exported C++ P015 trajectory')
     args = parser.parse_args()
+    if args.execute_trajectory and (not args.headless or args.request):
+        parser.error('--execute-trajectory requires --headless and excludes --request')
     playground = Playground(args.bundle, diagnostic_unchecked=args.diagnostic_unchecked)
     if args.headless:
-        result = (playground.execute_request(json.loads(args.request.read_text())) if args.request
+        if args.execute_trajectory:
+            from atom_mujoco.trajectory_execution import execute_trajectory
+            try:
+                result = execute_trajectory(playground, args.execute_trajectory.read_text(encoding='utf-8-sig'))
+            except (ValueError, OSError) as error:
+                parser.error(str(error))
+        else:
+            result = (playground.execute_request(json.loads(args.request.read_text())) if args.request
                   else playground.execute(operation='MOVE', source=args.source,
                                           target=args.target, controller=args.controller))
         if args.output:
             playground.save(args.output, result)
         print(json.dumps({k:v for k,v in result.items() if k not in ('history','manifest')}, indent=2))
-        return
+        return 1 if args.execute_trajectory and result['status'] == 'FAILED' else 0
     import tkinter as tk
     from tkinter import ttk
     from tkinter import filedialog
@@ -253,6 +264,26 @@ def main():
                 refresh_grid()
                 button.configure(state='disabled' if manual_mode.get() else 'normal')
         ttk.Button(controls_panel,text='Execute Chess Core request file',command=load_plan).pack(pady=4)
+        def load_trajectory():
+            path = filedialog.askopenfilename(title='Load C++ P015 trajectory',
+                                               filetypes=[('JSON trajectory', '*.json')])
+            if not path:
+                return
+            button.configure(state='disabled')
+            try:
+                from atom_mujoco.trajectory_execution import execute_trajectory
+                result = execute_trajectory(playground, Path(path).read_text(encoding='utf-8-sig'))
+                output = args.bundle.parent / ('p015-' + uuid.uuid4().hex + '.json')
+                playground.save(output, result)
+                status.configure(text=f"{result['status']}: {result['error_code']}\nSaved {output}")
+            except (ValueError, OSError) as error:
+                status.configure(text=str(error))
+            finally:
+                refresh_grid()
+                button.configure(state='disabled' if manual_mode.get() else 'normal')
+        ttk.Button(controls_panel, text='Execute C++ trajectory (P015)',
+                   command=load_trajectory).pack(pady=4)
+
         def refresh():
             if not viewer.is_running():
                 root.destroy()
@@ -273,4 +304,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())

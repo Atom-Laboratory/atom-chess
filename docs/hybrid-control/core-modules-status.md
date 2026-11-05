@@ -48,3 +48,5 @@ The end-to-end scenario remains open. The remaining boundary is to feed the
 engine-selected physical plan to the MuJoCo controller, verify geometry and
 trajectory, then confirm the transfer from fresh evidence. Current collision
 failures must remain visible during qualification.
+
+P015 adds experimental C++ MotionPlanner/IK playback. See docs/hybrid-control/p015-execution-guide.md. Legacy square-based Python planning remains active separately.

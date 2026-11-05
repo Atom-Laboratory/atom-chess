@@ -111,3 +111,5 @@ or reachability of every Graveyard slot. No pose edits occur during that executi
 
 The C++ adapter regression separately checks the exact JSON produced from the
 real TaskPlanner. Run the CMake/CTest instructions in `integration-revision.md`.
+
+P015 adds experimental C++ MotionPlanner/IK playback. See docs/hybrid-control/p015-execution-guide.md. Legacy square-based Python planning remains active separately.
