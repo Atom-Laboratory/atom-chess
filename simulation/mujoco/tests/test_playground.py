@@ -35,3 +35,19 @@ def test_ik_reachable_target_does_not_mutate_physics(playground):
 def test_rl_cannot_be_selected_without_checkpoint(playground):
     result=playground.execute(operation='MOVE',piece_id='white_pawn_e2',source='e2',target='e3',controller='rl')
     assert result['status']=='FAILED' and 'RL_POLICY_UNAVAILABLE' in result['error_code']
+
+
+def test_experimental_board_e2_e3_physically_moves_pawn(tmp_path):
+    import json
+    module = Path(__file__).resolve().parents[1]
+    parameters = json.loads((module/'examples/playground-board.json').read_text())
+    bundle = tmp_path/'playground'
+    build_bundle(module.parent/'src/urdf/atom.urdf.xacro', bundle,
+                 interactive=True, parameters=parameters)
+    playground = Playground(bundle)
+    result = playground.execute(operation='MOVE', piece_id='white_pawn_e2', source='e2', target='e3')
+    assert result['status'] == 'COMPLETED_SIMULATION_ORACLE', result['error_code']
+    assert result['grasp_confirmed'] and result['release_confirmed']
+    pawn = playground.sim.data.body('white_pawn_e2').xpos
+    target = playground.sim.frame_pose('square_center_e3')['position_m']
+    np.testing.assert_allclose(pawn[:2], target[:2], atol=.002)

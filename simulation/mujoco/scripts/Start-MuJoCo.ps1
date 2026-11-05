@@ -7,8 +7,13 @@ if (-not (Test-Path -LiteralPath $atomPython)) {
     throw 'Crie .venv e instale o pacote seguindo simulation/mujoco/README.md.'
 }
 $atomBundle = Join-Path $atomModule 'runs\interactive-chess-v6'
+$atomBuildOptions = @()
+if ($Mode -eq 'playground') {
+    $atomBundle = Join-Path $atomModule 'runs\playground-board-v1'
+    $atomBuildOptions = @('--parameters', (Join-Path $atomModule 'examples\playground-board.json'))
+}
 if (-not (Test-Path -LiteralPath $atomBundle)) {
-    & $atomPython -m atom_mujoco.cli build --urdf (Join-Path $atomSimulation 'src\urdf\atom.urdf.xacro') --output $atomBundle --interactive
+    & $atomPython -m atom_mujoco.cli build --urdf (Join-Path $atomSimulation 'src\urdf\atom.urdf.xacro') --output $atomBundle --interactive @atomBuildOptions
     if ($LASTEXITCODE -ne 0) { throw 'Falha ao compilar o modelo.' }
 }
 if ($Mode -eq 'view') {

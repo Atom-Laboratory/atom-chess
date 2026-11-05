@@ -12,7 +12,8 @@ From Windows PowerShell at repository root, with the existing venv and v6 bundle
 & ./simulation/mujoco/scripts/Start-MuJoCo.ps1 -Mode playground
 ```
 
-The launcher builds the v6 bundle on first use. Choose piece/source/destination
+The launcher builds `runs/playground-board-v1` on first use. This experimental
+layout puts E2 and E3 within the v6 arm workspace. Choose piece/source/destination
 and press Execute MOVE. The controller is the
 experimental deterministic baseline. The RL option is explicitly unavailable.
 The native viewer supports camera rotation/zoom. Results are saved as unique JSON
@@ -29,23 +30,26 @@ piece positions for implemented baseline execution. No reward is invented.
 
 ```powershell
 $atomPy = '.\simulation\mujoco\.venv\Scripts\python.exe'
-& $atomPy simulation/mujoco/examples/simulation_playground.py --bundle simulation/mujoco/runs/interactive-chess-v6 --headless --source E2 --target E3 --piece white_pawn_e2
+& $atomPy simulation/mujoco/examples/simulation_playground.py --bundle simulation/mujoco/runs/playground-board-v1 --headless --source E2 --target E3 --piece white_pawn_e2
 & $atomPy -m pytest simulation/mujoco/tests/test_playground.py -v
 ```
 
-**Result: FAILED**, numerical grasp-point IK best residual approximately 0.0891 m
+**Experimental layout result: COMPLETED_SIMULATION_ORACLE**. MuJoCo confirms
+bilateral finger contact, lift, release and final pawn position within 2 mm of
+E3 on both horizontal axes. Independent visual verification remains pending.
+
+**Original v6 layout result: FAILED**, numerical IK residual approximately 0.0891 m
 at the E2 source approach. In v6 the planar distance from J1 to E2 is 0.45255 m.
 The J1-to-elbow and elbow-to-grasp-center planar lengths sum to 0.36454 m,
 an upper bound on horizontal reach from J1 for this model. The radial shortfall
 alone is approximately 0.08801 m. The task is rejected before arm movement;
-it is not counted as a successful pickup or board update. Do not silently relocate
-the board, extend links or teleport a piece to pass this test.
+The experimental layout and its limits are recorded in [ADR S011](../../docs/adrs/S011-playground-board-layout.md).
 
 ## API and implementation
 
 ```python
 from atom_mujoco.playground import Playground
-simulator = Playground('simulation/mujoco/runs/interactive-chess-v6')
+simulator = Playground('simulation/mujoco/runs/playground-board-v1')
 result = simulator.execute(operation='MOVE', piece_id='white_pawn_e2',
                            source='E2', target='E3', controller='baseline', seed=0)
 ```
@@ -56,8 +60,8 @@ baseline commands approach, close, lift, transport, place, open and retreat.
 Success requires physical pawn position and release checks; reaching the tool
 target alone is insufficient. Verification is explicitly **simulation_oracle**,
 not independent computer vision. visual_confirmed remains false. The baseline
-has not passed an end-to-end board move and is not integrated with the supervision
-FSM or Chess Core. No physical hardware interface exists here.
+has passed E2–E3 in the experimental layout. Integration with the supervision
+FSM, Chess Core and hardware remains pending.
 
 ## Remaining acceptance work
 

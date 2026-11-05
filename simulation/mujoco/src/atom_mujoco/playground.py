@@ -84,10 +84,10 @@ class Playground:
                     pos = sim.data.xpos[sim.model.body(other['name']).id]
                     if np.linalg.norm(pos[:2]-destination[:2]) < .02:
                         raise ValueError('DESTINATION_OCCUPIED')
-            # Explicit experimental grip height: pawn stem center, other shapes pending.
+            # Experimental waypoint for gripping the simulated pawn stem.
             if piece['kind'] != 'pawn':
                 raise ValueError('PIECE_GEOMETRY_NOT_VALIDATED: baseline currently supports pawns')
-            grip = origin+np.array([0, 0, .023])
+            grip = origin+np.array([0, 0, .018])
             place = np.array([destination[0], destination[1], grip[2]])
             waypoints = [('source approach', grip+[0,0,.07]), ('grasp', grip),
                          ('lift', grip+[0,0,.07]), ('destination approach', place+[0,0,.07]),
