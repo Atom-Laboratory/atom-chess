@@ -122,6 +122,11 @@ class Playground:
                                              expected_revision=self.physical.confirmed.revision, timeout_s=120.)
             if piece_id is not None and piece_id != task.piece_id:
                 raise ValueError('SOURCE_IDENTITY_MISMATCH')
+            if target.startswith('graveyard:'):
+                record = next(p for p in sim.manifest['pieces'] if p['name'] == task.piece_id)
+                assigned = record.get('graveyard_slot')
+                if assigned and assigned in self.physical.confirmed.graveyard_slots and target != 'graveyard:'+assigned:
+                    raise ValueError('ASSIGNED_GRAVEYARD_REQUIRED: graveyard:'+assigned)
             piece_id = result['piece_id'] = task.piece_id
             piece = next(p for p in sim.manifest['pieces'] if p['name'] == piece_id)
             self.physical.start(task.task_id)

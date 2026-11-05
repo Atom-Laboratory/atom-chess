@@ -105,7 +105,9 @@ def main():
         for index in range(16):
             number = f'{index+1:02}'
             slot = f'{color}_{number}'
-            add_tile(frame,index//4,index%4,'graveyard:'+slot,number,'#ddd',slot in slots)
+            rank = ('1' if index < 8 else '2') if color == 'white' else ('8' if index < 8 else '7')
+            home = chr(97+index%8)+rank
+            add_tile(frame,index//8,index%8,'graveyard:'+slot,home.upper(),'#ddd',slot in slots)
     legacy = sorted(slot for slot in slots if 'graveyard:'+slot not in tiles)
     if legacy:
         frame = ttk.LabelFrame(selection_panel,text='Other configured slots')

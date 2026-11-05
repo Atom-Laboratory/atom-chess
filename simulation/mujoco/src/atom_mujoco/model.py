@@ -148,6 +148,12 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
                           contype='0', conaffinity='0')
             ET.SubElement(board, 'site', name='square_center_'+square, pos=text([*xy[:2], .009]), size='.001', rgba='0 0 0 0')
     pieces = add_pieces(board, side)
+    for piece in pieces:
+        square = piece['initial_square']
+        # Stable identity metadata binds each object to its original home slot.
+        row = 0 if square[1] in ('1', '8') else 1
+        piece['graveyard_slot'] = f"{piece['color']}_{row*8+ord(square[0])-ord('a')+1:02}"
+
     for slot, centre in graveyard.items():
         ET.SubElement(world, 'geom', name='graveyard_support_'+slot, type='box',
                       pos=text(centre), size='.018 .018 .006', rgba='.32 .36 .42 1',
