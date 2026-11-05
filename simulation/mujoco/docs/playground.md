@@ -9,11 +9,11 @@ another physics engine. No validated RL checkpoint exists.
 From Windows PowerShell at repository root, with the existing venv and v6 bundle:
 
 ```powershell
-$atomPy = '.\simulation\mujoco\.venv\Scripts\python.exe'
-& $atomPy simulation/mujoco/examples/simulation_playground.py --bundle simulation/mujoco/runs/interactive-chess-v6
+& ./simulation/mujoco/scripts/Start-MuJoCo.ps1 -Mode playground
 ```
 
-Choose piece/source/destination and press Execute MOVE. The controller is the
+The launcher builds the v6 bundle on first use. Choose piece/source/destination
+and press Execute MOVE. The controller is the
 experimental deterministic baseline. The RL option is explicitly unavailable.
 The native viewer supports camera rotation/zoom. Results are saved as unique JSON
 files next to the bundle; status and diagnostics appear in the panel. Each task
@@ -28,13 +28,16 @@ piece positions for implemented baseline execution. No reward is invented.
 ## Required E2 to E3 acceptance test
 
 ```powershell
+$atomPy = '.\simulation\mujoco\.venv\Scripts\python.exe'
 & $atomPy simulation/mujoco/examples/simulation_playground.py --bundle simulation/mujoco/runs/interactive-chess-v6 --headless --source E2 --target E3 --piece white_pawn_e2
 & $atomPy -m pytest simulation/mujoco/tests/test_playground.py -v
 ```
 
 **Result: FAILED**, numerical grasp-point IK best residual approximately 0.0891 m
-in the current scene. This is evidence of a planning/reachability blocker, not a
-formal proof of global unreachability. The task is rejected before arm movement;
+at the E2 source approach. In v6 the planar distance from J1 to E2 is 0.45255 m.
+The J1-to-elbow and elbow-to-grasp-center planar lengths sum to 0.36454 m,
+an upper bound on horizontal reach from J1 for this model. The radial shortfall
+alone is approximately 0.08801 m. The task is rejected before arm movement;
 it is not counted as a successful pickup or board update. Do not silently relocate
 the board, extend links or teleport a piece to pass this test.
 

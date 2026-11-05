@@ -1,4 +1,4 @@
-param([ValidateSet('view', 'demo')][string]$Mode = 'view')
+param([ValidateSet('view', 'demo', 'playground')][string]$Mode = 'view')
 $ErrorActionPreference = 'Stop'
 $atomModule = Split-Path $PSScriptRoot -Parent
 $atomSimulation = Split-Path $atomModule -Parent
@@ -13,6 +13,8 @@ if (-not (Test-Path -LiteralPath $atomBundle)) {
 }
 if ($Mode -eq 'view') {
     & $atomPython -m atom_mujoco.cli view --bundle $atomBundle
+} elseif ($Mode -eq 'playground') {
+    & $atomPython (Join-Path $atomModule 'examples\simulation_playground.py') --bundle $atomBundle
 } else {
     $atomResult = Join-Path $atomModule ('runs\demo-' + [guid]::NewGuid().ToString('N') + '.json')
     & $atomPython -m atom_mujoco.cli demo --bundle $atomBundle --output $atomResult

@@ -89,10 +89,17 @@ class Playground:
                 raise ValueError('PIECE_GEOMETRY_NOT_VALIDATED: baseline currently supports pawns')
             grip = origin+np.array([0, 0, .023])
             place = np.array([destination[0], destination[1], grip[2]])
-            points = [grip+[0,0,.07], grip, grip+[0,0,.07], place+[0,0,.07], place]
+            waypoints = [('source approach', grip+[0,0,.07]), ('grasp', grip),
+                         ('lift', grip+[0,0,.07]), ('destination approach', place+[0,0,.07]),
+                         ('placement', place)]
             solutions = []
-            for point in points:
-                solutions.append(self.solve(point, solutions[-1] if solutions else None))
+            for waypoint, point in waypoints:
+                try:
+                    solutions.append(self.solve(point, solutions[-1] if solutions else None))
+                except ValueError as error:
+                    result['failed_waypoint'] = waypoint
+                    square = source.upper() if len(solutions) < 3 else target.upper()
+                    raise ValueError(f'{error} ({waypoint} at {square}). Check board placement against the arm workspace.') from error
             def move(q, phase, opening, steps=180):
                 goal = q.copy()
                 goal[3:] = opening

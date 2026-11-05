@@ -70,7 +70,6 @@ def main():
                 output=args.bundle.parent/('playground-'+uuid.uuid4().hex+'.json')
                 playground.save(output,result)
                 status.configure(text=f"{result['status']}: {result['error_code']}\nSaved {output}")
-                render_state=playground.sim.observe()
                 with viewer.lock():
                     clean_view_options(viewer.opt)
                 viewer.sync()
