@@ -98,13 +98,18 @@ def test_manual_limits_stop_and_state_invalidation(playground):
     result = playground.execute(operation='MOVE', source='e2', target='e3')
     assert result['error_code'] == 'MANUAL_MODE_OWNS_ROBOT'
     before = manual.target.copy()
-    manual.key('d', True)
+    manual.key('w', True)
+    assert not manual.pressed
+    manual.key('right', True)
     manual.tick()
     delta = manual.target-before
     assert 0 < delta[0] <= playground.sim.speed[0]*playground.sim.dt
     assert playground.physical.confirmed is confirmed
     assert playground.physical.reconciliation_required
     assert manual.latest is not None
+    for _ in range(20):
+        state = manual.tick()
+    assert state['position'][0] > before[0] + .005
     manual.stop()
     time = playground.sim.data.time
     assert manual.tick() is None

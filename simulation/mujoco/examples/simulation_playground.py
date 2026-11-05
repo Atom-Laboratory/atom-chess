@@ -50,21 +50,48 @@ def main():
         try:
             if manual_mode.get():
                 playground.manual.enter()
+                keyboard.focus_set()
             else:
                 playground.manual.leave()
             button.configure(state='disabled' if manual_mode.get() else 'normal')
         except ValueError as error:
             manual_mode.set(playground.manual.active)
             status.configure(text=str(error))
-    ttk.Checkbutton(root,text='Manual control (focus this window)',variable=manual_mode,
+    ttk.Checkbutton(root,text='Manual control',variable=manual_mode,
                     command=change_mode).pack()
-    ttk.Label(root,text='Hold A/D: J1 | W/S: Z | J/L: J2 | O/C: open/close').pack()
+    keyboard = ttk.Button(root, text='Click here to capture keyboard', takefocus=True,
+                          command=lambda: keyboard.focus_set())
+    keyboard.pack()
+    keyboard.bind('<FocusIn>', lambda event: keyboard.configure(text='Keyboard active'))
+    def release_keyboard(event):
+        playground.manual.pressed.clear()
+        keyboard.configure(text='Click here to capture keyboard')
+    keyboard.bind('<FocusOut>', release_keyboard)
     def key_event(event, down):
+        key = event.keysym.lower()
+        if manual_mode.get() and key in playground.manual.keys:
+            playground.manual.key(key, down)
+            return 'break'
+    keyboard.bind('<KeyPress>',lambda event:key_event(event,True))
+    keyboard.bind('<KeyRelease>',lambda event:key_event(event,False))
+
+    jog_panel = ttk.Frame(root)
+    jog_panel.pack()
+    def press_jog(key):
         if manual_mode.get():
-            playground.manual.key(event.keysym.lower(),down)
-    root.bind('<KeyPress>',lambda event:key_event(event,True))
-    root.bind('<KeyRelease>',lambda event:key_event(event,False))
-    root.bind('<FocusOut>',lambda event:playground.manual.pressed.clear())
+            keyboard.focus_set()
+            playground.manual.key(key, True)
+    for row, controls in enumerate((
+        (('J1 − (←)', 'left'), ('J1 + (→)', 'right')),
+        (('Z down (↓)', 'down'), ('Z up (↑)', 'up')),
+        (('J2 − (PgUp)', 'prior'), ('J2 + (PgDn)', 'next')),
+        (('Open (Home)', 'home'), ('Close (End)', 'end')),
+    )):
+        for column, (label, key) in enumerate(controls):
+            jog_button = ttk.Button(jog_panel, text=label, takefocus=False)
+            jog_button.grid(row=row, column=column, sticky='ew')
+            jog_button.bind('<ButtonPress-1>', lambda event, k=key: press_jog(k))
+            jog_button.bind('<ButtonRelease-1>', lambda event, k=key: playground.manual.key(k, False))
     ttk.Checkbutton(root,text='Pause manual physics',variable=manual_pause,
                     command=lambda:setattr(playground.manual,'paused',manual_pause.get())).pack()
     def stop_manual():

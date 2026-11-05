@@ -4,8 +4,8 @@ import numpy as np
 
 
 class ManualControl:
-    DEFAULT_KEYS = {'a': (0, -1), 'd': (0, 1), 'w': (1, 1), 's': (1, -1),
-                    'j': (2, -1), 'l': (2, 1), 'o': (3, 1), 'c': (3, -1)}
+    DEFAULT_KEYS = {'left': (0, -1), 'right': (0, 1), 'up': (1, 1), 'down': (1, -1),
+                    'prior': (2, -1), 'next': (2, 1), 'home': (3, 1), 'end': (3, -1)}
 
     def __init__(self, playground, keys=None, speed_fraction=.25):
         if not math.isfinite(speed_fraction) or not 0 < speed_fraction <= 1:

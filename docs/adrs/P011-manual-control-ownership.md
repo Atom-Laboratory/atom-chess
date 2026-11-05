@@ -16,6 +16,11 @@ autonomous mode changes are explicit; autonomous submission is disabled while
 manual mode is selected. Pause and simulation stop freeze timer-driven physics.
 Reset is an explicit new experiment, never cancellation or recovery of a task.
 
+The console captures jog shortcuts only while its dedicated keyboard control
+has focus. Arrows control J1 and Z, Page Up/Down control J2, and Home/End open
+and close the gripper. The mouse jog buttons use the same held-input path.
+The native 3D viewer retains its own camera and visualization controls.
+
 Introduce a reusable manual input mapper with explicit ownership, held-key state,
 velocity-bounded joint targets and a latched simulation stop. Commands go through
 MotionController.step. Releasing all keys holds the last target. Each actual manual
