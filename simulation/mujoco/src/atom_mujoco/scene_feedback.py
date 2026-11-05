@@ -1,8 +1,10 @@
 """MuJoCo oracle adapter. Thresholds describe experimental verification only."""
 from dataclasses import dataclass
 import math
+from types import MappingProxyType
 
 import numpy as np
+import mujoco
 
 from .physical_state import Location, Piece, Pose, Snapshot, SQUARES
 
@@ -18,12 +20,23 @@ class FeedbackLimits:
     bystander_angle_rad: float = .15
 
 
+@dataclass(frozen=True)
+class FeedbackObservation:
+    operation_id: str
+    sequence: int
+    timestamp_s: float
+    snapshot: Snapshot
+    frames: object
+    joints: object
+    gripper: object
+
+
 class SceneFeedback:
     def __init__(self, sim, limits=None):
         self.sim = sim
         self.limits = limits or FeedbackLimits()
 
-    def snapshot(self, revision, *, held_id=None):
+    def snapshot(self, revision, *, operation_id=None, sequence=0, timestamp_s=None):
         sim, limits = self.sim, self.limits
         sites = {s: sim.data.site_xpos[sim.model.site('square_center_'+s).id] for s in SQUARES}
         # Interactive board collider, not decorative square surfaces, supports pieces.
@@ -41,8 +54,11 @@ class SceneFeedback:
             body = sim.model.body(identity).id
             position = sim.data.xpos[body]
             pose = Pose(tuple(position), tuple(sim.data.xquat[body]))
-            if identity == held_id:
+            contacts = self.pad_contacts(identity)
+            if contacts == (True, True) and self.settled(identity):
                 location = Location('gripper')
+            elif any(contacts):
+                raise ValueError(f'PARTIAL_OR_MOVING_GRASP: {identity}')
             else:
                 matches = [s for s, center in sites.items()
                            if np.linalg.norm(position[:2]-center[:2]) <= limits.square_radius_m]
@@ -59,19 +75,54 @@ class SceneFeedback:
                 location = (Location('graveyard', matches[0][10:]) if matches[0].startswith('graveyard:')
                             else Location('board', matches[0]))
             pieces.append(Piece(identity, pose, location))
-        return Snapshot(revision, tuple(pieces), frozenset(graveyard))
+        snapshot = Snapshot(revision, tuple(pieces), frozenset(graveyard))
+        if operation_id is None:
+            return snapshot
+        return self.observation(operation_id, sequence, timestamp_s, snapshot)
+
+    def observation(self, operation_id, sequence, timestamp_s, snapshot):
+        """Bind an immutable full snapshot and robot/tool telemetry to one operation."""
+        if not operation_id or type(sequence) is not int or sequence < 0:
+            raise ValueError('Operation identity and nonnegative sequence required')
+        timestamp = float(self.sim.data.time if timestamp_s is None else timestamp_s)
+        if not math.isfinite(timestamp):
+            raise ValueError('Finite observation timestamp required')
+        sim = self.sim
+        if any(p.location.kind == 'gripper' for p in snapshot.pieces) and not self.grip_contacts(
+                next(p.identity for p in snapshot.pieces if p.location.kind == 'gripper')):
+            raise ValueError('HELD_STATE_UNVERIFIED')
+        frames = {}
+        for name in ('arm2_frame', 'grasp_center'):
+            site = sim.model.site(name).id
+            frames[name] = dict(position_m=tuple(sim.data.site_xpos[site]),
+                                orientation_wxyz=tuple(self._site_quaternion(site)))
+        joints = MappingProxyType({name: float(sim.data.qpos[address])
+                                   for name,address in zip(sim.names,sim.qadr)})
+        gripper = MappingProxyType(dict(opening=tuple(float(v) for v in sim.data.qpos[sim.qadr[3:5]]),
+                                         held_identity=next((p.identity for p in snapshot.pieces
+                                                             if p.location.kind == 'gripper'), None)))
+        return FeedbackObservation(operation_id, sequence, timestamp, snapshot,
+                                   MappingProxyType(frames), joints, gripper)
+
+    def _site_quaternion(self, site):
+        quat = np.empty(4)
+        mujoco.mju_mat2Quat(quat, self.sim.data.site_xmat[site])
+        return quat
 
     def endpoint_position(self, endpoint):
         name = 'graveyard_center_'+endpoint[10:] if endpoint.startswith('graveyard:') else 'square_center_'+endpoint
         return self.sim.data.site_xpos[self.sim.model.site(name).id].copy()
 
-    def grip_contacts(self, identity):
+    def pad_contacts(self, identity):
         sim = self.sim
         body = sim.model.body(identity).id
         pads = [sim.model.geom(f'finger_{i}_pad').id for i in (1, 2)]
-        return all(any((c.geom1 == pad and sim.model.geom_bodyid[c.geom2] == body)
+        return tuple(any((c.geom1 == pad and sim.model.geom_bodyid[c.geom2] == body)
                        or (c.geom2 == pad and sim.model.geom_bodyid[c.geom1] == body)
                        for c in sim.data.contact) for pad in pads)
+
+    def grip_contacts(self, identity):
+        return all(self.pad_contacts(identity))
 
     def settled(self, identity):
         sim = self.sim

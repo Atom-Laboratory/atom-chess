@@ -233,7 +233,13 @@ class Playground:
             self.physical.verify_candidate(task.task_id, snapshot)
             gate({'released', 'whole_board_matches'})
             self.observation_sequence += 1
-            self.physical.observe(Observation(task.task_id, self.observation_sequence, float(sim.data.time), snapshot))
+            telemetry = self.feedback.observation(task.task_id, self.observation_sequence,
+                                                  float(sim.data.time), snapshot)
+            self.physical.observe(Observation(task.task_id, telemetry.sequence,
+                                               telemetry.timestamp_s, telemetry.snapshot))
+            result['feedback'] = dict(operation_id=telemetry.operation_id, sequence=telemetry.sequence,
+                                      timestamp_s=telemetry.timestamp_s, frames=dict(telemetry.frames),
+                                      joints=dict(telemetry.joints), gripper=dict(telemetry.gripper))
             self.physical.commit(task.task_id, execution, now_s=float(sim.data.time))
             result['status'] = 'COMPLETED_SIMULATION_ORACLE'
             result['training_eligible'] = False  # Qualification suite and calibrated coverage still required.
