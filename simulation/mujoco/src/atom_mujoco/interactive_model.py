@@ -1,11 +1,38 @@
 """Experimental interactive profile; synthetic physics, not CAD calibration."""
 import xml.etree.ElementTree as ET
+import math
+import numpy as np
+
+# Shared planar face normals and fingertip projections from the exported STL.
+# Values are geometric evidence in the assembly frame, not servo calibration.
+RAIL_AXIS = np.array([-.60609, 0., .79539])
+RAIL_AXIS /= np.linalg.norm(RAIL_AXIS)
+RAIL_TANGENT = np.cross([0, 1, 0], RAIL_AXIS)
+TIP_INNER_PROJECTIONS_MM = (-130.07879, -178.17435)
+TIP_TANGENT_MM = 351.30023
+FINGER_LOWER = -.021
+FINGER_UPPER = 0.
+
+
+def pad_center(index):
+    projection = TIP_INNER_PROJECTIONS_MM[index]/1000
+    projection += -.0015 if index == 0 else .0015
+    position = RAIL_AXIS*projection + RAIL_TANGENT*(TIP_TANGENT_MM/1000)
+    position += [-.26, -.018, 0]
+    return position
+
+
+def vector_text(value):
+    return ' '.join(str(float(x)) for x in value)
 
 
 def configure(root, metadata, profile):
-    profile.update(name='interactive-gravity-v2', gravity=[0, 0, -9.81], contacts=True,
+    profile.update(name='interactive-gravity-v3', gravity=[0, 0, -9.81], contacts=True,
                    collision_model='robot convex hulls vs static environment; no self collision',
-                   gripper_model='coupled parallel slides with fingertip pads; not the Fusion linkage')
+                   gripper_model='mesh-aligned coupled slides; servo linkage not reconstructed',
+                   gripper_geometry=dict(rail_axis_in_arm2=RAIL_AXIS.tolist(),
+                       inner_face_gap_at_zero_m=.04809556,
+                       finger_range_m=[FINGER_LOWER, FINGER_UPPER]))
     root.find('option').set('gravity', '0 0 -9.81')
     root.find('option/flag').set('contact', 'enable')
     visual = root.find('visual')
@@ -29,8 +56,7 @@ def configure(root, metadata, profile):
             geom.set('condim', '4')
             geom.set('friction', '1.2 .01 .001')
             geom.set('solref', '.01 1')
-    # Environment collision is enabled on existing primitives. Static pieces
-    # remain anchored; dynamic chess manipulation is a separate model change.
+    # Enable environment contacts; pieces are independent free bodies above.
     for geom in world.findall('./geom') + world.findall('./body[@name="chessboard"]//geom'):
         if geom.get('name', '').startswith('square_'):
             continue  # One board collider avoids seams between 64 tiles.
@@ -42,8 +68,8 @@ def configure(root, metadata, profile):
     equality = ET.SubElement(root, 'equality')
     ET.SubElement(equality, 'joint', joint1='finger_1', joint2='finger_2',
                   polycoef='0 1 0 0 0', solref='.002 1')
-    for index, (part, direction) in enumerate((('gripper_hand1', '0 0 1'),
-                                               ('gripper_hand2', '0 0 -1'))):
+    for index, part in enumerate(('gripper_hand1', 'gripper_hand2')):
+        direction = vector_text(RAIL_AXIS if index == 0 else -RAIL_AXIS)
         geom = arm.find(f'geom[@name="{part}_visual"]')
         arm.remove(geom)
         finger = ET.SubElement(arm, 'body', name=part+'_moving')
@@ -51,18 +77,19 @@ def configure(root, metadata, profile):
                       diaginertia='.00005 .00005 .00005')
         name = 'finger_'+str(index+1)
         ET.SubElement(finger, 'joint', name=name, type='slide', axis=direction,
-                      range='-.01 .02', damping='2', armature='.001')
+                      range=f'{FINGER_LOWER} {FINGER_UPPER}', damping='2', armature='.001')
         finger.append(geom)
         # Mesh convex hulls fill gaps in the CAD finger and produce false contact.
         # Use a localized, explicit pad proxy at each inward-facing fingertip.
         ET.SubElement(finger, 'geom', name=name+'_pad', type='box',
-                      pos='.113 -.009 '+('.105' if index == 0 else '.076'),
-                      size='.015 .008 .003', rgba='.15 .15 .15 1',
+                      pos=vector_text(pad_center(index)),
+                      euler=f'0 {math.atan2(RAIL_AXIS[0], RAIL_AXIS[2])} 0',
+                      size='.012 .006 .0015', rgba='.15 .15 .15 1',
                       contype='1', conaffinity='6', condim='4',
                       friction='1.2 .01 .001', solref='.01 1')
         ET.SubElement(actuators, 'position', name=name+'_position', joint=name,
-                      kp='150', kv='5', ctrlrange='-.01 .02', forcerange='-8 8')
-        metadata.append(dict(name=name, kind='prismatic', lower=-.01, upper=.02, velocity=.025))
+                      kp='150', kv='5', ctrlrange=f'{FINGER_LOWER} {FINGER_UPPER}', forcerange='-8 8')
+        metadata.append(dict(name=name, kind='prismatic', lower=FINGER_LOWER, upper=FINGER_UPPER, velocity=.025))
     for body in world.iter('body'):
         for i, geom in enumerate(list(body.findall('geom'))):
             if geom.get('type') != 'mesh':
@@ -81,8 +108,8 @@ def configure(root, metadata, profile):
         actuator.set('kv', '30')
     profile['actuator_kp'] = 500.
     profile['actuator_kv'] = 30.
-    ET.SubElement(arm, 'site', name='grasp_center', pos='.113 -.009 .0905',
+    ET.SubElement(arm, 'site', name='grasp_center', pos=vector_text((pad_center(0)+pad_center(1))/2),
                   size='.002', rgba='0 0 0 0')
-    return dict(name='interactive-chess-v5', gripper_visual_only=False,
+    return dict(name='interactive-chess-v6', gripper_visual_only=False,
                 gripper_calibrated=False, self_collision=False,
                 camera=dict(lookat=[.20, -.08, .20], distance=1.35, azimuth=135, elevation=-25))

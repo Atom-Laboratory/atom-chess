@@ -11,7 +11,7 @@ class Simulation:
     def __init__(self, bundle):
         bundle = Path(bundle)
         self.manifest = json.loads((bundle/'manifest.json').read_text(encoding='utf-8'))
-        if self.manifest['schema'] != 1 or self.manifest['profile']['name'] not in ('uncalibrated-zero-gravity-v1', 'interactive-gravity-v1', 'interactive-gravity-v2'):
+        if self.manifest['schema'] != 1 or self.manifest['profile']['name'] not in ('uncalibrated-zero-gravity-v1', 'interactive-gravity-v1', 'interactive-gravity-v2', 'interactive-gravity-v3'):
             raise ValueError('Unsupported bundle schema/profile')
         for name, digest in dict(self.manifest['assets_sha256'], **{'model.xml': self.manifest['model_sha256']}).items():
             path = (bundle/name).resolve()
@@ -47,7 +47,7 @@ class Simulation:
             raise ValueError('Expected one finite position per joint')
         if np.any(value < self.lower) or np.any(value > self.upper):
             raise ValueError('Position outside prototype joint limits')
-        if self.manifest['profile']['name'] == 'interactive-gravity-v2' and not np.isclose(value[3], value[4], atol=1e-10):
+        if self.manifest['profile']['name'] in ('interactive-gravity-v2', 'interactive-gravity-v3') and not np.isclose(value[3], value[4], atol=1e-10, rtol=0):
             raise ValueError('Coupled fingers require equal targets')
         return value
 
@@ -59,7 +59,7 @@ class Simulation:
             center = (self.lower+self.upper)/2
             half_width = (self.upper-self.lower)*.2
             position = rng.uniform(center-half_width, center+half_width)
-            if self.manifest['profile']['name'] == 'interactive-gravity-v2':
+            if self.manifest['profile']['name'] in ('interactive-gravity-v2', 'interactive-gravity-v3'):
                 position[4] = position[3]
         elif position is None:
             position = np.clip(np.zeros_like(self.lower), self.lower, self.upper)

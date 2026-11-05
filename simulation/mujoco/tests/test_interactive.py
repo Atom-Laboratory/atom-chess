@@ -24,6 +24,34 @@ def test_robot_shortcuts_cannot_leave_diagnostic_balloons_enabled():
 from atom_mujoco.model import build_bundle
 
 
+def test_finger_travel_matches_mesh_faces_and_keeps_contact_alignment(interactive):
+    import importlib.util
+    path = Path(__file__).resolve().parents[1]/'examples/inspect_gripper_geometry.py'
+    spec = importlib.util.spec_from_file_location('geometry_inspection', path)
+    inspection = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(inspection)
+    evidence = inspection.inspect(Path(__file__).resolve().parents[2]/'src/meshes')
+    sim = interactive
+    axis = sim.model.jnt_axis[sim.model.joint('finger_1').id]
+    for record in evidence['parts']:
+        np.testing.assert_allclose(axis, record['rail_axis'], atol=1e-4)
+    # Old global-Z motion deviated by ~37 degrees from these mesh-derived rails.
+    assert abs(axis[0]) > .6 and abs(axis[2]) > .79
+    for arm in ([0, .12, 0], [.4, .12, -.8]):
+        positions = []
+        rotations = []
+        for opening in (0, sim.lower[3]):
+            sim.reset([*arm, opening, opening])
+            positions.append([sim.data.geom_xpos[sim.model.geom(f'finger_{i}_pad').id].copy() for i in (1, 2)])
+            rotations.append([sim.data.geom_xmat[sim.model.geom(f'finger_{i}_pad').id].copy() for i in (1, 2)])
+        np.testing.assert_allclose(np.mean(positions[0], axis=0), np.mean(positions[1], axis=0), atol=1e-12)
+        np.testing.assert_allclose(rotations[0], rotations[1], atol=1e-12)
+        rotation = sim.data.xmat[sim.model.body('arm2_link').id].reshape(3,3)
+        for index, sign in enumerate((1, -1)):
+            travel = rotation.T@(positions[1][index]-positions[0][index])
+            np.testing.assert_allclose(travel, sim.lower[3]*sign*axis, atol=1e-12)
+
+
 @pytest.fixture
 def interactive(tmp_path):
     source = Path(__file__).resolve().parents[2]/'src/urdf/atom.urdf.xacro'
@@ -48,7 +76,7 @@ def test_gravity_fingers_and_return(interactive):
     assert sim.model.nq == 5+32*7
     np.testing.assert_allclose(sim.model.opt.gravity, [0,0,-9.81])
     assert not sim.model.opt.disableflags & mujoco.mjtDisableBit.mjDSBL_CONTACT
-    for opening in (.02, -.01, .02):
+    for opening in (sim.upper[3], sim.lower[3], sim.upper[3]):
         goal = sim.target.copy()
         goal[3:] = opening
         for _ in range(150):
@@ -83,7 +111,7 @@ def test_robot_environment_contacts_are_reported(interactive):
 
 def test_dynamic_pawn_contact_grasp_lift_release_and_reset(interactive):
     sim = interactive
-    sim.reset([0, .0115, 0, 0, 0])
+    sim.reset([0, .020, 0, 0, 0])
     # Explicit isolated fixture: relocate other pieces and place a pawn under
     # the fingers. No pose edits occur after the experiment starts below.
     for i, piece in enumerate(sim.manifest['pieces']):
@@ -98,7 +126,7 @@ def test_dynamic_pawn_contact_grasp_lift_release_and_reset(interactive):
     for _ in range(100):
         sim.advance(goal)
     initial = sim.data.xpos[body].copy()
-    goal[3:] = -.01
+    goal[3:] = sim.lower[3:]
     for _ in range(100):
         sim.advance(goal)
     assert any('finger_' in str(contact) and 'white_pawn_a2' in str(contact)
@@ -108,7 +136,7 @@ def test_dynamic_pawn_contact_grasp_lift_release_and_reset(interactive):
         state = sim.advance(goal)
     assert sim.data.xpos[body, 2] > initial[2]+.06
     assert abs(state['position'][3]-state['position'][4]) < 1e-5
-    goal[3:] = .02
+    goal[3:] = sim.upper[3:]
     for _ in range(150):
         sim.advance(goal)
     assert abs(sim.data.xpos[body, 2]-initial[2]) < .002
@@ -117,4 +145,4 @@ def test_dynamic_pawn_contact_grasp_lift_release_and_reset(interactive):
     assert np.linalg.norm(sim.data.xpos[body, :2]-initial[:2]) > .05
     np.testing.assert_array_equal(sim.data.qvel, 0)
     with pytest.raises(ValueError, match='equal targets'):
-        sim.advance([0, .12, 0, -.01, .02])
+        sim.advance([0, .12, 0, -.01, 0])

@@ -61,8 +61,8 @@ def run_viewer(sim):
     if len(values) == 5:
         row = ttk.Frame(panel)
         row.pack(pady=8)
-        ttk.Button(row, text='Open gripper [O]', command=lambda: fingers(.02)).pack(side='left')
-        ttk.Button(row, text='Close gripper [C]', command=lambda: fingers(-.01)).pack(side='left')
+        ttk.Button(row, text='Open gripper [O]', command=lambda: fingers(sim.upper[3])).pack(side='left')
+        ttk.Button(row, text='Close gripper [C]', command=lambda: fingers(sim.lower[3])).pack(side='left')
     row = ttk.Frame(panel)
     row.pack(pady=8)
     for label, event in [('Reset [R]', 'R'), ('Hold [Space]', ' '), ('Camera [V]', 'V')]:
@@ -108,7 +108,7 @@ def run_viewer(sim):
                         elif key == ord('P'):
                             paused.set(not paused.get())
                         elif key in (ord('O'), ord('C')):
-                            fingers(.02 if key == ord('O') else -.01)
+                            fingers(sim.upper[3] if key == ord('O') else sim.lower[3])
                         else:
                             for i, pair in enumerate(('QA', 'WS', 'ED')):
                                 if key in map(ord, pair):

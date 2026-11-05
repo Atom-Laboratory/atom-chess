@@ -1,3 +1,8 @@
+# Current default: v6 mesh-aligned gripper
+
+Follow the [v6 instructions](docs/gripper-v6.md). Finger axes and pads now follow the
+exported geometry; open/close endpoints changed. Earlier version notes follow.
+
 # Current default: v5 dynamic pieces and coupled fingers
 
 See the [v5 operating and developer steps](docs/grasping-v5.md). The launcher now builds
