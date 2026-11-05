@@ -9,6 +9,25 @@ from .supervision import Execution, MoveTask
 SQUARES = tuple(f'{file}{rank}' for rank in '12345678' for file in 'abcdefgh')
 
 
+def endpoint(value):
+    if value in SQUARES:
+        return Location('board', value)
+    if isinstance(value, str) and value.startswith('graveyard:') and value[10:]:
+        return Location('graveyard', value[10:])
+    raise ValueError('Invalid transfer endpoint')
+
+
+@dataclass(frozen=True)
+class TransferTask(MoveTask):
+    """P005-compatible physical task, with typed endpoint string encoding."""
+    def validate(self):
+        # Reuse identity/revision/timeout validation without pretending slots are squares.
+        replace(MoveTask(self.task_id, self.piece_id, 'a1', 'a2',
+                         self.expected_board_revision, self.timeout_s)).validate()
+        if endpoint(self.source_square) == endpoint(self.target_square):
+            raise ValueError('Transfer endpoints must differ')
+
+
 @dataclass(frozen=True)
 class Pose:
     """World-frame metres and unit quaternion in wxyz order."""
@@ -133,20 +152,31 @@ class PhysicalBoardState:
         return self._blocked
 
     def request_move(self, source, target, *, operation_id, expected_revision, timeout_s):
+        if source not in SQUARES or target not in SQUARES:
+            raise ValueError('Canonical board squares required')
+        return self.request_transfer(source, target, operation_id=operation_id,
+                                     expected_revision=expected_revision, timeout_s=timeout_s)
+
+    def request_transfer(self, source, target, *, operation_id, expected_revision, timeout_s):
         if self._blocked or self._active is not None:
             raise ValueError('Busy or reconciliation required')
         if operation_id in self._operations:
             raise ValueError('Operation ID already used; automatic replay prohibited')
         if type(expected_revision) is not int or expected_revision != self.confirmed.revision:
             raise ValueError('Physical revision conflict')
-        if source not in SQUARES or target not in SQUARES or source == target:
-            raise ValueError('Distinct canonical source and target required')
-        identity = self.confirmed.occupancy[source]
-        if identity is None or self.confirmed.occupancy[target] is not None:
+        source_location, target_location = endpoint(source), endpoint(target)
+        if source_location == target_location:
+            raise ValueError('Distinct source and target required')
+        for location in (source_location, target_location):
+            if location.kind == 'graveyard' and location.slot not in self.confirmed.graveyard_slots:
+                raise ValueError('Unknown Graveyard slot')
+        occupied = {p.location: p.identity for p in self.confirmed.pieces}
+        identity = occupied.get(source_location)
+        if identity is None or target_location in occupied:
             raise ValueError('Source empty or destination occupied; removal must precede transfer')
         if any(p.location.kind == 'gripper' for p in self.confirmed.pieces):
             raise ValueError('Gripper occupied; reconciliation required')
-        task = MoveTask(operation_id, identity, source, target, expected_revision, timeout_s)
+        task = TransferTask(operation_id, identity, source, target, expected_revision, timeout_s)
         task.validate()
         self._operations[operation_id] = Operation(task)
         self._active = operation_id
@@ -211,7 +241,7 @@ class PhysicalBoardState:
         for identity, before in previous.by_id.items():
             after = candidate.by_id[identity]
             if identity == operation.task.piece_id:
-                if after.location != Location('board', operation.task.target_square):
+                if after.location != endpoint(operation.task.target_square):
                     raise ValueError('Transferred piece not at destination')
             else:
                 dot = abs(sum(a*b for a, b in zip(before.pose.orientation, after.pose.orientation)))

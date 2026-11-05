@@ -11,6 +11,7 @@ from .physical_state import PhysicalBoardState, Observation
 from .scene_feedback import SceneFeedback
 from .supervision import TaskLedger, Execution, Evidence
 from .motion_controller import MotionController
+from .task_plan import validate_plan
 
 
 class Playground:
@@ -38,6 +39,19 @@ class Playground:
 
     def execute_request(self, request):
         """Consume the same schema produced by the C++ Chess Core adapter."""
+        if isinstance(request, dict) and request.get('schema') == 2:
+            reservations = validate_plan(request, self.physical.confirmed)
+            results = []
+            for transfer in request['transfers']:
+                result = self.execute(operation='TRANSFER', **transfer)
+                results.append(result)
+                if result['status'] != 'COMPLETED_SIMULATION_ORACLE':
+                    break
+            completed = sum(r['status'] == 'COMPLETED_SIMULATION_ORACLE' for r in results)
+            return dict(schema=2, status='COMPLETED_SIMULATION_ORACLE' if completed == len(reservations) else 'FAILED',
+                        completed_transfers=completed, results=results,
+                        error_code=results[-1]['error_code'], physical_revision=self.physical.confirmed.revision,
+                        reconciliation_required=self.physical.reconciliation_required)
         if (not isinstance(request, dict) or set(request) != {'schema', 'operation', 'source', 'target'}
                 or type(request['schema']) is not int or request['schema'] != 1
                 or request['operation'] != 'MOVE'
@@ -88,13 +102,14 @@ class Playground:
         try:
             if controller != 'baseline':
                 raise ValueError('RL_POLICY_UNAVAILABLE: no trained validated checkpoint')
-            if operation != 'MOVE':
+            if operation not in ('MOVE', 'TRANSFER'):
                 raise ValueError('UNSUPPORTED_OPERATION')
             if source.lower() == target.lower():
                 raise ValueError('INVALID_DESTINATION')
             if sim.manifest['pieces_physics'] != 'free-rigid-bodies':
                 raise ValueError('DYNAMIC_PIECES_REQUIRED')
-            task = self.physical.request_move(source.lower(), target.lower(), operation_id=result['task_id'],
+            request_transfer = self.physical.request_move if operation == 'MOVE' else self.physical.request_transfer
+            task = request_transfer(source.lower(), target.lower(), operation_id=result['task_id'],
                                              expected_revision=self.physical.confirmed.revision, timeout_s=120.)
             if piece_id is not None and piece_id != task.piece_id:
                 raise ValueError('SOURCE_IDENTITY_MISMATCH')
@@ -115,12 +130,11 @@ class Playground:
                 raise ValueError('PHYSICAL_STATE_CHANGED: reconciliation required')
             gate({'preconditions_valid'})
             body = sim.model.body(piece_id).id
-            source_site = sim.model.site('square_center_'+source.lower()).id
-            target_site = sim.model.site('square_center_'+target.lower()).id
+            source_position = self.feedback.endpoint_position(source.lower())
             origin = sim.data.xpos[body].copy()
-            if np.linalg.norm(origin[:2]-sim.data.site_xpos[source_site, :2]) > .015:
+            if np.linalg.norm(origin[:2]-source_position[:2]) > .015:
                 raise ValueError('SOURCE_MISMATCH')
-            destination = sim.data.site_xpos[target_site].copy()
+            destination = self.feedback.endpoint_position(target.lower())
             for other in sim.manifest['pieces']:
                 if other['name'] != piece_id:
                     pos = sim.data.xpos[sim.model.body(other['name']).id]
@@ -129,7 +143,11 @@ class Playground:
             # Experimental waypoint for gripping the simulated pawn stem.
             stem = sim.model.geom(piece_id+'_stem').id
             grip = origin+np.array([0, 0, sim.model.geom_pos[stem, 2]-sim.model.geom_size[stem, 1]/4])
-            place = np.array([destination[0], destination[1], grip[2]])
+            support_delta = destination[2]-source_position[2]
+            # Board sites are 3 mm above its physical support; Graveyard sites are on support.
+            support_delta += (.003 if not source.startswith('graveyard:') else 0)
+            support_delta -= (.003 if not target.startswith('graveyard:') else 0)
+            place = np.array([destination[0], destination[1], grip[2]+support_delta])
             waypoints = [('source approach', grip+[0,0,.07]), ('grasp', grip),
                          ('lift', grip+[0,0,.07]), ('destination approach', place+[0,0,.07]),
                          ('placement', place)]
@@ -180,7 +198,7 @@ class Playground:
             move(solutions[4], 'PLACING', sim.lower[3])
             gate({'placement_settled'})
             if (np.linalg.norm(sim.data.xpos[body,:2]-destination[:2]) > .012
-                    or abs(sim.data.xpos[body,2]-origin[2]) > .004):
+                    or abs(sim.data.xpos[body,2]-origin[2]-support_delta) > .004):
                 raise ValueError('PLACEMENT_NOT_SUPPORTED_OR_ALIGNED')
             gate({'supported', 'aligned'})
             move(solutions[4], 'RELEASING', sim.upper[3], 100)
@@ -189,7 +207,7 @@ class Playground:
             final = sim.data.xpos[body].copy()
             result['position_error_m'] = float(np.linalg.norm(final[:2]-destination[:2]))
             result['release_confirmed'] = self.feedback.released(piece_id)
-            if result['position_error_m'] > .015 or abs(final[2]-origin[2]) > .01 or not result['release_confirmed']:
+            if result['position_error_m'] > .015 or abs(final[2]-origin[2]-support_delta) > .01 or not result['release_confirmed']:
                 raise ValueError('PLACEMENT_FAILED')
             snapshot = self.feedback.snapshot(task.expected_board_revision)
             self.physical.verify_candidate(task.task_id, snapshot)

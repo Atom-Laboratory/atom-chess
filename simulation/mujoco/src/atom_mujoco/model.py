@@ -65,10 +65,18 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
     parameters = dict(parameters or {})
     allowed = {'mass_kg_per_moving_body', 'diagonal_inertia_kg_m2',
                'joint_damping', 'joint_armature', 'actuator_kp', 'actuator_kv',
-               'timestep_s', 'control_substeps', 'tool_offset_in_arm2_m', 'board_center_m'}
+               'timestep_s', 'control_substeps', 'tool_offset_in_arm2_m', 'board_center_m', 'graveyard_slots'}
     if parameters.keys() - allowed:
         raise ValueError('Unknown or unsupported physical parameter')
     tool_offset = parameters.pop('tool_offset_in_arm2_m', None)
+    graveyard = parameters.pop('graveyard_slots', {})
+    if not isinstance(graveyard, dict):
+        raise ValueError('graveyard_slots must map slot names to world centres in metres')
+    for slot, centre in graveyard.items():
+        if (not isinstance(slot, str) or not slot or not all(c.isalnum() or c in '_-' for c in slot)
+                or np.asarray(centre).shape != (3,) or not np.isfinite(centre).all()
+                or centre[2] < .006):
+            raise ValueError('Invalid experimental Graveyard slot')
     board_center = np.asarray(parameters.pop('board_center_m', SCENE['board_center_m']), dtype=float)
     if board_center.shape != (3,) or not np.isfinite(board_center).all():
         raise ValueError('board_center_m requires three finite metres')
@@ -77,7 +85,7 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
         if tool_offset.shape != (3,) or not np.isfinite(tool_offset).all():
             raise ValueError('tool_offset_in_arm2_m requires three finite metres')
     profile.update(parameters)
-    for key in allowed - {'tool_offset_in_arm2_m', 'diagonal_inertia_kg_m2', 'board_center_m'}:
+    for key in allowed - {'tool_offset_in_arm2_m', 'diagonal_inertia_kg_m2', 'board_center_m', 'graveyard_slots'}:
         value = profile[key]
         if isinstance(value, bool) or not np.isscalar(value) or not np.isfinite(value) or value <= 0:
             raise ValueError(f'{key} must be finite and positive')
@@ -137,6 +145,12 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
                           contype='0', conaffinity='0')
             ET.SubElement(board, 'site', name='square_center_'+square, pos=text([*xy[:2], .009]), size='.001', rgba='0 0 0 0')
     pieces = add_pieces(board, side)
+    for slot, centre in graveyard.items():
+        ET.SubElement(world, 'geom', name='graveyard_support_'+slot, type='box',
+                      pos=text(centre), size='.018 .018 .006', rgba='.32 .36 .42 1',
+                      contype='0', conaffinity='0')
+        ET.SubElement(world, 'site', name='graveyard_center_'+slot,
+                      pos=text([centre[0], centre[1], centre[2]+.006]), size='.002', rgba='.8 .3 .1 1')
     mounting = ET.SubElement(world, 'body', name='robot_mount', pos='0 0 .035',
                              quat=text([math.sqrt(.5), math.sqrt(.5), 0, 0]))
     actuators = ET.SubElement(mjcf, 'actuator')
@@ -220,6 +234,8 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
         raise ValueError('Disconnected or cyclic links')
     scene = copy.deepcopy(SCENE)
     scene['board_center_m'] = board_center.tolist()
+    scene['graveyard_slots'] = graveyard
+    scene['graveyard_geometry_provenance'] = 'experimental 36 mm square supports, 12 mm thick; not CAD calibrated'
     if interactive:
         from .interactive_model import configure
         scene.update(configure(mjcf, metadata, profile))

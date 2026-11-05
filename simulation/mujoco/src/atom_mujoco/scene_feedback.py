@@ -29,6 +29,12 @@ class SceneFeedback:
         # Interactive board collider, not decorative square surfaces, supports pieces.
         board = sim.model.geom('board_frame').id
         surface = sim.data.geom_xpos[board, 2] + sim.model.geom_size[board, 2]
+        surfaces = {s: surface for s in SQUARES}
+        graveyard = sim.manifest['scene'].get('graveyard_slots', {})
+        for slot in graveyard:
+            key = 'graveyard:'+slot
+            sites[key] = sim.data.site_xpos[sim.model.site('graveyard_center_'+slot).id]
+            surfaces[key] = sites[key][2]
         pieces = []
         for record in sim.manifest['pieces']:
             identity = record['name']
@@ -45,14 +51,19 @@ class SceneFeedback:
                 dof = sim.model.jnt_dofadr[sim.model.body_jntadr[body]]
                 velocity = sim.data.qvel[dof:dof+6]
                 upright = math.acos(float(np.clip(sim.data.xmat[body].reshape(3,3)[2,2], -1, 1)))
-                if (abs(position[2]-surface) > limits.support_height_error_m
+                if (abs(position[2]-surfaces[matches[0]]) > limits.support_height_error_m
                         or upright > limits.upright_angle_rad
                         or np.linalg.norm(velocity[:3]) > limits.linear_speed_m_s
                         or np.linalg.norm(velocity[3:]) > limits.angular_speed_rad_s):
                     raise ValueError(f'UNSETTLED_OR_UNSUPPORTED: {identity}')
-                location = Location('board', matches[0])
+                location = (Location('graveyard', matches[0][10:]) if matches[0].startswith('graveyard:')
+                            else Location('board', matches[0]))
             pieces.append(Piece(identity, pose, location))
-        return Snapshot(revision, tuple(pieces))
+        return Snapshot(revision, tuple(pieces), frozenset(graveyard))
+
+    def endpoint_position(self, endpoint):
+        name = 'graveyard_center_'+endpoint[10:] if endpoint.startswith('graveyard:') else 'square_center_'+endpoint
+        return self.sim.data.site_xpos[self.sim.model.site(name).id].copy()
 
     def grip_contacts(self, identity):
         sim = self.sim

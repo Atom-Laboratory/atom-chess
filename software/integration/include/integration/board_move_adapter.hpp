@@ -2,6 +2,7 @@
 
 #include <span>
 #include <string>
+#include <functional>
 
 #include "motion/physical_task.hpp"
 
@@ -20,5 +21,10 @@ struct BoardMoveRequest {
 
 // Versioned JSON accepted by the MuJoCo Playground request consumer.
 [[nodiscard]] std::string serializeBoardMove(std::span<const motion::PhysicalTask> plan);
+
+// Caller maps calibrated robot-base XY (mm) to configured simulation/hardware slots.
+using GraveyardSlotResolver = std::function<std::string(motion::Point2D)>;
+[[nodiscard]] std::string serializePhysicalPlan(
+    std::span<const motion::PhysicalTask> plan, const GraveyardSlotResolver& resolveSlot);
 
 }
