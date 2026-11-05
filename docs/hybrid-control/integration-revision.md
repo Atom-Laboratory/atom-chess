@@ -18,10 +18,13 @@ calibration, and available gripper and collision geometry is approximate.
 
 1. [P006](../adrs/P006-chess-motion-square-boundary.md) defines and tests the
    C++ adapter for one board transfer from the actual TaskPlanner.
-2. Specify physical snapshots and operation lifecycle. Index all squares,
+2. [P007](../adrs/P007-confirmed-physical-board-state.md) now specifies and tests
+   physical snapshots and operation lifecycle. Index all squares,
    piece identities and poses, held pieces and Graveyard slots. Preserve the
    last confirmed snapshot on failure and record uncertain live observations
    separately. Resolve square-only requests against that snapshot.
+   See the [state adapter guide](physical-state-guide.md). This is an in-memory
+   contract; live scene classification and Playground wiring are not implemented.
 3. Define backend transport and route Playground source/target selection through
    the same request interface. Separate explicit scene initialization from
    execution so that verified moves can form a sequence.
