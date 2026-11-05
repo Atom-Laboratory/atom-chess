@@ -24,7 +24,10 @@ From the repository root in Windows PowerShell:
 & ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/simulation_playground.py --bundle simulation/mujoco/runs/playground-board-v1 --headless --request path/to/request.json --output simulation/mujoco/runs/new-result.json
 ```
 
-Choose Source and Target, then Execute MOVE. No piece selection is required.
+Click the source tile and then the target tile, or select the role explicitly.
+Blue marks the source and gold marks the target in the panel and 3D viewer.
+Both roles accept board squares and configured Graveyard slots. The grid shows
+confirmed occupancy and refreshes after execution or reset.
 Each successful transfer updates the confirmed physical revision. A second request
 uses the resulting scene without resetting. For the experimental board fixture,
 the diagnostic regression exercises E2 to E3 and back to E2 with all 32 dynamic pieces.
@@ -71,9 +74,9 @@ collision shape repair and full workspace qualification remain unresolved.
 
 ## Captures and Graveyard
 
-The launcher creates `runs/playground-graveyard-v1` using the explicitly
-experimental supports in `examples/playground-graveyard.json`. Old bundles are
-preserved. Four slots are configured; this fixture is not full-game capacity.
+The launcher creates `runs/playground-graveyard-grid-v1` using the experimental
+layout in `examples/playground-graveyard-grid.json`. It has 16 slots per color.
+Old bundles are preserved and still show their configured slots.
 Add measured or explicitly experimental slots in a new parameter file and build
 a fresh bundle when more capacity is required. Never recycle occupied slots.
 

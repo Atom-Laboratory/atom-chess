@@ -32,17 +32,78 @@ def main():
     from tkinter import ttk
     from tkinter import filedialog
     import mujoco.viewer
+    import numpy as np
     from atom_mujoco.controls import clean_view_options
     root = tk.Tk()
     root.title('ATOM Chess Simulation Playground')
-    source, target = tk.StringVar(value=args.source), tk.StringVar(value=args.target)
-    for label, variable, options in [('Source',source,[f+str(r) for r in range(1,9) for f in 'abcdefgh']),
-                                     ('Target',target,[f+str(r) for r in range(1,9) for f in 'abcdefgh'])]:
-        ttk.Label(root,text=label).pack()
-        ttk.Combobox(root,textvariable=variable,values=options,state='readonly',width=40).pack()
-    ttk.Label(root,text='Controller: Deterministic Baseline\nTrained RL Policy: unavailable (no validated checkpoint)\n'
+    selection_panel = ttk.Frame(root, padding=8)
+    selection_panel.pack(side='left', anchor='n')
+    controls_panel = ttk.Frame(root, padding=8)
+    controls_panel.pack(side='left', anchor='n')
+    source, target = tk.StringVar(value=args.source.lower()), tk.StringVar(value=args.target.lower())
+    selecting = tk.StringVar(value='source')
+    for label in ('Source', 'Target'):
+        ttk.Radiobutton(selection_panel, text=label, value=label.lower(), variable=selecting).pack(side='top')
+    selection_label = ttk.Label(selection_panel)
+    selection_label.pack()
+    tiles = {}
+    slots = playground.physical.confirmed.graveyard_slots
+
+    def refresh_grid():
+        snapshot = playground.physical.confirmed
+        occupants = dict(snapshot.occupancy)
+        occupants.update({f'graveyard:{p.location.slot}':p.identity for p in snapshot.pieces
+                          if p.location.kind == 'graveyard'})
+        for endpoint, (tile, label, background) in tiles.items():
+            identity = occupants.get(endpoint)
+            piece = ''
+            if identity:
+                color, kind, *_ = identity.split('_')
+                piece = f' {color[0].upper()}{("N" if kind == "knight" else kind[0].upper())}'
+            selected = '#83d9ff' if endpoint == source.get() else '#ffd77a' if endpoint == target.get() else background
+            tile.configure(text=label+piece, background=selected, activebackground=selected)
+        selection_label.configure(text=f'Blue source: {source.get()}   |   Gold target: {target.get()}')
+
+    def pick(endpoint):
+        if selecting.get() == 'source':
+            source.set(endpoint)
+            selecting.set('target')
+        else:
+            target.set(endpoint)
+            selecting.set('source')
+        refresh_grid()
+
+    def add_tile(frame, row, col, endpoint, label, background, available=True):
+        tile = tk.Button(frame, width=6, foreground='#171717', command=lambda: pick(endpoint),
+                         state='normal' if available else 'disabled')
+        tile.grid(row=row, column=col)
+        tiles[endpoint] = tile, label, background
+
+    board = ttk.LabelFrame(selection_panel, text='Confirmed board')
+    board.pack()
+    for row, rank in enumerate('87654321'):
+        for col, file in enumerate('abcdefgh'):
+            square = file+rank
+            add_tile(board,row,col,square,square.upper(),'#dfc599' if (row+col)%2==0 else '#ad8862')
+    graveyards = ttk.Frame(selection_panel)
+    graveyards.pack()
+    for color in ('white', 'black'):
+        frame = ttk.LabelFrame(graveyards,text=f'{color.title()} Graveyard')
+        frame.pack(side='left',padx=3)
+        for index in range(16):
+            number = f'{index+1:02}'
+            slot = f'{color}_{number}'
+            add_tile(frame,index//4,index%4,'graveyard:'+slot,number,'#ddd',slot in slots)
+    legacy = sorted(slot for slot in slots if 'graveyard:'+slot not in tiles)
+    if legacy:
+        frame = ttk.LabelFrame(selection_panel,text='Other configured slots')
+        frame.pack()
+        for index, slot in enumerate(legacy):
+            add_tile(frame,index//8,index%8,'graveyard:'+slot,slot,'#ddd')
+    refresh_grid()
+    ttk.Label(controls_panel,text='Controller: Deterministic Baseline\nTrained RL Policy: unavailable (no validated checkpoint)\n'
               +('DIAGNOSTIC: collision preflight bypassed' if args.diagnostic_unchecked else 'Swept preflight required')).pack(pady=8)
-    status = ttk.Label(root,text='Ready. Verification uses simulation oracle, not a camera.',wraplength=500)
+    status = ttk.Label(controls_panel,text='Ready. Verification uses simulation oracle, not a camera.',wraplength=360)
     status.pack(padx=12,pady=8)
     manual_mode = tk.BooleanVar(value=False)
     manual_pause = tk.BooleanVar(value=False)
@@ -57,9 +118,9 @@ def main():
         except ValueError as error:
             manual_mode.set(playground.manual.active)
             status.configure(text=str(error))
-    ttk.Checkbutton(root,text='Manual control',variable=manual_mode,
+    ttk.Checkbutton(controls_panel,text='Manual control',variable=manual_mode,
                     command=change_mode).pack()
-    keyboard = ttk.Button(root, text='Click here to capture keyboard', takefocus=True,
+    keyboard = ttk.Button(controls_panel, text='Click here to capture keyboard', takefocus=True,
                           command=lambda: keyboard.focus_set())
     keyboard.pack()
     keyboard.bind('<FocusIn>', lambda event: keyboard.configure(text='Keyboard active'))
@@ -75,7 +136,7 @@ def main():
     keyboard.bind('<KeyPress>',lambda event:key_event(event,True))
     keyboard.bind('<KeyRelease>',lambda event:key_event(event,False))
 
-    jog_panel = ttk.Frame(root)
+    jog_panel = ttk.Frame(controls_panel)
     jog_panel.pack()
     def press_jog(key):
         if manual_mode.get():
@@ -92,22 +153,23 @@ def main():
             jog_button.grid(row=row, column=column, sticky='ew')
             jog_button.bind('<ButtonPress-1>', lambda event, k=key: press_jog(k))
             jog_button.bind('<ButtonRelease-1>', lambda event, k=key: playground.manual.key(k, False))
-    ttk.Checkbutton(root,text='Pause manual physics',variable=manual_pause,
+    ttk.Checkbutton(controls_panel,text='Pause manual physics',variable=manual_pause,
                     command=lambda:setattr(playground.manual,'paused',manual_pause.get())).pack()
     def stop_manual():
         playground.manual.stop()
         status.configure(text='Simulation stopped. Explicit reset required; no hardware stop implied.')
-    ttk.Button(root,text='Stop manual simulation',command=stop_manual).pack()
+    ttk.Button(controls_panel,text='Stop manual simulation',command=stop_manual).pack()
     def reset_experiment():
         if any(op.status in ('pending','executing') for op in playground.physical.operations.values()):
             status.configure(text='Cannot reset an active operation.')
             return
         playground.reset()
+        refresh_grid()
         manual_mode.set(False)
         manual_pause.set(False)
         button.configure(state='normal')
         status.configure(text='New experiment initialized. Previous physical scene replaced.')
-    ttk.Button(root,text='Reset experiment to initial scene',command=reset_experiment).pack()
+    ttk.Button(controls_panel,text='Reset experiment to initial scene',command=reset_experiment).pack()
     with mujoco.viewer.launch_passive(playground.sim.model, playground.sim.data,
                                      show_left_ui=False,show_right_ui=False) as viewer:
         original_advance, original_reset = playground.sim.advance, playground.sim.reset
@@ -124,26 +186,45 @@ def main():
             viewer.cam.distance=settings['distance']
             viewer.cam.azimuth=settings['azimuth']
             viewer.cam.elevation=settings['elevation']
-        def render(phase,state):
+        def sync_view():
             with viewer.lock():
                 clean_view_options(viewer.opt)
+                scene = viewer.user_scn
+                scene.ngeom = 0
+                for endpoint, rgba in ((source.get(), [.15,.7,1.,.8]), (target.get(), [1.,.68,.1,.8])):
+                    if endpoint not in tiles or (endpoint.startswith('graveyard:') and endpoint[10:] not in slots):
+                        continue
+                    position = playground.feedback.endpoint_position(endpoint)
+                    position[2] += .001
+                    mujoco.mjv_initGeom(scene.geoms[scene.ngeom], mujoco.mjtGeom.mjGEOM_BOX,
+                                        np.array([.016,.016,.0005]), position, np.eye(3).ravel(),
+                                        np.array(rgba,dtype=np.float32))
+                    scene.ngeom += 1
             viewer.sync()
+        def render(phase,state):
+            sync_view()
             status.configure(text=f"{phase} | t={state['time_s']:.2f}s | q={state['position'].round(3)}")
             root.update_idletasks()
         playground.on_step=render
         def execute():
             button.configure(state='disabled')
             try:
-                result=playground.execute_request(dict(schema=1,operation='MOVE',source=source.get(),target=target.get()))
+                origin, destination = source.get(), target.get()
+                if any(endpoint.startswith('graveyard:') for endpoint in (origin,destination)):
+                    request = dict(schema=2,operation='PLAN',transfers=[dict(source=origin,target=destination)])
+                else:
+                    request = dict(schema=1,operation='MOVE',source=origin,target=destination)
+                result=playground.execute_request(request)
                 output=args.bundle.parent/('playground-'+uuid.uuid4().hex+'.json')
                 playground.save(output,result)
                 status.configure(text=f"{result['status']}: {result['error_code']}\nSaved {output}")
-                with viewer.lock():
-                    clean_view_options(viewer.opt)
-                viewer.sync()
+                sync_view()
+            except (ValueError,OSError) as error:
+                status.configure(text=str(error))
             finally:
+                refresh_grid()
                 button.configure(state='normal')
-        button=ttk.Button(root,text='Execute MOVE',command=execute)
+        button=ttk.Button(controls_panel,text='Execute MOVE',command=execute)
         button.pack(pady=8)
         def inspect():
             window=tk.Toplevel(root)
@@ -155,7 +236,7 @@ def main():
                         revision=playground.physical.confirmed.revision,
                         reconciliation_required=playground.physical.reconciliation_required),indent=2))
             text.configure(state='disabled')
-        ttk.Button(root,text='Inspect trajectory / confirmed occupancy',command=inspect).pack(pady=4)
+        ttk.Button(controls_panel,text='Inspect trajectory / confirmed occupancy',command=inspect).pack(pady=4)
         def load_plan():
             path=filedialog.askopenfilename(title='Load Chess Core request',filetypes=[('JSON requests','*.json')])
             if not path:
@@ -169,8 +250,9 @@ def main():
             except (ValueError,OSError) as error:
                 status.configure(text=str(error))
             finally:
-                button.configure(state='normal')
-        ttk.Button(root,text='Execute Chess Core request file',command=load_plan).pack(pady=4)
+                refresh_grid()
+                button.configure(state='disabled' if manual_mode.get() else 'normal')
+        ttk.Button(controls_panel,text='Execute Chess Core request file',command=load_plan).pack(pady=4)
         def refresh():
             if not viewer.is_running():
                 root.destroy()
@@ -184,9 +266,7 @@ def main():
                 except (ValueError,RuntimeError) as error:
                     playground.manual.stop()
                     status.configure(text=str(error))
-            with viewer.lock():
-                clean_view_options(viewer.opt)
-            viewer.sync()
+            sync_view()
             root.after(max(1,int(playground.sim.dt*1000)),refresh)
         root.after(40,refresh)
         root.mainloop()
