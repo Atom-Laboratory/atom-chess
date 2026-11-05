@@ -1,4 +1,5 @@
 add_library(acintegration
+    src/board_move_adapter.cpp
     src/observation_interpreter.cpp
 )
 
@@ -10,6 +11,7 @@ target_include_directories(acintegration PUBLIC
 target_link_libraries(acintegration PUBLIC
     acchess
     acvision
+    motion
 )
 
 target_compile_features(acintegration PUBLIC cxx_std_20)
