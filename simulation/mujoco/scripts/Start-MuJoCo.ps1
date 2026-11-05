@@ -15,7 +15,7 @@ if (-not (Test-Path -LiteralPath $atomPython)) {
 $atomBundle = Join-Path $atomModule 'runs\interactive-chess-v6'
 $atomBuildOptions = @()
 if ($Mode -eq 'playground') {
-    $atomBundle = Join-Path $atomModule 'runs\playground-graveyard-grid-v1'
+    $atomBundle = Join-Path $atomModule 'runs\playground-graveyard-grid-v2'
     $atomBuildOptions = @('--parameters', (Join-Path $atomModule 'examples\playground-graveyard-grid.json'))
 }
 if (-not (Test-Path -LiteralPath $atomBundle)) {

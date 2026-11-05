@@ -74,8 +74,9 @@ collision shape repair and full workspace qualification remain unresolved.
 
 ## Captures and Graveyard
 
-The launcher creates `runs/playground-graveyard-grid-v1` using the experimental
+The launcher creates `runs/playground-graveyard-grid-v2` using the experimental
 layout in `examples/playground-graveyard-grid.json`. It has 16 slots per color.
+Black slots are behind rank 8 and white slots are behind rank 1.
 Old bundles are preserved and still show their configured slots.
 Add measured or explicitly experimental slots in a new parameter file and build
 a fresh bundle when more capacity is required. Never recycle occupied slots.
