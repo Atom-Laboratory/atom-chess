@@ -22,7 +22,10 @@ def main():
                      (args.run/'policy.zip','checkpoint_sha256')):
         if hashlib.sha256(path.read_bytes()).hexdigest()!=report[key]:
             parser.error('Model or checkpoint differs from recorded evaluation')
-    env=VisualGraspEnv(args.bundle)
+    config=report.get('environment',{})
+    if config.get('environment_version') != VisualGraspEnv.VERSION:
+        parser.error('Checkpoint uses an older curriculum; replay with its original code revision')
+    env=VisualGraspEnv(args.bundle,horizon=config['horizon'],stage=config['stage'])
     try:
         policy=PPO.load(args.run/'policy.zip',device='cpu')
         obs,_=env.reset(seed=args.seed)

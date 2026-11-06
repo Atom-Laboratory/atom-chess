@@ -1,0 +1,52 @@
+{
+  "schema": 2,
+  "environment": {
+    "environment_version": 3,
+    "stage": "lift",
+    "horizon": 100,
+    "model_sha256": "2b439e465a9f048ed49df4d681a965650a5a1347f728c2b04cba9c4a935b6b59"
+  },
+  "interrupted": false,
+  "algorithm": "PPO",
+  "observation": "96x96 RGB only",
+  "task": "local E2 pawn lift",
+  "reward_source": "simulation_oracle",
+  "model_parameters_updated": true,
+  "trained_steps": 128,
+  "cuda_available": true,
+  "device": "cuda",
+  "torch_version": "2.14.1+cu130",
+  "seed": 7,
+  "gpu_name": "NVIDIA GeForce RTX 5070 Ti",
+  "wall_time_s": 35.07862840000007,
+  "model_sha256": "2b439e465a9f048ed49df4d681a965650a5a1347f728c2b04cba9c4a935b6b59",
+  "checkpoint_sha256": "742a6c0d2da00329495336cac1529401a72fe49e8f807c60340f3fe0c23b162d",
+  "evaluation": [
+    {
+      "seed": 10000,
+      "return_value": -1.0891575276793288,
+      "success": false,
+      "disturbed": false,
+      "lift_m": -0.0011263817083398513,
+      "held": true,
+      "bystander_displacement_m": 0.001947832884731444,
+      "reward_source": "simulation_oracle",
+      "stage": "lift"
+    }
+  ],
+  "hold_baseline": [
+    {
+      "seed": 10000,
+      "return_value": -0.9999924337290792,
+      "success": false,
+      "disturbed": false,
+      "lift_m": 1.224632653479274e-07,
+      "held": true,
+      "bystander_displacement_m": 7.042645453209497e-07,
+      "reward_source": "simulation_oracle",
+      "stage": "lift"
+    }
+  ],
+  "success_rate": 0.0,
+  "validated_for_playground": false
+}

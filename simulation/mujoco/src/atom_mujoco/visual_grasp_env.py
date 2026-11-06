@@ -5,13 +5,19 @@ import mujoco
 import numpy as np
 
 from .playground import Playground
+from .collision import pregrasp_opening
 
 
 class VisualGraspEnv(gym.Env):
     metadata = {'render_modes': ['rgb_array']}
 
-    def __init__(self, bundle, horizon=100):
+    VERSION = 3
+
+    def __init__(self, bundle, horizon=100, stage='lift'):
         super().__init__()
+        if stage not in ('lift', 'grasp') or horizon <= 0:
+            raise ValueError('Expected lift/grasp stage and positive horizon')
+        self.stage = stage
         self.playground = Playground(bundle, diagnostic_unchecked=True)
         self.sim = self.playground.sim
         self.horizon = horizon
@@ -26,6 +32,8 @@ class VisualGraspEnv(gym.Env):
         self.body = self.sim.model.body('white_pawn_e2').id
         self.site = self.sim.model.site('grasp_center').id
         self.finished = True
+        self.on_transition = None
+        self.camera_fixed = False
 
     def render(self):
         self.renderer.update_scene(self.sim.data, camera=self.camera)
@@ -41,26 +49,58 @@ class VisualGraspEnv(gym.Env):
         for _ in range(60):
             self.sim.advance(self.sim.target)
         self.origin = self.sim.data.xpos[self.body].copy()
-        # Curriculum starts near the existing grasp height. This is reset-only staging.
-        point = self.origin + [0, 0, .025]
+        stem = self.sim.model.geom('white_pawn_e2_stem').id
+        self.grip_offset = float(self.sim.model.geom_pos[stem,2]-self.sim.model.geom_size[stem,1]/4)
+        point = self.origin + [0, 0, self.grip_offset + (.008 if self.stage=='grasp' else 0.)]
         q = self.playground.solve(point)
-        q[:3] += self.np_random.uniform(-1, 1, 3)*np.array([.025,.004,.025])
+        # Small arm perturbations; no piece pose is reset after settling.
+        q[:3] += self.np_random.uniform(-1, 1, 3)*np.array([.003,.0005,.003])
+        q[3:] = pregrasp_opening(self.sim, 'white_pawn_e2')
         q = np.clip(q, self.sim.lower, self.sim.upper)
-        self.sim.reset(q)
-        for _ in range(20):
-            self.playground.controller.step(q)
-        self.target = q.copy()
-        self.camera.lookat[:] = self.origin + [0,0,.025]
         self.initial = {p['name']: self.sim.data.body(p['name']).xpos.copy()
                         for p in self.sim.manifest['pieces']}
+        self.sim.data.qpos[self.sim.qadr] = q
+        self.sim.data.qvel[self.sim.vadr] = 0.
+        self.sim.reference = q.copy()
+        self.sim.target = q.copy()
+        self.sim.data.ctrl[:] = q
+        mujoco.mj_forward(self.sim.model,self.sim.data)
+        for _ in range(20):
+            self.playground.controller.step(q)
+        if self.stage == 'lift':
+            q[3:] = pregrasp_opening(self.sim, 'white_pawn_e2', side_gap_m=-.0005)
+            for _ in range(100):
+                self.playground.controller.step(q)
+            if not self.playground.feedback.grip_contacts('white_pawn_e2'):
+                raise RuntimeError('RESET_GRASP_FAILED: lift curriculum requires bilateral grip')
+        if self.bystander_displacement() > .008:
+            raise RuntimeError('RESET_DISTURBED_BYSTANDER')
+        self.target = q.copy()
+        if not self.camera_fixed:
+            self.camera.lookat[:] = self.origin + [0,0,.025]
+            self.camera_fixed = True
         self.steps = self.success_dwell = 0
         self.finished = False
-        self.previous_distance = self.distance()
-        return self.observation(), {'reward_source':'simulation_oracle'}
+        self.previous_potential = self.potential(
+            bool(self.playground.feedback.grip_contacts('white_pawn_e2')),
+            float(self.sim.data.xpos[self.body,2]-self.origin[2]))
+        obs = self.observation()
+        info = {'reward_source':'simulation_oracle', 'stage':self.stage, 'reset_grip':self.stage=='lift',
+                'held':bool(self.playground.feedback.grip_contacts('white_pawn_e2'))}
+        if self.on_transition:
+            self.on_transition(obs,info)
+        return obs, info
 
     def distance(self):
         return float(np.linalg.norm(self.sim.data.site_xpos[self.site] -
-                                    (self.sim.data.xpos[self.body]+[0,0,.012])))
+                                    (self.sim.data.xpos[self.body]+[0,0,self.grip_offset])))
+
+    def potential(self, held, lift):
+        return -20*self.distance() + 40*max(0.,min(lift,.05))*held + float(held)
+
+    def bystander_displacement(self):
+        return max(float(np.linalg.norm(self.sim.data.body(name).xpos-position))
+                   for name,position in self.initial.items() if name!='white_pawn_e2')
 
     def step(self, action):
         if self.finished:
@@ -68,32 +108,35 @@ class VisualGraspEnv(gym.Env):
         action = np.asarray(action)
         if action.shape != (4,) or not np.isfinite(action).all() or np.any(np.abs(action)>1):
             raise ValueError('Expected four finite normalized actions')
-        delta = action*np.array([.015,.002,.015,.0015])
+        delta = action*np.array([.008,.002,.008,.001])
         self.target[:3] += delta[:3]
         self.target[3:] += delta[3]
         self.target = np.clip(self.target,self.sim.lower,self.sim.upper)
         self.finished = True
         for _ in range(5):
             self.playground.controller.step(self.target)
-        distance = self.distance()
         held = self.playground.feedback.grip_contacts('white_pawn_e2')
         lift = float(self.sim.data.xpos[self.body,2]-self.origin[2])
-        disturbed = any(np.linalg.norm(self.sim.data.body(name).xpos-position)>.008
-                        for name,position in self.initial.items() if name!='white_pawn_e2')
+        displacement = self.bystander_displacement()
+        disturbed = displacement > .008
         success = held and lift>.035
         self.success_dwell = self.success_dwell+1 if success else 0
         success = self.success_dwell >= 3
-        reward = (self.previous_distance-distance)*20 - .01 - .002*float(np.square(action).sum())
-        reward += .1*held + 2*max(0.,min(lift,.05))
+        potential = self.potential(held,lift)
+        reward = potential-self.previous_potential - .01 - .002*float(np.square(action).sum())
         reward += 10*success - 5*disturbed
-        self.previous_distance = distance
+        self.previous_potential = potential
         self.steps += 1
         terminated = bool(success or disturbed or self.sim.data.xpos[self.body,2]<0)
         truncated = self.steps>=self.horizon
         self.finished = terminated or truncated
-        return self.observation(),float(reward),terminated,truncated,dict(
-            success=bool(success), disturbed=bool(disturbed), lift_m=lift,
-            reward_source='simulation_oracle')
+        info = dict(success=bool(success), disturbed=bool(disturbed), lift_m=lift,
+                    held=bool(held), bystander_displacement_m=displacement,
+                    reward_source='simulation_oracle', stage=self.stage)
+        obs = self.observation()
+        if self.on_transition:
+            self.on_transition(obs,info)
+        return obs,float(reward),terminated,truncated,info
 
     def close(self):
         self.renderer.close()
