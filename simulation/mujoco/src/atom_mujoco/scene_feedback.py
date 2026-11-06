@@ -76,7 +76,8 @@ class SceneFeedback:
                 location = (Location('graveyard', matches[0][10:]) if matches[0].startswith('graveyard:')
                             else Location('board', matches[0]))
             pieces.append(Piece(identity, pose, location))
-        snapshot = Snapshot(revision, tuple(pieces), frozenset(graveyard))
+        count = 2 if sim.manifest.get('fixture_kind') == 'two_piece_capture' else 32
+        snapshot = Snapshot(revision, tuple(pieces), frozenset(graveyard), count)
         return snapshot
 
     def observation(self, operation_id, revision):

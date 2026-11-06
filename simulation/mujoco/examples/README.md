@@ -507,3 +507,6 @@ Every new MuJoCo example must have a catalog entry containing:
 Preserve historical experiments and their original contracts. New implementations should use separate output directories and must not overwrite existing evidence or checkpoints.
 
 The catalog should make it possible to reproduce an experiment without relying on undocumented shell history or assumptions about previously generated files.
+## Two-piece capture fixture
+
+See [prepare and run a supervised capture](prepare_capture_task/README.md).

@@ -71,15 +71,18 @@ class Snapshot:
     revision: int
     pieces: tuple[Piece, ...]
     graveyard_slots: frozenset[str] = frozenset()
+    expected_piece_count: int = 32
 
     def __post_init__(self):
         object.__setattr__(self, 'pieces', tuple(self.pieces))
         object.__setattr__(self, 'graveyard_slots', frozenset(self.graveyard_slots))
         if type(self.revision) is not int or self.revision < 0:
             raise ValueError('Nonnegative integer revision required')
-        if (len(self.pieces) != 32 or not all(isinstance(p, Piece) for p in self.pieces)
-                or len({p.identity for p in self.pieces}) != 32):
-            raise ValueError('Exactly 32 distinct physical pieces required')
+        count = self.expected_piece_count
+        if (count not in (2, 32) or len(self.pieces) != count
+                or not all(isinstance(p, Piece) for p in self.pieces)
+                or len({p.identity for p in self.pieces}) != count):
+            raise ValueError(f'Exactly {count} distinct physical pieces required')
         if any(not isinstance(s, str) or not s for s in self.graveyard_slots):
             raise ValueError('Invalid Graveyard slot')
         locations = [p.location for p in self.pieces]
