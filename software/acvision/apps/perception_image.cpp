@@ -1,5 +1,6 @@
 // Image-only executable: no simulator, controller or policy dependency.
 #include "perception_offline.hpp"
+#include "piece_location/piece_location.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
@@ -33,8 +34,10 @@ void save(const std::filesystem::path& path,const cv::Mat& image) {
 }
 }
 int main(int argc,char** argv) {
-    if (argc != 3 && argc != 5) {
-        std::cerr << "Usage: perception_image IMAGE NEW_OUTPUT [--config acvision-defaults-800-v1 | --reference layout.json]\n";
+    const bool foregroundMode = argc == 7 && std::string(argv[3]) == "--reference" &&
+                                std::string(argv[5]) == "--empty-board";
+    if (argc != 3 && argc != 5 && !foregroundMode) {
+        std::cerr << "Usage: perception_image IMAGE NEW_OUTPUT [--config acvision-defaults-800-v1 | --reference layout.json [--empty-board EMPTY_IMAGE]]\n";
         return 2;
     }
     const std::filesystem::path out(argv[2]);
@@ -46,9 +49,11 @@ int main(int argc,char** argv) {
     cv::Mat frame;
     ac::offline::Result result;
     std::string error, detail, imageId;
-    std::string config = argc == 5 ? argv[4] : ac::offline::configId;
-    const bool referenceMode=argc==5 && std::string(argv[3])=="--reference";
-    std::string referenceIdentity;
+    std::string config = argc >= 5 ? argv[4] : ac::offline::configId;
+    const bool referenceMode=argc>=5 && std::string(argv[3])=="--reference";
+    std::string referenceIdentity, emptyImageId;
+    std::optional<ac::ForegroundCenters> foreground;
+    const char* foregroundStatus = "not_requested";
     bool completed=false, rawSaved=false, gridSaved=false, rectifiedSaved=false;
     size_t byteCount=0;
     try {
@@ -72,6 +77,23 @@ int main(int argc,char** argv) {
             reference=ac::loadBoardReference(config);
         }
         result=ac::offline::process(frame,reference?&*reference:nullptr);
+        if (foregroundMode) {
+            std::ifstream emptyFile(argv[6], std::ios::binary);
+            if (!emptyFile) throw std::invalid_argument("EMPTY_BOARD_IMAGE_NOT_READABLE");
+            const std::vector<unsigned char> emptyBytes((std::istreambuf_iterator<char>(emptyFile)), {});
+            if (emptyBytes.empty()) throw std::invalid_argument("EMPTY_BOARD_IMAGE_EMPTY_FILE");
+            emptyImageId = fingerprint(emptyBytes);
+            const auto emptyFrame = cv::imdecode(emptyBytes, cv::IMREAD_UNCHANGED);
+            const auto invalidEmpty = ac::offline::inputError(emptyFrame);
+            if (!invalidEmpty.empty()) throw std::invalid_argument("EMPTY_BOARD_" + invalidEmpty);
+            if (frame.size() != emptyFrame.size()) throw std::invalid_argument("EMPTY_BOARD_SIZE_MISMATCH");
+            const auto emptyBoard = ac::offline::process(emptyFrame, &*reference);
+            foregroundStatus = "reference_unavailable";
+            if (result.observation && emptyBoard.observation) {
+                foreground = ac::locateForeground(result.rectified, emptyBoard.rectified);
+                foregroundStatus = "experimental";
+            }
+        }
         auto raw=frame.clone();
         if (result.detected) for(int i=0;i<4;++i) {
             auto p=result.detected->corners[i];
@@ -85,6 +107,8 @@ int main(int argc,char** argv) {
             save(out/"rectified.png",result.rectified); rectifiedSaved=true;
             auto grid=result.rectified.clone();
             for(int r=0;r<8;++r) for(int c=0;c<8;++c) {
+                if (foreground && (*foreground)[r][c])
+                    cv::drawMarker(grid, *(*foreground)[r][c], cv::Scalar(255, 255, 0), cv::MARKER_CROSS, 14, 2);
                 cv::rectangle(grid,cv::Rect(c*100,r*100,100,100),cv::Scalar(0,200,0),1);
                 cv::putText(grid,std::to_string(r)+","+std::to_string(c),cv::Point(c*100+3,r*100+20),
                     cv::FONT_HERSHEY_SIMPLEX,.4,cv::Scalar(0,0,255),1);
@@ -126,6 +150,11 @@ int main(int argc,char** argv) {
             }
             json << ']';
         }
+        if (foregroundMode) {
+            json << ",\"foreground_status\":" << quote(completed ? foregroundStatus : "failed")
+                 << ",\"foreground_method\":\"empty-board-difference-v1\""
+                 << ",\"empty_board_image_id\":" << (emptyImageId.empty() ? "null" : quote(emptyImageId));
+        }
         json << ",\"detected_reference_ids\":[";
         for(size_t i=0;i<result.detectedReferenceIds.size();++i) {
             if(i) json << ','; json << result.detectedReferenceIds[i];
@@ -150,7 +179,14 @@ int main(int argc,char** argv) {
             auto state=result.observation->cells[r][c];
             const char* label=state==ac::CellObservationState::EMPTY?"empty":state==ac::CellObservationState::WHITE?"white":"black";
             json << "{\"row\":" << r << ",\"column\":" << c << ",\"square\":" << (result.referenceOriented?quote(std::string(1,char('a'+c))+std::to_string(8-r)):"null") << ",\"candidate\":" << quote(label)
-                 << ",\"occupancy\":\"unknown\",\"confidence\":null,\"visibility\":\"unknown\",\"piece_center\":null}";
+                 << ",\"occupancy\":\"unknown\",\"confidence\":null,\"visibility\":\"unknown\",\"piece_center\":null";
+            if (foregroundMode) {
+                json << ",\"foreground_centroid_rectified_px\":";
+                const auto point = completed && foreground ? (*foreground)[r][c] : std::nullopt;
+                if (point) json << '[' << point->x << ',' << point->y << ']';
+                else json << "null";
+            }
+            json << '}';
         }
         json << "],\"overlays\":{\"raw_corners\":" << (rawSaved?"\"corners.png\"":"null")
              << ",\"rectified\":" << (rectifiedSaved?"\"rectified.png\"":"null")

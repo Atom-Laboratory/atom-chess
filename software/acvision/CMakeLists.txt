@@ -50,6 +50,7 @@ target_sources(acvision
             include/board_vision/board_vision.hpp
             include/board_observation/board_observation.hpp
             include/board_reference/board_reference.hpp
+            include/piece_location/piece_location.hpp
             include/piece_detector/piece_detector.hpp
             include/piece_detector/piece_detector_config.hpp
             include/homography/homography.hpp

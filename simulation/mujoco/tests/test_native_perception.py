@@ -200,7 +200,35 @@ def test_reference_mode_orientation_and_missing_marker(executable,tmp_path):
     assert obs['cells'][0]['square']=='a8'
     assert obs['cells'][-1]['square']=='h1'
     assert set(obs['detected_reference_ids'])=={0,1,2,3}
+
+    # An isolated offset component is exposed as image evidence only.
+    canvas.paste('black', (328, 323, 358, 353))
+    # A component crossing a square boundary must not produce either centroid.
+    canvas.paste('black', (394, 421, 433, 451))
+    current = tmp_path/'with-foreground.png'
+    canvas.save(current)
+    output = tmp_path/'foreground'
+    command = [executable, str(current), str(output), '--reference', str(config), '--empty-board', str(image)]
+    subprocess.run(command, check=True)
+    foreground = json.loads((output/'observation.json').read_text())
+    centers = {cell['square']: cell['foreground_centroid_rectified_px']
+               for cell in foreground['cells'] if cell['foreground_centroid_rectified_px'] is not None}
+    assert foreground['foreground_status'] == 'experimental'
+    assert foreground['empty_board_image_id'] == obs['image_id']
+    assert set(centers) == {'d5'}
+    # The synthetic layout maps image coordinates to rectified pixels via a 20 px shift.
+    np.testing.assert_allclose(centers['d5'], [322.5, 317.5], atol=2)
+    assert all(cell['piece_center'] is None for cell in foreground['cells'])
+    assert not foreground['motion_ready']
+
     canvas.paste('white',(50,50,194,194)); canvas.save(image)
+    output = tmp_path/'foreground-missing-reference'
+    command[2] = str(output)
+    subprocess.run(command, check=True)
+    missing_empty = json.loads((output/'observation.json').read_text())
+    assert missing_empty['foreground_status'] == 'reference_unavailable'
+    assert all(cell['foreground_centroid_rectified_px'] is None for cell in missing_empty['cells'])
+
     subprocess.run([executable,str(image),str(tmp_path/'missing'),'--reference',str(config)],check=True)
     missing=json.loads((tmp_path/'missing/observation.json').read_text())
     assert missing['homography'] is None and missing['orientation']=='unknown'

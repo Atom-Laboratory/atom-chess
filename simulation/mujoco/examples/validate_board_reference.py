@@ -11,15 +11,33 @@ from PIL import Image
 from validate_native_perception import project
 
 
+def foreground_metrics(observation, truth, board, side):
+    candidates = {cell['square']: cell['foreground_centroid_rectified_px']
+                  for cell in observation['cells']
+                  if cell['foreground_centroid_rectified_px'] is not None}
+    errors = {}
+    for square in truth.keys() & candidates.keys():
+        x, y = truth[square]
+        expected = np.array([x - board[0] + side/2, board[1] + side/2 - y]) * 800/side
+        errors[square] = float(np.linalg.norm(candidates[square] - expected) * side/800 * 1000)
+    return dict(expected=len(truth), matched=len(errors),
+                unmatched_squares=sorted(candidates.keys() - truth.keys()),
+                error_mm_by_square=dict(sorted(errors.items())))
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--bundle',type=Path,required=True)
     p.add_argument('--assets',type=Path,required=True)
+    p.add_argument('--layout', type=Path, help='Alternative measured or experimental marker layout')
     p.add_argument('--executable',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--evaluate-foreground', action='store_true')
+    p.add_argument('--elevations', type=int, nargs='+', default=(-35, -45, -55))
     args=p.parse_args()
     args.output.mkdir(parents=True,exist_ok=False)
-    layout=json.loads((args.assets/'layout.json').read_text())
+    layout_path = args.layout or args.assets/'layout.json'
+    layout = json.loads(layout_path.read_text())
     manifest=json.loads((args.bundle/'manifest.json').read_text())
     side=manifest['scene']['square_size_m']*8
     if not np.isclose(side*1000,layout['board_side_mm']):
@@ -54,29 +72,48 @@ def main():
     camera.lookat[:]=board; camera.distance=1.05
     records=[]
     with mujoco.Renderer(model,height=1440,width=1920) as renderer:
-        for arrangement in ('initial','empty','offset'):
+        arrangements = ('empty', 'initial', 'offset', 'relocated') if args.evaluate_foreground else ('initial','empty','offset')
+        for arrangement in arrangements:
             mujoco.mj_resetData(model,data)
             data.qpos[model.jnt_qposadr[model.joint('joint_z_axis_arm1').id]]=.12
+            addresses = {}
             for i,piece in enumerate(manifest['pieces']):
                 body=model.body(piece['name']).id
                 adr=model.jnt_qposadr[model.body_jntadr[body]]
                 if arrangement=='empty': data.qpos[adr+2]=-10
                 if arrangement=='offset': data.qpos[adr:adr+2]+=[.004*(-1)**i,.003*(-1)**(i//2)]
+                if arrangement == 'relocated':
+                    if piece['initial_square'] not in ('e2', 'd7'):
+                        data.qpos[adr+2] = -10
+                        continue
+                    target = 'f4' if piece['initial_square'] == 'e2' else 'b5'
+                    file, rank = target
+                    data.qpos[adr:adr+2] = board[:2] + np.array(
+                        [ord(file)-ord('a')-3.5, int(rank)-4.5]) * side/8 + [.004, -.003]
+                else:
+                    target = piece['initial_square']
+                if arrangement != 'empty':
+                    addresses[target] = body
             mujoco.mj_forward(model,data)
+            truth = {square: data.xpos[body, :2].copy() for square, body in addresses.items()}
             points=[]
             for name in names:
                 g=model.geom('square_'+name).id
                 pt=data.geom_xpos[g].copy(); pt[2]+=model.geom_size[g,2]; points.append(pt)
             for azimuth in (265,270,275):
-                for elevation in (-35,-45,-55):
+                for elevation in args.elevations:
                     camera.azimuth=azimuth; camera.elevation=elevation
                     renderer.update_scene(data,camera=camera)
                     rgb=renderer.render().copy()
                     case=f'{arrangement}-{azimuth}-{abs(elevation)}'
                     image=args.output/f'{case}.png'; Image.fromarray(rgb).save(image)
                     output=args.output/case
-                    subprocess.run([str(args.executable.resolve()),str(image.resolve()),str(output.resolve()),
-                                    '--reference',str((args.assets/'layout.json').resolve())],check=True)
+                    command = [str(args.executable.resolve()), str(image.resolve()), str(output.resolve()),
+                               '--reference', str(layout_path.resolve())]
+                    if args.evaluate_foreground:
+                        empty = args.output/f'empty-{azimuth}-{abs(elevation)}.png'
+                        command.extend(['--empty-board', str(empty.resolve())])
+                    subprocess.run(command, check=True)
                     obs=json.loads((output/'observation.json').read_text())
                     result=dict(case=case,orientation=obs['orientation'],detected=obs['homography'] is not None,
                                 image_sha256=hashlib.sha256(image.read_bytes()).hexdigest())
@@ -88,13 +125,17 @@ def main():
                         error=np.linalg.norm(transformed-expected,axis=1)/100*side/8*1000
                         result.update(mean_error_mm=float(error.mean()),max_error_mm=float(error.max()),
                                       correct_squares=int(np.sum(np.all(transformed//100==expected//100,axis=1))))
+                    if args.evaluate_foreground:
+                        result['foreground_status'] = obs['foreground_status']
+                        result['foreground'] = foreground_metrics(obs, truth, board, side)
+                        result['empty_board_image_id'] = obs['empty_board_image_id']
                     records.append(result)
     report=dict(schema=1,mujoco_version=mujoco.__version__,image_size=[1920,1440],camera_distance_m=1.05,
-                executable_sha256=hashlib.sha256(args.executable.read_bytes()).hexdigest(),layout_provenance=layout['provenance'],geometry_only=True,
-                layout_sha256=hashlib.sha256((args.assets/'layout.json').read_bytes()).hexdigest(),
+                executable_sha256=hashlib.sha256(args.executable.read_bytes()).hexdigest(),layout_provenance=layout['provenance'],geometry_only=not args.evaluate_foreground,
+                layout_sha256=hashlib.sha256(layout_path.read_bytes()).hexdigest(),
                 source_model_sha256=hashlib.sha256((args.bundle/'model.xml').read_bytes()).hexdigest(),results=records)
     (args.output/'report.json').write_text(json.dumps(report,indent=2))
-    print(json.dumps(records,indent=2))
+    print(args.output/'report.json')
 
 
 if __name__=='__main__': main()

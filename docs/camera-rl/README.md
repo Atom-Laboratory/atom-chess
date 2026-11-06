@@ -31,3 +31,7 @@ See [pattern validation and projective corners](p033-geometry-validation.md).
 ## P034 ArUco reference
 
 See [installation, printing and current limits](aruco-installation-guide.md). Use only the measured-layout workflow; simulation dimensions are explicitly experimental.
+
+## P035 piece location experiment
+
+See [the native RGB diagnostic and camera sweep](p035-piece-localization.md).
