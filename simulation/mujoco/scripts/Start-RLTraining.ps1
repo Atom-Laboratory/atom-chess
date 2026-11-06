@@ -4,6 +4,7 @@ param(
     [ValidateSet('auto','cpu','cuda')][string]$Device = 'auto',
     [double]$Speed = 2,
     [switch]$Headless,
+    [switch]$Arena,
     [ValidateRange(1,8)][int]$Workers = 1,
     [string]$Resume,
     [string]$WarmStart,
@@ -23,7 +24,9 @@ if (-not $Output) { $Output = Join-Path $atomModule ('runs/visual-'+$Stage+'-'+[
 $atomArgs = @('-u', '-B', (Join-Path $atomModule 'examples/train_visual_grasp.py'), '--bundle', $atomBundle,
     '--output', $Output, '--steps', $Steps, '--stage', $Stage, '--device', $Device, '--speed', $Speed,
     '--eval-episodes', 5, '--workers', $Workers)
-if (-not $Headless) { $atomArgs += '--watch' }
+if ($Arena -and $Headless) { throw 'Choose Arena or Headless.' }
+if ($Arena) { $atomArgs += '--arena' }
+elseif (-not $Headless) { $atomArgs += '--watch' }
 if ($Resume) { $atomArgs += @('--resume',$Resume) }
 if ($WarmStartFeatures) { $atomArgs += '--warm-start-features' }
 if ($WarmStart) { $atomArgs += @('--warm-start',$WarmStart) }

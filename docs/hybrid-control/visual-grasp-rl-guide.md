@@ -119,3 +119,15 @@ Inspect 100 ATOM stations in one MuJoCo window while training is stopped:
 Choose 1 to 100 stations. Add --check to compile without opening the viewer.
 The preview shares arm assets and uses simplified pieces. Each station is a
 static pose. Live worker state and independent policy training are future work.
+
+## Live training arena
+
+Use -Arena to mirror all workers in one 3D window. The display refreshes
+up to five times per second without artificial pacing. Closing it requests
+a checkpoint and stops the run. Use -Headless for maximum collection speed.
+Use -Resume with a completed or gracefully stopped grasp run to keep its weights.
+
+    & ./simulation/mujoco/scripts/Start-RLTraining.ps1 -Stage grasp -Workers 4 -Device cuda -Arena
+
+The arena currently mirrors up to eight independent physics workers feeding
+one PPO policy. The 100-station preview is a separate layout inspection tool.

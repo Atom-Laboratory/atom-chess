@@ -60,7 +60,10 @@ def main():
     parser.add_argument('--warm-start-features', action='store_true',
                         help='Transfer the visual encoder and initialize fresh policy heads')
     parser.add_argument('--workers', type=int, choices=range(1, 9), default=1)
+    parser.add_argument('--arena', action='store_true', help='Mirror all workers in one 3D scene')
     args = parser.parse_args()
+    if args.arena and (args.watch or args.workers < 2):
+        parser.error('--arena requires at least two workers and replaces --watch')
     if args.warm_start_features and not args.warm_start:
         parser.error('--warm-start-features requires --warm-start')
     if args.steps<=0 or args.eval_episodes<=0 or args.horizon<=0 or not np.isfinite(args.speed) or args.speed<=0:
@@ -104,11 +107,12 @@ def main():
     display = None
     recorder = RunRecorder(args.output, workers=args.workers)
     parallel = None
+    arena = None
     try:
         check_env(env, warn=True)
         if args.workers > 1:
             parallel = SubprocVecEnv([
-                partial(make_worker, args.bundle, args.horizon, args.stage, args.watch and index == 0)
+                partial(make_worker, args.bundle, args.horizon, args.stage, args.arena or (args.watch and index == 0))
                 for index in range(args.workers)
             ], start_method='spawn')
         training_env = parallel if parallel is not None else env
@@ -140,6 +144,9 @@ def main():
             display = TrainingDisplay(env,speed=args.speed,device=str(policy.device))
             if parallel is None:
                 env.on_transition = display.update
+        if args.arena:
+            from arena_preview import LiveArena
+            arena = LiveArena(args.bundle, args.workers, env.sim.model)
         class Progress(BaseCallback):
             stopped = False
 
@@ -160,9 +167,11 @@ def main():
                             mujoco.mj_forward(env.sim.model, env.sim.data)
                         pixels = info.get('terminal_observation', self.locals['new_obs'][0])
                         display.update(pixels, info)
+                if arena:
+                    arena.update(self.locals['infos'])
                 if self.num_timesteps // 2048 > (self.num_timesteps-args.workers) // 2048:
                     self.model.save(args.output/f'checkpoint-{self.num_timesteps}')
-                self.stopped = bool(display and display.stopped) or (args.output/'STOP').exists()
+                self.stopped = bool(display and display.stopped) or bool(arena and arena.stopped) or (args.output/'STOP').exists()
                 return not self.stopped
         interrupted = False
         progress = Progress()
@@ -209,6 +218,8 @@ def main():
         env.on_transition = None
         if display:
             display.close()
+        if arena:
+            arena.close()
         if parallel is not None:
             parallel.close()
         env.close()
