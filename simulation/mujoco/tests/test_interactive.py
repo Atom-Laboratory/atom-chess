@@ -102,7 +102,11 @@ def test_robot_environment_contacts_are_reported(interactive):
         state = sim.advance(goal)
         found.extend(state['contacts'])
     assert found, 'Lowering the robot must produce environment contacts'
-    assert any('collision' in str(contact) for contact in found)
+    robot_colliders = {sim.model.geom(i).name for i in range(sim.model.ngeom)
+                       if 'collision' in (sim.model.geom(i).name or '')
+                       or (sim.model.geom(i).name or '').startswith('finger_')}
+    assert any((contact['geom1'] in robot_colliders) !=
+               (contact['geom2'] in robot_colliders) for contact in found)
     assert np.isfinite(state['position']).all()
     assert not sim.data.warning.number.any()
     sim.reset()
