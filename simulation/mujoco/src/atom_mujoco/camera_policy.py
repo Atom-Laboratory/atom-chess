@@ -55,9 +55,9 @@ def policy_observation(frame, *, source, target, previous_action, commanded_join
     task = np.array(_square(source)+_square(target), dtype=np.float32)/7
     action = np.asarray(previous_action, dtype=np.float32)
     command = np.asarray(commanded_joints, dtype=np.float32)
-    if (action.shape != (4,) or command.shape != (5,) or not np.isfinite(action).all()
+    if ((action.shape, command.shape) not in (((4,), (5,)), ((5,), (6,))) or not np.isfinite(action).all()
             or not np.isfinite(command).all() or np.any(np.abs(action) > 1)):
-        raise ValueError('Expected normalized prior action and five finite commanded joints')
+        raise ValueError('Expected compatible normalized actions and finite commanded joints')
     image = np.array(Image.fromarray(frame.rectified_rgb).resize(
         (96, 96), Image.Resampling.BILINEAR)).transpose(2, 0, 1)
     return PolicyObservation(frame.sequence, frame.camera_id, _readonly(image),

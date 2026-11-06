@@ -31,8 +31,10 @@ class CameraManipulationEnv(gym.Env):
         if cfg.get('schema') != 1:
             raise ValueError('Unsupported camera environment configuration')
         self.sim = Simulation(cfg['bundle'])
-        if len(self.sim.manifest['pieces']) != 1 or self.sim.manifest['pieces'][0]['name'] != cfg['piece']:
-            raise ValueError('P038 requires an explicit one-piece fixture')
+        expected = {cfg['piece'], *cfg.get('obstacle_pieces', [])}
+        if ({p['name'] for p in self.sim.manifest['pieces']} != expected
+                or self.sim.manifest['pieces'][0]['name'] != cfg['piece']):
+            raise ValueError('Camera fixture pieces must match the configured task and obstacles')
         self.controller = MotionController(self.sim)
         self.motion = NativeMotion(cfg['motion_library'], self.sim)
         self.vision = NativeVision(cfg['vision_library'], layout=cfg['layout'])
@@ -43,11 +45,12 @@ class CameraManipulationEnv(gym.Env):
         self.repeat, self.horizon, self.dwell = cfg['control_repeat'], cfg['horizon'], cfg['dwell_steps']
         if any(type(n) is not int or n <= 0 for n in (self.repeat, self.horizon, self.dwell)):
             raise ValueError('Positive control repeat, horizon and dwell required')
-        self.action_space = spaces.Box(-1, 1, (4,), dtype=np.float32)
+        self.action_count = 5 if self.motion.has_wrist else 4
+        self.action_space = spaces.Box(-1, 1, (self.action_count,), dtype=np.float32)
         self.observation_space = spaces.Dict({
             'image': spaces.Box(0, 255, (3, 96, 96), dtype=np.uint8),
             'task': spaces.Box(0, 1, (4,), dtype=np.float32),
-            'previous_action': spaces.Box(-1, 1, (4,), dtype=np.float32),
+            'previous_action': spaces.Box(-1, 1, (self.action_count,), dtype=np.float32),
             'commanded_joints': spaces.Box(self.sim.lower.astype(np.float32),
                                           self.sim.upper.astype(np.float32), dtype=np.float32),
             'phase': spaces.Box(0, 7, (1,), dtype=np.int64),
@@ -147,7 +150,7 @@ class CameraManipulationEnv(gym.Env):
             self.controller.step(self.command)
         self.phase = self.dwell_count = self.steps = 0
         self.reward_totals = {}
-        self.previous_action = np.zeros(4, dtype=np.float32)
+        self.previous_action = np.zeros(self.action_count, dtype=np.float32)
         self.visual.reset()
         self.reward_evaluator.reset(self.grasp_offset)
         solutions = [self.nominal[i] for i in (0, 1, 3, 4, 5)]
@@ -206,14 +209,17 @@ class CameraManipulationEnv(gym.Env):
         if self.finished:
             raise RuntimeError('Reset required after episode termination')
         action = np.asarray(action, dtype=np.float32)
-        if action.shape != (4,) or not np.isfinite(action).all() or np.any(np.abs(action) > 1):
-            return self._finish_failure('INVALID_ACTION', np.zeros(4, dtype=np.float32))
+        if action.shape != self.action_space.shape or not np.isfinite(action).all() or np.any(np.abs(action) > 1):
+            return self._finish_failure('INVALID_ACTION', np.zeros(self.action_count, dtype=np.float32))
         phase_name = PHASES[self.phase]
         pose = self.poses[self.phase, :3]+action[:3]*self.residual_bounds[:3]
         opening = float(np.clip(self.openings[self.phase]+action[3]*self.residual_bounds[3],
                                 self.sim.lower[3], self.sim.upper[3]))
         try:
-            desired = self.motion.solve(pose, opening)
+            wrist = (float(np.clip(self.motion.default_wrist+action[4]*self.config.get('wrist_residual_rad', .35),
+                                    self.sim.lower[-1], self.sim.upper[-1]))
+                     if self.motion.has_wrist else None)
+            desired = self.motion.solve(pose, opening, wrist=wrist)
             self.sim.validate(desired)
             maximum = self.sim.speed*self.sim.dt*self.repeat
             target = self.command+np.clip(desired-self.command, -maximum, maximum)

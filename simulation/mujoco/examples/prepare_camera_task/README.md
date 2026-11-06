@@ -57,3 +57,16 @@ For simulation regressions run from the repository root.
 ~~~powershell
 & $py -B -m pytest simulation/mujoco/tests -q
 ~~~
+
+## Wrist and obstacle fixtures
+
+The generator derives command dimensions from the bundle. A wrist bundle
+receives a six-command observation pose with the wrist at half its bounded
+revolution. --obstacle piece_name@square retains and places an additional
+physical piece in the fixture. Repeat the option for multiple neighbors.
+All obstacle names must exist in the input bundle.
+
+For wrist physics and camera-only neighbor rewards, follow the full build,
+reference generation and training commands in
+[the training guide](../../training/camera-manipulation/README.md).
+A generated fixture records obstacle identities in environment.json.

@@ -215,8 +215,8 @@ look alike but correspond to opposite ends of the joint travel. Press Reset to
 return to the simulated home. O and C still open and close the fingers
 independently of wrist angle.
 
-This bundle is for manual verification. Use the existing five-actuator bundle
-for Chess Playground, capture and RL. See
+The Chess Playground and legacy capture entry points still require their five-actuator
+bundles. The camera-manipulation training guide documents wrist-enabled fixtures. See
 [ADR S010](../docs/adrs/S010-bounded-wrist-rotation.md) for the mesh-derived
 pivot and the hardware switch calibration requirements.
 
@@ -252,10 +252,19 @@ recorded camera. New fixtures record the resolved settings for reproducibility.
 The Start-MuJoCo.ps1 view mode defaults to the wrist bundle. To use an existing
 alternative bundle, pass -Bundle with its path. The wrist mounting geometry and
 limits are defined in interactive_model.py and written into the generated model.
-The automatic Playground and existing training policies still use the
-five-actuator profile.
+The automatic Playground and historical policies use the five-actuator profile.
+New wrist-enabled camera policies use five actions and six commanded joints.
 
 The centered two-piece capture passed with the shared camera. The one-piece
 P038 baseline oriented successfully at reset but lost the board reference at
 its first approach step. Treat the H-file camera as experimental for P038
 until marker visibility is verified along the full trajectory.
+
+## Full gripper collision profile
+
+The build command accepts --wrist and --full-gripper-collision independently
+with --interactive. The full-gripper option attaches the preserved 66 convex
+parts to their actual moving bodies. The wrist model supports six-command
+native IK and a five-action camera residual policy. See the
+[training guide](training/camera-manipulation/README.md) for the staged
+isolated-piece, full-collision and sparse-neighbor workflow.

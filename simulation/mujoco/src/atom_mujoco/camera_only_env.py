@@ -8,6 +8,7 @@ from .camera_manipulation_env import CameraManipulationEnv
 from .native_motion import ACTOR_PHASES
 from .camera_policy import PHASES
 from .visual_verification import VisualVerification
+from .neighbor_vision import NeighborEvidence
 
 
 class CameraOnlyEnv(CameraManipulationEnv):
@@ -28,6 +29,10 @@ class CameraOnlyEnv(CameraManipulationEnv):
             raise ValueError('Expected distinct destination squares')
         if 'task_targets' in self.config:
             self.VERSION = 3
+        if self.motion.has_wrist:
+            self.VERSION = 4
+        if self.config.get("obstacle_pieces"):
+            self.VERSION = 5
 
     @property
     def task_target(self):
@@ -60,7 +65,9 @@ class CameraOnlyEnv(CameraManipulationEnv):
             raise RuntimeError('EMPTY_CAMERA_CALIBRATION_FAILED')
         self.phase = self.dwell_count = self.steps = 0
         self.inspect_destination = False
-        self.previous_action = np.zeros(4, dtype=np.float32)
+        self.wrist_travel_rad = 0.
+        self.wrist_offset = 0.
+        self.previous_action = np.zeros(self.action_count, dtype=np.float32)
         self.visual.reset()
         self.reward_totals = {}
         self.episode_started = time.perf_counter()
@@ -69,6 +76,11 @@ class CameraOnlyEnv(CameraManipulationEnv):
             raise RuntimeError('RESET_PERCEPTION_FAILED')
         if self.last_camera_frame.candidates[self.visual.source] != self.visual.color:
             raise RuntimeError('SOURCE_PIECE_NOT_CONFIRMED_BY_CAMERA')
+        squares = [p['initial_square'] for p in self.sim.manifest['pieces']
+                   if p['name'] != self.config['piece']]
+        if any(square in self.targets or square == self.config['source'] for square in squares):
+            raise ValueError('Obstacle squares must be distinct from task endpoints')
+        self.neighbors = NeighborEvidence(self.last_camera_frame, squares)
         self.finished = False
         return observation, dict(info, verification='rgb_candidates_only', target=self.task_target)
 
@@ -76,15 +88,25 @@ class CameraOnlyEnv(CameraManipulationEnv):
         if self.finished:
             raise RuntimeError('Reset required')
         action = np.asarray(action, dtype=np.float32)
-        if action.shape != (4,) or not np.isfinite(action).all() or np.any(abs(action)>1):
-            raise ValueError('Expected four normalized residual actions')
+        if action.shape != self.action_space.shape or not np.isfinite(action).all() or np.any(abs(action)>1):
+            raise ValueError('Expected one normalized action per policy dimension')
         pose = self.poses[self.phase, :3]+action[:3]*self.residual_bounds[:3]
         opening = float(np.clip(self.openings[self.phase]+action[3]*self.residual_bounds[3],
                                 self.sim.lower[3], self.sim.upper[3]))
+        wrist = None
+        if self.motion.has_wrist:
+            offset_target = float(action[4])*self.config.get('wrist_residual_rad', .35)
+            increment = self.config.get('wrist_residual_speed_rad_s', .4)*self.sim.dt*self.repeat
+            self.wrist_offset += float(np.clip(offset_target-self.wrist_offset, -increment, increment))
+            wrist = float(np.clip(self.motion.default_wrist+self.wrist_offset,
+                                  self.sim.lower[-1], self.sim.upper[-1]))
         desired = (np.array(self.config['initial_command'], dtype=float) if self.inspect_destination
-                   else self.motion.solve(pose, opening))
+                   else self.motion.solve(pose, opening, wrist=wrist))
         maximum = self.sim.speed*self.sim.dt*self.repeat
-        self.command += np.clip(desired-self.command, -maximum, maximum)
+        delta = np.clip(desired-self.command, -maximum, maximum)
+        if self.motion.has_wrist:
+            self.wrist_travel_rad += abs(float(delta[-1]))
+        self.command += delta
         self.previous_action = action.copy()
         for _ in range(self.repeat):
             self.controller.step(self.command)
@@ -96,17 +118,29 @@ class CameraOnlyEnv(CameraManipulationEnv):
         confirmed = visual['visual_state'] == 'TARGET_TEMPORALLY_PRESENT_CANDIDATE'
         success = bool(self.inspect_destination and phase_complete and confirmed)
         failure = 'PERCEPTION_FAILED' if visual['perception_failure'] else None
+        neighbor_change = None
+        if self.inspect_destination and phase_complete and not failure:
+            neighbor_change = self.neighbors.observe(self.last_camera_frame)
+            if neighbor_change is None:
+                failure = 'NEIGHBOR_EVIDENCE_UNAVAILABLE'
+            elif any(score > self.neighbors.limit for score in neighbor_change.values()):
+                failure = 'NEIGHBOR_VISUAL_CHANGE'
+            success = success and failure is None
         truncated = self.steps >= self.horizon and not success and not failure
         if truncated:
             failure = 'TIME_LIMIT'
         components = dict(time=-.01, action=-.001*float(np.square(action).sum()))
+        if neighbor_change:
+            components['neighbor_disturbance'] = -5.*max(neighbor_change.values())
         if success:
             components['visual_success'] = 10.
         if failure:
             components['failure'] = -5.
         info = dict(visual, success=success, failure=failure, grasp=None, lift=None,
-                    placement=success, collisions=None, reward_source='rgb_only', target=self.task_target,
+                    placement=success, collisions=None, reward_source='rgb_only', neighbor_change=neighbor_change, target=self.task_target,
                     visual_confirmed=success, reward_components=components,
+                    wrist_travel_rad=self.wrist_travel_rad,
+                    wrist_command_rad=float(self.command[-1]) if self.motion.has_wrist else None,
                     phase=ACTOR_PHASES[self.phase], episode_steps=self.steps,
                     episode_wall_s=time.perf_counter()-self.episode_started)
         self._accumulate_reward(info)

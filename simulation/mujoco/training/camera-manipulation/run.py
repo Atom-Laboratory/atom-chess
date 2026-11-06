@@ -35,7 +35,7 @@ def evaluate(env, policy, episodes, seed, viewer=None):
         observation, info = env.reset(seed=seed+index, options=options)
         total = 0.
         for _ in range(env.horizon):
-            action = np.zeros(4, dtype=np.float32) if policy is None else policy.predict(
+            action = np.zeros(env.action_space.shape, dtype=np.float32) if policy is None else policy.predict(
                 observation, deterministic=True)[0]
             observation, reward, terminated, truncated, info = env.step(action)
             total += reward
@@ -66,7 +66,7 @@ class RecordEpisodes(BaseCallback):
             if done:
                 record = {key: info.get(key) for key in (
                     'success', 'failure', 'grasp', 'placement', 'collisions', 'phase',
-                    'visual_state', 'visual_confirmed', 'target', 'episode_steps', 'episode_wall_s', 'episode_reward_components')}
+                    'visual_state', 'visual_confirmed', 'target', 'wrist_command_rad', 'wrist_travel_rad', 'neighbor_change', 'episode_steps', 'episode_wall_s', 'episode_reward_components')}
                 record['training_step'] = self.num_timesteps
                 self.completed.append(record)
                 with (self.output/'episodes.jsonl').open('a', encoding='utf-8') as stream:
@@ -87,7 +87,7 @@ def provenance(env):
     paths += [package/name for name in (
         'camera_manipulation_env.py', 'camera_reward.py', 'camera_policy.py',
         'native_vision.py', 'native_motion.py', 'visual_verification.py',
-        'collision.py', 'motion_controller.py', 'backend.py', 'camera_only_env.py')]
+        'collision.py', 'motion_controller.py', 'backend.py', 'camera_only_env.py', 'neighbor_vision.py')]
     paths += [Path(__file__)]
     record = dict(environment_version=env.VERSION, configuration=cfg,
                   files={str(path.resolve()): sha(path) for path in sorted(set(paths))},

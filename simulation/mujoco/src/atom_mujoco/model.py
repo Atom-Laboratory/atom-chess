@@ -59,8 +59,10 @@ def origin(element):
     return {'pos': text(pos), 'quat': text(quat)}
 
 
-def build_bundle(urdf, output, *, parameters=None, interactive=False, wrist=False):
+def build_bundle(urdf, output, *, parameters=None, interactive=False, wrist=False, full_gripper_collision=False):
     """Emit a portable MJCF/mesh bundle; refuse unknown geometry/topology."""
+    if full_gripper_collision and not interactive:
+        raise ValueError('Gripper collision requires the interactive profile')
     if wrist and not interactive:
         raise ValueError('Wrist requires the interactive profile')
     profile = copy.deepcopy(PROFILE)
@@ -255,6 +257,11 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False, wrist=Fals
         from .interactive_model import configure
         scene.update(configure(mjcf, metadata, profile, wrist=wrist))
         scene['gripper_collision_geometry'] = 'fingertip pads only; finger bodies and back support disabled'
+        if full_gripper_collision:
+            from .gripper_colliders import add_full_gripper
+            count = add_full_gripper(mjcf, mesh_bytes, source.parent.parent/'meshes')
+            scene['gripper_collision_geometry'] = 'experimental decomposed full gripper plus fingertip pads'
+            scene['gripper_collision_hulls'] = count
     if official_visuals:
         export_dir = source.parents[3] / 'hardware/Project/chess_pieces/exports'
         export_manifest = json.loads((export_dir / 'manifest.json').read_text(encoding='utf-8'))

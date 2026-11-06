@@ -26,9 +26,8 @@ lineage, report.json for completion and evaluation, and episode logs for failure
 A failed run may lack a final report. Retain partial checkpoints and logs.
 
 Resume validates the recorded environment and checkpoint identity. Changes to
-policy spaces require an explicit transfer or a new training run. Training with
-the wrist model is pending integration. These commands use the existing
-five-actuator workflow.
+policy spaces require an explicit transfer or a new training run. The quick-start fixture uses the historical
+five-actuator workflow. The wrist curriculum section documents the new model.
 
 See the [training index](../README.md) for preserved checkpoints and limitations.
 
@@ -57,8 +56,8 @@ the nominal trajectory and phase. Synthetic empty-board images calibrate
 foreground detection. Hardware deployment requires measured calibration.
 
 The mode reports grasp and collision metrics as unavailable. Camera evidence
-cannot establish physical grip, upright placement or release. Current camera-only
-experiments use five actuator commands. Wrist policy migration remains pending.
+cannot establish physical grip, upright placement or release. Historical camera-only
+experiments use five actuator commands. New wrist fixtures use six commands.
 See ADR S013 for the contract and limitations.
 
 Artifacts include run.json, report.json or failure.json, policy.zip when training
@@ -169,3 +168,86 @@ run's verified final weights and used a fresh optimizer.
 and [per-target report](runs/destination-curriculum-1794000238965866200/ppo-2048/report.json)
 are stored beside the policy. An additional f5 replay records raw RGB,
 rectified homography and visual feedback.
+
+## Wrist and full-gripper collision curriculum
+
+The wrist-enabled actor has five residual actions (X, Y, Z, opening and wrist
+angle), and observes six commanded actuator positions. The two finger commands
+remain coupled. Native IK accounts for the rotated offset between the wrist
+axis and the grasp center. The wrist stays within its bounded revolution.
+New wrist policies require fresh initialization because the old spaces differ.
+
+Build the physical collision profile and a sparse-neighbor fixture from the
+repository root after installing the Python environment and native libraries.
+
+~~~powershell
+$py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+$work = Join-Path simulation/mujoco/training/camera-manipulation/runs ('wrist-full-' + [guid]::NewGuid().ToString('N'))
+$base = Join-Path $work 'base'
+$reference = Join-Path $work 'reference'
+$task = Join-Path $work 'task'
+$exe = (Resolve-Path build/p038-core/bin/Release/perception_image.exe).Path
+& $py -B -m atom_mujoco.cli build --urdf simulation/src/urdf/atom.urdf.xacro --parameters simulation/mujoco/playground/configs/playground-reachable-board.json --output $base --interactive --wrist --full-gripper-collision
+if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
+& $py -B simulation/mujoco/examples/validate_board_reference/run.py --bundle $base --assets docs/camera-rl/aruco-assets-v4 --executable $exe --output $reference
+if ($LASTEXITCODE -ne 0) { throw 'Reference generation failed' }
+& $py -B simulation/mujoco/examples/prepare_camera_task/run.py --bundle $base --reference-scene (Join-Path $reference 'reference-scene.xml') --output $task --obstacle white_pawn_d2@c4
+if ($LASTEXITCODE -ne 0) { throw 'Fixture preparation failed' }
+$config = Join-Path $task 'environment.json'
+& $py -B simulation/mujoco/training/camera-manipulation/run.py --camera-only --config $config --mode smoke --steps 128
+~~~
+
+The fixture starts the moving pawn on e4, targets d5 and places a physical pawn
+on c4. Repeat --obstacle piece_name@square for additional neighbors. Target
+curricula must exclude occupied obstacle squares. Generation validates distinct
+identities and locations. All retained pieces are free rigid bodies.
+
+The full profile uses 66 existing CAD-derived convex parts attached to the
+rotating back and moving fingers, plus the fingertip contact pads. Bundle
+manifests hash every included asset. Source mesh hashes are checked before
+attaching the decomposition. Hardware calibration, complete linkage accuracy
+and robot self-collision qualification remain pending.
+
+CameraOnlyEnv compares the rectified images of each neighbor cell at reset and
+after the arm returns to its observation pose. A changed pixel fraction above
+0.03 rejects the transfer, even if the main piece reached its target. A graded
+penalty reflects that fraction. Thresholds are experimental for fixed lighting.
+This detects visual disturbance, including some displacements or toppling, but
+does not prove every neighbor stayed physically upright or never moved.
+
+The d4 adjacent-neighbor baseline was rejected with NEIGHBOR_VISUAL_CHANGE.
+The c4 sparse-neighbor baseline passed with zero changed fraction.
+Keep the d4 failure as a harder curriculum case. Do not equate successful
+isolated grasping with a qualified crowded-board controller.
+
+For integration checks, set ATOM_WRIST_CONFIG and ATOM_NEIGHBOR_CONFIG to matching
+generated fixtures and run the following command.
+
+~~~powershell
+& $py -B -m pytest simulation/mujoco/tests/test_wrist_training.py -q
+~~~
+
+Recorded experiments are under
+runs/wrist-c75050a5fba7486bae0b60e6c40ce766/.
+ppo-wrist-1024 trains the isolated wrist model. full-gripper/ contains full
+collision baselines, neighbor before/after images, the rejected d4 sweep and
+the sparse-neighbor training. Each run records source identities and model
+hashes. The isolated wrist run also preserves a Python source snapshot.
+
+
+The wrist residual is rate limited to 0.4 rad/s by default, configurable through
+wrist_residual_speed_rad_s. This prevents random exploration from continuously
+interrupting the phase dwell condition. wrist_residual_rad sets the angular
+residual range, initially 0.35 rad. The gripper inspection pose remains explicit
+in initial_command. Episode reports include accumulated commanded wrist travel.
+
+The completed isolated wrist run trained 1,024 steps and passed 3/3 final visual
+evaluations. The first unsmoothed full-gripper experiment timed out during noisy
+pregrasp exploration. The corrected sparse-neighbor run trained 1,024 steps,
+passed 2/2 final evaluations with zero detected visual change in c4, and
+preserved its source snapshot. An additional final-policy replay was executed
+with privileged task-reward reads blocked. The d4 dense-neighbor case remains
+a documented failure for subsequent curriculum work.
+
+[Final sparse-neighbor run](runs/wrist-c75050a5fba7486bae0b60e6c40ce766/full-gripper/ppo-neighbor-smooth-1024/README.md)
+contains the report, checkpoints, source snapshot and camera replay images.
