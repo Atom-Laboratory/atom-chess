@@ -12,7 +12,7 @@ from .scene_feedback import SceneFeedback
 from .supervision import TaskLedger, Execution, Evidence
 from .motion_controller import MotionController
 from .task_plan import validate_plan
-from .collision import SceneCollision
+from .collision import SceneCollision, pregrasp_opening
 from .teleoperation import ManualControl
 
 
@@ -174,10 +174,14 @@ class Playground:
                     result['failed_waypoint'] = waypoint
                     square = source.upper() if len(solutions) < 3 else target.upper()
                     raise ValueError(f'{error} ({waypoint} at {square}). Check board placement against the arm workspace.') from error
+            aperture = pregrasp_opening(sim, piece_id)
+            grasp = pregrasp_opening(sim, piece_id, side_gap_m=-.0005)
+            result['pregrasp_opening_m'] = aperture
+            result['grasp_opening_m'] = grasp
             if not self.diagnostic_unchecked:
                 collision = SceneCollision(sim)
                 result['collision_report'] = collision.check_plan(
-                    solutions, piece_id, np.array([destination[0], destination[1], origin[2]+support_delta]))
+                    solutions, piece_id, np.array([destination[0], destination[1], origin[2]+support_delta]), aperture=aperture, grasp=grasp)
                 result['collision_checked'] = True
                 self.planned_trajectory = result['collision_report']['trajectory']
                 if not result['collision_report']['valid']:
@@ -210,30 +214,32 @@ class Playground:
                 return state
             move(solutions[0], 'APPROACHING', sim.upper[3])
             gate({'approach_settled'})
-            move(solutions[1], 'GRASPING', sim.upper[3])
-            move(solutions[1], 'VERIFYING_GRASP', sim.lower[3], 100)
+            move(solutions[0], 'PRESHAPING', aperture)
+            move(solutions[1], 'GRASPING', aperture)
+            move(solutions[1], 'VERIFYING_GRASP', grasp, 100)
             gate({'close_acknowledged'})
             result['grasp_confirmed'] = self.feedback.grip_contacts(piece_id)
             if not result['grasp_confirmed'] or not self.feedback.settled(piece_id):
                 raise ValueError('GRASP_FAILED')
             gate({'contact', 'piece_stable'})
-            move(solutions[2], 'LIFTING', sim.lower[3])
+            move(solutions[2], 'LIFTING', grasp)
             if sim.data.xpos[body,2] < origin[2]+.04 or not self.feedback.grip_contacts(piece_id):
                 raise ValueError('LIFT_FAILED')
             gate({'lift_confirmed', 'grip_stable'})
-            move(solutions[3], 'TRANSPORTING', sim.lower[3])
+            move(solutions[3], 'TRANSPORTING', grasp)
             if not self.feedback.grip_contacts(piece_id):
                 raise ValueError('TRANSPORT_GRIP_LOST')
             gate({'destination_reached', 'grip_stable'})
-            move(solutions[4], 'PLACING', sim.lower[3])
+            move(solutions[4], 'PLACING', grasp)
             gate({'placement_settled'})
             if (np.linalg.norm(sim.data.xpos[body,:2]-destination[:2]) > .012
                     or abs(sim.data.xpos[body,2]-origin[2]-support_delta) > .004):
                 raise ValueError('PLACEMENT_NOT_SUPPORTED_OR_ALIGNED')
             gate({'supported', 'aligned'})
-            move(solutions[4], 'RELEASING', sim.upper[3], 100)
+            move(solutions[4], 'RELEASING', aperture, 100)
             gate({'open_acknowledged'})
-            move(solutions[3], 'VERIFYING_RELEASE', sim.upper[3])
+            move(solutions[3], 'VERIFYING_RELEASE', aperture)
+            move(solutions[3], 'FULLY_OPENING', sim.upper[3])
             final = sim.data.xpos[body].copy()
             result['position_error_m'] = float(np.linalg.norm(final[:2]-destination[:2]))
             result['release_confirmed'] = self.feedback.released(piece_id)

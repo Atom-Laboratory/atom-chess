@@ -6,6 +6,27 @@ import mujoco
 import numpy as np
 
 
+def pregrasp_opening(sim, identity, side_gap_m=.003):
+    """Experimental aperture from the actual fingertip and stem proxies."""
+    model = sim.model
+    stem = model.geom(identity+'_stem').id
+    if model.geom_type[stem] != mujoco.mjtGeom.mjGEOM_CYLINDER:
+        raise ValueError('CYLINDRICAL_GRASP_PROXY_REQUIRED')
+    data = mujoco.MjData(model)
+    data.qpos[:] = sim.data.qpos
+    data.qpos[sim.qadr[3:]] = 0.
+    mujoco.mj_forward(model, data)
+    pads = [model.geom(name).id for name in ('finger_1_pad','finger_2_pad')]
+    normal = data.geom_xmat[pads[0]].reshape(3,3)[:,2]
+    gap = abs(float((data.geom_xpos[pads[1]]-data.geom_xpos[pads[0]])@normal))
+    gap -= sum(model.geom_size[g,2] for g in pads)
+    desired = 2*float(model.geom_size[stem,0])+2*side_gap_m
+    opening = (desired-gap)/2
+    if not np.isfinite(opening) or not sim.lower[3] <= opening <= sim.upper[3]:
+        raise ValueError('PREGRASP_APERTURE_OUT_OF_RANGE')
+    return float(opening)
+
+
 class SweptChecker:
     def __init__(self, model, qpos, joint_ids, pairs, *, clearance_m=.001, max_depth=16):
         self.model = model
@@ -104,7 +125,7 @@ class SceneCollision:
             else:
                 self.pairs.append((a,b))
 
-    def check_plan(self, solutions, identity, destination):
+    def check_plan(self, solutions, identity, destination, *, aperture=None, grasp=None):
         sim, model = self.sim, self.sim.model
         body = model.body(identity).id
         selected = [g for g in self.environment if model.geom_bodyid[g] == body]
@@ -144,14 +165,18 @@ class SceneCollision:
             value[3:] = opening
             return value
         opened, closed = sim.upper[3], sim.lower[3]
+        aperture = pregrasp_opening(sim, identity) if aperture is None else aperture
+        closed = pregrasp_opening(sim, identity, side_gap_m=-.0005) if grasp is None else grasp
         phases = [('approach',q(0,opened),None,support_pairs),
-                  ('descend',q(1,opened),None,support_pairs+pad_pairs),
+                  ('preshape',q(0,aperture),None,support_pairs),
+                  ('descend',q(1,aperture),None,support_pairs+pad_pairs),
                   ('close',q(1,closed),None,support_pairs+pad_pairs),
                   ('lift',q(2,closed),held,support_pairs+pad_pairs),
                   ('transport',q(3,closed),held,pad_pairs),
                   ('place',q(4,closed),held,support_pairs+pad_pairs),
-                  ('open',q(4,opened),placed,support_pairs+pad_pairs),
-                  ('retreat',q(3,opened),placed,support_pairs+pad_pairs)]
+                  ('open',q(4,aperture),placed,support_pairs+pad_pairs),
+                  ('retreat',q(3,aperture),placed,support_pairs+pad_pairs),
+                  ('fully_open',q(3,opened),placed,support_pairs)]
         start = sim.observe()['position']
         trajectory = []
         cursor = start

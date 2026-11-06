@@ -113,3 +113,23 @@ The C++ adapter regression separately checks the exact JSON produced from the
 real TaskPlanner. Run the CMake/CTest instructions in `integration-revision.md`.
 
 P015 adds experimental C++ MotionPlanner/IK playback. See docs/hybrid-control/p015-execution-guide.md. Legacy square-based Python planning remains active separately.
+
+## Crowded-square grasp aperture (P024)
+
+Select source and destination, then click Confirm MOVE. Selection alone does not
+execute. Restart the Playground after a Python update; the existing fingertip
+bundle need not be rebuilt for this planner change:
+
+    & ./simulation/mujoco/scripts/Start-MuJoCo.ps1 -Mode playground
+
+The baseline first narrows its jaws above the source, descends, grips at the
+simulated stem diameter, lifts and transports. It releases partially, retreats,
+and fully opens above the destination. Aperture values are recorded as
+pregrasp_opening_m and grasp_opening_m. They are per-finger joint references,
+not the total gap. The swept report includes preshape and fully_open intervals.
+
+A COLLISION_PREFLIGHT_FAILED with a positive distance means the configured
+1 mm clearance was violated; it need not imply overlapping geometry. Check
+collision_report.phase and failure.geoms. Do not disable checks to force a move.
+E2–E4 now completes in the experimental scene, including contact and release
+verification. This does not qualify other layouts, CAD accuracy or hardware.
