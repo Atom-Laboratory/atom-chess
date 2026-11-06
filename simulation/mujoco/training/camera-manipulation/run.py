@@ -43,7 +43,8 @@ def evaluate(env, policy, episodes, seed, viewer=None):
                 break
         records.append(dict(seed=seed+index, return_value=total, **info))
     return dict(episodes=episodes, success_rate=sum(r['success'] for r in records)/episodes,
-                grasp_rate=sum(r['grasp'] for r in records)/episodes,
+                grasp_rate=(None if any(r['grasp'] is None for r in records) else
+                            sum(r['grasp'] for r in records)/episodes),
                 placement_rate=sum(r['placement'] for r in records)/episodes,
                 failure_rate=sum(not r['success'] for r in records)/episodes,
                 records=records)
@@ -84,7 +85,7 @@ def provenance(env):
     paths += [package/name for name in (
         'camera_manipulation_env.py', 'camera_reward.py', 'camera_policy.py',
         'native_vision.py', 'native_motion.py', 'visual_verification.py',
-        'collision.py', 'motion_controller.py', 'backend.py')]
+        'collision.py', 'motion_controller.py', 'backend.py', 'camera_only_env.py')]
     paths += [Path(__file__)]
     record = dict(environment_version=env.VERSION, configuration=cfg,
                   files={str(path.resolve()): sha(path) for path in sorted(set(paths))},
@@ -107,6 +108,7 @@ def main():
     parser.add_argument('--checkpoint', type=Path)
     parser.add_argument('--resume', type=Path, help='Prior run directory, verified before continuing')
     parser.add_argument('--checkpoint-every', type=int, default=10000)
+    parser.add_argument('--camera-only', action='store_true', help='Use RGB-only task reward and termination')
     parser.add_argument('--watch', action='store_true')
     args = parser.parse_args()
     args.output = args.output or new_run('training/camera-manipulation/runs')
@@ -123,7 +125,11 @@ def main():
     env = None
     viewer = None
     try:
-        env = CameraManipulationEnv(args.config)
+        if args.camera_only:
+            from atom_mujoco.camera_only_env import CameraOnlyEnv
+            env = CameraOnlyEnv(args.config)
+        else:
+            env = CameraManipulationEnv(args.config)
         identity = provenance(env)
         if args.resume:
             previous = json.loads((args.resume/'run.json').read_text(encoding='utf-8'))
@@ -135,7 +141,7 @@ def main():
                    episodes=args.episodes, environment=identity,
                    resume=str(args.resume) if args.resume else None,
                    actor='PPO MultiInputPolicy, P037 RGB/task/commands plus perception-valid mask',
-                   reward='separate simulation oracle; visual candidates reported separately')
+                   reward='rgb_only' if args.camera_only else 'simulation_oracle')
         (args.output/'run.json').write_text(json.dumps(run, indent=2), encoding='utf-8')
         if args.watch:
             import mujoco.viewer
@@ -143,6 +149,11 @@ def main():
         started = time.perf_counter()
         baseline = evaluate(env, None, args.episodes, 100000+args.seed, viewer)
         report = dict(baseline=baseline, trained_steps=0)
+        if args.camera_only:
+            from PIL import Image
+            frame = env.last_camera_frame
+            Image.fromarray(frame.raw_rgb).save(args.output/'camera-final.png')
+            Image.fromarray(frame.rectified_rgb).save(args.output/'homography-final.png')
         if args.mode in ('smoke', 'train'):
             check_env(env, warn=True, skip_render_check=True)
             policy = PPO.load(args.resume/'policy.zip', env=env, device=args.device) if args.resume else PPO(
