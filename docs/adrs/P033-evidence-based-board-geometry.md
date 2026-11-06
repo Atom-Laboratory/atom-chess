@@ -27,3 +27,11 @@ metric frame. Test perspective/rotation/negative scenes and rerun real rendered
 images before advancing. Geometric success alone cannot validate occupancy,
 orientation, gripper localization or the conventional manipulation baseline.
 No existing training/checkpoint, hardware flow or physical state is changed.
+
+## Follow-up measurement contract
+Evaluate the current initial scene across provisional azimuth perturbations as
+well as elevations. Ground-truth initial-square/color metadata is allowed only
+inside the independent evaluator to build confusion counts. Compare raw classifier
+candidates, never overwrite unknown physical occupancy. Record missing detections
+separately and preserve the D4 oracle-alignment caveat. This adds validation only,
+not a new perception source or permission to train.

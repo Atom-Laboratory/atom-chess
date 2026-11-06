@@ -159,3 +159,23 @@ def test_evaluator_projection_and_identity_mapping():
     assert result['nominal_board_equivalent_error_mm']['max'] == 0.
     assert result['orientation_estimated_by_vision'] is False
     assert not result['motion_ready']
+
+
+def test_independent_color_confusion_uses_candidates_without_mutating_observation():
+    import copy
+    import importlib.util
+    path=Path(__file__).resolve().parents[1]/'examples/validate_native_perception.py'
+    spec=importlib.util.spec_from_file_location('native_color_evaluator',path)
+    module=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    centers=np.array([(c+.5,r+.5) for r in range(8) for c in range(8)])*100
+    observation={'homography':np.eye(3).tolist(), 'cells':[
+        dict(row=r,column=c,candidate='white' if r==0 else 'empty',occupancy='unknown')
+        for r in range(8) for c in range(8)]}
+    before=copy.deepcopy(observation)
+    truth=['black']*8+['empty']*56
+    result=module.evaluate(observation,centers,.035,truth)
+    assert result['candidate_color_confusion']['black']['white']==8
+    assert result['candidate_color_confusion']['empty']['empty']==56
+    assert observation==before
+    assert not result['motion_ready']

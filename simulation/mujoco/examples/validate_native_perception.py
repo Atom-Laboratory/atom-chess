@@ -34,7 +34,7 @@ def project(points, cameras, width, height):
                             height*top/(top-bottom) - focal*(relative @ up)/depth))
 
 
-def evaluate(observation, pixels, pitch):
+def evaluate(observation, pixels, pitch, truth_colors=None):
     if observation['homography'] is None:
         return {'status': 'no_detection', 'motion_ready': False}
     H = np.array(observation['homography'])
@@ -53,7 +53,16 @@ def evaluate(observation, pixels, pitch):
     expected = min(variants,key=lambda x: np.mean(np.linalg.norm(mapped-x,axis=1)))
     errors = np.linalg.norm(mapped-expected,axis=1)/100*pitch*1000
     accuracy = np.mean(np.all(np.floor(mapped/100)==np.floor(expected/100),axis=1))
-    return dict(status='oracle_aligned_diagnostic', motion_ready=False,
+    confusion = None
+    if truth_colors is not None:
+        candidates = {(cell['row'],cell['column']):cell['candidate'] for cell in observation['cells']}
+        confusion = {actual:{predicted:0 for predicted in ('empty','white','black','unknown')}
+                     for actual in ('empty','white','black')}
+        for point, actual in zip(expected,truth_colors):
+            col,row = (point//100).astype(int)
+            predicted = candidates.get((row,col),'unknown')
+            confusion[actual][predicted] += 1
+    return dict(candidate_color_confusion=confusion, status='oracle_aligned_diagnostic', motion_ready=False,
                 orientation_estimated_by_vision=False, squares_evaluated=64,
                 square_assignment_accuracy=float(accuracy),
                 nominal_board_equivalent_error_mm=dict(mean=float(errors.mean()),median=float(np.median(errors)),
@@ -65,11 +74,16 @@ def main():
     parser.add_argument('--bundle',type=Path,required=True)
     parser.add_argument('--executable',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--azimuths',type=float,nargs='+',default=[270],help='Provisional fixed-view sweep, degrees')
     args = parser.parse_args()
+    if not np.isfinite(args.azimuths).all():
+        parser.error('Finite azimuths required')
     executable = args.executable.resolve(strict=True)
     args.output.mkdir(parents=True,exist_ok=False)
     sim = Simulation(args.bundle)
     names = [f'{c}{r}' for r in range(1,9) for c in 'abcdefgh']
+    initial_colors = {p['initial_square']:p['color'] for p in sim.manifest['pieces']}
+    truth_colors = [initial_colors.get(name,'empty') for name in names]
     points = []
     for name in names:
         geom = sim.model.geom('square_'+name).id
@@ -85,24 +99,26 @@ def main():
     # Provisional camera inclination sweep, not a measured hardware mount.
     records = []
     with mujoco.Renderer(sim.model,height=600,width=800) as renderer:
-        for elevation in (-35,-45,-55):
+        for azimuth,elevation in ((a,e) for a in args.azimuths for e in (-35,-45,-55)):
+            camera.azimuth = azimuth
+            case = f'{azimuth:g}-{abs(elevation)}'
             camera.elevation = elevation
             renderer.update_scene(sim.data,camera=camera)
             frame = renderer.render().copy()
-            image = args.output/f'lateral-{abs(elevation)}.png'
+            image = args.output/f'lateral-{case}.png'
             Image.fromarray(frame,'RGB').save(image)
             pixels = project(points,renderer.scene.camera,800,600)
-            output = args.output/f'acvision-{abs(elevation)}'
+            output = args.output/f'acvision-{case}'
             subprocess.run([str(executable),str(image.resolve()),str(output.resolve())],check=True,timeout=60)
             observation = json.loads((output/'observation.json').read_text())
-            result = evaluate(observation,pixels,sim.manifest['scene']['square_size_m'])
+            result = evaluate(observation,pixels,sim.manifest['scene']['square_size_m'],truth_colors)
             if observation.get('schema_version') != 2 or not observation['processing_completed']:
                 raise RuntimeError('Native schema 2 completed diagnostic required')
-            records.append(dict(elevation=elevation,azimuth=270,distance_m=.85,
+            records.append(dict(elevation=elevation,azimuth=azimuth,distance_m=.85,
                 image_sha256=hashlib.sha256(image.read_bytes()).hexdigest(),
                 observation_path=str(output.relative_to(args.output)/'observation.json'),
                 source_sha256=observation['source_sha256'], **result))
-            (args.output/f'evaluator-only-{abs(elevation)}.json').write_text(json.dumps(
+            (args.output/f'evaluator-only-{case}.json').write_text(json.dumps(
                 dict(source='MuJoCo ground truth; NOT perception input',squares=names,
                      projected_centers_px=pixels.tolist()),indent=2))
     report = dict(schema=2, mujoco_version=mujoco.__version__,
