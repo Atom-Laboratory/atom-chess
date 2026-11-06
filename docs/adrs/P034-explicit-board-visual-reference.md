@@ -1,6 +1,6 @@
 # P034 — Explicit visual reference for the board
 
-Date: 2026-11-06. Status: implementation in progress.
+Date: 2026-11-06. Status: implemented and evaluated in simulation.
 
 ## Context
 P033 established that occupied-board pattern detection has insufficient coverage.
@@ -38,3 +38,7 @@ No fallback to checker or cached H when a required marker disappears.
 
 ## Measured simulation outcome
 The user approved markers. The tested layout v4 is asymmetric to clear the column; see the installation guide for exact coordinates, print sizes and units. Subpixel refinement and a 1920x1440 camera yielded 24/27 accepted frames, all with 64/64 correct square assignments, independently of the three tested piece arrangements. Three reprojection rejections remain explicit. No physical calibration or grasp-point localization is claimed.
+
+## Implementation explanation
+
+See [the homography walkthrough](../camera-rl/homography-explained.md) for the 16-corner fit, canonical coordinates, residual checks and piece-localization limits.

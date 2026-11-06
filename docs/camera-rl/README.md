@@ -35,3 +35,7 @@ See [installation, printing and current limits](aruco-installation-guide.md). Us
 ## P035 piece location experiment
 
 See [the native RGB diagnostic and camera sweep](p035-piece-localization.md).
+
+## Homography walkthrough
+
+See [the geometry, implementation changes and measured results](homography-explained.md).
