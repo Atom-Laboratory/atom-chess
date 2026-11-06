@@ -57,6 +57,10 @@ class CameraManipulationEnv(gym.Env):
         self._configure_nominal()
         self.finished = True
 
+    @property
+    def task_target(self):
+        return self.config['target']
+
     def _square_position(self, square):
         return self.sim.model.body('chessboard').pos + self.sim.model.site('square_center_'+square).pos
 
@@ -71,7 +75,7 @@ class CameraManipulationEnv(gym.Env):
         board = model.geom('board_frame')
         surface = model.body('chessboard').pos[2]+board.pos[2]+board.size[2]
         self.source = self._square_position(self.config['source'])
-        self.destination = self._square_position(self.config['target'])
+        self.destination = self._square_position(self.task_target)
         self.grasp_offset = float(model.geom_pos[stem, 2]-model.geom_size[stem, 1]/4)
         self.support_z = float(surface-bottom)
         self.pick_z = self.support_z+self.grasp_offset
@@ -109,7 +113,7 @@ class CameraManipulationEnv(gym.Env):
         phase_index = POLICY_PHASES.index(ACTOR_PHASES[self.phase])
         try:
             actor = policy_observation(
-                frame, source=self.config['source'], target=self.config['target'],
+                frame, source=self.config['source'], target=self.task_target,
                 previous_action=self.previous_action, commanded_joints=self.command,
                 phase=ACTOR_PHASES[self.phase], max_age_s=self.config['max_perception_age_s'])
             result = actor.features()
@@ -117,7 +121,7 @@ class CameraManipulationEnv(gym.Env):
             error = None
         except ValueError as exception:
             task = [ord(self.config['source'][0])-97, 8-int(self.config['source'][1]),
-                    ord(self.config['target'][0])-97, 8-int(self.config['target'][1])]
+                    ord(self.task_target[0])-97, 8-int(self.task_target[1])]
             result = dict(image=np.zeros((3, 96, 96), dtype=np.uint8),
                           task=np.array(task, dtype=np.float32)/7,
                           previous_action=self.previous_action.copy(),

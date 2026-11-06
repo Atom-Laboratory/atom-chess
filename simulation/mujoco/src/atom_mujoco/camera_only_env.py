@@ -7,21 +7,43 @@ import numpy as np
 from .camera_manipulation_env import CameraManipulationEnv
 from .native_motion import ACTOR_PHASES
 from .camera_policy import PHASES
+from .visual_verification import VisualVerification
 
 
 class CameraOnlyEnv(CameraManipulationEnv):
     VERSION = 2
 
     def __init__(self, configuration):
+        self.current_target = None
         super().__init__(configuration)
         # The inherited planner derives nominal poses from static model geometry.
         # Privileged task evaluation is never invoked in this environment.
         self.reward_evaluator = None
+        self.targets = self.config.get('task_targets', [self.config['target']])
+        if (not isinstance(self.targets, list) or not self.targets
+                or len(set(self.targets)) != len(self.targets)
+                or any(not isinstance(s, str) or len(s) != 2
+                       or s[0] not in 'abcdefgh' or s[1] not in '12345678'
+                       or s == self.config['source'] for s in self.targets)):
+            raise ValueError('Expected distinct destination squares')
+        if 'task_targets' in self.config:
+            self.VERSION = 3
+
+    @property
+    def task_target(self):
+        return self.current_target or self.config['target']
 
     def reset(self, *, seed=None, options=None):
-        if options:
-            raise ValueError('Use an explicit configuration')
-        self.np_random = np.random.default_rng(seed)
+        if options and (set(options) != {'target'} or options['target'] not in self.targets):
+            raise ValueError('Evaluation target must belong to the configured curriculum')
+        if seed is not None:
+            self.np_random = np.random.default_rng(seed)
+        self.current_target = (options['target'] if options else
+                               str(self.np_random.choice(self.targets)))
+        self._configure_nominal()
+        self.reward_evaluator = None
+        self.visual = VisualVerification(self.config['source'], self.task_target,
+                                         self.sim.manifest['pieces'][0]['color'])
         self.command = self.sim.validate(self.config['initial_command']).copy()
         self.sim.reset(self.command)
         for _ in range(60):
@@ -48,7 +70,7 @@ class CameraOnlyEnv(CameraManipulationEnv):
         if self.last_camera_frame.candidates[self.visual.source] != self.visual.color:
             raise RuntimeError('SOURCE_PIECE_NOT_CONFIRMED_BY_CAMERA')
         self.finished = False
-        return observation, dict(info, verification='rgb_candidates_only')
+        return observation, dict(info, verification='rgb_candidates_only', target=self.task_target)
 
     def step(self, action):
         if self.finished:
@@ -83,7 +105,7 @@ class CameraOnlyEnv(CameraManipulationEnv):
         if failure:
             components['failure'] = -5.
         info = dict(visual, success=success, failure=failure, grasp=None, lift=None,
-                    placement=success, collisions=None, reward_source='rgb_only',
+                    placement=success, collisions=None, reward_source='rgb_only', target=self.task_target,
                     visual_confirmed=success, reward_components=components,
                     phase=ACTOR_PHASES[self.phase], episode_steps=self.steps,
                     episode_wall_s=time.perf_counter()-self.episode_started)

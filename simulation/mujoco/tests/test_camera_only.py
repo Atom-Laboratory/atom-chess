@@ -31,3 +31,37 @@ def test_rgb_only_transfer_does_not_read_privileged_task_reward(monkeypatch):
         assert info['collisions'] is None
     finally:
         env.close()
+
+@pytest.mark.skipif(not os.environ.get('ATOM_CAMERA_ONLY_CONFIG'),
+                    reason='Requires the generated camera fixture')
+def test_curriculum_target_matches_actor_and_visual_verifier(monkeypatch):
+    import json
+    from pathlib import Path
+
+    config = json.loads(Path(os.environ['ATOM_CAMERA_ONLY_CONFIG']).read_text())
+    config['task_targets'] = ['d5', 'f3']
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError('Privileged task feedback accessed')
+
+    monkeypatch.setattr('atom_mujoco.camera_reward.RewardEvaluator.read', forbidden)
+    env = CameraOnlyEnv(config)
+    try:
+        assert env.VERSION == 3
+        for target in config['task_targets']:
+            observation, _ = env.reset(seed=7, options={'target': target})
+            expected = np.array([ord(target[0])-97, 8-int(target[1])])/7
+            np.testing.assert_allclose(observation['task'][2:], expected)
+            assert env.visual.target == (8-int(target[1]), ord(target[0])-97)
+            assert env.config['target'] == config['target']
+            for _ in range(env.horizon):
+                observation, reward, terminated, truncated, info = env.step(
+                    np.zeros(4, dtype=np.float32))
+                if terminated or truncated:
+                    break
+            assert info['success'], info
+            assert info['target'] == target
+        with pytest.raises(ValueError, match='configured curriculum'):
+            env.reset(options={'target': 'a8'})
+    finally:
+        env.close()

@@ -30,7 +30,9 @@ def weights_sha(policy):
 def evaluate(env, policy, episodes, seed, viewer=None):
     records = []
     for index in range(episodes):
-        observation, info = env.reset(seed=seed+index)
+        targets = getattr(env, 'targets', [])
+        options = dict(target=targets[index % len(targets)]) if len(targets) > 1 else None
+        observation, info = env.reset(seed=seed+index, options=options)
         total = 0.
         for _ in range(env.horizon):
             action = np.zeros(4, dtype=np.float32) if policy is None else policy.predict(
@@ -64,7 +66,7 @@ class RecordEpisodes(BaseCallback):
             if done:
                 record = {key: info.get(key) for key in (
                     'success', 'failure', 'grasp', 'placement', 'collisions', 'phase',
-                    'visual_state', 'visual_confirmed', 'episode_steps', 'episode_wall_s', 'episode_reward_components')}
+                    'visual_state', 'visual_confirmed', 'target', 'episode_steps', 'episode_wall_s', 'episode_reward_components')}
                 record['training_step'] = self.num_timesteps
                 self.completed.append(record)
                 with (self.output/'episodes.jsonl').open('a', encoding='utf-8') as stream:
@@ -107,6 +109,7 @@ def main():
     parser.add_argument('--device', choices=['cpu', 'cuda', 'auto'], default='cpu')
     parser.add_argument('--checkpoint', type=Path)
     parser.add_argument('--resume', type=Path, help='Prior run directory, verified before continuing')
+    parser.add_argument('--warm-start', type=Path, help='Prior run supplying policy weights; resets optimizer')
     parser.add_argument('--checkpoint-every', type=int, default=10000)
     parser.add_argument('--camera-only', action='store_true', help='Use RGB-only task reward and termination')
     parser.add_argument('--watch', action='store_true')
@@ -114,6 +117,8 @@ def main():
     args.output = args.output or new_run('training/camera-manipulation/runs')
     if min(args.steps, args.episodes, args.checkpoint_every) <= 0:
         parser.error('Positive step and episode counts required')
+    if args.warm_start and (args.mode != 'train' or args.resume or args.checkpoint):
+        parser.error('Warm start requires train mode and excludes resume/checkpoint')
     if args.mode == 'evaluate' and not args.checkpoint:
         parser.error('Evaluation requires --checkpoint')
     if args.resume and (args.mode != 'train' or args.checkpoint):
@@ -137,9 +142,18 @@ def main():
             if (previous['environment']['signature'] != identity['signature'] or
                     sha(args.resume/'policy.zip') != previous_report['checkpoint_sha256']):
                 raise ValueError('Resume environment or checkpoint differs from recorded provenance')
+        transfer = None
+        if args.warm_start:
+            source = args.warm_start.resolve(strict=True)
+            previous_report = json.loads((source/'report.json').read_text(encoding='utf-8'))
+            checkpoint_hash = sha(source/'policy.zip')
+            if checkpoint_hash != previous_report['checkpoint_sha256']:
+                raise ValueError('Warm-start checkpoint integrity mismatch')
+            transfer = dict(source=str(source), checkpoint_sha256=checkpoint_hash,
+                            scope='policy weights; fresh optimizer and step counter')
         run = dict(mode=args.mode, seed=args.seed, requested_steps=args.steps,
                    episodes=args.episodes, environment=identity,
-                   resume=str(args.resume) if args.resume else None,
+                   resume=str(args.resume) if args.resume else None, warm_start=transfer,
                    actor='PPO MultiInputPolicy, P037 RGB/task/commands plus perception-valid mask',
                    reward='rgb_only' if args.camera_only else 'simulation_oracle')
         (args.output/'run.json').write_text(json.dumps(run, indent=2), encoding='utf-8')
@@ -159,6 +173,12 @@ def main():
             policy = PPO.load(args.resume/'policy.zip', env=env, device=args.device) if args.resume else PPO(
                 'MultiInputPolicy', env, n_steps=32, batch_size=32, n_epochs=2,
                 learning_rate=3e-4, seed=args.seed, device=args.device, verbose=1)
+            if args.warm_start:
+                source_policy = PPO.load(args.warm_start/'policy.zip', device=args.device)
+                if (source_policy.observation_space != env.observation_space
+                        or source_policy.action_space != env.action_space):
+                    raise ValueError('Warm-start policy spaces differ')
+                policy.policy.load_state_dict(source_policy.policy.state_dict())
             before = weights_sha(policy)
             steps_before = policy.num_timesteps
             callback = RecordEpisodes(args.output, args.checkpoint_every, viewer)

@@ -120,3 +120,52 @@ For an independent checkpoint evaluation, use --mode evaluate --checkpoint
 (Join-Path $previous policy.zip) and retain --camera-only. Add --watch to
 observe the physics viewer. The preserved camera and rectified images show the
 perception viewpoint separately from the movable physics viewer.
+
+## Destination curriculum
+
+Camera-only configurations may provide task_targets, a list of distinct
+algebraic destinations. The source remains fixed by the one-piece fixture.
+Training selects a target with the episode RNG. The actor task vector, nominal
+planner and visual verifier all receive that same destination. Configuration
+is preserved independently from the current episode selection.
+
+The curriculum environment version is 3. Evaluate with --episodes equal to the
+number of targets to visit every configured target once in list order. Reports
+and episode logs include the selected target. Evaluation supports only targets
+from the configured list.
+
+A changed curriculum uses --warm-start with a complete prior run directory.
+The launcher validates its checkpoint hash and policy spaces, copies the policy
+weights into a new PPO instance, and starts a fresh optimizer and step counter.
+Use --resume for exact continuation of an unchanged curriculum and provenance.
+
+~~~powershell
+$py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+$root = 'simulation/mujoco/training/camera-manipulation/runs/destination-curriculum-1794000238965866200'
+$config = Join-Path $root 'environment.json'
+$previous = 'simulation/mujoco/training/camera-manipulation/runs/marker-visibility-832e62a9029a415f9e543b452f7bea77/camera-only-resume-5f972775eb1c4b7ea5bf94047675abd0'
+if (-not (Test-Path -LiteralPath $config)) { throw 'Generate a matching one-piece fixture and curriculum configuration first.' }
+& $py simulation/mujoco/training/camera-manipulation/run.py --camera-only --config $config --mode train --warm-start $previous --steps 2048 --episodes 8
+~~~
+
+The first qualified destinations from e4 are d5, e5, f5, d4, f4, d3, e3 and f3.
+The preserved target-qualification-1794000159443367500/report.json records the
+deterministic visual baseline for every destination. Each passed. Since the
+nominal planner already succeeds, training must be compared against that baseline.
+These results concern one white pawn, a fixed camera and the five-actuator model.
+
+To test target consistency across actor inputs and visual verification, set
+ATOM_CAMERA_ONLY_CONFIG to the original fixture environment.json and run
+python -m pytest simulation/mujoco/tests/test_camera_only.py -q.
+The integration test also blocks privileged task reward reads.
+
+The completed destination-curriculum-1794000238965866200/ppo-2048 experiment
+passed all eight per-target evaluations after loading the saved checkpoint.
+The nominal baseline also passed eight of eight. Eighteen completed training
+episodes received camera confirmation. The new policy started with the prior
+run's verified final weights and used a fresh optimizer.
+
+[Detailed results](runs/destination-curriculum-1794000238965866200/ppo-2048/README.md)
+and [per-target report](runs/destination-curriculum-1794000238965866200/ppo-2048/report.json)
+are stored beside the policy. An additional f5 replay records raw RGB,
+rectified homography and visual feedback.
