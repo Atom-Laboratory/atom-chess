@@ -111,3 +111,12 @@ if(PROJECT_IS_TOP_LEVEL AND ament_cmake_FOUND)
 
   ament_package()
 endif()
+
+option(ACMOTION_NATIVE_RUNTIME "Build the camera-RL motion C ABI" OFF)
+if(ACMOTION_NATIVE_RUNTIME)
+  add_library(motion_runtime SHARED runtime/motion_runtime.cpp)
+  target_link_libraries(motion_runtime PRIVATE motion)
+  set_target_properties(motion_runtime PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+endif()
