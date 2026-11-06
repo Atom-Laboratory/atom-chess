@@ -93,3 +93,7 @@ The new optimizer and timestep counter start fresh. The source checkpoint
 hash and stage are recorded in run.json and report.json. Use Resume for
 continuing an identical task. This transfer requires the same model bundle,
 environment version and horizon. Evaluate expanded collision geometry separately.
+
+Use -WarmStartFeatures with -WarmStart to transfer the visual encoder alone.
+Grasp can then relearn the movement outputs without inheriting the lift
+policy's immediate upward command.

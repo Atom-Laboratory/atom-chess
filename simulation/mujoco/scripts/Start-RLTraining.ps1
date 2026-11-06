@@ -6,6 +6,7 @@ param(
     [switch]$Headless,
     [string]$Resume,
     [string]$WarmStart,
+    [switch]$WarmStartFeatures,
     [string]$Output
 )
 $ErrorActionPreference = 'Stop'
@@ -23,6 +24,7 @@ $atomArgs = @('-u', '-B', (Join-Path $atomModule 'examples/train_visual_grasp.py
     '--eval-episodes', 5)
 if (-not $Headless) { $atomArgs += '--watch' }
 if ($Resume) { $atomArgs += @('--resume',$Resume) }
+if ($WarmStartFeatures) { $atomArgs += '--warm-start-features' }
 if ($WarmStart) { $atomArgs += @('--warm-start',$WarmStart) }
 Write-Host "Training output: $Output"
 Write-Host 'Lift starts with a scripted reset grip. Grasp starts above the piece. Both use RGB policy inputs and oracle rewards.'

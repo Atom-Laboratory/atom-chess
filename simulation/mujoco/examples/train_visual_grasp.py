@@ -48,7 +48,11 @@ def main():
     initialization = parser.add_mutually_exclusive_group()
     initialization.add_argument('--warm-start', type=Path, help='Import weights with a fresh optimizer')
     initialization.add_argument('--resume',type=Path,help='Previous run directory; new output is required')
+    parser.add_argument('--warm-start-features', action='store_true',
+                        help='Transfer the visual encoder and initialize fresh policy heads')
     args = parser.parse_args()
+    if args.warm_start_features and not args.warm_start:
+        parser.error('--warm-start-features requires --warm-start')
     if args.steps<=0 or args.eval_episodes<=0 or args.horizon<=0 or not np.isfinite(args.speed) or args.speed<=0:
         parser.error('Positive steps, horizon and evaluation episodes required')
     if args.output.exists():
@@ -78,6 +82,8 @@ def main():
                        source=str(source.resolve()), source_environment=previous,
                        source_checkpoint_sha256=checkpoint_hash,
                        source_steps=previous_report['trained_steps'])
+        if args.warm_start:
+            lineage['transfer_scope'] = 'features' if args.warm_start_features else 'policy'
     args.output.mkdir(parents=True)
     (args.output/'run.json').write_text(json.dumps(dict(environment=config,
         requested_steps=args.steps, seed=args.seed, watch=args.watch, initialization=lineage,
@@ -98,14 +104,19 @@ def main():
             donor = PPO.load(source/'policy.zip', device='cpu')
             if donor.observation_space != policy.observation_space or donor.action_space != policy.action_space:
                 parser.error('Warm-start requires identical observation and action spaces')
-            weights = donor.policy.state_dict()
-            policy.policy.load_state_dict(weights, strict=True)
-            if not all(torch.equal(value, policy.policy.state_dict()[key].cpu()) for key, value in weights.items()):
+            source_module = donor.policy
+            target_module = policy.policy
+            if args.warm_start_features:
+                source_module = source_module.features_extractor
+                target_module = target_module.features_extractor
+            weights = source_module.state_dict()
+            target_module.load_state_dict(weights, strict=True)
+            if not all(torch.equal(value, target_module.state_dict()[key].cpu()) for key, value in weights.items()):
                 raise RuntimeError('Transferred weights differ from source')
             if policy.policy.optimizer.state or policy.num_timesteps:
                 raise RuntimeError('Warm-start requires fresh optimizer and timestep counter')
             print('Warm-start weights verified: '+checkpoint_hash, flush=True)
-            del donor, weights
+            del donor, weights, source_module, target_module
         initial = {key:value.clone() for key,value in policy.policy.state_dict().items()}
         if args.watch:
             env.reset(seed=args.seed)
