@@ -20,7 +20,7 @@ def build_arena(bundle, arms, live=False):
     assets = ET.Element('asset')
     meshes = {}
     for index, asset in enumerate(source.findall('asset/mesh')):
-        if asset.get('name').startswith('official_'):
+        if not live and asset.get('name').startswith('official_'):
             continue
         item = copy.deepcopy(asset)
         item.set('file', str((bundle/item.get('file')).resolve()))
@@ -53,11 +53,11 @@ def build_arena(bundle, arms, live=False):
         for index in range(model.ngeom):
             name = model.geom(index).name
             kind = mujoco.mjtGeom(model.geom_type[index]).name.removeprefix('mjGEOM_').lower()
-            if kind == 'plane' or name.endswith('_official_visual'):
+            if kind == 'plane' or (not live and name.endswith('_official_visual')):
                 continue
             color = model.geom_rgba[index].copy()
             if color[3] == 0:
-                if not name.startswith(('black_', 'white_')):
+                if live or not name.startswith(('black_', 'white_')):
                     continue
                 color = [.09,.10,.13,1] if name.startswith('black_') else [.92,.89,.78,1]
             if kind == 'mesh':
@@ -71,14 +71,23 @@ def build_arena(bundle, arms, live=False):
             else:
                 continue
             rotation = np.empty(4)
-            mujoco.mju_mat2Quat(rotation,data.geom_xmat[index])
+            position = data.geom_xpos[index].copy()
+            matrix = data.geom_xmat[index].reshape(3,3).copy()
+            if kind == 'mesh':
+                mesh_id = model.geom_dataid[index]
+                asset_rotation = np.empty(9)
+                mujoco.mju_quat2Mat(asset_rotation, model.mesh_quat[mesh_id])
+                # MJCF compilation applies the asset pose to the authored geom.
+                matrix = matrix @ asset_rotation.reshape(3,3).T
+                position -= matrix @ model.mesh_pos[mesh_id]
+            mujoco.mju_mat2Quat(rotation,matrix.ravel())
             parent = body
             if live and model.body_rootid[model.geom_bodyid[index]] != 0:
                 name = f'mirror_{station}_{index}'
                 parent = ET.SubElement(world, 'body', name=name, mocap='true', pos=vector([x,y,0]))
                 mirrors.append((name, station, index, np.array([x,y,0]),
                                 data.geom_xpos[index].copy(), data.geom_xmat[index].reshape(3,3).copy()))
-            ET.SubElement(parent,'geom', type=kind, pos=vector(data.geom_xpos[index]),
+            ET.SubElement(parent,'geom', name=f'station_{station}_geom_{index}', type=kind, pos=vector(position),
                           quat=vector(rotation), rgba=vector(color),
                           contype='0', conaffinity='0', **attributes)
     arena = mujoco.MjModel.from_xml_string(ET.tostring(root, encoding='unicode'))
