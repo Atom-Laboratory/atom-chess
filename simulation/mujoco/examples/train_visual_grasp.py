@@ -45,7 +45,9 @@ def main():
     parser.add_argument('--stage',choices=['lift','grasp'],default='lift')
     parser.add_argument('--watch',action='store_true')
     parser.add_argument('--speed',type=float,default=2.)
-    parser.add_argument('--resume',type=Path,help='Previous run directory; new output is required')
+    initialization = parser.add_mutually_exclusive_group()
+    initialization.add_argument('--warm-start', type=Path, help='Import weights with a fresh optimizer')
+    initialization.add_argument('--resume',type=Path,help='Previous run directory; new output is required')
     args = parser.parse_args()
     if args.steps<=0 or args.eval_episodes<=0 or args.horizon<=0 or not np.isfinite(args.speed) or args.speed<=0:
         parser.error('Positive steps, horizon and evaluation episodes required')
@@ -56,16 +58,24 @@ def main():
     model_hash = hashlib.sha256((args.bundle/'model.xml').read_bytes()).hexdigest()
     config = dict(environment_version=VisualGraspEnv.VERSION, stage=args.stage,
                   horizon=args.horizon, model_sha256=model_hash)
-    if args.resume:
-        previous = json.loads((args.resume/'run.json').read_text())
-        previous_report = json.loads((args.resume/'report.json').read_text())
-        if hashlib.sha256((args.resume/'policy.zip').read_bytes()).hexdigest() != previous_report['checkpoint_sha256']:
-            parser.error('Resume checkpoint differs from recorded result')
-        if previous['environment'] != config:
-            parser.error('Resume requires identical environment version, model, stage and horizon')
+    lineage = None
+    source = args.resume or args.warm_start
+    if source:
+        previous = json.loads((source/'run.json').read_text())['environment']
+        previous_report = json.loads((source/'report.json').read_text())
+        checkpoint_hash = hashlib.sha256((source/'policy.zip').read_bytes()).hexdigest()
+        if previous_report['environment'] != previous or checkpoint_hash != previous_report['checkpoint_sha256']:
+            parser.error('Source checkpoint or configuration differs from recorded result')
+        expected = dict(config, stage=previous['stage']) if args.warm_start else config
+        if previous != expected:
+            parser.error('Resume requires an identical environment; warm-start may change only stage')
+        lineage = dict(mode='warm_start' if args.warm_start else 'resume',
+                       source=str(source.resolve()), source_environment=previous,
+                       source_checkpoint_sha256=checkpoint_hash,
+                       source_steps=previous_report['trained_steps'])
     args.output.mkdir(parents=True)
     (args.output/'run.json').write_text(json.dumps(dict(environment=config,
-        requested_steps=args.steps, seed=args.seed, watch=args.watch,
+        requested_steps=args.steps, seed=args.seed, watch=args.watch, initialization=lineage,
         resume=str(args.resume) if args.resume else None),indent=2)+'\n')
     torch.set_num_threads(2)
     started = time.perf_counter()
@@ -79,6 +89,18 @@ def main():
         if args.resume:
             policy = PPO.load(args.resume/'policy.zip',env=env,device=args.device)
             policy.set_random_seed(args.seed)
+        if args.warm_start:
+            donor = PPO.load(source/'policy.zip', device='cpu')
+            if donor.observation_space != policy.observation_space or donor.action_space != policy.action_space:
+                parser.error('Warm-start requires identical observation and action spaces')
+            weights = donor.policy.state_dict()
+            policy.policy.load_state_dict(weights, strict=True)
+            if not all(torch.equal(value, policy.policy.state_dict()[key].cpu()) for key, value in weights.items()):
+                raise RuntimeError('Transferred weights differ from source')
+            if policy.policy.optimizer.state or policy.num_timesteps:
+                raise RuntimeError('Warm-start requires fresh optimizer and timestep counter')
+            print('Warm-start weights verified: '+checkpoint_hash, flush=True)
+            del donor, weights
         initial = {key:value.clone() for key,value in policy.policy.state_dict().items()}
         if args.watch:
             env.reset(seed=args.seed)
@@ -125,7 +147,7 @@ def main():
         a,_ = policy.predict(obs,deterministic=True)
         b,_ = loaded.predict(obs,deterministic=True)
         assert np.allclose(a,b), 'Checkpoint reload changed deterministic action'
-        report = dict(schema=2, environment=config, interrupted=interrupted, algorithm='PPO', observation='96x96 RGB only',
+        report = dict(schema=2, environment=config, initialization=lineage, interrupted=interrupted, algorithm='PPO', observation='96x96 RGB only',
             task='local E2 pawn '+args.stage, reward_source='simulation_oracle',
             model_parameters_updated=changed, trained_steps=policy.num_timesteps,
             cuda_available=torch.cuda.is_available(), device=str(policy.device),

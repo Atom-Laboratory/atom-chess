@@ -82,3 +82,14 @@ lift feasibility probe and durable metric records. The scripted probe is not
 learned-policy evidence. Run a short actual PPO experiment to verify changed
 weights, checkpoint reload, device selection, held-out evaluation and graceful
 UI stop before making training claims.
+## Transfer from lift to grasp
+
+Start a new run with the saved lift policy:
+
+    & ./simulation/mujoco/scripts/Start-RLTraining.ps1 -Stage grasp -Steps 100000 -Device cuda -WarmStart simulation/mujoco/runs/visual-lift-camera-v3-20000
+
+Warm-start copies the policy, including the visual encoder and both heads.
+The new optimizer and timestep counter start fresh. The source checkpoint
+hash and stage are recorded in run.json and report.json. Use Resume for
+continuing an identical task. This transfer requires the same model bundle,
+environment version and horizon. Evaluate expanded collision geometry separately.

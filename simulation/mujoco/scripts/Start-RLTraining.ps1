@@ -5,9 +5,11 @@ param(
     [double]$Speed = 2,
     [switch]$Headless,
     [string]$Resume,
+    [string]$WarmStart,
     [string]$Output
 )
 $ErrorActionPreference = 'Stop'
+if ($Resume -and $WarmStart) { throw 'Choose Resume or WarmStart.' }
 $atomModule = Split-Path $PSScriptRoot -Parent
 $atomRoot = Split-Path (Split-Path $atomModule -Parent) -Parent
 $atomPython = Join-Path $atomModule '.venv/Scripts/python.exe'
@@ -21,6 +23,7 @@ $atomArgs = @('-u', '-B', (Join-Path $atomModule 'examples/train_visual_grasp.py
     '--eval-episodes', 5)
 if (-not $Headless) { $atomArgs += '--watch' }
 if ($Resume) { $atomArgs += @('--resume',$Resume) }
+if ($WarmStart) { $atomArgs += @('--warm-start',$WarmStart) }
 Write-Host "Training output: $Output"
 Write-Host 'Lift starts with a scripted reset grip. Grasp starts above the piece. Both use RGB policy inputs and oracle rewards.'
 Push-Location $atomRoot
