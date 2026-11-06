@@ -101,6 +101,26 @@ foreach(app ${APP_LIST})
     endif()
 endforeach()
 
+# Build identity covers actual bridge/core sources, including uncommitted edits.
+# Reconfigure automatically when any input changes; no Git/network dependency.
+file(GLOB_RECURSE perception_identity_inputs CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+list(APPEND perception_identity_inputs
+    "${CMAKE_CURRENT_SOURCE_DIR}/apps/perception_image.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/apps/perception_offline.hpp")
+list(SORT perception_identity_inputs)
+set(perception_identity "")
+foreach(input IN LISTS perception_identity_inputs)
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${input}")
+    file(SHA256 "${input}" digest)
+    file(RELATIVE_PATH relative "${CMAKE_CURRENT_SOURCE_DIR}" "${input}")
+    string(APPEND perception_identity "${relative}:${digest}\n")
+endforeach()
+string(SHA256 perception_source_sha256 "${perception_identity}")
+target_compile_definitions(perception_image PRIVATE
+    ACVISION_SOURCE_SHA256="${perception_source_sha256}")
+
 # ==========================================
 # AUTOMATIC TARGET GENERATION (Simulation Folder)
 # ==========================================
@@ -150,6 +170,7 @@ if(BUILD_TESTING)
     endif()
 
     set(TEST_LIST
+        test_perception_offline
         test_piece_detector
         test_board_geometry
         test_camera_min_max

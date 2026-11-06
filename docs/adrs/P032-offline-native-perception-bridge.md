@@ -33,3 +33,32 @@ A successful process exit means processing completed, not reliable perception.
 Explicit status and missing fields keep training gated. Measure current failures
 before a separate corner/orientation implementation. No PPO run, environment
 replacement, physical state update or hardware dispatch belongs to this increment.
+
+## B1 acceptance-contract completion (2026-11-05)
+
+Inspection of c005ccd found gaps against the approved detailed B1 requirements:
+IMREAD_COLOR silently accepted unsupported input channels/depths; JSON lacked
+input/configuration/build identity, structured errors and explicit completion;
+tests did not compare direct library calls or exercise the requested negative
+images and degenerate corners. These are integration gaps, not authorization to
+change BoardDetector, Homography or PieceDetector algorithms.
+
+Revise the offline output to schema 2. Validate decoded 8-bit, three-channel BGR
+input without automatic conversion. The only supported configuration is the named
+built-in defaults profile; reject other configuration IDs rather than silently
+falling back. Share small validation/orchestration helpers with native tests;
+keep all perception algorithms in their existing classes. Add provenance and
+complete/error flags, including diagnostics for rejected input when an output
+directory can be reserved. Preserve partial artifacts on I/O failure, never mark
+an unsuccessful export as completed. Tests must record rectangle false positives
+as limitations, not assert that the unchanged detector rejects them.
+
+Homography is unequivocally original decoded image pixels -> rectified pixels:
+compute maps ordered TL/TR/BR/BL input corners to (0,0),(800,0),(800,800),(0,800).
+warp uses the original decoded image, not detector-internal grayscale/blur output.
+The 800 endpoint is a continuous rectangle boundary; raster indices are 0..799.
+This is not a board-to-base transform, optical calibration, or chess orientation.
+
+No algorithm fixes, hardware commands, physical-state updates or learning belong
+to this completion. The user subsequently explicitly authorized committing the
+verified diff. No push is authorized.

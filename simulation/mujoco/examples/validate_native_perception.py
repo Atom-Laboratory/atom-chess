@@ -96,11 +96,18 @@ def main():
             subprocess.run([str(executable),str(image.resolve()),str(output.resolve())],check=True,timeout=60)
             observation = json.loads((output/'observation.json').read_text())
             result = evaluate(observation,pixels,sim.manifest['scene']['square_size_m'])
-            records.append(dict(elevation=elevation,azimuth=270,distance_m=.85,**result))
+            if observation.get('schema_version') != 2 or not observation['processing_completed']:
+                raise RuntimeError('Native schema 2 completed diagnostic required')
+            records.append(dict(elevation=elevation,azimuth=270,distance_m=.85,
+                image_sha256=hashlib.sha256(image.read_bytes()).hexdigest(),
+                observation_path=str(output.relative_to(args.output)/'observation.json'),
+                source_sha256=observation['source_sha256'], **result))
             (args.output/f'evaluator-only-{abs(elevation)}.json').write_text(json.dumps(
                 dict(source='MuJoCo ground truth; NOT perception input',squares=names,
                      projected_centers_px=pixels.tolist()),indent=2))
-    report = dict(schema=1, model_sha256=hashlib.sha256((args.bundle/'model.xml').read_bytes()).hexdigest(),
+    report = dict(schema=2, mujoco_version=mujoco.__version__,
+                  camera_lookat=camera.lookat.tolist(), image_size=[800,600],
+                  model_fovy_degrees=float(sim.model.vis.global_.fovy), model_sha256=hashlib.sha256((args.bundle/'model.xml').read_bytes()).hexdigest(),
                   executable_sha256=hashlib.sha256(executable.read_bytes()).hexdigest(),
                   camera_status='experimental_ideal_pinhole',
                   calibration_status='unvalidated',training_gate='closed',results=records)

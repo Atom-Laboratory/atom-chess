@@ -86,3 +86,7 @@ rectangles), fix projective outer-corner estimation, establish orientation,
 represent unknown/occluded cells and repeat occupied-board calibration tests.
 A measured board-to-base transform and conventional verified manipulation baseline
 are still prerequisites. Existing PPO and checkpoints are unchanged.
+
+## Superseding contract
+
+The initial schema and missing equivalence coverage above are historical. See [P032 contract completion](p032-contract-completion.md) for schema 2, the expanded tests and current instructions.

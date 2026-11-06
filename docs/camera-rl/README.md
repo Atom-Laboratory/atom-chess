@@ -19,3 +19,7 @@ unchanged; their successful lift episodes are not full chess transfers.
 ## Phase B1 update
 
 The real native image bridge is implemented. See [run instructions and measured blockers](native-perception-guide.md). Initial lateral perception validation failed; subsequent environment and training phases remain gated. The Phase A status above describes the historical audit increment.
+
+## P032 contract completion (2026-11-06)
+
+See [schema 2, build commands, tests and acceptance report](p032-contract-completion.md). This supersedes the initial B1 contract limitations; detection algorithms remain unchanged.
