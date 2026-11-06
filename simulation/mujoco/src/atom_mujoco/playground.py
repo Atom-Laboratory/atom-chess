@@ -199,7 +199,7 @@ class Playground:
             def move(q, phase, opening, steps=180):
                 self.monitor.emit('controller', 'running', phase)
                 goal = q.copy()
-                goal[3:] = opening
+                goal[3:5] = opening
                 settled = False
                 for step in range(max(steps, 600)):
                     state = self.controller.step(goal)

@@ -58,7 +58,7 @@ def validate_trajectory(payload, sim):
 
     def position(values):
         target = sim.validate(_vector(values, len(JOINTS)))
-        if not np.allclose(target[3:], target[3], atol=1e-12, rtol=0):
+        if not np.allclose(target[3:5], target[3], atol=1e-12, rtol=0):
             raise ValueError("Finger slide targets must agree")
         return target
 
@@ -108,7 +108,7 @@ def execute_trajectory(playground, payload):
         for phase, target in targets:
             tolerance = FINAL_TOLERANCE.copy()
             if phase in PHASES[2:6]:
-                tolerance[3:] = .006  # Pad contact can limit the commanded closure.
+                tolerance[3:5] = .006  # Pad contact can limit the commanded closure.
             settled = 0
             for _ in range(600):
                 state = playground.controller.step(target)

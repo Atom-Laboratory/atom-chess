@@ -29,7 +29,7 @@ class ManualControl:
             raise ValueError('Simulation stop is latched; reset required')
         self.active = True
         self.target = self.playground.sim.observe()['position'].copy()
-        self.target[3:] = np.mean(self.target[3:])
+        self.target[3:5] = np.mean(self.target[3:5])
         self.target = np.clip(self.target, self.playground.sim.lower, self.playground.sim.upper)
 
     def leave(self):

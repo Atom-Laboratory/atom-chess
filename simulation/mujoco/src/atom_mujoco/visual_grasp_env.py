@@ -61,9 +61,9 @@ class VisualGraspEnv(gym.Env):
         # Small arm perturbations; no piece pose is reset after settling.
         q[:3] += self.np_random.uniform(-1, 1, 3)*np.array([.003,.0005,.003])
         if self.stage == 'grasp' and self.full_open_reset:
-            q[3:] = self.sim.upper[3:]
+            q[3:5] = self.sim.upper[3:5]
         else:
-            q[3:] = pregrasp_opening(self.sim, 'white_pawn_e2')
+            q[3:5] = pregrasp_opening(self.sim, 'white_pawn_e2')
         q = np.clip(q, self.sim.lower, self.sim.upper)
         self.initial = {p['name']: self.sim.data.body(p['name']).xpos.copy()
                         for p in self.sim.manifest['pieces']}
@@ -76,7 +76,7 @@ class VisualGraspEnv(gym.Env):
         for _ in range(20):
             self.playground.controller.step(q)
         if self.stage == 'lift':
-            q[3:] = pregrasp_opening(self.sim, 'white_pawn_e2', side_gap_m=-.0005)
+            q[3:5] = pregrasp_opening(self.sim, 'white_pawn_e2', side_gap_m=-.0005)
             for _ in range(100):
                 self.playground.controller.step(q)
             if not self.playground.feedback.grip_contacts('white_pawn_e2'):
@@ -121,7 +121,7 @@ class VisualGraspEnv(gym.Env):
             raise ValueError('Expected four finite normalized actions')
         delta = action*np.array([.008,.002,.008,.001])
         self.target[:3] += delta[:3]
-        self.target[3:] += delta[3]
+        self.target[3:5] += delta[3]
         self.target = np.clip(self.target,self.sim.lower,self.sim.upper)
         self.finished = True
         for _ in range(5):

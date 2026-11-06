@@ -14,7 +14,7 @@ def pregrasp_opening(sim, identity, side_gap_m=.003):
         raise ValueError('CYLINDRICAL_GRASP_PROXY_REQUIRED')
     data = mujoco.MjData(model)
     data.qpos[:] = sim.data.qpos
-    data.qpos[sim.qadr[3:]] = 0.
+    data.qpos[sim.qadr[3:5]] = 0.
     mujoco.mj_forward(model, data)
     pads = [model.geom(name).id for name in ('finger_1_pad','finger_2_pad')]
     normal = data.geom_xmat[pads[0]].reshape(3,3)[:,2]
@@ -162,7 +162,7 @@ class SceneCollision:
             data.qpos[address:address+3] = destination
         def q(index, opening):
             value = solutions[index].copy()
-            value[3:] = opening
+            value[3:5] = opening
             return value
         opened, closed = sim.upper[3], sim.lower[3]
         aperture = pregrasp_opening(sim, identity) if aperture is None else aperture
