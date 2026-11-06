@@ -1,0 +1,3815 @@
+{
+  "schema": 1,
+  "summary": {
+    "checker": {
+      "total": 27,
+      "detected": 11,
+      "accepted": 11,
+      "rejected": 16,
+      "orientation_known": 0,
+      "orientation_correct": 0,
+      "orientation_incorrect": 0,
+      "orientation_unknown": 27,
+      "named_correct": 0,
+      "named_incorrect": 0,
+      "unknown_squares": 1728,
+      "geometry_correct": 704,
+      "geometry_unknown_squares": 1024,
+      "latency_ms": {
+        "mean": 716.9096888893465,
+        "median": 738.0645000012009,
+        "p95": 920.5144700004894
+      },
+      "effective_sequential_fps": 1.394875833731894,
+      "false_acceptance_rate": null,
+      "cpu_usage": null,
+      "grasp_error": null
+    },
+    "aruco": {
+      "total": 27,
+      "detected": 24,
+      "accepted": 24,
+      "rejected": 3,
+      "orientation_known": 24,
+      "orientation_correct": 24,
+      "orientation_incorrect": 0,
+      "orientation_unknown": 3,
+      "named_correct": 1536,
+      "named_incorrect": 0,
+      "unknown_squares": 192,
+      "geometry_correct": 1536,
+      "geometry_unknown_squares": 192,
+      "latency_ms": {
+        "mean": 131.1927259268015,
+        "median": 134.1002000044682,
+        "p95": 167.03848999750335
+      },
+      "effective_sequential_fps": 7.622373823972118,
+      "false_acceptance_rate": null,
+      "cpu_usage": null,
+      "grasp_error": null
+    }
+  },
+  "frames": [
+    {
+      "frame": "initial-265-35",
+      "method": "checker",
+      "image_sha256": "f3a1427726d5ae3ea6b72f91098914955d0d735ec8ba154d9236f05b8aad2855",
+      "returncode": 0,
+      "latency_ms": 1022.1777000042493,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-265-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-35\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-35\\checker\\corners.png",
+          "sha256": "21243b4f0529a8baf7793722c34b49a63a3c5f54cf344b23fa5d3d803ccd013e"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-35\\checker\\observation.json",
+          "sha256": "a5de6f9e64695206cb1aa02d82505837495b33e248efbf3efb553d87fa394541"
+        }
+      ]
+    },
+    {
+      "frame": "initial-265-35",
+      "method": "aruco",
+      "image_sha256": "f3a1427726d5ae3ea6b72f91098914955d0d735ec8ba154d9236f05b8aad2855",
+      "returncode": 0,
+      "latency_ms": 161.6310000026715,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.87148,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 23,
+              "white": 2,
+              "black": 7,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.6381220882739023,
+            "median": 0.6403239137292788,
+            "p95": 0.7287684067494066,
+            "max": 0.7404018363957534
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-265-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-35\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-35\\aruco\\corners.png",
+          "sha256": "d2d01855456461421c42d49c9d74c643a12ab0770f3f7958d7eae3c4d8ebf926"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-35\\aruco\\observation.json",
+          "sha256": "99261ab2a0a8c81d8ce200acdd12645ffc79e39d8e2cd24c23b7fc883dd15771"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-35\\aruco\\rectified-grid.png",
+          "sha256": "9e74dca505600db1b1a7c135b6d7ea36fa82341b87c954f5750c4a12ec2adcb7"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-35\\aruco\\rectified.png",
+          "sha256": "7e7f265547cbc1516eb17184b45c59d58004eb214204094124582b5f002958b0"
+        }
+      ]
+    },
+    {
+      "frame": "initial-265-45",
+      "method": "checker",
+      "image_sha256": "c55f8da9a1199101e219a46886cd08e284b0264970c1479a8116800687a66659",
+      "returncode": 0,
+      "latency_ms": 897.3086999976658,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-265-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-45\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-45\\checker\\corners.png",
+          "sha256": "2e5cb5feddfa049414578d266952bf8d1cf7302bc3093db87e844e3e43beda3b"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-45\\checker\\observation.json",
+          "sha256": "7318018417dcf0da0a8a88ec57dcfff9abb189c2a0dc920fe71c94af82514f43"
+        }
+      ]
+    },
+    {
+      "frame": "initial-265-45",
+      "method": "aruco",
+      "image_sha256": "c55f8da9a1199101e219a46886cd08e284b0264970c1479a8116800687a66659",
+      "returncode": 0,
+      "latency_ms": 142.30470000620699,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.455653,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 24,
+              "white": 4,
+              "black": 4,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.4760633070648609,
+            "median": 0.47437352398753496,
+            "p95": 0.5189679183906083,
+            "max": 0.5338220666823466
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-265-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-45\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-45\\aruco\\corners.png",
+          "sha256": "74225700da7237a638e9f676e76ac4793b5f564f5a70e360d6d1d1f604f80b83"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-45\\aruco\\observation.json",
+          "sha256": "1041f24753c65df5419499ffe2ef3cefd89a8ba397340e2edbdc124e3b1e064c"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-45\\aruco\\rectified-grid.png",
+          "sha256": "dcefb7a3c510f097a8e784f2ae1722b01219914c3153549884a7ec8e44b2628c"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-45\\aruco\\rectified.png",
+          "sha256": "3d9ff7243095eee91b3b549e7a78ec7718ecd08a0d4177fe9f47f015f16ab0bb"
+        }
+      ]
+    },
+    {
+      "frame": "initial-265-55",
+      "method": "checker",
+      "image_sha256": "1f6e0431d74c7f57cb7bed216aa610fa7e74395c2d62500fdb0a075e17a5ced9",
+      "returncode": 0,
+      "latency_ms": 804.581500000495,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-265-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-55\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-55\\checker\\corners.png",
+          "sha256": "485419f5a903ab366b887ebc95e81f16bd96f309c389730d39da517ae67f09f5"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-55\\checker\\observation.json",
+          "sha256": "89417194baca8c23aa0897bcbfaf62ef77ca17aaaad13fa91fab2efcda0720df"
+        }
+      ]
+    },
+    {
+      "frame": "initial-265-55",
+      "method": "aruco",
+      "image_sha256": "1f6e0431d74c7f57cb7bed216aa610fa7e74395c2d62500fdb0a075e17a5ced9",
+      "returncode": 0,
+      "latency_ms": 95.2430999968783,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE",
+          "REFERENCE_NOT_VISIBLE_OR_INCONSISTENT"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-265-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-55\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-55\\aruco\\corners.png",
+          "sha256": "485419f5a903ab366b887ebc95e81f16bd96f309c389730d39da517ae67f09f5"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-265-55\\aruco\\observation.json",
+          "sha256": "c4581ad3bf071229a0efaade3ff1d82829fc3412946e48087ea275c30e4ce077"
+        }
+      ]
+    },
+    {
+      "frame": "initial-270-35",
+      "method": "checker",
+      "image_sha256": "b1f2d49b27a1524fce3da97f6ea09d164209363b97531b7d2b183508f500620e",
+      "returncode": 0,
+      "latency_ms": 712.8623000025982,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-270-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-35\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-35\\checker\\corners.png",
+          "sha256": "8679515d347a99f21712ff92ee5a8c74104ebcda955ff46ed4ef67f0eac17c2b"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-35\\checker\\observation.json",
+          "sha256": "90154d88cf254a940f862f5923c7cf13d29f246da01ea501f17e51e48aafd9b3"
+        }
+      ]
+    },
+    {
+      "frame": "initial-270-35",
+      "method": "aruco",
+      "image_sha256": "b1f2d49b27a1524fce3da97f6ea09d164209363b97531b7d2b183508f500620e",
+      "returncode": 0,
+      "latency_ms": 130.81410000449978,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.557278,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 23,
+              "white": 2,
+              "black": 7,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 1,
+              "white": 0,
+              "black": 15,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.6476582377715783,
+            "median": 0.651107708454015,
+            "p95": 0.737957720806733,
+            "max": 0.7482192400732403
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-270-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-35\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-35\\aruco\\corners.png",
+          "sha256": "6d6ee27c4bae0473bc74654401a663586365ffa6aadd4ffa9598b02b23377f49"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-35\\aruco\\observation.json",
+          "sha256": "379ade1b73c8b18856ef0e67e2eb35de31bcc31d786bd7c841f494ba06f76e55"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-35\\aruco\\rectified-grid.png",
+          "sha256": "afcf4c0e9b1d796fa214e86f6d2b24c3f31b441ad905cccc09581acdceabbc51"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-35\\aruco\\rectified.png",
+          "sha256": "62e786b1d5cf26d4b5e0c711b837b24f7eeac6976ea53d576d62cffffb653bd8"
+        }
+      ]
+    },
+    {
+      "frame": "initial-270-45",
+      "method": "checker",
+      "image_sha256": "a24849745709f98c874de0af4078fd53cdb60a6e8e71dc8b2561fdcb4b945b4f",
+      "returncode": 0,
+      "latency_ms": 543.021299999964,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 24,
+              "white": 4,
+              "black": 4,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.7384562773670731,
+            "median": 0.654387041795886,
+            "p95": 1.5535138224377505,
+            "max": 1.8054428856005658
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-270-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-45\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-45\\checker\\corners.png",
+          "sha256": "b8b3ea5367dc860d778e749ce284396af2076920b4a929ddbf6939187c36b400"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-45\\checker\\observation.json",
+          "sha256": "13e1ac714ba2daf4f1a0340ef7c113d086bb737e2fd6d918429d3a371f205121"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-45\\checker\\rectified-grid.png",
+          "sha256": "4660941afcefd995c61a432a37cfa3bb640885a612f6fa891bf540299bc8c96e"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-45\\checker\\rectified.png",
+          "sha256": "463cc04a523301d30f727d10d436308a79fd87a82c413f2d25bff62d0e171021"
+        }
+      ]
+    },
+    {
+      "frame": "initial-270-45",
+      "method": "aruco",
+      "image_sha256": "a24849745709f98c874de0af4078fd53cdb60a6e8e71dc8b2561fdcb4b945b4f",
+      "returncode": 0,
+      "latency_ms": 135.03119999950286,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.3694,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 24,
+              "white": 4,
+              "black": 4,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.5355395774316394,
+            "median": 0.5385476315695712,
+            "p95": 0.5900804545378899,
+            "max": 0.5976720049802947
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-270-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-45\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-45\\aruco\\corners.png",
+          "sha256": "5da595514d1d74e85e80023c275b530fe254ab68a024f0a270c3aadd20b49bb7"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-45\\aruco\\observation.json",
+          "sha256": "066290724d12491b83ef153ff2ea142b490ee289f47c9c3ad12979631f1cc211"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-45\\aruco\\rectified-grid.png",
+          "sha256": "c99219eea4c0b973bcb8323d891159b1cfe3f1a61cd81870d5fcc0a992813973"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-45\\aruco\\rectified.png",
+          "sha256": "40b1156c124f83f6d3e4c455371252411a23fd80b3485808de5e876a411fcf3d"
+        }
+      ]
+    },
+    {
+      "frame": "initial-270-55",
+      "method": "checker",
+      "image_sha256": "ba9a70790498fadd9f3a4296296446b3c5842296400cc26e38851530fa1f9671",
+      "returncode": 0,
+      "latency_ms": 626.2411999996402,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 32,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 1.2867953033878665,
+            "median": 0.9421159206153378,
+            "p95": 3.2345727492402694,
+            "max": 4.41239314924587
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-270-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-55\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-55\\checker\\corners.png",
+          "sha256": "bc021560bfe61b5d07482d7186deaa79fbba4a27af565e111e8b38e3f844de58"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-55\\checker\\observation.json",
+          "sha256": "bcda45929927d0662cdd3ab513734d728b18e53af53fada4fe2b165867343ee9"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-55\\checker\\rectified-grid.png",
+          "sha256": "9791aa4f206d85992c497a9e98f4e61dfa12171f16a2c7068522b37a5bd46408"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-55\\checker\\rectified.png",
+          "sha256": "ec15ed04fead248f3adcca21c60d0e721f85a2c3bcd1b4a0cad41add0f8b555d"
+        }
+      ]
+    },
+    {
+      "frame": "initial-270-55",
+      "method": "aruco",
+      "image_sha256": "ba9a70790498fadd9f3a4296296446b3c5842296400cc26e38851530fa1f9671",
+      "returncode": 0,
+      "latency_ms": 140.12290000391658,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.002698,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 32,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.43124657367344876,
+            "median": 0.43237105432359335,
+            "p95": 0.43992153592955835,
+            "max": 0.4407473099425116
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-270-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-55\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-55\\aruco\\corners.png",
+          "sha256": "aec141438ba2eb1eb302fc6722139e67aeab540f6187a17984135aac72f21bdf"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-55\\aruco\\observation.json",
+          "sha256": "f87bbbcacd6e5242b002e2e468876cb9961cb9551cd49c031915e119243d5fef"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-55\\aruco\\rectified-grid.png",
+          "sha256": "175acfc241dc20b6cda7cdbdc206eb92890b9b79c89fdd23f299dbbfa52cfe5b"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-270-55\\aruco\\rectified.png",
+          "sha256": "d8ed3a0071d8a4594e79f7dd890b8e917d99197fdddfbd9d420dd9892bc027c6"
+        }
+      ]
+    },
+    {
+      "frame": "initial-275-35",
+      "method": "checker",
+      "image_sha256": "ae41efcff18ec59c1dba4dcddf22c4d88302006dbd8d61b0c155cb790c0b5f41",
+      "returncode": 0,
+      "latency_ms": 879.5087000034982,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-275-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-35\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-35\\checker\\corners.png",
+          "sha256": "252709c571b1a9e48837f9384271a0a54121a512cec6b011596b55ff684a8a5f"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-35\\checker\\observation.json",
+          "sha256": "88b4c701b799d236d3bd82b094f50c5269bd069de311b655aa433880e5976d7b"
+        }
+      ]
+    },
+    {
+      "frame": "initial-275-35",
+      "method": "aruco",
+      "image_sha256": "ae41efcff18ec59c1dba4dcddf22c4d88302006dbd8d61b0c155cb790c0b5f41",
+      "returncode": 0,
+      "latency_ms": 162.3738999987836,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.747612,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 24,
+              "white": 3,
+              "black": 5,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.6354961543347616,
+            "median": 0.638482211308173,
+            "p95": 0.7038504217711136,
+            "max": 0.706657019179459
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-275-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-35\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-35\\aruco\\corners.png",
+          "sha256": "ffccd662bb879bef1eda04246f95743177484c31ed2696771f1b2d473e3b113a"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-35\\aruco\\observation.json",
+          "sha256": "6cc98d42a107e5200b05903482a095c68cce85d0f4f45ca77fac445005b80df6"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-35\\aruco\\rectified-grid.png",
+          "sha256": "3031f93dee0acd220bb6d73625291822c386dc1a70f4458f6532d71946b8f361"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-35\\aruco\\rectified.png",
+          "sha256": "9c5c655a8ae53fff87a9811d083d16c0ae314739842b33fc4f160a0677ebf47e"
+        }
+      ]
+    },
+    {
+      "frame": "initial-275-45",
+      "method": "checker",
+      "image_sha256": "d1174705f50eab30a511f06aed500597d57c561ed8d31a22b7bca9ede2b5f9f0",
+      "returncode": 0,
+      "latency_ms": 930.4598000016995,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-275-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-45\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-45\\checker\\corners.png",
+          "sha256": "5299fb7e6b5f170c66dea2c4a815174c4b374504d6dd4b79f5f3c47f7c476170"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-45\\checker\\observation.json",
+          "sha256": "26f97fd0d7237e841a1711d345c48d5a01a18d45418685a56c253bf03a1ab584"
+        }
+      ]
+    },
+    {
+      "frame": "initial-275-45",
+      "method": "aruco",
+      "image_sha256": "d1174705f50eab30a511f06aed500597d57c561ed8d31a22b7bca9ede2b5f9f0",
+      "returncode": 0,
+      "latency_ms": 143.8713000025018,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.273983,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 24,
+              "white": 4,
+              "black": 4,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.5354397720924718,
+            "median": 0.5357341981433906,
+            "p95": 0.5738509004510381,
+            "max": 0.5758442557369364
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-275-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-45\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-45\\aruco\\corners.png",
+          "sha256": "e070657926c16cccff90dc57a26cfd8732781078c6d6c9efb54a0dde4cb83e8c"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-45\\aruco\\observation.json",
+          "sha256": "b4ce8edced656f78c6c52d58bd0db25419416e4f430f464b3c3b65f2b7d52475"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-45\\aruco\\rectified-grid.png",
+          "sha256": "f0dcbaff12fab7cd0d5dc25b74d1cb0ebc459b2c7e8648d792c27e63c8615105"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-45\\aruco\\rectified.png",
+          "sha256": "048e1bf0ba4e97434ebfb39cd66c138225ed5d88b128129d8324100ed8d5a58f"
+        }
+      ]
+    },
+    {
+      "frame": "initial-275-55",
+      "method": "checker",
+      "image_sha256": "529c8d260c9cc8c3b163beff4c358d00211e6a145bc7a7b170a48b33d02bc786",
+      "returncode": 0,
+      "latency_ms": 839.0145999946981,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-275-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-55\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-55\\checker\\corners.png",
+          "sha256": "c9180c85eb15489cc8374c753dde37e562bead841d1154cb2aadeef76a3c988a"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-55\\checker\\observation.json",
+          "sha256": "b6c14b3245843f395f521f9a183e1f2cd5f04f773200ace8b84c8135da03f452"
+        }
+      ]
+    },
+    {
+      "frame": "initial-275-55",
+      "method": "aruco",
+      "image_sha256": "529c8d260c9cc8c3b163beff4c358d00211e6a145bc7a7b170a48b33d02bc786",
+      "returncode": 0,
+      "latency_ms": 135.67699999839533,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 1.926168,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 32,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.4706178571249968,
+            "median": 0.47179786217726744,
+            "p95": 0.4980831894366554,
+            "max": 0.5038399209105621
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-275-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-55\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-55\\aruco\\corners.png",
+          "sha256": "bcf0dd2fe833ff325e0d5dfc36d31baa35c6844ce5eb0feb527632109a75ad0e"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-55\\aruco\\observation.json",
+          "sha256": "6e6507c95f616126aa90a7a824521ffc7b66170405dfc552fc3f3c87bb3779a0"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-55\\aruco\\rectified-grid.png",
+          "sha256": "3f29921921a46a139fb45f9fa19b74af40e3f72029fc85f84e504e8e73f16178"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\initial-275-55\\aruco\\rectified.png",
+          "sha256": "955c47c332da14977f33a3e5fa9ccd426dcfefac646cd3b7757b6ddaa027c0af"
+        }
+      ]
+    },
+    {
+      "frame": "empty-265-35",
+      "method": "checker",
+      "image_sha256": "692e8fbe078016ada9ab42d3a8d80897342a38538ff48df5c8716c81d7c2f694",
+      "returncode": 0,
+      "latency_ms": 798.7802999996347,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-265-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-35\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-35\\checker\\corners.png",
+          "sha256": "64660eb15ca80b9ca6ee6bece8fdba91cb842b3e1a2b0f1de9ebd16efc9b9df7"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-35\\checker\\observation.json",
+          "sha256": "fde655f7162567552b31603b751c5c0c58f9bf00d9fd7ed3d0e84130ab1b518e"
+        }
+      ]
+    },
+    {
+      "frame": "empty-265-35",
+      "method": "aruco",
+      "image_sha256": "692e8fbe078016ada9ab42d3a8d80897342a38538ff48df5c8716c81d7c2f694",
+      "returncode": 0,
+      "latency_ms": 125.61500000447268,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.87148,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 64,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.6381220882739023,
+            "median": 0.6403239137292788,
+            "p95": 0.7287684067494066,
+            "max": 0.7404018363957534
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-265-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-35\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-35\\aruco\\corners.png",
+          "sha256": "1168a982dd10c7df45a7fd9f23b6cd7a2e69ac10db768c330b46381e59f457fd"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-35\\aruco\\observation.json",
+          "sha256": "838f1e6a016734873889c4df48f69519855a80a0a8189d2fd6c3dd4a7108e0ad"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-35\\aruco\\rectified-grid.png",
+          "sha256": "e8276a4016b0d90191521d0ec4637141019277f6e7aec8f1747ea2f20ac15d68"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-35\\aruco\\rectified.png",
+          "sha256": "d5c828c2baa0c83d6caf3b72c46de36d174794d29b81b30e4d49f8c2c181b4a3"
+        }
+      ]
+    },
+    {
+      "frame": "empty-265-45",
+      "method": "checker",
+      "image_sha256": "721778afb6627f9b5b00595ec56de07dc89b0d16591b740d3b57b49f6579df5b",
+      "returncode": 0,
+      "latency_ms": 525.276300002588,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 64,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.5265058193550127,
+            "median": 0.5175437453100058,
+            "p95": 0.6212541265477768,
+            "max": 0.6297943598401704
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-265-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-45\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-45\\checker\\corners.png",
+          "sha256": "391b4e2375d9d4bb90de5da0954a2933c2ae86c43bbebdd48d714a05eb29dbf4"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-45\\checker\\observation.json",
+          "sha256": "c614586debaf43b4895d22276ca09523a6bdd3ae74d82c9880d607495b89183e"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-45\\checker\\rectified-grid.png",
+          "sha256": "906389db080e18067639176fbf45f155774ef44ecaa18317460583d2b80f54a5"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-45\\checker\\rectified.png",
+          "sha256": "0b5b7063aa187dca2c2ddbcc284e95833ca0401af3dabd007b5386c3e284fcab"
+        }
+      ]
+    },
+    {
+      "frame": "empty-265-45",
+      "method": "aruco",
+      "image_sha256": "721778afb6627f9b5b00595ec56de07dc89b0d16591b740d3b57b49f6579df5b",
+      "returncode": 0,
+      "latency_ms": 134.1002000044682,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.455653,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 64,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.4760633070648609,
+            "median": 0.47437352398753496,
+            "p95": 0.5189679183906083,
+            "max": 0.5338220666823466
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-265-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-45\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-45\\aruco\\corners.png",
+          "sha256": "4eadf222bfb6ce13f43198d4ab5fd9a0f7abfea3f88a4faefb3ef957bd832840"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-45\\aruco\\observation.json",
+          "sha256": "3ce67623385fdf1678e2f898036ccfe37024f8fa7578b354f34e40359c07e07f"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-45\\aruco\\rectified-grid.png",
+          "sha256": "99ff5a030a5c55303237726a4ab284b12cb7311d49d6e596f2115a8a4a4d4c47"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-45\\aruco\\rectified.png",
+          "sha256": "319db7f79a29848d9a2e17921a622017dbe35ddfa097eacddc6cff9ac720659a"
+        }
+      ]
+    },
+    {
+      "frame": "empty-265-55",
+      "method": "checker",
+      "image_sha256": "fe2404e091adfc7a625cdd223816dde088014b5214d2065042243699d41605c3",
+      "returncode": 0,
+      "latency_ms": 556.9439000028069,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 63,
+              "white": 0,
+              "black": 1,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.4744857079425925,
+            "median": 0.4729904746847552,
+            "p95": 0.5157926769977838,
+            "max": 0.5163678769571665
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-265-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-55\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-55\\checker\\corners.png",
+          "sha256": "d34ed1d2931a4877adc774b091ad425e97f8a1e97e70a850a7465c7c4a418bc6"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-55\\checker\\observation.json",
+          "sha256": "b459656bf90d6e63ae88537e86e8c1952758ea507f8d5ac875246d469024491a"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-55\\checker\\rectified-grid.png",
+          "sha256": "0680b96a07538fa202cb98bfd51b4b9c070c462d4126b9138627570c554788ec"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-55\\checker\\rectified.png",
+          "sha256": "7b8a0f740c074a915fdd98251bf32f9805c086b3c921a9a74e8655c783777b54"
+        }
+      ]
+    },
+    {
+      "frame": "empty-265-55",
+      "method": "aruco",
+      "image_sha256": "fe2404e091adfc7a625cdd223816dde088014b5214d2065042243699d41605c3",
+      "returncode": 0,
+      "latency_ms": 89.74179999495391,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE",
+          "REFERENCE_NOT_VISIBLE_OR_INCONSISTENT"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-265-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-55\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-55\\aruco\\corners.png",
+          "sha256": "6f5c999201565704cb5e26ec736cfa632887be6b9ffda35e452f38f369bccca1"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-265-55\\aruco\\observation.json",
+          "sha256": "fa3ac2d3ed4ed14d5814629fd141cc33b1e851fdb1ebc780baf9b60a2c880ac3"
+        }
+      ]
+    },
+    {
+      "frame": "empty-270-35",
+      "method": "checker",
+      "image_sha256": "97fcf274d30d744deeb4f6b48be6440dd9af44ff62d2af6d27d18e8c995e2c82",
+      "returncode": 0,
+      "latency_ms": 531.2937000053353,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 64,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.6145658772134539,
+            "median": 0.6138028385394299,
+            "p95": 0.657529752399939,
+            "max": 0.6687551860764058
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-270-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-35\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-35\\checker\\corners.png",
+          "sha256": "bcf65d147d03cee4136aa7f22661debd03f83e1cfc6c379f188b4c9f1cc40a8a"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-35\\checker\\observation.json",
+          "sha256": "c39f4a359d034fab28d4ca208fe573c9fb98188deb4c4b38ffd751716c7fa940"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-35\\checker\\rectified-grid.png",
+          "sha256": "eb367f02caef74720899bd9bce059149e2d5cc8d2717305774a4f3b066ea7cec"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-35\\checker\\rectified.png",
+          "sha256": "282775ebe80797fc2e2c4fb530e11c2d1c759570c78f1291f1953b5668dccae2"
+        }
+      ]
+    },
+    {
+      "frame": "empty-270-35",
+      "method": "aruco",
+      "image_sha256": "97fcf274d30d744deeb4f6b48be6440dd9af44ff62d2af6d27d18e8c995e2c82",
+      "returncode": 0,
+      "latency_ms": 110.5463999992935,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.557278,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 64,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.6476582377715783,
+            "median": 0.651107708454015,
+            "p95": 0.737957720806733,
+            "max": 0.7482192400732403
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-270-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-35\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-35\\aruco\\corners.png",
+          "sha256": "88a18f86bd38f85698b9df7a9f3c36597c9610505439f82f432f5d84697ad12d"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-35\\aruco\\observation.json",
+          "sha256": "0172960299ed02bb06db463827a1a4ef67a210d2cde278189e2dc8e2b70f7f10"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-35\\aruco\\rectified-grid.png",
+          "sha256": "fcefffd26e094daf8021b123eb8b92efa4cf473072c2cc879d4cc37ac1d43592"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-35\\aruco\\rectified.png",
+          "sha256": "8e74aea5d49cee7959e1b7c459486d98bde72cbd94732af61a3734b8a1d59a55"
+        }
+      ]
+    },
+    {
+      "frame": "empty-270-45",
+      "method": "checker",
+      "image_sha256": "85e8b746740c49bcf790702f3b64b870e95ba85220553dd22ecb17701a53f445",
+      "returncode": 0,
+      "latency_ms": 510.68369999848073,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 64,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.5623776980488352,
+            "median": 0.5693478382920488,
+            "p95": 0.6809003662072046,
+            "max": 0.6890165304680107
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-270-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-45\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-45\\checker\\corners.png",
+          "sha256": "528143e6452abdbd98f8d425bca19ead97e1161feede5aa4f38a55091811bc10"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-45\\checker\\observation.json",
+          "sha256": "7d26c9d4c19807e2b342f0fe2df578a8a3c9081429c0c12e499707d45603b575"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-45\\checker\\rectified-grid.png",
+          "sha256": "f9a41a74ed6dcc4f49f0efd9d86422925405d77680250e28fbc33b56ce251fab"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-45\\checker\\rectified.png",
+          "sha256": "e6ffc8c5be51891ed3e7127e15ccb4c9a8bfa8c4c20ad3495e4a49a15aa3d916"
+        }
+      ]
+    },
+    {
+      "frame": "empty-270-45",
+      "method": "aruco",
+      "image_sha256": "85e8b746740c49bcf790702f3b64b870e95ba85220553dd22ecb17701a53f445",
+      "returncode": 0,
+      "latency_ms": 112.36350000399398,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.3694,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 64,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.5355395774316394,
+            "median": 0.5385476315695712,
+            "p95": 0.5900804545378899,
+            "max": 0.5976720049802947
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-270-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-45\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-45\\aruco\\corners.png",
+          "sha256": "ada3bbd096ce523c549496db359d89f37ac9df316c0ac627e019b4278e34b62e"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-45\\aruco\\observation.json",
+          "sha256": "b2ad3d77cb88f7c03f0f432d778e7022d29a1e4a544611db1d9090a17cefe7d8"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-45\\aruco\\rectified-grid.png",
+          "sha256": "93efbaaa7d38b465b6f5f3c9d49d0cff8ed8b2f2fa74c9bce817f59c54d2fc89"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-45\\aruco\\rectified.png",
+          "sha256": "c4ab6c2e7f6dc7b79d1f7c48b73888235d7a934f3982842d803571408dbf4f9c"
+        }
+      ]
+    },
+    {
+      "frame": "empty-270-55",
+      "method": "checker",
+      "image_sha256": "9fd08feb6d96cab4cca0f071c0d31a5521cb15ab2ef73bfe54bc9e672cabbcde",
+      "returncode": 0,
+      "latency_ms": 534.1936999975587,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 63,
+              "white": 0,
+              "black": 1,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.4522748060951636,
+            "median": 0.4518877020289799,
+            "p95": 0.5216737852948727,
+            "max": 0.5230486726209458
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-270-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-55\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-55\\checker\\corners.png",
+          "sha256": "8775b34f4fe3269f46a9f9c7b4f768930dea5b4b7f741a39e087455b1649472d"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-55\\checker\\observation.json",
+          "sha256": "3a344acc11e62425cf433c8fe06daed7b233dfc1eb52fd1d9fd8f14e424aebda"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-55\\checker\\rectified-grid.png",
+          "sha256": "655756d1982f49ef76a16e7faecaa4dede8c2584f92060395d8c8310b02793d0"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-55\\checker\\rectified.png",
+          "sha256": "f88026e25f8347824630071d22f21e8ff7448a36d092a43990a8516f8c0fcbd4"
+        }
+      ]
+    },
+    {
+      "frame": "empty-270-55",
+      "method": "aruco",
+      "image_sha256": "9fd08feb6d96cab4cca0f071c0d31a5521cb15ab2ef73bfe54bc9e672cabbcde",
+      "returncode": 0,
+      "latency_ms": 107.94579999492271,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.002698,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 63,
+              "white": 0,
+              "black": 1,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.43124657367344876,
+            "median": 0.43237105432359335,
+            "p95": 0.43992153592955835,
+            "max": 0.4407473099425116
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-270-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-55\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-55\\aruco\\corners.png",
+          "sha256": "4bf0dacad20da0a42cbcf30b6907b5ddacd55b5a3d2925af64c4c406704cbec3"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-55\\aruco\\observation.json",
+          "sha256": "dbcd6c3ec27691ac2f57758bd830232f2f9f307468dc78609fdcc3d2fa63694b"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-55\\aruco\\rectified-grid.png",
+          "sha256": "e9d4ae2ad0305564e5c5e4e1b69362ff07cff49cc0d2171dff9636dc86b40d6a"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-270-55\\aruco\\rectified.png",
+          "sha256": "f816e7f34316593bd233873c1f3dffd01f5132ff9b5ed87266e1cfc387f1314e"
+        }
+      ]
+    },
+    {
+      "frame": "empty-275-35",
+      "method": "checker",
+      "image_sha256": "16cfb42beb3b6d0e201a970f9983bdd04feff5aa63aa1a06a8d23b8efa21c506",
+      "returncode": 0,
+      "latency_ms": 772.5390999985393,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-275-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-35\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-35\\checker\\corners.png",
+          "sha256": "64174395d4559c3afdf5510a645628af20671197cc3053f1b95982dd9b6019c1"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-35\\checker\\observation.json",
+          "sha256": "377c7e63a0265d294c2c7f62164a292caccd157f0d7f1775863add6ededc6c69"
+        }
+      ]
+    },
+    {
+      "frame": "empty-275-35",
+      "method": "aruco",
+      "image_sha256": "16cfb42beb3b6d0e201a970f9983bdd04feff5aa63aa1a06a8d23b8efa21c506",
+      "returncode": 0,
+      "latency_ms": 114.34600000211503,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.747612,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 64,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.6354961543347616,
+            "median": 0.638482211308173,
+            "p95": 0.7038504217711136,
+            "max": 0.706657019179459
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-275-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-35\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-35\\aruco\\corners.png",
+          "sha256": "73828aa662b56435f946fc898d1349dbad6a8ec4c405064349cb00c183afb8c4"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-35\\aruco\\observation.json",
+          "sha256": "415e71e7833ba02dc40677424dc4c8b1cfa04f164f9df86941aef15f6fc40330"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-35\\aruco\\rectified-grid.png",
+          "sha256": "baaf69db25bd04dea1eadbeb525705c8e92b30814678af29a23c3dd9397b97f2"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-35\\aruco\\rectified.png",
+          "sha256": "45714c0e8b3bb9c0a58fb1e9aed4dfc4d7d0f64b897fc72c65a849103409746a"
+        }
+      ]
+    },
+    {
+      "frame": "empty-275-45",
+      "method": "checker",
+      "image_sha256": "59ee130e1404a9859f23d478e9f1b862dbc80c93f442cb1de0139e0b63009b75",
+      "returncode": 0,
+      "latency_ms": 519.8384000032092,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 64,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.5311822284639021,
+            "median": 0.5252497746967639,
+            "p95": 0.6133453235604925,
+            "max": 0.6419729019843916
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-275-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-45\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-45\\checker\\corners.png",
+          "sha256": "43aa512e70087a31faff94ecbe383010b1f736fc29d65e24802a7c22b10f4737"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-45\\checker\\observation.json",
+          "sha256": "31023a7b6994ab62593feae695d8244b541e6d4fe51ab4b3aebbe95fb7db4138"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-45\\checker\\rectified-grid.png",
+          "sha256": "307d454c75c1f0f9bae0909186f68052a43d935ebdc663fd5ff1bdd6e58477ca"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-45\\checker\\rectified.png",
+          "sha256": "8c1c79113a6c958ec78d732e147428f651eaf371eb6608b0b3e211bbaa4c8966"
+        }
+      ]
+    },
+    {
+      "frame": "empty-275-45",
+      "method": "aruco",
+      "image_sha256": "59ee130e1404a9859f23d478e9f1b862dbc80c93f442cb1de0139e0b63009b75",
+      "returncode": 0,
+      "latency_ms": 124.50209999951767,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.273983,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 64,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.5354397720924718,
+            "median": 0.5357341981433906,
+            "p95": 0.5738509004510381,
+            "max": 0.5758442557369364
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-275-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-45\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-45\\aruco\\corners.png",
+          "sha256": "ba71abd9053cef5b5bbfe2199e6429e09322b923da394429495e25a17f7887ad"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-45\\aruco\\observation.json",
+          "sha256": "4b787630d70baa22fee0facb03cd817c1d86042ef7137125a92f82535da1c75f"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-45\\aruco\\rectified-grid.png",
+          "sha256": "d411de1aba9adfe14caceb838722907c897cb995c3e0454bea033c6b2a3b1c71"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-45\\aruco\\rectified.png",
+          "sha256": "a54e4e4eac3b073af9c86c425618d07594f78f624aa78fc3d969a541dae6c461"
+        }
+      ]
+    },
+    {
+      "frame": "empty-275-55",
+      "method": "checker",
+      "image_sha256": "3574fea724122f5f6f46aa596dc91112b0de180c3965f71c197e58a2212325ef",
+      "returncode": 0,
+      "latency_ms": 550.9239000020898,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 63,
+              "white": 0,
+              "black": 1,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.4659775467934359,
+            "median": 0.4731149221927531,
+            "p95": 0.4942202726908566,
+            "max": 0.4970513278207135
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-275-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-55\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-55\\checker\\corners.png",
+          "sha256": "32162d607d5e2a17ca7296c39441d5a9107919f961a714cec37ebe3442ee5740"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-55\\checker\\observation.json",
+          "sha256": "c0d79725df6a704eaabe882cb1909331880dedee9dafb242b2fca082bc3eea18"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-55\\checker\\rectified-grid.png",
+          "sha256": "38db80366ca65f5c5c1b20a5d4205eb6f3a1e8d31a3ed1cb9f8b29e99e0ac813"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-55\\checker\\rectified.png",
+          "sha256": "0299e9b4275f0850a7eae91b97f64ffffad119a6491807b35a910158a6a6e512"
+        }
+      ]
+    },
+    {
+      "frame": "empty-275-55",
+      "method": "aruco",
+      "image_sha256": "3574fea724122f5f6f46aa596dc91112b0de180c3965f71c197e58a2212325ef",
+      "returncode": 0,
+      "latency_ms": 114.63910000020405,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 1.926168,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 63,
+              "white": 0,
+              "black": 1,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.4706178571249968,
+            "median": 0.47179786217726744,
+            "p95": 0.4980831894366554,
+            "max": 0.5038399209105621
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-275-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-55\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-55\\aruco\\corners.png",
+          "sha256": "203ea93878cec3a5ef3535e067f16e70baad083cea33dc2357aa327a2cdea79a"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-55\\aruco\\observation.json",
+          "sha256": "f0f170c55ce196a101d400d53710a02c8d3d91673744df6a2e19859e3a123e3e"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-55\\aruco\\rectified-grid.png",
+          "sha256": "985217ee9019eac60b85b3706dc4e26c6505209d6192720d35264987495d9e51"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\empty-275-55\\aruco\\rectified.png",
+          "sha256": "c149b22b3f8b3aea6245901ce0c24346f66addb9db223b290984e28f4f0a8427"
+        }
+      ]
+    },
+    {
+      "frame": "offset-265-35",
+      "method": "checker",
+      "image_sha256": "e10f5c013e345792fc17fbe58f60307f88ce03c2d74f2d5658aa229457bf1e32",
+      "returncode": 0,
+      "latency_ms": 802.988399998867,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-265-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-35\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-35\\checker\\corners.png",
+          "sha256": "3fbbac65705aa12d31bcc17414f021e3cf750a991a0e2347f0b5e744bdadfd39"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-35\\checker\\observation.json",
+          "sha256": "66e724fa67cb8c74e2a68c564fbc81270eb0e0c31853449ee13fbc3db9a97b64"
+        }
+      ]
+    },
+    {
+      "frame": "offset-265-35",
+      "method": "aruco",
+      "image_sha256": "e10f5c013e345792fc17fbe58f60307f88ce03c2d74f2d5658aa229457bf1e32",
+      "returncode": 0,
+      "latency_ms": 175.08920000545913,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.87148,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 23,
+              "white": 1,
+              "black": 8,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.6381220882739023,
+            "median": 0.6403239137292788,
+            "p95": 0.7287684067494066,
+            "max": 0.7404018363957534
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-265-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-35\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-35\\aruco\\corners.png",
+          "sha256": "a741579e49f1fcc3477a8b5b5b142887072df428ab305bc9af5ddf32dac18ede"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-35\\aruco\\observation.json",
+          "sha256": "ba8792321d30f090be6637e65cda2c2fc34a2ea0b74ca5be9823158a29dd4c24"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-35\\aruco\\rectified-grid.png",
+          "sha256": "21355bca68e28f194fd1978495158f703defe1cb2a47744d7275a27bd75a558e"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-35\\aruco\\rectified.png",
+          "sha256": "d0d431012a64fd832588e8dba9635d11abd85ab7018eff9c3bad0f32944bd7ff"
+        }
+      ]
+    },
+    {
+      "frame": "offset-265-45",
+      "method": "checker",
+      "image_sha256": "d2d59218524647a8ef90f9d1d6dda1f29c06e8a9a626468796304aaeda26579b",
+      "returncode": 0,
+      "latency_ms": 889.3347999983234,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-265-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-45\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-45\\checker\\corners.png",
+          "sha256": "ddc4160d06a289c3a3cd15b9814959bcfebc418117a0464999b6f10c3203ba34"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-45\\checker\\observation.json",
+          "sha256": "0bdd94a952bdc9b2e66095d3e0fdd59b83e246804aaa184855c57cf045343e73"
+        }
+      ]
+    },
+    {
+      "frame": "offset-265-45",
+      "method": "aruco",
+      "image_sha256": "d2d59218524647a8ef90f9d1d6dda1f29c06e8a9a626468796304aaeda26579b",
+      "returncode": 0,
+      "latency_ms": 129.1283000027761,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.455653,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 25,
+              "white": 4,
+              "black": 3,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.4760633070648609,
+            "median": 0.47437352398753496,
+            "p95": 0.5189679183906083,
+            "max": 0.5338220666823466
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-265-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-45\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-45\\aruco\\corners.png",
+          "sha256": "2dacb611f6f012d7446a2d7bd7da927ea7650a75b7a6abe6e975fde041fc2acd"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-45\\aruco\\observation.json",
+          "sha256": "96ca2b54963c1b6229fb4eee106ffff4f2843cdf34fe2c3c08e4ce73b3d7dfc2"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-45\\aruco\\rectified-grid.png",
+          "sha256": "a9789705aacdbe55910419293fa9a3640d4a161fb09e92f5e2eaefaef83296d2"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-45\\aruco\\rectified.png",
+          "sha256": "c97bfa250f0ef6cc73bf4ae9d8ac52fa890da0812b4edcf12a937958e73e1fc4"
+        }
+      ]
+    },
+    {
+      "frame": "offset-265-55",
+      "method": "checker",
+      "image_sha256": "132d22fb45023509321be37262222420f9287ec0b31c47fb9adc7b3e627a85e0",
+      "returncode": 0,
+      "latency_ms": 608.3985000004759,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 32,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 1.409617787569301,
+            "median": 1.1653169850636347,
+            "p95": 3.120262126997298,
+            "max": 4.938067628614729
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-265-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-55\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-55\\checker\\corners.png",
+          "sha256": "207cdb9f9d0af91cff97426db15fdfc4299814ed3e0a405901d478f6a85068f1"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-55\\checker\\observation.json",
+          "sha256": "7f06fff3bef7b4611c2a5f846cb209f93a1ed06dc7bf5621c59dcb4a28265bbd"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-55\\checker\\rectified-grid.png",
+          "sha256": "00b7f2ccd309e53cbe488ccfd181c0c09c05ef9506d5c1d90cf96f7de9e4da3d"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-55\\checker\\rectified.png",
+          "sha256": "b014fd71ab7b5f1abb74a1817f6e7921ad79ce4d422f298c9c732897fc0d1ff1"
+        }
+      ]
+    },
+    {
+      "frame": "offset-265-55",
+      "method": "aruco",
+      "image_sha256": "132d22fb45023509321be37262222420f9287ec0b31c47fb9adc7b3e627a85e0",
+      "returncode": 0,
+      "latency_ms": 93.36720000283094,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE",
+          "REFERENCE_NOT_VISIBLE_OR_INCONSISTENT"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-265-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-55\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-55\\aruco\\corners.png",
+          "sha256": "ebe6f2b4bf9d744e98efa328e64baab9a4c7f12a621bd5257cdf6affcb186362"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-265-55\\aruco\\observation.json",
+          "sha256": "6d631e5e384c0b5e24b991ab8324755296d3d3fe35a056b41969aa16fb96f833"
+        }
+      ]
+    },
+    {
+      "frame": "offset-270-35",
+      "method": "checker",
+      "image_sha256": "b1d7a73dbb2308e9b222073746c3c3cb9a22dafe4d050a56fd648386e9f7151f",
+      "returncode": 0,
+      "latency_ms": 717.7477000004728,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-270-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-35\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-35\\checker\\corners.png",
+          "sha256": "77af11f2780e7d7f6fcb32f6f2cadd7498606af56dc37eafae9c527e54630c2c"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-35\\checker\\observation.json",
+          "sha256": "1ce090fca720fc2b5390888ec8743fa7686c78d2433bf28eb14ef78f4c3ec606"
+        }
+      ]
+    },
+    {
+      "frame": "offset-270-35",
+      "method": "aruco",
+      "image_sha256": "b1d7a73dbb2308e9b222073746c3c3cb9a22dafe4d050a56fd648386e9f7151f",
+      "returncode": 0,
+      "latency_ms": 156.28499999729684,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.557278,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 24,
+              "white": 3,
+              "black": 5,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.6476582377715783,
+            "median": 0.651107708454015,
+            "p95": 0.737957720806733,
+            "max": 0.7482192400732403
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-270-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-35\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-35\\aruco\\corners.png",
+          "sha256": "1e6b7e4cb77ca26dd466a0715251d161a54f21d12073cbe0b44543877a62d60a"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-35\\aruco\\observation.json",
+          "sha256": "de7c5c5bd8af88bd19944565fc64299bb7f33f9f6094e9d5c58a893a85058611"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-35\\aruco\\rectified-grid.png",
+          "sha256": "01a65d7fc5adaacd4ece4eed765428ecd6dd76b69e86fa69b8f75e54b3c16b03"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-35\\aruco\\rectified.png",
+          "sha256": "8364624ef156179872e1bd63bcd9cec4ae879816b7d5f040bbddcb9c48f5aeef"
+        }
+      ]
+    },
+    {
+      "frame": "offset-270-45",
+      "method": "checker",
+      "image_sha256": "e9f35c8e96b70e1a50b873b8f1ca346f4b2359a695ceb3934c1e6dad0ff56086",
+      "returncode": 0,
+      "latency_ms": 782.6936999990721,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-270-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-45\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-45\\checker\\corners.png",
+          "sha256": "ccb3325bb6acec5c924d744aa5d19db2a26ceb05cf589f47878bac4563b43f07"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-45\\checker\\observation.json",
+          "sha256": "dd69d5a18ca795c03f3f8e92dd6a29a9abd0a969ab48dd0e42e23cd7870fb1ee"
+        }
+      ]
+    },
+    {
+      "frame": "offset-270-45",
+      "method": "aruco",
+      "image_sha256": "e9f35c8e96b70e1a50b873b8f1ca346f4b2359a695ceb3934c1e6dad0ff56086",
+      "returncode": 0,
+      "latency_ms": 136.92620000074385,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.3694,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 25,
+              "white": 4,
+              "black": 3,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.5355395774316394,
+            "median": 0.5385476315695712,
+            "p95": 0.5900804545378899,
+            "max": 0.5976720049802947
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-270-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-45\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-45\\aruco\\corners.png",
+          "sha256": "b24f200ae80cb9ac5fea0c6ec0807a1580b8b255b47a0a8734d166802aa9b7ab"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-45\\aruco\\observation.json",
+          "sha256": "5362db692ab494b7d224c61c47f96e6833217090562724fc789adcd0a5adf37d"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-45\\aruco\\rectified-grid.png",
+          "sha256": "4524157a19d69d422a99988a5acc6ee145546ef6bf770b505fd34a40dc2708a8"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-45\\aruco\\rectified.png",
+          "sha256": "8213094c4e5aa0feeca01f375e36b6ead5bd527cfdf9806f781dc72c4f1ffb59"
+        }
+      ]
+    },
+    {
+      "frame": "offset-270-55",
+      "method": "checker",
+      "image_sha256": "14831dfbfa20e191fbf2d86d24ecdd568d140d1d93b1a3822e884db169a0fa38",
+      "returncode": 0,
+      "latency_ms": 576.522199997271,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 29,
+              "white": 1,
+              "black": 2,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 3,
+              "black": 13,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 3.672739667100302,
+            "median": 2.7148101289196527,
+            "p95": 9.164537810822853,
+            "max": 12.458527307237683
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-270-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-55\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-55\\checker\\corners.png",
+          "sha256": "d0c39f52cd99787887064c1ffda337ddcbc3ef3392ddca45ad3ed77d2ed4fb9c"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-55\\checker\\observation.json",
+          "sha256": "efc2fd48c2611a11df40f87225f06c6b179f44fc290fb84f5aa35855050722a5"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-55\\checker\\rectified-grid.png",
+          "sha256": "afbe322de6f4a6725cf29090b6e23e03162338a7b54725e02d016a9b8b78ca21"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-55\\checker\\rectified.png",
+          "sha256": "5bc4e27e6ba9960197c2ea131871a9f5658714cb13b43e647f5b34a5d6ac827e"
+        }
+      ]
+    },
+    {
+      "frame": "offset-270-55",
+      "method": "aruco",
+      "image_sha256": "14831dfbfa20e191fbf2d86d24ecdd568d140d1d93b1a3822e884db169a0fa38",
+      "returncode": 0,
+      "latency_ms": 125.9723999974085,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.002698,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 32,
+              "white": 0,
+              "black": 0,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.43124657367344876,
+            "median": 0.43237105432359335,
+            "p95": 0.43992153592955835,
+            "max": 0.4407473099425116
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-270-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-55\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-55\\aruco\\corners.png",
+          "sha256": "5fa9ab4bd1d8dd890c669304befa603b6e42840276755abfad09c5b0b9a42471"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-55\\aruco\\observation.json",
+          "sha256": "cc5c014ad9764f9ea14e1b1479cfca7b316d5ff30df466e98519a8a4aa643ad1"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-55\\aruco\\rectified-grid.png",
+          "sha256": "1dabd89ffffd81e1fb8efc41345820c9cfce995255badd5ac883fc846e9a2d18"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-270-55\\aruco\\rectified.png",
+          "sha256": "da5e4aeb34da2f5a97074a639fc9b1c5b7b39d2c19cad5937f902a3ba6dc7eeb"
+        }
+      ]
+    },
+    {
+      "frame": "offset-275-35",
+      "method": "checker",
+      "image_sha256": "04b0228ae7b002b18d91a9213dbbb9d7b4266a3721587f50dff0cce949ed6201",
+      "returncode": 0,
+      "latency_ms": 738.0645000012009,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-275-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-35\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-35\\checker\\corners.png",
+          "sha256": "c2eda1cec13bfab83654d4ec90c103db7f3f2dbd5e5d7c30a26f9685c0506c44"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-35\\checker\\observation.json",
+          "sha256": "bf2a1a904bcb7c4b8335b1bb4ca4c40821aca5913662ebc95009ec8cb842e3fa"
+        }
+      ]
+    },
+    {
+      "frame": "offset-275-35",
+      "method": "aruco",
+      "image_sha256": "04b0228ae7b002b18d91a9213dbbb9d7b4266a3721587f50dff0cce949ed6201",
+      "returncode": 0,
+      "latency_ms": 137.1651000008569,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.747612,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 24,
+              "white": 4,
+              "black": 4,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 1,
+              "white": 0,
+              "black": 15,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.6354961543347616,
+            "median": 0.638482211308173,
+            "p95": 0.7038504217711136,
+            "max": 0.706657019179459
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-275-35.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-35\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-35\\aruco\\corners.png",
+          "sha256": "e556cd61bb2d12d275bad36f2a7ee4f5500355754cebef601c558d59ee5db621"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-35\\aruco\\observation.json",
+          "sha256": "e3ef07622200e8025fe974debb30bae02ab1644462ba2cce2edd21b40150cccc"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-35\\aruco\\rectified-grid.png",
+          "sha256": "72a56312d054390b693f18b09480cc4a8607de4ab4195487d6db7e8c323a97f6"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-35\\aruco\\rectified.png",
+          "sha256": "9ba47712aabbafe87ce119bb30751bf5608a2369f36d1e290e65811396e762a3"
+        }
+      ]
+    },
+    {
+      "frame": "offset-275-45",
+      "method": "checker",
+      "image_sha256": "5ceda76ad94806010f453b75103ae738407664fafbedf05d47f74f49fd4da4b7",
+      "returncode": 0,
+      "latency_ms": 799.6297999998205,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-275-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-45\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-45\\checker\\corners.png",
+          "sha256": "ff5ea7415edf3e426d28743cc3cdda5585253d678835294a6ccd8740aa6822ba"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-45\\checker\\observation.json",
+          "sha256": "e41025dcc46b9ac62150c67d780ace20ad9dd7f7daa7a9b4a1c001277a9ec582"
+        }
+      ]
+    },
+    {
+      "frame": "offset-275-45",
+      "method": "aruco",
+      "image_sha256": "5ceda76ad94806010f453b75103ae738407664fafbedf05d47f74f49fd4da4b7",
+      "returncode": 0,
+      "latency_ms": 138.36350000201492,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 2.273983,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 25,
+              "white": 3,
+              "black": 4,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.5354397720924718,
+            "median": 0.5357341981433906,
+            "p95": 0.5738509004510381,
+            "max": 0.5758442557369364
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-275-45.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-45\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-45\\aruco\\corners.png",
+          "sha256": "8c8cf15088b01928c7aadcd848e6e49ff2d8ef387e656a0cfc7baca5ee0d7284"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-45\\aruco\\observation.json",
+          "sha256": "58ea8314b9526d2042108fe172739b65f9aea7c5a23faa084e2dd3526d7fb278"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-45\\aruco\\rectified-grid.png",
+          "sha256": "e1e8fe987651041e740b7032f0c2f02f21a1df070513cc9ad1b0dd1f5219a5df"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-45\\aruco\\rectified.png",
+          "sha256": "2b0edb72a8361596fbe57d6574a43b26440030b04e56dbce07c6c3dea736ad71"
+        }
+      ]
+    },
+    {
+      "frame": "offset-275-55",
+      "method": "checker",
+      "image_sha256": "f36b6846bf3b9e1d95d720cbec383a8a1dbdc4cf59f53836f1b16543aa243723",
+      "returncode": 0,
+      "latency_ms": 885.5332000021008,
+      "metrics": {
+        "accepted": false,
+        "detected": false,
+        "orientation": "unknown",
+        "orientation_status": "unknown",
+        "unknown_squares": 64,
+        "named_correct": null,
+        "named_incorrect": null,
+        "reference_residual_rectified_px": null,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_UNKNOWN",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-275-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-55\\checker"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-55\\checker\\corners.png",
+          "sha256": "ef1e95969dfd9019d94a6775d738abd567294bc1a0b35ed41ffa7c9a4f58185f"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-55\\checker\\observation.json",
+          "sha256": "612943a8af58b97733832395038ff7cdb65a063498f1dac8ab8514f632f12b61"
+        }
+      ]
+    },
+    {
+      "frame": "offset-275-55",
+      "method": "aruco",
+      "image_sha256": "f36b6846bf3b9e1d95d720cbec383a8a1dbdc4cf59f53836f1b16543aa243723",
+      "returncode": 0,
+      "latency_ms": 169.03759999695467,
+      "metrics": {
+        "accepted": true,
+        "detected": true,
+        "orientation": "a8_top_left_from_reference",
+        "orientation_status": "correct",
+        "unknown_squares": 0,
+        "named_correct": 64,
+        "named_incorrect": 0,
+        "reference_residual_rectified_px": 1.926168,
+        "errors": [],
+        "warnings": [
+          "ORIENTATION_FROM_CONFIGURED_REFERENCE",
+          "NO_OPTICAL_OR_METRIC_CALIBRATION",
+          "CANDIDATES_NOT_VERIFIED_OCCUPANCY",
+          "RECTANGLE_FALSE_POSITIVES_POSSIBLE"
+        ],
+        "geometry": {
+          "candidate_color_confusion": {
+            "empty": {
+              "empty": 30,
+              "white": 0,
+              "black": 2,
+              "unknown": 0
+            },
+            "white": {
+              "empty": 0,
+              "white": 16,
+              "black": 0,
+              "unknown": 0
+            },
+            "black": {
+              "empty": 0,
+              "white": 0,
+              "black": 16,
+              "unknown": 0
+            }
+          },
+          "status": "oracle_aligned_diagnostic",
+          "motion_ready": false,
+          "orientation_estimated_by_vision": false,
+          "squares_evaluated": 64,
+          "square_assignment_accuracy": 1.0,
+          "nominal_board_equivalent_error_mm": {
+            "mean": 0.4706178571249968,
+            "median": 0.47179786217726744,
+            "p95": 0.4980831894366554,
+            "max": 0.5038399209105621
+          }
+        },
+        "piece_localization_coverage": null
+      },
+      "source_sha256": "e936031601071dd38442e4515f772d3d4d509c66413372d519ffe7bf276cdab9",
+      "opencv_version": "4.12.0",
+      "command": [
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-275-55.png",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-55\\aruco",
+        "--reference",
+        "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json"
+      ],
+      "artifacts": [
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-55\\aruco\\corners.png",
+          "sha256": "284b0601b02225b337cd440aaa2323928e8f0c1637583670d00baf15b6f98da2"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-55\\aruco\\observation.json",
+          "sha256": "0a248a3492fb227618a141b74d0299030a544320ec0b36b2e84101c688df6989"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-55\\aruco\\rectified-grid.png",
+          "sha256": "f3433c15e00b2ee89f992624e35c8822dbee142e003ca1da67515f177c35262b"
+        },
+        {
+          "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\paired-final\\native-observations\\offset-275-55\\aruco\\rectified.png",
+          "sha256": "02e1168e5ec49c773652c34f9dd1da2bd411da2a28d9891abc0f271c31952a76"
+        }
+      ]
+    }
+  ]
+}

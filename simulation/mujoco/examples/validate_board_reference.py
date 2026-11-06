@@ -32,6 +32,8 @@ def main():
     p.add_argument('--layout', type=Path, help='Alternative measured or experimental marker layout')
     p.add_argument('--executable',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--save-evaluator', action='store_true',
+                   help='Save independent projected board points after native execution')
     p.add_argument('--evaluate-foreground', action='store_true')
     p.add_argument('--elevations', type=int, nargs='+', default=(-35, -45, -55))
     args=p.parse_args()
@@ -115,6 +117,26 @@ def main():
                         command.extend(['--empty-board', str(empty.resolve())])
                     subprocess.run(command, check=True)
                     obs=json.loads((output/'observation.json').read_text())
+                    if args.save_evaluator:
+                        evaluator = dict(
+                            source='MuJoCo ground truth; evaluation only',
+                            image_sha256=hashlib.sha256(image.read_bytes()).hexdigest(),
+                            squares=names, square_pitch_m=side/8,
+                            projected_centers_px=project(
+                                np.array(points), renderer.scene.camera, 1920, 1440).tolist(),
+                            canonical_centers_px=[
+                                [(c+.5)*100, (7-r+.5)*100]
+                                for r in range(8) for c in range(8)],
+                            camera=dict(lookat=board.tolist(), distance_m=1.05,
+                                        azimuth=azimuth, elevation=elevation,
+                                        image_size=[1920, 1440],
+                                        fovy_degrees=float(model.vis.global_.fovy)),
+                            candidate_truth_colors=[
+                                next((piece['color'] for piece in manifest['pieces']
+                                      if addresses.get(name) == model.body(piece['name']).id),
+                                     'empty') for name in names])
+                        (args.output/f'evaluator-only-{case}.json').write_text(
+                            json.dumps(evaluator, indent=2), encoding='utf-8')
                     result=dict(case=case,orientation=obs['orientation'],detected=obs['homography'] is not None,
                                 image_sha256=hashlib.sha256(image.read_bytes()).hexdigest())
                     if result['detected']:
@@ -131,6 +153,8 @@ def main():
                         result['empty_board_image_id'] = obs['empty_board_image_id']
                     records.append(result)
     report=dict(schema=1,mujoco_version=mujoco.__version__,image_size=[1920,1440],camera_distance_m=1.05,
+                camera_lookat=board.tolist(), model_fovy_degrees=float(model.vis.global_.fovy),
+                evaluator_export=args.save_evaluator,
                 executable_sha256=hashlib.sha256(args.executable.read_bytes()).hexdigest(),layout_provenance=layout['provenance'],geometry_only=not args.evaluate_foreground,
                 layout_sha256=hashlib.sha256(layout_path.read_bytes()).hexdigest(),
                 source_model_sha256=hashlib.sha256((args.bundle/'model.xml').read_bytes()).hexdigest(),results=records)
