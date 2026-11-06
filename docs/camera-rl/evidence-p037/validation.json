@@ -1,0 +1,16 @@
+{
+  "python_tests_passed": 24,
+  "new_runtime_tests": 7,
+  "protected_files_checked": 232,
+  "protected_changes": [],
+  "head": "dcf2dc1e9d0d3be10a8371c6ef54fae694ed6265",
+  "staged_files": "",
+  "source_sha256": {
+    "software/acvision/runtime/native_runtime.cpp": "bfa9bb9102419413aba08622309952a05dbc8c98d7df5dacbd1a62aaf282eddb",
+    "software/acvision/runtime/native_runtime.h": "38ac952cf5c714adad6671c4557609c3ee12a19a65e6ab285370d3d0145a28fb",
+    "simulation/mujoco/src/atom_mujoco/native_vision.py": "de5fc5746427943f7c56f6f1e188eea6de8cd94609e1a57b8df6e4911a50a887",
+    "simulation/mujoco/src/atom_mujoco/camera_policy.py": "f5c56b86f66fd16e5f6f2957d3ff7b6d25e64390e61d75b04e4b984b2c1e19d2",
+    "simulation/mujoco/examples/preview_native_policy.py": "ab3b5b072d82dcafcfc5b49161fcebcdf40ff2034e94bdd6a892fd1eda14a4f8",
+    "simulation/mujoco/tests/test_native_runtime.py": "3d900914ffb9fc0196f5512c9a8e6b95f614dbe970cc89cc75cba296a4026ce2"
+  }
+}

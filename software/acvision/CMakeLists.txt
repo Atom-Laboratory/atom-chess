@@ -12,7 +12,7 @@ if(PROJECT_IS_TOP_LEVEL)
 endif()
 
 # ==========================================
-# Configurações Globais (Modern C++)
+# ConfiguraÃ§Ãµes Globais (Modern C++)
 # ==========================================
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -27,7 +27,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # ==========================================
-# Dependências
+# DependÃªncias
 # ==========================================
 find_package(OpenCV REQUIRED)
 
@@ -217,4 +217,24 @@ if(TARGET benchmark_piece_detector)
     target_compile_definitions(benchmark_piece_detector PRIVATE
         ACVISION_DATASET_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/dataset"
     )
+endif()
+
+# Optional in-memory RGB adapter for camera/policy integration.
+option(ACVISION_NATIVE_RUNTIME "Build the persistent RGB C ABI adapter" OFF)
+if(ACVISION_NATIVE_RUNTIME)
+    add_library(acvision_runtime SHARED runtime/native_runtime.cpp)
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+        "${CMAKE_CURRENT_SOURCE_DIR}/runtime/native_runtime.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/runtime/native_runtime.h")
+    target_link_libraries(acvision_runtime PRIVATE acvision)
+    file(SHA256 "${CMAKE_CURRENT_SOURCE_DIR}/runtime/native_runtime.cpp" runtime_cpp_sha)
+    file(SHA256 "${CMAKE_CURRENT_SOURCE_DIR}/runtime/native_runtime.h" runtime_h_sha)
+    string(SHA256 runtime_source_sha "${perception_source_sha256}:${runtime_cpp_sha}:${runtime_h_sha}")
+    target_compile_definitions(acvision_runtime PRIVATE ACVISION_SOURCE_SHA256="${runtime_source_sha}")
+    if(WIN32)
+        add_custom_command(TARGET acvision_runtime POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_RUNTIME_DLLS:acvision_runtime> $<TARGET_FILE_DIR:acvision_runtime>
+            COMMAND_EXPAND_LISTS)
+    endif()
 endif()
