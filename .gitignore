@@ -72,3 +72,6 @@ opencv_world*.dll
 # Colcon generated artifacts
 install/
 simulation/install/
+
+# Source Wavefront mesh consumed by the chess-piece bundle builder.
+!hardware/Project/chess_pieces/exports/knight.obj

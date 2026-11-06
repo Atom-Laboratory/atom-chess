@@ -1,3 +1,8 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 simulation/src/scripts/*.py text eol=lf
+
+# Preserve the exact source-mesh bytes recorded in the hardware manifest.
+hardware/Project/chess_pieces/exports/*.stl -text
+hardware/Project/chess_pieces/exports/knight.obj -text -diff
+hardware/Project/chess_board/**/*.gcode -text -diff
