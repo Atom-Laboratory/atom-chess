@@ -6,6 +6,7 @@ The Graveyard destination uses an existing slot from the matching bundle.
 """
 
 import argparse
+from atom_mujoco.virtual_camera import DEFAULT_REFERENCE_LAYOUT
 import hashlib
 import json
 import shutil
@@ -267,7 +268,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle", type=Path, required=True)
     parser.add_argument("--reference-scene", type=Path, required=True)
-    parser.add_argument("--layout", type=Path, required=True)
+    parser.add_argument("--layout", type=Path, default=DEFAULT_REFERENCE_LAYOUT)
     parser.add_argument("--output", type=Path, required=True)
 
     parser.add_argument("--attacker-piece", required=True)
