@@ -43,3 +43,19 @@ See [the geometry, implementation changes and measured results](homography-expla
 ## Reproducing camera experiments
 
 See [the historical configuration and proposed controlled experiments](homography-experiment-protocol.md).
+
+## P036 experimental qualification
+
+See [the audited protocol, reproductions and paired measurements](P036-experimental-qualification.md).
+
+## P037 native camera-to-policy runtime
+
+See [the persistent native bridge and actor-input boundary](P037-native-camera-policy.md).
+
+## P038 camera-guided manipulation RL
+
+See [the functional environment, smoke test, training and evaluation guide](P038-camera-guided-manipulation.md).
+
+## Reading the running RL pipeline
+
+Start with [the entry-point-to-weight-update walkthrough](P038-pipeline-walkthrough.md).

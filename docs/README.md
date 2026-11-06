@@ -1,3 +1,5 @@
+Current entry points: [MuJoCo setup and examples](../simulation/mujoco/README.md), [example-to-bundle compatibility](../simulation/mujoco/examples/README.md), and [camera-RL pipeline](camera-rl/P038-pipeline-walkthrough.md).
+
 [MuJoCo operational guide](../simulation/mujoco/docs/mujoco-user-guide.md) | [RL starting guide](../simulation/docs/learning/rl-getting-started.md) | [Integration report](../simulation/mujoco/docs/integration-report.md)
 
 # Documentação por módulo
