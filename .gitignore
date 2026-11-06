@@ -75,3 +75,6 @@ simulation/install/
 
 # Source Wavefront mesh consumed by the chess-piece bundle builder.
 !hardware/Project/chess_pieces/exports/knight.obj
+
+# Colocated example experiment outputs
+simulation/mujoco/examples/**/results/

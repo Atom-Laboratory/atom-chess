@@ -36,7 +36,7 @@ A directory name or filename alone does not establish compatibility. Joint names
 - P038 receives its environment through `environment.json`. The configuration selects the fixture, camera, native libraries, and task parameters.
 - Legacy v3 checkpoints use a different observation/action contract and cannot be loaded as P038 policies.
 - Replaying or resuming a saved run requires compatible model, configuration, environment, and source signatures.
-- Current prototype bundles do not model the physical 360-degree wrist rotation reported for the robot. P038 models J1, Z, J2, and two coupled finger slides. Wrist-axis CAD mapping and a corresponding model/checkpoint version remain pending.
+- The opt-in wrist bundle supports manual rotation through one bounded revolution. Automatic examples and P038 currently retain the five-actuator contract pending migration.
 
 ---
 
@@ -510,3 +510,27 @@ The catalog should make it possible to reproduce an experiment without relying o
 ## Two-piece capture fixture
 
 See [prepare and run a supervised capture](prepare_capture_task/README.md).
+
+## Example directories
+
+Each directory contains a README and run.py entry point. New results belong in
+its ignored results/ directory. Original script paths remain usable.
+
+- [arena_preview](arena_preview/README.md)
+- [compare_perception_reproductions](compare_perception_reproductions/README.md)
+- [evaluate_joint_baseline](evaluate_joint_baseline/README.md)
+- [export_atom_piece_meshes](export_atom_piece_meshes/README.md)
+- [inspect_gripper_geometry](inspect_gripper_geometry/README.md)
+- [inspect_joints](inspect_joints/README.md)
+- [prepare_camera_task](prepare_camera_task/README.md)
+- [preview_native_policy](preview_native_policy/README.md)
+- [qualify_saved_perception](qualify_saved_perception/README.md)
+- [replay_visual_grasp](replay_visual_grasp/README.md)
+- [simulation_playground](simulation_playground/README.md)
+- [train_camera_manipulation](train_camera_manipulation/README.md)
+- [train_visual_grasp](train_visual_grasp/README.md)
+- [validate_board_reference](validate_board_reference/README.md)
+- [validate_native_perception](validate_native_perception/README.md)
+- [prepare_capture_task](prepare_capture_task/README.md)
+
+[Preserved results inventory](existing-results.md)
