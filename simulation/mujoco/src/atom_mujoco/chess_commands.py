@@ -28,7 +28,13 @@ def execute_chess_move(playground, source, target):
     if playground.manual.active or playground.physical.reconciliation_required:
         raise ValueError('Autonomous chess requires a reconciled scene and manual mode off')
     proposal = source+target
-    plan = plan_move(playground.chess_history, proposal)
+    playground.monitor.emit('chess', 'running', 'Chess Core validation and TaskPlanner: '+proposal)
+    try:
+        plan = plan_move(playground.chess_history, proposal)
+    except (ValueError, OSError, subprocess.SubprocessError) as error:
+        playground.monitor.emit('chess', 'failed', str(error))
+        raise
+    playground.monitor.emit('chess', 'completed', f"Validated, {len(plan['steps'])} physical steps")
     # Verify the complete observed physical occupancy against the logical FEN.
     symbols = {'pawn':'p','knight':'n','bishop':'b','rook':'r','queen':'q','king':'k'}
     kinds = {p['name']: p for p in playground.sim.manifest['pieces']}

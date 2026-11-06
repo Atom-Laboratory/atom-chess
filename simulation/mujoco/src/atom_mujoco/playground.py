@@ -14,10 +14,12 @@ from .motion_controller import MotionController
 from .task_plan import validate_plan
 from .collision import SceneCollision, pregrasp_opening
 from .teleoperation import ManualControl
+from .module_monitor import ModuleMonitor
 
 
 class Playground:
     def __init__(self, bundle, on_step=None, *, diagnostic_unchecked=False):
+        self.monitor = ModuleMonitor()
         self.sim = Simulation(bundle)
         self.history = []
         self.on_step = on_step
@@ -35,12 +37,14 @@ class Playground:
         state = self.sim.reset(seed=seed)
         for _ in range(60):
             state = self.sim.advance(self.sim.target)
+        self.monitor.emit('state', 'running', 'Initialize confirmed snapshot')
         snapshot = self.feedback.snapshot(0)
         limits = self.feedback.limits
         self.physical = PhysicalBoardState(snapshot, position_tolerance_m=limits.bystander_position_m,
                                            angle_tolerance_rad=limits.bystander_angle_rad)
         self.chess_history = []
         self.manual = ManualControl(self)
+        self.monitor.emit('state', 'completed', 'Snapshot revision 0')
         return state
 
     def execute_request(self, request):
@@ -134,6 +138,7 @@ class Playground:
             execution = Execution(task, self.ledger, now_s=float(sim.data.time), max_age_s=.1, allow_oracle=True)
             def gate(signals):
                 before = execution.state
+                self.monitor.emit('supervision', 'running', before)
                 role, _ = execution.GATES[before]
                 execution.advance(Evidence('simulation_oracle:'+role, float(sim.data.time),
                                           len(self.history)+list(execution.GATES).index(before),
@@ -166,6 +171,7 @@ class Playground:
             waypoints = [('source approach', grip+[0,0,.07]), ('grasp', grip),
                          ('lift', grip+[0,0,.07]), ('destination approach', place+[0,0,.07]),
                          ('placement', place)]
+            self.monitor.emit('planning', 'running', 'Legacy Python IK waypoints')
             solutions = []
             for waypoint, point in waypoints:
                 try:
@@ -186,8 +192,10 @@ class Playground:
                 self.planned_trajectory = result['collision_report']['trajectory']
                 if not result['collision_report']['valid']:
                     raise ValueError('COLLISION_PREFLIGHT_FAILED: '+str(result['collision_report']['failure']))
+            self.monitor.emit('planning', 'completed', 'Preflight accepted')
             gate({'plan_valid'})
             def move(q, phase, opening, steps=180):
+                self.monitor.emit('controller', 'running', phase)
                 goal = q.copy()
                 goal[3:] = opening
                 settled = False
@@ -259,9 +267,16 @@ class Playground:
                                       joints=dict(telemetry.joints), gripper=dict(telemetry.gripper))
             self.physical.commit(task.task_id, execution, now_s=float(sim.data.time))
             result['status'] = 'COMPLETED_SIMULATION_ORACLE'
+            self.monitor.emit('controller', 'completed', 'Transfer ended')
+            self.monitor.emit('supervision', 'completed', 'Release verified')
+            self.monitor.emit('state', 'completed', f'Revision {self.physical.confirmed.revision}')
             result['training_eligible'] = False  # Qualification suite and calibrated coverage still required.
         except (ValueError, RuntimeError, KeyError) as error:
             result['error_code'] = str(error)
+            for module in ('planning','controller','supervision'):
+                current = self.monitor.latest.get(module)
+                if current and current.status == 'running':
+                    self.monitor.emit(module, 'failed', str(error))
             if execution is not None:
                 execution.fault(str(error))
             if task is not None and self.physical.operations[task.task_id].status in ('pending', 'executing'):
