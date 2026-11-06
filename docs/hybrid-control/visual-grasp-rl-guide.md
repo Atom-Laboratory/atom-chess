@@ -109,3 +109,13 @@ to remove display pacing. Image rendering remains active for every worker.
 Compare one, two and four workers using the same device and task. PPO collects
 128 transitions per worker per rollout. Changing workers changes the rollout
 size. Measure aggregate steps per second and held-out success separately.
+
+## Shared 3D arena preview
+
+Inspect 100 ATOM stations in one MuJoCo window while training is stopped:
+
+    & ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/arena_preview.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --arms 100
+
+Choose 1 to 100 stations. Add --check to compile without opening the viewer.
+The preview shares arm assets and uses simplified pieces. Each station is a
+static pose. Live worker state and independent policy training are future work.
