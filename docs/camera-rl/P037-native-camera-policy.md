@@ -27,7 +27,7 @@ cmake -S software/acvision -B build/p037-native -G 'Visual Studio 18 2026' -A x6
 cmake --build build/p037-native --config Release --target acvision_runtime
 
 $run = Join-Path simulation/mujoco/runs ('native-policy-' + [guid]::NewGuid().ToString('N'))
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/preview_native_policy.py --scene simulation/mujoco/runs/p035-steep-relayout/reference-scene.xml --layout docs/camera-rl/evidence-p035/high-camera-layout.json --library build/p037-native/bin/Release/acvision_runtime.dll --output $run --frames 100 --empty-fixture --preview
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/preview_native_policy/run.py --scene simulation/mujoco/examples/validate_board_reference/examples/validate_board_reference/runs/p035-steep-relayout/reference-scene.xml --layout docs/camera-rl/evidence-p035/high-camera-layout.json --library build/p037-native/bin/Release/acvision_runtime.dll --output $run --frames 100 --empty-fixture --preview
 ~~~
 
 The scene path is an existing P035 marker-scene artifact. It uses the high-camera

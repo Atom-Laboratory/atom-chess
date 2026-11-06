@@ -39,7 +39,7 @@ ambiente verificado. Não houve instalação de framework de treinamento.
 
 Reprodução local final: ambiente padrão simulation/mujoco/.venv instalado pelo
 lock, instalação editable aprovada, Start-MuJoCo.ps1 -Mode demo executado do
-checkout. O script compilou runs/prototype-v1, executou o movimento e gravou JSON
+checkout. O script compilou assets/bundles/prototype-v1, executou o movimento e gravou JSON
 com os mesmos resultados. Ambientes, bundles e resultados gerados estão ignorados
 no Git; fontes, lock, testes, documentação e ADR estão versionados.
 

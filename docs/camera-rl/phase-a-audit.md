@@ -37,7 +37,7 @@ acvision, acchess and the C++ MotionPlanner are **not in this learning loop**.
 ## RL implementation
 
 Sources: `simulation/mujoco/src/atom_mujoco/visual_grasp_env.py`, `backend.py`,
-`motion_controller.py`; `examples/train_visual_grasp.py`, `replay_visual_grasp.py`;
+`motion_controller.py`; `training/grasp-lift/run.py`, `replay_visual_grasp.py`;
 `scripts/Start-RLTraining.ps1` and `tests/test_visual_grasp_env.py`.
 
 - Algorithm: Stable-Baselines3 PPO, installed version 2.9.2; default CnnPolicy,
@@ -56,7 +56,7 @@ Sources: `simulation/mujoco/src/atom_mujoco/visual_grasp_env.py`, `backend.py`,
   J1 by .008 rad, Z by .002 m, J2 by .008 rad and both finger slides by .001 m
   times the action. Targets accumulate, clip to bundle joint limits, and pass
   through Python MotionController; no C++ trajectory or swept preflight per action.
-- Default bundle: `runs/playground-fingertip-only-v1`, interactive-gravity-v3.
+- Default bundle: `assets/bundles/playground-fingertip-only-v1`, interactive-gravity-v3.
   Model hash recorded by current run: `2b439e465a9f048ed49df4d681a965650a5a1347f728c2b04cba9c4a935b6b59`.
   The bundle declares physical_calibration=false and an unreconstructed servo linkage.
   The five simulated actuators are J1, Z, J2, finger1, finger2; this does not

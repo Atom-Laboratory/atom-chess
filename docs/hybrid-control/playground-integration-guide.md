@@ -21,7 +21,7 @@ From the repository root in Windows PowerShell:
 ```powershell
 & ./simulation/mujoco/scripts/Start-MuJoCo.ps1 -Mode playground
 # Or consume a request exported by the integration caller:
-& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/simulation_playground.py --bundle simulation/mujoco/runs/playground-board-v1 --headless --request path/to/request.json --output simulation/mujoco/runs/new-result.json
+& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/playground/run.py --bundle simulation/mujoco/assets/bundles/playground-board-v1 --headless --request path/to/request.json --output simulation/mujoco/runs/new-result.json
 ```
 
 Click the source tile and then the target tile, or select the role explicitly.
@@ -74,8 +74,8 @@ collision shape repair and full workspace qualification remain unresolved.
 
 ## Captures and Graveyard
 
-The launcher creates `runs/playground-graveyard-grid-v2` using the experimental
-layout in `examples/playground-graveyard-grid.json`. It has 16 slots per color.
+The launcher creates `assets/bundles/playground-graveyard-grid-v2` using the experimental
+layout in `playground/configs/playground-graveyard-grid.json`. It has 16 slots per color.
 Black slots are behind rank 8 and white slots are behind rank 1.
 Old bundles are preserved and still show their configured slots.
 Add measured or explicitly experimental slots in a new parameter file and build

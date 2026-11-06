@@ -19,7 +19,7 @@ Pre-existing monitor/playground changes, CAD and training data remain excluded.
 - `software/acvision/CMakeLists.txt`: register test and build source identity.
 - `simulation/mujoco/tests/test_native_perception.py`: negative fixtures,
   determinism, color boundary, output consistency and simulator isolation.
-- `simulation/mujoco/examples/validate_native_perception.py`: richer experiment
+- `simulation/mujoco/examples/validate_native_perception/run.py`: richer experiment
   identity and schema check; truth still goes only to the evaluator.
 - P032 ADR, this guide, README and evidence: decisions and measured results.
 
@@ -37,7 +37,7 @@ ctest --test-dir build/p032-contract -C Release --output-on-failure
 $env:ACVISION_PERCEPTION_EXE = (Resolve-Path build/p032-contract/bin/Release/perception_image.exe).Path
 & simulation/mujoco/.venv/Scripts/python.exe -B -m pytest simulation/mujoco/tests/test_native_perception.py -q -p no:cacheprovider
 $run = Join-Path simulation/mujoco/runs ('p032-' + [guid]::NewGuid().ToString('N'))
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_native_perception.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --executable $env:ACVISION_PERCEPTION_EXE --output $run
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_native_perception/run.py --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --executable $env:ACVISION_PERCEPTION_EXE --output $run
 ```
 
 Process an existing image without MuJoCo:
@@ -161,7 +161,7 @@ No claim of exhaustive cross-platform/codec equivalence or physical accuracy is 
 
 ## MuJoCo evidence and limits
 
-New preserved run: `simulation/mujoco/runs/p032-contract-20261106`.
+New preserved run: `simulation/mujoco/examples/validate_native_perception/runs/p032-contract-20261106`.
 The three fixed lateral captures include all pieces, arm, gripper and graveyards.
 No geometry or commanded motion was changed. This sweep retains the prior
 experimental camera, not a measured mount. It does not cover all robot poses or

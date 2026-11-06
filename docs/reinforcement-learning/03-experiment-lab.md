@@ -111,7 +111,7 @@ After a completed/stopped report exists, use a **new** output directory:
 
 ```powershell
 & ./simulation/mujoco/scripts/Start-RLTraining.ps1 -Stage lift -Steps 20000 -Device cuda -Resume PATH_TO_RUN
-& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/replay_visual_grasp.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --run PATH_TO_RUN --seed 10000
+& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/training/grasp-lift/evaluate.py --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --run PATH_TO_RUN --seed 10000
 ```
 
 Resume verifies model/environment/stage/horizon and recorded checkpoint hash.
@@ -127,7 +127,7 @@ training seed or evaluation-episode count. Example for one additional experiment
 
 ```powershell
 $atomRun = Join-Path 'simulation/mujoco/runs' ('lift-seed17-' + [guid]::NewGuid().ToString('N'))
-& ./simulation/mujoco/.venv/Scripts/python.exe -u simulation/mujoco/examples/train_visual_grasp.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --output $atomRun --stage lift --steps 20000 --seed 17 --eval-episodes 20 --device cuda
+& ./simulation/mujoco/.venv/Scripts/python.exe -u simulation/mujoco/training/grasp-lift/run.py --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --output $atomRun --stage lift --steps 20000 --seed 17 --eval-episodes 20 --device cuda
 ```
 
 This command starts another real experiment; it is not required while the current

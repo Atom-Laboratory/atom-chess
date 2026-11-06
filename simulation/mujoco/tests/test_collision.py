@@ -61,7 +61,7 @@ def test_crowded_e2_e4_uses_preshape_and_verified_feedback(tmp_path):
     from atom_mujoco.model import build_bundle
     from atom_mujoco.playground import Playground
     module = Path(__file__).resolve().parents[1]
-    parameters = json.loads((module/'examples/playground-reachable-board.json').read_text())
+    parameters = json.loads((module/'playground/configs/playground-reachable-board.json').read_text())
     # Visual meshes are irrelevant to these unchanged physical proxies.
     parameters['official_piece_visuals'] = False
     build_bundle(module.parent/'src/urdf/atom.urdf.xacro', tmp_path/'bundle',

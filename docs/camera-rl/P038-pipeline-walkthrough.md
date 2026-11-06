@@ -5,7 +5,7 @@ p038-smoke-final. Read it alongside [the execution guide](P038-camera-guided-man
 
 ## 1. Start at the launcher
 
-Open [train_camera_manipulation.py](../../simulation/mujoco/examples/train_camera_manipulation.py).
+Open [train_camera_manipulation.py](../../simulation/mujoco/training/camera-manipulation/run.py).
 The main function parses --config/--mode, creates CameraManipulationEnv,
 records provenance, evaluates the zero-residual baseline, constructs PPO and
 calls policy.learn. It later saves policy.zip, loads another policy instance
@@ -13,13 +13,13 @@ and evaluates it. Resume loads the saved PPO optimizer and timestep state.
 
 The entry point is main at the bottom of this file. The configuration used
 by the smoke run is
-simulation/mujoco/runs/p038-single-piece/environment.json.
+simulation/mujoco/assets/bundles/p038-single-piece/environment.json.
 The corresponding captured run.json is archived in
 [evidence-p038/smoke-run.json](evidence-p038/smoke-run.json).
 
 ## 2. Where the scene and task come from
 
-[prepare_camera_task.py](../../simulation/mujoco/examples/prepare_camera_task.py)
+[prepare_camera_task.py](../../simulation/mujoco/examples/prepare_camera_task/run.py)
 creates a new one-piece fixture from preserved model/marker-scene assets.
 It writes model.xml, manifest.json, reference-layout.json and environment.json.
 

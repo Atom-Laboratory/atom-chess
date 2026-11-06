@@ -29,7 +29,7 @@ To reproduce the simulator experiment, choose an unused output directory.
 
 ```powershell
 $run = Join-Path simulation/mujoco/runs ('p035-' + [guid]::NewGuid().ToString('N'))
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_board_reference.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --assets docs/camera-rl/aruco-assets-v4 --executable $exe --output $run --evaluate-foreground
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_board_reference/run.py --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --assets docs/camera-rl/aruco-assets-v4 --executable $exe --output $run --evaluate-foreground
 ```
 
 Repeat with `--elevations -65 -75 -85` and a fresh output. To reproduce the

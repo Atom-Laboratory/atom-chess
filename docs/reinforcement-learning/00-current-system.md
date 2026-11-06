@@ -14,12 +14,12 @@ for commands and [the next steps](01-next-steps.md) for missing engineering work
 | Component | Actual behavior | Source |
 |---|---|---|
 | Environment | Gymnasium environment, local E2 pawn task, two reset curricula | [visual_grasp_env.py](../../simulation/mujoco/src/atom_mujoco/visual_grasp_env.py) |
-| Policy training | SB3 PPO with CnnPolicy; training, evaluation, resume, saved report | [train_visual_grasp.py](../../simulation/mujoco/examples/train_visual_grasp.py) |
+| Policy training | SB3 PPO with CnnPolicy; training, evaluation, resume, saved report | [train_visual_grasp.py](../../simulation/mujoco/training/grasp-lift/run.py) |
 | Observation | uint8 RGB, channels-first `(3,96,96)`, fixed close camera | Environment `observation`, `render`, `reset` |
 | Learned action | Four bounded joint-reference increments | Environment `step` |
 | Low-level execution | Existing MotionController; simulated bias-force feedforward and rate-limited reference | [motion_controller.py](../../simulation/mujoco/src/atom_mujoco/motion_controller.py), [backend.py](../../simulation/mujoco/src/atom_mujoco/backend.py) |
 | Live monitoring | 3D viewer, exact policy pixels, pause/stop, JSON/JSONL progress | [training_monitor.py](../../simulation/mujoco/src/atom_mujoco/training_monitor.py) |
-| Replay | Version/hash checks and deterministic policy inference | [replay_visual_grasp.py](../../simulation/mujoco/examples/replay_visual_grasp.py) |
+| Replay | Version/hash checks and deterministic policy inference | [replay_visual_grasp.py](../../simulation/mujoco/training/grasp-lift/evaluate.py) |
 | User launcher | Windows PowerShell; visible by default, headless optional | [Start-RLTraining.ps1](../../simulation/mujoco/scripts/Start-RLTraining.ps1) |
 | Production chess execution | RL remains disabled; only baseline accepted by Playground | [playground.py](../../simulation/mujoco/src/atom_mujoco/playground.py) |
 

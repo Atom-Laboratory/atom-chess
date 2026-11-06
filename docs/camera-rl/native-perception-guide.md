@@ -15,7 +15,7 @@ cmake --build build/acvision-perception --config Release --target perception_ima
 $env:ACVISION_PERCEPTION_EXE = (Resolve-Path build/acvision-perception/bin/Release/perception_image.exe).Path
 & simulation/mujoco/.venv/Scripts/python.exe -B -m pytest simulation/mujoco/tests/test_native_perception.py -q -p no:cacheprovider
 $run = Join-Path simulation/mujoco/runs ('perception-' + [guid]::NewGuid().ToString('N'))
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_native_perception.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --executable $env:ACVISION_PERCEPTION_EXE --output $run
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_native_perception/run.py --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --executable $env:ACVISION_PERCEPTION_EXE --output $run
 ```
 
 The Python environment requires the existing MuJoCo package, NumPy, Pillow and

@@ -19,7 +19,7 @@ def plan(*transfers):
 @pytest.fixture
 def scene(tmp_path):
     module = Path(__file__).resolve().parents[1]
-    params = json.loads((module/'examples/playground-board.json').read_text())
+    params = json.loads((module/'playground/configs/playground-board.json').read_text())
     params['graveyard_slots'] = {'slot_0': [.24, -.10, .012]}
     build_bundle(module.parent/'src/urdf/atom.urdf.xacro', tmp_path/'scene', parameters=params, interactive=True)
     return Playground(tmp_path/'scene', diagnostic_unchecked=True)

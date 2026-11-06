@@ -78,3 +78,9 @@ simulation/install/
 
 # Colocated example experiment outputs
 simulation/mujoco/examples/**/results/
+
+# Owned MuJoCo experiment artifacts
+simulation/mujoco/examples/**/runs/
+simulation/mujoco/playground/sessions/
+simulation/mujoco/training/**/runs/
+simulation/mujoco/assets/bundles/

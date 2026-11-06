@@ -18,7 +18,7 @@ The position-only mapping and model-derived offsets are recorded in ADR P015.
 
 Use a fresh playground-graveyard-grid-v2 bundle with the existing board position.
 
-    & ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/simulation_playground.py --bundle simulation/mujoco/runs/playground-graveyard-grid-v2 --headless --diagnostic-unchecked --execute-trajectory trajectory.json --output new-playback.json
+    & ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/playground/run.py --bundle simulation/mujoco/assets/bundles/playground-graveyard-grid-v2 --headless --diagnostic-unchecked --execute-trajectory trajectory.json --output new-playback.json
 
 For visible playback launch the Playground with -DiagnosticUnchecked and click
 Execute C++ trajectory (P015). The ordinary MOVE buttons retain legacy Python

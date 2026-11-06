@@ -9,7 +9,7 @@ pytestmark = pytest.mark.skipif(importlib.util.find_spec('gymnasium') is None,
 
 def test_visual_environment_pixels_limits_and_bad_actions():
     from atom_mujoco.visual_grasp_env import VisualGraspEnv
-    bundle = Path(__file__).resolve().parents[1]/'runs/playground-fingertip-only-v1'
+    bundle = Path(__file__).resolve().parents[1]/'assets/bundles/playground-fingertip-only-v1'
     if not bundle.exists():
         pytest.skip('Build fingertip-only fixture')
     env = VisualGraspEnv(bundle,horizon=2)
@@ -36,7 +36,7 @@ def test_visual_environment_pixels_limits_and_bad_actions():
 
 def test_lift_curriculum_is_solvable_and_camera_stays_fixed():
     from atom_mujoco.visual_grasp_env import VisualGraspEnv
-    bundle = Path(__file__).resolve().parents[1]/'runs/playground-fingertip-only-v1'
+    bundle = Path(__file__).resolve().parents[1]/'assets/bundles/playground-fingertip-only-v1'
     if not bundle.exists():
         pytest.skip('Build fingertip-only fixture')
     env = VisualGraspEnv(bundle, horizon=60, stage='lift')
@@ -63,7 +63,7 @@ def test_lift_curriculum_is_solvable_and_camera_stays_fixed():
 
 def test_grasp_curriculum_does_not_start_with_scripted_grip():
     from atom_mujoco.visual_grasp_env import VisualGraspEnv
-    bundle = Path(__file__).resolve().parents[1]/'runs/playground-fingertip-only-v1'
+    bundle = Path(__file__).resolve().parents[1]/'assets/bundles/playground-fingertip-only-v1'
     if not bundle.exists():
         pytest.skip('Build fingertip-only fixture')
     env = VisualGraspEnv(bundle,stage='grasp')

@@ -26,7 +26,7 @@ def library():
 @pytest.fixture
 def frame_rgb():
     path = Path(os.environ.get('ACVISION_TEST_IMAGE',
-        str(ROOT/'simulation/mujoco/runs/p036/p034-repeat/initial-270-45.png')))
+        str(ROOT/'simulation/mujoco/examples/compare_perception_reproductions/runs/p036/p034-repeat/initial-270-45.png')))
     if not path.is_file():
         pytest.skip('Set ACVISION_TEST_IMAGE to an RGB reference capture')
     return np.array(Image.open(path).convert('RGB'))

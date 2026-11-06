@@ -51,7 +51,7 @@ estão no ADR S004; não há contatos ou objetos manipuláveis.
 ```python
 from atom_mujoco.backend import Simulation
 
-sim = Simulation('simulation/mujoco/runs/prototype-v1')
+sim = Simulation('simulation/mujoco/assets/bundles/prototype-v1')
 initial = sim.reset(seed=7, randomize=True)
 state = sim.advance([0.3, 0.08, -0.4])
 ```

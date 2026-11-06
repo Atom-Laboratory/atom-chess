@@ -14,7 +14,7 @@ mechanism; the physical Fusion servo linkage is not yet reconstructed.
 & ./simulation/mujoco/scripts/Start-MuJoCo.ps1 -Mode view
 ```
 
-3. Confirm the new bundle directory is runs/interactive-chess-v6.
+3. Confirm the new bundle directory is assets/bundles/interactive-chess-v6.
 4. Use Open/Close buttons or O/C with viewer focus. Open now means 0 m relative
    to the exported mesh pose; close means -0.021 m on each opposed slide.
 5. Observe fingers following the inclined rails without rotating or shifting
@@ -27,7 +27,7 @@ The panel reads limits from the bundle automatically. Pieces remain dynamic.
 
 ```powershell
 $atomPy = '.\simulation\mujoco\.venv\Scripts\python.exe'
-& $atomPy simulation/mujoco/examples/inspect_gripper_geometry.py --meshes simulation/src/meshes
+& $atomPy simulation/mujoco/examples/inspect_gripper_geometry/run.py --meshes simulation/src/meshes
 $env:ATOM_TEST_RENDER = '1'
 & $atomPy -m pytest simulation/mujoco/tests -q
 Remove-Item Env:ATOM_TEST_RENDER

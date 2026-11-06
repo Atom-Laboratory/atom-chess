@@ -55,7 +55,7 @@ MotionController executes each learned target; reset staging uses legacy IK.
 Use a new output directory when resuming; -Resume is a previous run directory:
 
     & ./simulation/mujoco/scripts/Start-RLTraining.ps1 -Stage lift -Steps 20000 -Device cuda -Resume PATH_TO_PREVIOUS_RUN
-    & ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/replay_visual_grasp.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --run PATH_TO_RUN --seed 10000
+    & ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/training/grasp-lift/evaluate.py --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --run PATH_TO_RUN --seed 10000
 
 Resume requires the same model hash, environment version, stage and horizon. It
 restores policy and optimizer but not the exact previous physics state or rollout.
@@ -86,7 +86,7 @@ UI stop before making training claims.
 
 Start a new run with the saved lift policy:
 
-    & ./simulation/mujoco/scripts/Start-RLTraining.ps1 -Stage grasp -Steps 100000 -Device cuda -WarmStart simulation/mujoco/runs/visual-lift-camera-v3-20000
+    & ./simulation/mujoco/scripts/Start-RLTraining.ps1 -Stage grasp -Steps 100000 -Device cuda -WarmStart simulation/mujoco/training/grasp-lift/runs/visual-lift-camera-v3-20000
 
 Warm-start copies the policy, including the visual encoder and both heads.
 The new optimizer and timestep counter start fresh. The source checkpoint
@@ -114,7 +114,7 @@ size. Measure aggregate steps per second and held-out success separately.
 
 Inspect 100 ATOM stations in one MuJoCo window while training is stopped:
 
-    & ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/arena_preview.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --arms 100
+    & ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/arena_preview/run.py --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --arms 100
 
 Choose 1 to 100 stations. Add --check to compile without opening the viewer.
 The preview shares arm assets and uses simplified pieces. Each station is a

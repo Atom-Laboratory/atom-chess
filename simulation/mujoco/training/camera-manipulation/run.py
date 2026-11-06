@@ -1,5 +1,6 @@
 """Train, resume or evaluate the P038 native camera-guided residual environment."""
 import argparse
+from atom_mujoco.paths import new_run
 import hashlib
 import json
 from pathlib import Path
@@ -79,7 +80,7 @@ def provenance(env):
     paths += [p for p in sorted(Path(cfg['bundle']).rglob('*')) if p.is_file()]
     # Include native dependencies and environment/reward/observation sources.
     paths += list(Path(cfg['vision_library']).parent.glob('*.dll'))
-    package = Path(__file__).resolve().parents[1]/'src/atom_mujoco'
+    package = Path(__file__).resolve().parents[2]/'src/atom_mujoco'
     paths += [package/name for name in (
         'camera_manipulation_env.py', 'camera_reward.py', 'camera_policy.py',
         'native_vision.py', 'native_motion.py', 'visual_verification.py',
@@ -97,7 +98,7 @@ def provenance(env):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config', type=Path, required=True)
-    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--output', type=Path, default=None, help='Fresh run directory; defaults to training/camera-manipulation/runs')
     parser.add_argument('--mode', choices=['smoke', 'train', 'evaluate', 'baseline'], default='smoke')
     parser.add_argument('--steps', type=int, default=128)
     parser.add_argument('--episodes', type=int, default=1)
@@ -108,6 +109,7 @@ def main():
     parser.add_argument('--checkpoint-every', type=int, default=10000)
     parser.add_argument('--watch', action='store_true')
     args = parser.parse_args()
+    args.output = args.output or new_run('training/camera-manipulation/runs')
     if min(args.steps, args.episodes, args.checkpoint_every) <= 0:
         parser.error('Positive step and episode counts required')
     if args.mode == 'evaluate' and not args.checkpoint:

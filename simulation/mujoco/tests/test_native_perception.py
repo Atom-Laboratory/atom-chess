@@ -128,7 +128,7 @@ def test_bgr_boundary_roundtrip_and_determinism(executable,tmp_path):
 
 def test_same_image_is_independent_of_changed_simulator(executable,tmp_path):
     from atom_mujoco.backend import Simulation
-    bundle=Path(__file__).resolve().parents[1]/'runs/playground-fingertip-only-v1'
+    bundle=Path(__file__).resolve().parents[1]/'assets/bundles/playground-fingertip-only-v1'
     if not bundle.exists(): pytest.skip('Requires existing simulation fixture')
     sim=Simulation(bundle)
     image=tmp_path/'fixed.png'
@@ -143,7 +143,7 @@ def test_same_image_is_independent_of_changed_simulator(executable,tmp_path):
 def test_evaluator_projection_and_identity_mapping():
     import importlib.util
     from types import SimpleNamespace
-    path = Path(__file__).resolve().parents[1]/'examples/validate_native_perception.py'
+    path = Path(__file__).resolve().parents[1]/'examples/validate_native_perception/run.py'
     spec = importlib.util.spec_from_file_location('native_evaluator',path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -164,7 +164,7 @@ def test_evaluator_projection_and_identity_mapping():
 def test_independent_color_confusion_uses_candidates_without_mutating_observation():
     import copy
     import importlib.util
-    path=Path(__file__).resolve().parents[1]/'examples/validate_native_perception.py'
+    path=Path(__file__).resolve().parents[1]/'examples/validate_native_perception/run.py'
     spec=importlib.util.spec_from_file_location('native_color_evaluator',path)
     module=importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)

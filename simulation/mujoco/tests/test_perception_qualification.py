@@ -10,7 +10,7 @@ import pytest
 
 EXAMPLES = Path(__file__).resolve().parents[1]/'examples'
 sys.path.insert(0, str(EXAMPLES))
-import qualify_saved_perception as qualification
+from qualify_saved_perception import run as qualification
 
 
 def truth():
@@ -195,11 +195,11 @@ def test_protected_inputs_remain_identical(measured_runs):
 
 
 def test_historical_comparison_report_repeatable(measured_runs):
-    import compare_perception_reproductions as comparisons
+    from compare_perception_reproductions.run import compare_perception_reproductions as comparisons
     root = Path(__file__).resolve().parents[3]
-    first = comparisons.compare(root/'simulation/mujoco/runs/p033-viewpoint-sweep-20261106',
+    first = comparisons.compare(root/'simulation/mujoco/examples/validate_native_perception/runs/p033-viewpoint-sweep-20261106',
                                 measured_runs/'p033-repeat', False)
-    second = comparisons.compare(root/'simulation/mujoco/runs/p033-viewpoint-sweep-20261106',
+    second = comparisons.compare(root/'simulation/mujoco/examples/validate_native_perception/runs/p033-viewpoint-sweep-20261106',
                                  measured_runs/'p033-repeat', False)
     assert first == second
     assert first['accepted'] == 2

@@ -19,7 +19,7 @@ $py = '.\simulation\mujoco\.venv\Scripts\python.exe'
 ~~~
 
 Supply the required inputs listed below. The directory entry point accepts
-the same arguments as [the original script](../evaluate_joint_baseline.py).
+the documented arguments in [the implementation](run.py).
 
 | Argument | Required | Default | Description |
 |---|---|---|---|
@@ -33,7 +33,7 @@ the same arguments as [the original script](../evaluate_joint_baseline.py).
 Use a fresh path under this example for every new execution.
 
 ~~~powershell
-$run = Join-Path simulation/mujoco/examples/evaluate_joint_baseline/results ([guid]::NewGuid().ToString('N'))
+$run = Join-Path simulation/mujoco/examples/evaluate_joint_baseline/runs ([guid]::NewGuid().ToString('N'))
 ~~~
 
 For a directory-valued output argument, pass $run without precreating it.

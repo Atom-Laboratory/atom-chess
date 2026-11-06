@@ -42,7 +42,7 @@ $env:ATOM_TEST_RENDER = '1'
 Remove-Item Env:ATOM_TEST_RENDER
 & ./simulation/mujoco/scripts/Start-MuJoCo.ps1 -Mode demo
 $output = 'simulation/mujoco/runs/baseline-' + [guid]::NewGuid().ToString('N') + '.json'
-& $atomPy simulation/mujoco/examples/evaluate_joint_baseline.py --bundle simulation/mujoco/runs/interactive-chess-v6 --seed 7 --trials 5 --output $output
+& $atomPy simulation/mujoco/examples/evaluate_joint_baseline/run.py --bundle simulation/mujoco/assets/bundles/interactive-chess-v6 --seed 7 --trials 5 --output $output
 ```
 
 The baseline evaluates 4 seconds per randomized joint target in a restricted

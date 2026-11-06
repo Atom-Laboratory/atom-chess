@@ -48,7 +48,7 @@ No simulator state enters the native executable. A new test verifies confusion
 counts without modifying the observation; final Python result: 16 passed in 4.21s.
 
 Evidence: [viewpoint report](evidence-p033/viewpoint-report.json). Original captures
-and diagnostic outputs remain in `simulation/mujoco/runs/p033-viewpoint-sweep-20261106`.
+and diagnostic outputs remain in `simulation/mujoco/examples/validate_native_perception/runs/p033-viewpoint-sweep-20261106`.
 
 ## Remaining phases and stopping condition
 

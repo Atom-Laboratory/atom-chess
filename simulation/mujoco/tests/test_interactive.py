@@ -26,7 +26,7 @@ from atom_mujoco.model import build_bundle
 
 def test_finger_travel_matches_mesh_faces_and_keeps_contact_alignment(interactive):
     import importlib.util
-    path = Path(__file__).resolve().parents[1]/'examples/inspect_gripper_geometry.py'
+    path = Path(__file__).resolve().parents[1]/'examples/inspect_gripper_geometry/run.py'
     spec = importlib.util.spec_from_file_location('geometry_inspection', path)
     inspection = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(inspection)

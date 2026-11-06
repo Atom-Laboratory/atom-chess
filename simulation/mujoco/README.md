@@ -90,11 +90,11 @@ $reference = Join-Path $work 'reference'
 $task = Join-Path $work 'task'
 $exe = (Resolve-Path build/p038-core/bin/Release/perception_image.exe).Path
 
-& $py -B -m atom_mujoco.cli build --urdf simulation/src/urdf/atom.urdf.xacro --output $base --parameters simulation/mujoco/examples/playground-reachable-board.json --interactive
+& $py -B -m atom_mujoco.cli build --urdf simulation/src/urdf/atom.urdf.xacro --output $base --parameters simulation/mujoco/playground/configs/playground-reachable-board.json --interactive
 
-& $py -B simulation/mujoco/examples/validate_board_reference.py --bundle $base --assets docs/camera-rl/aruco-assets-v4 --layout docs/camera-rl/evidence-p035/high-camera-layout.json --executable $exe --output $reference --elevations -75
+& $py -B simulation/mujoco/examples/validate_board_reference/run.py --bundle $base --assets docs/camera-rl/aruco-assets-v4 --layout simulation/mujoco/configs/perception/h-file-layout.json --executable $exe --output $reference
 
-& $py -B simulation/mujoco/examples/prepare_camera_task.py --bundle $base --reference-scene (Join-Path $reference 'reference-scene.xml') --layout docs/camera-rl/evidence-p035/high-camera-layout.json --output $task
+& $py -B simulation/mujoco/examples/prepare_camera_task/run.py --bundle $base --reference-scene (Join-Path $reference 'reference-scene.xml') --layout simulation/mujoco/configs/perception/h-file-layout.json --output $task
 
 $config = Join-Path $task 'environment.json'
 ~~~
@@ -112,7 +112,7 @@ preserved.
 
 ~~~powershell
 $baseline = Join-Path $work 'baseline'
-& $py -B simulation/mujoco/examples/train_camera_manipulation.py --config $config --output $baseline --mode baseline --episodes 1 --watch
+& $py -B simulation/mujoco/training/camera-manipulation/run.py --config $config --output $baseline --mode baseline --episodes 1 --watch
 ~~~
 
 Expected behavior is approach, descend, close, lift, transport, place, open and
@@ -124,7 +124,7 @@ camera, independently of the viewer's interactive camera.
 
 ~~~powershell
 $smoke = Join-Path $work 'smoke'
-& $py -B simulation/mujoco/examples/train_camera_manipulation.py --config $config --output $smoke --mode smoke --steps 128 --episodes 1 --device cpu
+& $py -B simulation/mujoco/training/camera-manipulation/run.py --config $config --output $smoke --mode smoke --steps 128 --episodes 1 --device cpu
 Get-Content (Join-Path $smoke 'report.json')
 ~~~
 
@@ -138,13 +138,13 @@ fields.
 
 ~~~powershell
 $evaluation = Join-Path $work 'evaluation'
-& $py -B simulation/mujoco/examples/train_camera_manipulation.py --config $config --output $evaluation --mode evaluate --checkpoint (Join-Path $smoke 'policy.zip') --episodes 2 --device cpu --watch
+& $py -B simulation/mujoco/training/camera-manipulation/run.py --config $config --output $evaluation --mode evaluate --checkpoint (Join-Path $smoke 'policy.zip') --episodes 2 --device cpu --watch
 
 $training = Join-Path $work 'training'
-& $py -B simulation/mujoco/examples/train_camera_manipulation.py --config $config --output $training --mode train --steps 100000 --episodes 3 --device cpu
+& $py -B simulation/mujoco/training/camera-manipulation/run.py --config $config --output $training --mode train --steps 100000 --episodes 3 --device cpu
 
 $resume = Join-Path $work 'resumed'
-& $py -B simulation/mujoco/examples/train_camera_manipulation.py --config $config --output $resume --mode train --resume $smoke --steps 128 --episodes 1 --device cpu
+& $py -B simulation/mujoco/training/camera-manipulation/run.py --config $config --output $resume --mode train --resume $smoke --steps 128 --episodes 1 --device cpu
 ~~~
 
 Use --device cuda if available. Longer runs are user-selected examples.
@@ -204,7 +204,7 @@ Build a fresh experimental bundle from the repository root in Windows PowerShell
 ~~~powershell
 $py = '.\simulation\mujoco\.venv\Scripts\python.exe'
 $bundle = Join-Path simulation/mujoco/runs ('wrist-' + [guid]::NewGuid().ToString('N'))
-& $py -B -m atom_mujoco.cli build --urdf simulation/src/urdf/atom.urdf.xacro --parameters simulation/mujoco/examples/playground-reachable-board.json --output $bundle --interactive --wrist
+& $py -B -m atom_mujoco.cli build --urdf simulation/src/urdf/atom.urdf.xacro --parameters simulation/mujoco/playground/configs/playground-reachable-board.json --output $bundle --interactive --wrist
 if ($LASTEXITCODE -ne 0) { throw 'Wrist bundle build failed' }
 & $py -B -m atom_mujoco.cli view --bundle $bundle
 ~~~
@@ -223,3 +223,39 @@ pivot and the hardware switch calibration requirements.
 ~~~powershell
 & $py -B -m pytest simulation/mujoco/tests/test_interactive.py -q
 ~~~
+
+## Experiment ownership and migration
+
+Demonstrations are indexed in [Examples](examples/README.md). Interactive work
+belongs to [Playground](playground/README.md), whose reports use sessions/.
+Learning and checkpoint evaluation belong to [Training](training/README.md),
+with one complete run directory per experiment execution. New default training
+outputs use training/<objective>/runs/. Existing artifact migration is pending
+the [content inventory and proposal](docs/reorganization-audit-2026-11-06/README.md).
+
+Historical commands below may still reference preserved runs/. Consult the
+area guides above for current entry points and output ownership.
+
+## Shared perception camera and wrist profile
+
+The perception camera default lives in src/atom_mujoco/virtual_camera.py.
+It views the board from the H-file side at azimuth 180 degrees and elevation
+-75 degrees. The default aim point is the board center from the scene. The
+interactive viewer orbit and legacy grasp policy camera are separate views.
+
+Reference validation, native policy preview, one-piece fixture preparation and
+the two-piece capture tools accept --camera-config. Pass a JSON file such as
+{"azimuth": 270} to override only that setting. Use the same override and marker
+layout throughout a test. Existing P038 environment.json files retain their
+recorded camera. New fixtures record the resolved settings for reproducibility.
+
+The Start-MuJoCo.ps1 view mode defaults to the wrist bundle. To use an existing
+alternative bundle, pass -Bundle with its path. The wrist mounting geometry and
+limits are defined in interactive_model.py and written into the generated model.
+The automatic Playground and existing training policies still use the
+five-actuator profile.
+
+The centered two-piece capture passed with the shared camera. The one-piece
+P038 baseline oriented successfully at reset but lost the board reference at
+its first approach step. Treat the H-file camera as experimental for P038
+until marker visibility is verified along the full trajectory.

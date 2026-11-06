@@ -6,6 +6,7 @@ import time
 from pathlib import Path
 
 from atom_mujoco.playground import Playground
+from atom_mujoco.paths import new_run
 
 
 def main():
@@ -21,7 +22,10 @@ def main():
                         help='Explicit experimental manipulation without swept preflight; never RL qualification')
     parser.add_argument('--execute-trajectory', type=Path,
                         help='Execute an exported C++ P015 trajectory')
+    parser.add_argument('--camera-config', type=Path, help='JSON overrides for the virtual RGB camera')
+    parser.add_argument('--session-dir', type=Path, help='Directory for this interactive session')
     args = parser.parse_args()
+    session_dir = args.session_dir or new_run('playground/sessions')
     if args.execute_trajectory and (not args.headless or args.request):
         parser.error('--execute-trajectory requires --headless and excludes --request')
     playground = Playground(args.bundle, diagnostic_unchecked=args.diagnostic_unchecked)
@@ -255,7 +259,8 @@ def main():
                     result = execute_chess_move(playground, origin, destination)
                 else:
                     result=playground.execute_request(request)
-                output=args.bundle.parent/('playground-'+uuid.uuid4().hex+'.json')
+                output=session_dir/('playground-'+uuid.uuid4().hex+'.json')
+                session_dir.mkdir(parents=True, exist_ok=True)
                 playground.save(output,result)
                 status.configure(text=f"{result['status']}: {result['error_code']}\nSaved {output}")
                 sync_view()
@@ -284,7 +289,8 @@ def main():
             button.configure(state='disabled')
             try:
                 result=playground.execute_request(json.loads(Path(path).read_text()))
-                output=args.bundle.parent/('playground-'+uuid.uuid4().hex+'.json')
+                output=session_dir/('playground-'+uuid.uuid4().hex+'.json')
+                session_dir.mkdir(parents=True, exist_ok=True)
                 playground.save(output,result)
                 status.configure(text=f"{result['status']}: {result['error_code']}\nSaved {output}")
             except (ValueError,OSError) as error:
@@ -302,7 +308,8 @@ def main():
             try:
                 from atom_mujoco.trajectory_execution import execute_trajectory
                 result = execute_trajectory(playground, Path(path).read_text(encoding='utf-8-sig'))
-                output = args.bundle.parent / ('p015-' + uuid.uuid4().hex + '.json')
+                output = session_dir / ('p015-' + uuid.uuid4().hex + '.json')
+                session_dir.mkdir(parents=True, exist_ok=True)
                 playground.save(output, result)
                 status.configure(text=f"{result['status']}: {result['error_code']}\nSaved {output}")
             except (ValueError, OSError) as error:
@@ -316,7 +323,9 @@ def main():
         camera_windows = []
         def show_camera():
             from atom_mujoco.virtual_camera import VirtualCamera
-            camera = VirtualCamera(playground.sim)
+            overrides = (json.loads(args.camera_config.read_text(encoding='utf-8-sig'))
+                         if args.camera_config else None)
+            camera = VirtualCamera(playground.sim, overrides)
             window = tk.Toplevel(root)
             window.title('Virtual RGB camera - perception input, unverified')
             label = ttk.Label(window)

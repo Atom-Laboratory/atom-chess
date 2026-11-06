@@ -110,7 +110,7 @@ To repeat the 27-scene experiment:
 
 ```powershell
 $run = Join-Path simulation/mujoco/runs ('p034-' + [guid]::NewGuid().ToString('N'))
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_board_reference.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --assets docs/camera-rl/aruco-assets-v4 --executable $exe --output $run
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_board_reference/run.py --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --assets docs/camera-rl/aruco-assets-v4 --executable $exe --output $run
 ```
 
 Simulation reference planes are added only to a new diagnostic XML. Original

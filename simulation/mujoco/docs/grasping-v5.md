@@ -10,7 +10,7 @@ cd F:\Users\EHD\Github\Atom\atom-chess
 & ./simulation/mujoco/scripts/Start-MuJoCo.ps1 -Mode view
 ```
 
-3. Confirm the launcher uses **runs/interactive-chess-v5**. Existing v4 files
+3. Confirm the launcher uses **assets/bundles/interactive-chess-v5**. Existing v4 files
    are intentionally not modified. A running old viewer cannot load new code.
 4. Use the shared finger slider or Open/Close buttons (O/C in the 3D window).
    Both fingers now have equal targets. The second independent slider is removed.

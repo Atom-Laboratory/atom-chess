@@ -310,19 +310,19 @@ cmake --build build/p032-contract --config Release --target perception_image tes
 
 $exe = (Resolve-Path build/p032-contract/bin/Release/perception_image.exe).Path
 
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_native_perception.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --executable $exe --output simulation/mujoco/runs/p036/p033-repeat --azimuths 265 270 275
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_native_perception/run.py --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --executable $exe --output simulation/mujoco/examples/compare_perception_reproductions/runs/p036/p033-repeat --azimuths 265 270 275
 
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_board_reference.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --assets docs/camera-rl/aruco-assets-v4 --executable $exe --output simulation/mujoco/runs/p036/p034-repeat --save-evaluator
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_board_reference/run.py --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --assets docs/camera-rl/aruco-assets-v4 --executable $exe --output simulation/mujoco/examples/compare_perception_reproductions/runs/p036/p034-repeat --save-evaluator
 
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/compare_perception_reproductions.py --p033 simulation/mujoco/runs/p036/p033-repeat --p034 simulation/mujoco/runs/p036/p034-repeat --audit simulation/mujoco/runs/p036/audit-before.json --output simulation/mujoco/runs/p036/reproduction-final
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/compare_perception_reproductions/run.py --p033 simulation/mujoco/examples/compare_perception_reproductions/runs/p036/p033-repeat --p034 simulation/mujoco/examples/compare_perception_reproductions/runs/p036/p034-repeat --audit simulation/mujoco/examples/compare_perception_reproductions/runs/p036/audit-before.json --output simulation/mujoco/examples/compare_perception_reproductions/runs/p036/reproduction-final
 
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/qualify_saved_perception.py --source simulation/mujoco/runs/p036/p034-repeat --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --layout docs/camera-rl/aruco-assets-v4/layout.json --executable $exe --output simulation/mujoco/runs/p036/paired-final
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/qualify_saved_perception/run.py --source simulation/mujoco/examples/compare_perception_reproductions/runs/p036/p034-repeat --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --layout docs/camera-rl/aruco-assets-v4/layout.json --executable $exe --output simulation/mujoco/examples/compare_perception_reproductions/runs/p036/paired-final
 
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/qualify_saved_perception.py --replay simulation/mujoco/runs/p036/paired-final/configuration.json --output simulation/mujoco/runs/p036/paired-replay
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/qualify_saved_perception/run.py --replay simulation/mujoco/examples/compare_perception_reproductions/runs/p036/paired-final/configuration.json --output simulation/mujoco/examples/compare_perception_reproductions/runs/p036/paired-replay
 
 ctest --test-dir build/p032-contract -C Release --output-on-failure
 $env:ACVISION_PERCEPTION_EXE = $exe
-$env:P036_RUN_ROOT = (Resolve-Path simulation/mujoco/runs/p036).Path
+$env:P036_RUN_ROOT = (Resolve-Path simulation/mujoco/examples/compare_perception_reproductions/runs/p036).Path
 & simulation/mujoco/.venv/Scripts/python.exe -B -m pytest simulation/mujoco/tests/test_native_perception.py simulation/mujoco/tests/test_perception_qualification.py -q -p no:cacheprovider
 ~~~
 
@@ -337,8 +337,8 @@ and evaluator source. Raw artifact integrity is independently verifiable by hash
 To repeat safely in a new directory from saved data, use the following command.
 
 ~~~powershell
-$next = Join-Path simulation/mujoco/runs/p036 ('replay-' + [guid]::NewGuid().ToString('N'))
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/qualify_saved_perception.py --replay simulation/mujoco/runs/p036/paired-final/configuration.json --output $next
+$next = Join-Path simulation/mujoco/examples/compare_perception_reproductions/runs/p036 ('replay-' + [guid]::NewGuid().ToString('N'))
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/qualify_saved_perception/run.py --replay simulation/mujoco/examples/compare_perception_reproductions/runs/p036/paired-final/configuration.json --output $next
 ~~~
 
 For metadata validation, evaluator files can be read before invoking a detector.
@@ -357,7 +357,7 @@ MuJoCo handle, evaluator file, ground-truth coordinate or corrected detection.
 - [Initial audit](evidence-p036/audit-before.json) and
   [final validation](evidence-p036/validation.json).
 - Full images, overlays, per-frame native JSON and independent projections remain
-  in simulation/mujoco/runs/p036. Historical directories remain preserved.
+  in simulation/mujoco/examples/compare_perception_reproductions/runs/p036. Historical directories remain preserved.
 
 The native suite passed 4/4 executables. Python regression passed 31 tests,
 including 14 new infrastructure cases. Additional saved-run verification checks

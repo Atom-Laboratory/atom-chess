@@ -45,7 +45,7 @@ def test_rl_cannot_be_selected_without_checkpoint(playground):
 def test_experimental_board_e2_e3_physically_moves_pawn(tmp_path):
     import json
     module = Path(__file__).resolve().parents[1]
-    parameters = json.loads((module/'examples/playground-board.json').read_text())
+    parameters = json.loads((module/'playground/configs/playground-board.json').read_text())
     bundle = tmp_path/'playground'
     build_bundle(module.parent/'src/urdf/atom.urdf.xacro', bundle,
                  interactive=True, parameters=parameters)

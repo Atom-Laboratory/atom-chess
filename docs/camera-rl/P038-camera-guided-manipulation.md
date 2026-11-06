@@ -34,8 +34,8 @@ geometry. The C++ planning and IK algorithms themselves are reused.
 | simulation/mujoco/src/atom_mujoco/camera_manipulation_env.py | Gym reset/step, camera acquisition, phases, bounded residuals, safety, termination |
 | simulation/mujoco/src/atom_mujoco/camera_reward.py | Privileged physical truth and decomposed rewards |
 | simulation/mujoco/src/atom_mujoco/visual_verification.py | Multi-frame visual candidate states, independent of truth |
-| simulation/mujoco/examples/prepare_camera_task.py | Exclusive derived one-piece scene and complete environment config |
-| simulation/mujoco/examples/train_camera_manipulation.py | Baseline, PPO smoke/train, checkpoint, resume and independent evaluation |
+| simulation/mujoco/examples/prepare_camera_task/run.py | Exclusive derived one-piece scene and complete environment config |
+| simulation/mujoco/training/camera-manipulation/run.py | Baseline, PPO smoke/train, checkpoint, resume and independent evaluation |
 | simulation/mujoco/tests/test_camera_manipulation.py | Native trajectory/FK, full transfer, isolation, rejection, perception-loss and reward regression |
 
 The acmotion CMake option ACMOTION_NATIVE_RUNTIME defaults off. Existing targets
@@ -190,7 +190,7 @@ Run PowerShell from the repository root.
 cmake -S . -B build/p038-core -G 'Visual Studio 18 2026' -A x64 -DOpenCV_DIR=D:/opencv/build/x64/vc16/lib -DBUILD_TESTING=OFF -DACCHESS_BUILD_VIEWER=OFF -DACVISION_NATIVE_RUNTIME=ON -DACMOTION_NATIVE_RUNTIME=ON
 cmake --build build/p038-core --config Release --target motion_runtime acvision_runtime
 
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/prepare_camera_task.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --reference-scene simulation/mujoco/runs/p035-steep-relayout/reference-scene.xml --layout docs/camera-rl/evidence-p035/high-camera-layout.json --output simulation/mujoco/runs/p038-single-piece
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/prepare_camera_task/run.py --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --reference-scene simulation/mujoco/examples/validate_board_reference/examples/validate_board_reference/runs/p035-steep-relayout/reference-scene.xml --layout docs/camera-rl/evidence-p035/high-camera-layout.json --output simulation/mujoco/assets/bundles/p038-single-piece
 ~~~
 
 That fixture already exists in this workspace. Use another --output for a new
@@ -205,9 +205,9 @@ The preparer's --piece, --source and --target configure new fixed scenarios.
 ## Run a nominal episode or watch simulation
 
 ~~~powershell
-$config = 'simulation/mujoco/runs/p038-single-piece/environment.json'
+$config = 'simulation/mujoco/assets/bundles/p038-single-piece/environment.json'
 $run = Join-Path simulation/mujoco/runs ('camera-baseline-' + [guid]::NewGuid().ToString('N'))
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/train_camera_manipulation.py --config $config --output $run --mode baseline --episodes 1 --watch
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/training/camera-manipulation/run.py --config $config --output $run --mode baseline --episodes 1 --watch
 ~~~
 
 --watch uses MuJoCo's passive viewer. The executed validation runs were headless.
@@ -216,19 +216,19 @@ GUI viewing has an independent window and does not supply actor observations.
 ## Smoke test, training, resume and evaluation
 
 ~~~powershell
-$config = 'simulation/mujoco/runs/p038-single-piece/environment.json'
+$config = 'simulation/mujoco/assets/bundles/p038-single-piece/environment.json'
 
 $smoke = Join-Path simulation/mujoco/runs ('camera-smoke-' + [guid]::NewGuid().ToString('N'))
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/train_camera_manipulation.py --config $config --output $smoke --mode smoke --steps 128 --episodes 1 --device cpu
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/training/camera-manipulation/run.py --config $config --output $smoke --mode smoke --steps 128 --episodes 1 --device cpu
 
 $training = Join-Path simulation/mujoco/runs ('camera-train-' + [guid]::NewGuid().ToString('N'))
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/train_camera_manipulation.py --config $config --output $training --mode train --steps 100000 --episodes 3 --device cuda
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/training/camera-manipulation/run.py --config $config --output $training --mode train --steps 100000 --episodes 3 --device cuda
 
 $resumed = Join-Path simulation/mujoco/runs ('camera-resume-' + [guid]::NewGuid().ToString('N'))
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/train_camera_manipulation.py --config $config --output $resumed --mode train --resume $smoke --steps 128 --episodes 1 --device cpu
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/training/camera-manipulation/run.py --config $config --output $resumed --mode train --resume $smoke --steps 128 --episodes 1 --device cpu
 
 $evaluation = Join-Path simulation/mujoco/runs ('camera-eval-' + [guid]::NewGuid().ToString('N'))
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/train_camera_manipulation.py --config $config --output $evaluation --mode evaluate --checkpoint simulation/mujoco/runs/p038-smoke-final/policy.zip --episodes 2 --device cpu --watch
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/training/camera-manipulation/run.py --config $config --output $evaluation --mode evaluate --checkpoint simulation/mujoco/training/camera-manipulation/runs/p038-smoke-final/policy.zip --episodes 2 --device cpu --watch
 ~~~
 
 The 100000-step command is available for user execution. Only short smoke/resume
@@ -274,7 +274,7 @@ independent evaluation and resume.
 Set the environment fixture path before running the P038 tests.
 
 ~~~powershell
-$env:P038_CONFIG = (Resolve-Path simulation/mujoco/runs/p038-single-piece/environment.json).Path
+$env:P038_CONFIG = (Resolve-Path simulation/mujoco/assets/bundles/p038-single-piece/environment.json).Path
 $env:ACVISION_RUNTIME_DLL = (Resolve-Path build/p038-core/bin/Release/acvision_runtime.dll).Path
 $env:ACVISION_PERCEPTION_EXE = (Resolve-Path build/p032-contract/bin/Release/perception_image.exe).Path
 & simulation/mujoco/.venv/Scripts/python.exe -B -m pytest simulation/mujoco/tests/test_camera_manipulation.py simulation/mujoco/tests/test_native_runtime.py simulation/mujoco/tests/test_native_perception.py -q -p no:cacheprovider

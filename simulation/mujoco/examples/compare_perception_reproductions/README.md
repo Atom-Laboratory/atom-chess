@@ -19,7 +19,7 @@ $py = '.\simulation\mujoco\.venv\Scripts\python.exe'
 ~~~
 
 Supply the required inputs listed below. The directory entry point accepts
-the same arguments as [the original script](../compare_perception_reproductions.py).
+the documented arguments in [the implementation](run.py).
 
 | Argument | Required | Default | Description |
 |---|---|---|---|
@@ -34,7 +34,7 @@ the same arguments as [the original script](../compare_perception_reproductions.
 Use a fresh path under this example for every new execution.
 
 ~~~powershell
-$run = Join-Path simulation/mujoco/examples/compare_perception_reproductions/results ([guid]::NewGuid().ToString('N'))
+$run = Join-Path simulation/mujoco/examples/compare_perception_reproductions/runs ([guid]::NewGuid().ToString('N'))
 ~~~
 
 For a directory-valued output argument, pass $run without precreating it.

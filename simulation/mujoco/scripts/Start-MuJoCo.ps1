@@ -1,6 +1,7 @@
 param(
     [ValidateSet('view', 'demo', 'playground')][string]$Mode = 'view',
-    [switch]$DiagnosticUnchecked
+    [switch]$DiagnosticUnchecked,
+    [string]$Bundle
 )
 $ErrorActionPreference = 'Stop'
 if ($DiagnosticUnchecked -and $Mode -ne 'playground') {
@@ -12,11 +13,18 @@ $atomPython = Join-Path $atomModule '.venv\Scripts\python.exe'
 if (-not (Test-Path -LiteralPath $atomPython)) {
     throw 'Crie .venv e instale o pacote seguindo simulation/mujoco/README.md.'
 }
-$atomBundle = Join-Path $atomModule 'runs\interactive-chess-v6'
+$atomBundle = Join-Path $atomModule 'assets\bundles\interactive-chess-v6'
 $atomBuildOptions = @()
 if ($Mode -eq 'playground') {
-    $atomBundle = Join-Path $atomModule 'runs\playground-fingertip-only-v1'
-    $atomBuildOptions = @('--parameters', (Join-Path $atomModule 'examples\playground-reachable-board.json'))
+    $atomBundle = Join-Path $atomModule 'assets\bundles\playground-fingertip-only-v1'
+    $atomBuildOptions = @('--parameters', (Join-Path $atomModule 'playground\configs\playground-reachable-board.json'))
+}
+if ($Mode -eq 'view') {
+    $atomBundle = Join-Path $atomModule 'assets\bundles\interactive-wrist-v1'
+    $atomBuildOptions = @('--wrist')
+}
+if ($Bundle) {
+    $atomBundle = (Resolve-Path -LiteralPath $Bundle).Path
 }
 if (-not (Test-Path -LiteralPath $atomBundle)) {
     & $atomPython -m atom_mujoco.cli build --urdf (Join-Path $atomSimulation 'src\urdf\atom.urdf.xacro') --output $atomBundle --interactive @atomBuildOptions
@@ -27,9 +35,9 @@ if ($Mode -eq 'view') {
 } elseif ($Mode -eq 'playground') {
     $atomPlaygroundOptions = @()
     if ($DiagnosticUnchecked) { $atomPlaygroundOptions += '--diagnostic-unchecked' }
-    & $atomPython (Join-Path $atomModule 'examples\simulation_playground.py') --bundle $atomBundle @atomPlaygroundOptions
+    & $atomPython (Join-Path $atomModule 'playground\run.py') --bundle $atomBundle @atomPlaygroundOptions
 } else {
-    $atomResult = Join-Path $atomModule ('runs\demo-' + [guid]::NewGuid().ToString('N') + '.json')
+    $atomResult = Join-Path $atomModule ('examples\evaluate_joint_baseline\runs\demo-' + [guid]::NewGuid().ToString('N') + '.json')
     & $atomPython -m atom_mujoco.cli demo --bundle $atomBundle --output $atomResult
     Write-Host "Resultado: $atomResult"
 }

@@ -12,7 +12,7 @@ From Windows PowerShell at repository root, with the existing venv and v6 bundle
 & ./simulation/mujoco/scripts/Start-MuJoCo.ps1 -Mode playground
 ```
 
-The launcher builds `runs/playground-board-v1` on first use. This experimental
+The launcher builds `assets/bundles/playground-board-v1` on first use. This experimental
 layout puts E2 and E3 within the v6 arm workspace. Choose piece/source/destination
 and press Execute MOVE. The controller is the
 experimental deterministic baseline. The RL option is explicitly unavailable.
@@ -30,7 +30,7 @@ piece positions for implemented baseline execution. No reward is invented.
 
 ```powershell
 $atomPy = '.\simulation\mujoco\.venv\Scripts\python.exe'
-& $atomPy simulation/mujoco/examples/simulation_playground.py --bundle simulation/mujoco/runs/playground-board-v1 --headless --source E2 --target E3 --piece white_pawn_e2
+& $atomPy simulation/mujoco/playground/run.py --bundle simulation/mujoco/assets/bundles/playground-board-v1 --headless --source E2 --target E3 --piece white_pawn_e2
 & $atomPy -m pytest simulation/mujoco/tests/test_playground.py -v
 ```
 
@@ -49,7 +49,7 @@ The experimental layout and its limits are recorded in [ADR S011](../../docs/adr
 
 ```python
 from atom_mujoco.playground import Playground
-simulator = Playground('simulation/mujoco/runs/playground-board-v1')
+simulator = Playground('simulation/mujoco/assets/bundles/playground-board-v1')
 result = simulator.execute(operation='MOVE', piece_id='white_pawn_e2',
                            source='E2', target='E3', controller='baseline', seed=0)
 ```

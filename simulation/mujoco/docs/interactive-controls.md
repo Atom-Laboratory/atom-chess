@@ -60,7 +60,7 @@ Do not interpret Hold as a physical emergency stop.
 
 ## What changed in v4
 
-The launcher now selects **runs/interactive-chess-v4**, automatically building it
+The launcher now selects **assets/bundles/interactive-chess-v4**, automatically building it
 with `--interactive`. Existing v1-v3 results remain untouched. Gravity is
 [0,0,-9.81] m/s². The robot is fixed to its base; dynamic links and fingers respond
 to gravity. Position servos hold the synthetic load with finite tracking error.

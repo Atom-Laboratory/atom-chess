@@ -6,7 +6,7 @@ e o bundle gerado pelo launcher. Execute no PowerShell, na raiz do repositório:
 
 ```powershell
 & ./simulation/mujoco/scripts/Start-MuJoCo.ps1 -Mode demo
-& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/inspect_joints.py --bundle simulation/mujoco/runs/upright-chess-v3 --output simulation/mujoco/runs/exercise-01.json
+& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/inspect_joints/run.py --bundle simulation/mujoco/assets/bundles/upright-chess-v3 --output simulation/mujoco/runs/exercise-01.json
 ```
 
 Use um nome novo em --output ao repetir. O script primeiro reinicia em zero,
@@ -23,7 +23,7 @@ Leia o URDF e faça três previsões por escrito:
 3. Ao mudar a última junta, a origem de arm2_frame muda de posição?
 
 Depois compare com frame_translation_delta_m e frame_rotation_delta_rad no JSON.
-O arquivo examples/inspect_joints.py mostra o uso mínimo de reset/advance/observe.
+O arquivo examples/inspect_joints/run.py mostra o uso mínimo de reset/advance/observe.
 `target` é a solicitação; `final_position` é a resposta da dinâmica sintética.
 `joint_error` é a diferença nas unidades de cada junta. Não some radianos e metros
 para interpretar um erro físico escalar sem definir normalização.

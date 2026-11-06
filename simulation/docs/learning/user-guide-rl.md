@@ -32,7 +32,7 @@ cd F:\Users\EHD\Github\Atom\atom-chess
 & ./simulation/mujoco/scripts/Start-MuJoCo.ps1
 ```
 
-O launcher usa a `.venv` local e o bundle `runs/upright-chess-v3`. Ele abre o
+O launcher usa a `.venv` local e o bundle `assets/bundles/upright-chess-v3`. Ele abre o
 MuJoCo com braço vertical, tabuleiro, garra visual e 32 peças estilizadas.
 **Q/A**, **W/S** e **E/D** alteram as três metas articulares; **R** reinicia e
 **Espaço** usa a posição atual como meta. Feche a janela para encerrar.
@@ -66,7 +66,7 @@ precisão medida no hardware nem resultado de aprendizado.
 
 ```powershell
 $atomResult = 'simulation/mujoco/runs/exercise-' + [guid]::NewGuid().ToString('N') + '.json'
-& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/inspect_joints.py --bundle simulation/mujoco/runs/upright-chess-v3 --output $atomResult
+& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/inspect_joints/run.py --bundle simulation/mujoco/assets/bundles/upright-chess-v3 --output $atomResult
 ```
 
 O nome único evita o erro “Choose a new output path”; o script preserva resultados
@@ -87,7 +87,7 @@ Exemplo curto, já disponível na API, para estudar em seu código:
 ```python
 from atom_mujoco.backend import Simulation
 
-sim = Simulation('simulation/mujoco/runs/upright-chess-v3')
+sim = Simulation('simulation/mujoco/assets/bundles/upright-chess-v3')
 initial = sim.reset(seed=7, randomize=True)
 next_state = sim.advance([0.3, 0.08, -0.4])
 print(next_state['position'], next_state['velocity'])

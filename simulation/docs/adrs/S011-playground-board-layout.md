@@ -4,7 +4,7 @@ Date: 2026-11-05. Status: accepted for simulation.
 
 E2 in the original v6 scene is 452.55 mm from J1. The planar reach bound
 is 364.54 mm. The Playground launcher builds a separate bundle using the
-versioned `examples/playground-board.json` scene parameter. The board center
+versioned `playground/configs/playground-board.json` scene parameter. The board center
 is [0.28, 0.10, 0.012] m in the scene frame. The builder applies the placement
 to the board, square sites and initial piece positions and records it in the
 manifest. This layout was selected by simulation trials. Physical board

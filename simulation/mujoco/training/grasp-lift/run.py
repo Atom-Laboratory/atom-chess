@@ -1,5 +1,9 @@
 """Train and evaluate an experimental pixel-only PPO grasp policy."""
 import argparse
+import sys
+from atom_mujoco.paths import MODULE_ROOT
+sys.path.insert(0, str(MODULE_ROOT / "examples"))
+from atom_mujoco.paths import new_run
 from functools import partial
 import hashlib
 import json
@@ -45,7 +49,7 @@ def evaluate(env, policy, seeds):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--bundle', type=Path, required=True)
-    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--output', type=Path, default=None, help='Fresh run directory; defaults to training/grasp-lift/runs')
     parser.add_argument('--steps', type=int, default=100000)
     parser.add_argument('--seed', type=int, default=7)
     parser.add_argument('--eval-episodes', type=int, default=10)
@@ -62,6 +66,7 @@ def main():
     parser.add_argument('--workers', type=int, choices=range(1, 9), default=1)
     parser.add_argument('--arena', action='store_true', help='Mirror all workers in one 3D scene')
     args = parser.parse_args()
+    args.output = args.output or new_run('training/grasp-lift/runs')
     if args.arena and (args.watch or args.workers < 2):
         parser.error('--arena requires at least two workers and replaces --watch')
     if args.warm_start_features and not args.warm_start:
@@ -145,7 +150,7 @@ def main():
             if parallel is None:
                 env.on_transition = display.update
         if args.arena:
-            from arena_preview import LiveArena
+            from arena_preview.run import LiveArena
             arena = LiveArena(args.bundle, args.workers, env.sim.model)
         class Progress(BaseCallback):
             stopped = False

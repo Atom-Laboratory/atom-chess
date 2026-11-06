@@ -47,7 +47,7 @@ geometry, compatible grasp points and validation with adjacent pieces.
 From the repository root in PowerShell:
 
 ```powershell
-& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/export_atom_piece_meshes.py hardware/Project/chess_pieces/ChessPieces.3mf simulation/mujoco/runs/official-piece-exports
+& ./simulation/mujoco/.venv/Scripts/python.exe simulation/mujoco/examples/export_atom_piece_meshes/run.py hardware/Project/chess_pieces/ChessPieces.3mf simulation/mujoco/runs/official-piece-exports
 ```
 
 The output path must be new. Use the manifest to verify the source and asset hashes.

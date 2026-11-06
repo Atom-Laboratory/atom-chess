@@ -11,10 +11,10 @@ The P033 capture used the following configuration.
 
 | Parameter | Value |
 |---|---|
-| Model bundle | simulation/mujoco/runs/playground-fingertip-only-v1 |
+| Model bundle | simulation/mujoco/assets/bundles/playground-fingertip-only-v1 |
 | Model file | model.xml inside the bundle |
 | Scene metadata | manifest.json inside the bundle |
-| Capture script | simulation/mujoco/examples/validate_native_perception.py |
+| Capture script | simulation/mujoco/examples/validate_native_perception/run.py |
 | Renderer | mujoco.Renderer, 800 x 600 px |
 | Camera | Free MjvCamera, configured by the capture script |
 | lookat | [0.245, 0.0, 0.012] m, from manifest scene.board_center_m |
@@ -35,7 +35,7 @@ From the repository root, use the existing virtual environment.
 cmake --build build/p032-contract --config Release --target perception_image
 $exe = (Resolve-Path build/p032-contract/bin/Release/perception_image.exe).Path
 $run = Join-Path simulation/mujoco/runs ('p033-repeat-' + [guid]::NewGuid().ToString('N'))
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_native_perception.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --executable $exe --output $run --azimuths 265 270 275
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_native_perception/run.py --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --executable $exe --output $run --azimuths 265 270 275
 Invoke-Item (Join-Path $run 'lateral-270-45.png')
 Invoke-Item (Join-Path $run 'report.json')
 ~~~
@@ -45,7 +45,7 @@ and run with --azimuths 270. This is a manual experimental variation.
 Without that edit, --azimuths 270 still captures three elevations.
 
 The historical artifacts are in
-simulation/mujoco/runs/p033-viewpoint-sweep-20261106.
+simulation/mujoco/examples/validate_native_perception/runs/p033-viewpoint-sweep-20261106.
 Successful views have rectified.png and rectified-grid.png in their
 acvision-AZIMUTH-ELEVATION directories. Failed views retain corners.png
 and observation.json. A successful current run reproduces the protocol.
@@ -56,7 +56,7 @@ model/assets and runtime versions. The report records executable and model hashe
 
 ~~~powershell
 $run = Join-Path simulation/mujoco/runs ('p034-repeat-' + [guid]::NewGuid().ToString('N'))
-& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_board_reference.py --bundle simulation/mujoco/runs/playground-fingertip-only-v1 --assets docs/camera-rl/aruco-assets-v4 --executable $exe --output $run
+& simulation/mujoco/.venv/Scripts/python.exe -B simulation/mujoco/examples/validate_board_reference/run.py --bundle simulation/mujoco/assets/bundles/playground-fingertip-only-v1 --assets docs/camera-rl/aruco-assets-v4 --executable $exe --output $run
 Invoke-Item (Join-Path $run 'initial-270-45/rectified-grid.png')
 ~~~
 
