@@ -105,9 +105,9 @@ def test_negative_scenes_report_candidates_not_success(executable,tmp_path,kind)
     assert result['processing_completed'] and not result['perception_valid']
     assert 'RECTANGLE_FALSE_POSITIVES_POSSIBLE' in result['warnings']
     assert all(c['occupancy']=='unknown' and c['square'] is None for c in result['cells'])
-    # A rectangle false positive is measured, not fixed by this integration.
+    # P033 requires checker-pattern evidence; rectangles must be rejected.
     if kind in ('rectangle','sheet'):
-        assert result['board_detection_status'] == 'unvalidated_candidate'
+        assert result['board_detection_status'] == 'not_detected'
     if result['homography'] is None:
         assert result['overlays']['rectified_grid'] is None
 

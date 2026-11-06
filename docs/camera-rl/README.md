@@ -23,3 +23,7 @@ The real native image bridge is implemented. See [run instructions and measured 
 ## P032 contract completion (2026-11-06)
 
 See [schema 2, build commands, tests and acceptance report](p032-contract-completion.md). This supersedes the initial B1 contract limitations; detection algorithms remain unchanged.
+
+## P033 geometry correction
+
+See [pattern validation and projective corners](p033-geometry-validation.md).

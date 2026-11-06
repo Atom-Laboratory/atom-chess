@@ -53,3 +53,37 @@ TEST(OfflinePerception, MatchesDirectClassesAndPreservesInput) {
     const std::vector<cv::Point2f> expected{{0,0},{800,0},{800,800},{0,800}};
     for(size_t i=0;i<4;++i) EXPECT_LT(cv::norm(projected[i]-expected[i]),.001);
 }
+
+TEST(OfflinePerception, ProjectiveOuterCornersAndRotations) {
+    cv::Mat flat(800,800,CV_8UC3);
+    for(int r=0;r<8;++r) for(int c=0;c<8;++c)
+        flat(cv::Rect(c*100,r*100,100,100)).setTo(cv::Scalar::all((r+c)%2?235:20));
+    const std::vector<cv::Point2f> boundary{{0,0},{800,0},{800,800},{0,800}};
+    const std::vector<cv::Point2f> destination{{120,90},{650,130},{700,560},{60,520}};
+    const auto H=cv::getPerspectiveTransform(boundary,destination);
+    cv::Mat image;
+    cv::warpPerspective(flat,image,H,{800,650},cv::INTER_LINEAR,cv::BORDER_CONSTANT,{120,120,120});
+    for(int rotation=0;rotation<4;++rotation) {
+        const auto result=ac::BoardDetector().detect(image);
+        ASSERT_TRUE(result) << rotation;
+        // Compare all outer boundaries, independently of image/chess orientation.
+        std::vector<cv::Point2f> expected=destination;
+        for(auto& p:expected) for(int i=0;i<rotation;++i) {
+            const int height=i%2==0?650:800;
+            p={static_cast<float>(height-1)-p.y,p.x};
+        }
+        for(const auto& p:expected) {
+            double best=1e9;
+            for(const auto& found:result->corners) best=std::min(best,cv::norm(found-p));
+            // Synthetic rasterization/subpixel fit tolerance, not hardware tolerance.
+            EXPECT_LT(best,2.0) << rotation;
+        }
+        cv::rotate(image,image,cv::ROTATE_90_CLOCKWISE);
+    }
+}
+
+TEST(OfflinePerception, RectangleIsNotBoard) {
+    cv::Mat image(600,600,CV_8UC3,cv::Scalar(50,70,90));
+    cv::rectangle(image,{100,100,400,400},{240,240,240},-1);
+    EXPECT_FALSE(ac::BoardDetector().detect(image));
+}
