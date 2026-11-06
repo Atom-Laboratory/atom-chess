@@ -38,11 +38,11 @@ def run_viewer(sim):
         nonlocal closed
         closed = True
     panel.protocol('WM_DELETE_WINDOW', close)
-    ttk.Label(panel, text='Targets: J1/J2 in radians; Z/fingers in metres').pack(pady=8)
+    ttk.Label(panel, text='Targets: J1/J2/wrist in radians; Z/fingers in metres').pack(pady=8)
     def change(index, sign):
         target = jog([v.get() for v in values], sim.lower, sim.upper, index, sign)
         values[index].set(float(target[index]))
-        if index >= 3 and len(values) == 5:
+        if index == 3:
             values[3].set(float(target[index]))
             values[4].set(float(target[index]))
     for i, name in enumerate(sim.names):
@@ -56,9 +56,9 @@ def run_viewer(sim):
                   command=(lambda value: values[4].set(float(value))) if i == 3 else None).pack(side='left', fill='x', expand=True)
         ttk.Button(row, text='+', width=3, command=lambda i=i: change(i, 1)).pack(side='left')
     def fingers(value):
-        for i in range(3, len(values)):
+        for i in (3, 4):
             values[i].set(float(value))
-    if len(values) == 5:
+    if len(values) >= 5:
         row = ttk.Frame(panel)
         row.pack(pady=8)
         ttk.Button(row, text='Open gripper [O]', command=lambda: fingers(sim.upper[3])).pack(side='left')
@@ -100,14 +100,14 @@ def run_viewer(sim):
                             set_values(sim.target)
                         elif key == 32:
                             hold = np.clip(sim.observe()['position'], sim.lower, sim.upper)
-                            if len(hold) == 5:
-                                hold[3:] = np.mean(hold[3:])
+                            if len(hold) >= 5:
+                                hold[3:5] = np.mean(hold[3:5])
                             set_values(hold)
                         elif key == ord('V'):
                             camera()
                         elif key == ord('P'):
                             paused.set(not paused.get())
-                        elif key in (ord('O'), ord('C')):
+                        elif len(values) >= 5 and key in (ord('O'), ord('C')):
                             fingers(sim.upper[3] if key == ord('O') else sim.lower[3])
                         else:
                             for i, pair in enumerate(('QA', 'WS', 'ED')):

@@ -12,6 +12,8 @@ TIP_INNER_PROJECTIONS_MM = (-130.07879, -178.17435)
 TIP_TANGENT_MM = 351.30023
 FINGER_LOWER = -.021
 FINGER_UPPER = 0.
+WRIST_PIVOT = (.112837063, .13339837, .090329263)
+WRIST_RANGE = (0., math.tau)
 
 
 def pad_center(index):
@@ -26,7 +28,7 @@ def vector_text(value):
     return ' '.join(str(float(x)) for x in value)
 
 
-def configure(root, metadata, profile):
+def configure(root, metadata, profile, *, wrist=False):
     profile.update(name='interactive-gravity-v3', gravity=[0, 0, -9.81], contacts=True,
                    collision_model='robot convex hulls vs static environment; no self collision',
                    gripper_model='mesh-aligned coupled slides; servo linkage not reconstructed',
@@ -65,6 +67,18 @@ def configure(root, metadata, profile):
         geom.set('friction', '.8 .01 .001')
     arm = root.find('.//body[@name="arm2_link"]')
     actuators = root.find('actuator')
+    gripper = arm
+    if wrist:
+        profile['name'] = 'interactive-wrist-v1'
+        gripper = ET.SubElement(arm, 'body', name='gripper_wrist')
+        ET.SubElement(gripper, 'inertial', pos=vector_text(WRIST_PIVOT), mass='.08',
+                      diaginertia='.0001 .0001 .0001')
+        ET.SubElement(gripper, 'joint', name='wrist_joint', type='hinge',
+                      pos=vector_text(WRIST_PIVOT), axis='0 1 0', limited='true',
+                      range=vector_text(WRIST_RANGE), damping='1', armature='.01')
+        back = arm.find('geom[@name="gripper_back_visual"]')
+        arm.remove(back)
+        gripper.append(back)
     equality = ET.SubElement(root, 'equality')
     ET.SubElement(equality, 'joint', joint1='finger_1', joint2='finger_2',
                   polycoef='0 1 0 0 0', solref='.002 1')
@@ -72,7 +86,7 @@ def configure(root, metadata, profile):
         direction = vector_text(RAIL_AXIS if index == 0 else -RAIL_AXIS)
         geom = arm.find(f'geom[@name="{part}_visual"]')
         arm.remove(geom)
-        finger = ET.SubElement(arm, 'body', name=part+'_moving')
+        finger = ET.SubElement(gripper, 'body', name=part+'_moving')
         ET.SubElement(finger, 'inertial', pos='.11 .03 .09', mass='.03',
                       diaginertia='.00005 .00005 .00005')
         name = 'finger_'+str(index+1)
@@ -90,6 +104,11 @@ def configure(root, metadata, profile):
         ET.SubElement(actuators, 'position', name=name+'_position', joint=name,
                       kp='150', kv='5', ctrlrange=f'{FINGER_LOWER} {FINGER_UPPER}', forcerange='-8 8')
         metadata.append(dict(name=name, kind='prismatic', lower=FINGER_LOWER, upper=FINGER_UPPER, velocity=.025))
+    if wrist:
+        ET.SubElement(actuators, 'position', name='wrist_position', joint='wrist_joint',
+                      kp='50', kv='2', ctrllimited='true', ctrlrange=vector_text(WRIST_RANGE))
+        metadata.append(dict(name='wrist_joint', kind='revolute', lower=WRIST_RANGE[0],
+                             upper=WRIST_RANGE[1], velocity=math.pi))
     for body in world.iter('body'):
         for i, geom in enumerate(list(body.findall('geom'))):
             if geom.get('type') != 'mesh':
@@ -108,8 +127,9 @@ def configure(root, metadata, profile):
         actuator.set('kv', '30')
     profile['actuator_kp'] = 500.
     profile['actuator_kv'] = 30.
-    ET.SubElement(arm, 'site', name='grasp_center', pos=vector_text((pad_center(0)+pad_center(1))/2),
+    ET.SubElement(gripper, 'site', name='grasp_center', pos=vector_text((pad_center(0)+pad_center(1))/2),
                   size='.002', rgba='0 0 0 0')
-    return dict(name='interactive-chess-v6', gripper_visual_only=False,
+    return dict(name='interactive-wrist-v1' if wrist else 'interactive-chess-v6',
+                gripper_visual_only=False,
                 gripper_calibrated=False, self_collision=False,
                 camera=dict(lookat=[.20, -.08, .20], distance=1.35, azimuth=135, elevation=-25))

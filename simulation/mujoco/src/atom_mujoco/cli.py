@@ -60,6 +60,7 @@ def main():
     build.add_argument('--output', required=True, type=Path)
     build.add_argument('--parameters', type=Path, help='JSON overrides; experimental, not calibration')
     build.add_argument('--interactive', action='store_true', help='Experimental gravity/contact/gripper profile')
+    build.add_argument('--wrist', action='store_true', help='Enable the experimental one-turn wrist')
     for command in ('demo', 'view', 'render'):
         child = sub.add_parser(command)
         child.add_argument('--bundle', type=Path, required=True)
@@ -69,8 +70,10 @@ def main():
             child.add_argument('--seconds', type=float, default=4.)
     args = parser.parse_args()
     if args.command == 'build':
+        if args.wrist and not args.interactive:
+            parser.error('--wrist requires --interactive')
         parameters = json.loads(args.parameters.read_text(encoding='utf-8-sig')) if args.parameters else None
-        print(json.dumps(build_bundle(args.urdf, args.output, parameters=parameters, interactive=args.interactive), indent=2))
+        print(json.dumps(build_bundle(args.urdf, args.output, parameters=parameters, interactive=args.interactive, wrist=args.wrist), indent=2))
         return
     sim = Simulation(args.bundle)
     if args.command == 'view':

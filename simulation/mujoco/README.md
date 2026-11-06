@@ -196,3 +196,30 @@ currently fails with GRIP_LOST_DURING_TRANSPORTING on this prototype.
 The supervised operation stops and reports the failure. P038 one-piece transfer
 and native-integration tests pass. Full arm/wrist parity and reliable captured-piece
 transport remain separate work.
+
+## Test the one-turn gripper wrist
+
+Build a fresh experimental bundle from the repository root in Windows PowerShell.
+
+~~~powershell
+$py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+$bundle = Join-Path simulation/mujoco/runs ('wrist-' + [guid]::NewGuid().ToString('N'))
+& $py -B -m atom_mujoco.cli build --urdf simulation/src/urdf/atom.urdf.xacro --parameters simulation/mujoco/examples/playground-reachable-board.json --output $bundle --interactive --wrist
+if ($LASTEXITCODE -ne 0) { throw 'Wrist bundle build failed' }
+& $py -B -m atom_mujoco.cli view --bundle $bundle
+~~~
+
+Raise Z before testing near the board. Use the **wrist_joint** slider or its
+minus and plus buttons to rotate between 0 and 6.283 rad. The two end poses
+look alike but correspond to opposite ends of the joint travel. Press Reset to
+return to the simulated home. O and C still open and close the fingers
+independently of wrist angle.
+
+This bundle is for manual verification. Use the existing five-actuator bundle
+for Chess Playground, capture and RL. See
+[ADR S010](../docs/adrs/S010-bounded-wrist-rotation.md) for the mesh-derived
+pivot and the hardware switch calibration requirements.
+
+~~~powershell
+& $py -B -m pytest simulation/mujoco/tests/test_interactive.py -q
+~~~

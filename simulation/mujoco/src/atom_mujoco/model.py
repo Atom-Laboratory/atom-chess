@@ -59,8 +59,10 @@ def origin(element):
     return {'pos': text(pos), 'quat': text(quat)}
 
 
-def build_bundle(urdf, output, *, parameters=None, interactive=False):
+def build_bundle(urdf, output, *, parameters=None, interactive=False, wrist=False):
     """Emit a portable MJCF/mesh bundle; refuse unknown geometry/topology."""
+    if wrist and not interactive:
+        raise ValueError('Wrist requires the interactive profile')
     profile = copy.deepcopy(PROFILE)
     parameters = dict(parameters or {})
     allowed = {'mass_kg_per_moving_body', 'diagonal_inertia_kg_m2',
@@ -251,7 +253,7 @@ def build_bundle(urdf, output, *, parameters=None, interactive=False):
     scene['graveyard_geometry_provenance'] = 'experimental 36 mm square supports, 12 mm thick; not CAD calibrated'
     if interactive:
         from .interactive_model import configure
-        scene.update(configure(mjcf, metadata, profile))
+        scene.update(configure(mjcf, metadata, profile, wrist=wrist))
         scene['gripper_collision_geometry'] = 'fingertip pads only; finger bodies and back support disabled'
     if official_visuals:
         export_dir = source.parents[3] / 'hardware/Project/chess_pieces/exports'

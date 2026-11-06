@@ -21,6 +21,8 @@ class Playground:
     def __init__(self, bundle, on_step=None, *, diagnostic_unchecked=False):
         self.monitor = ModuleMonitor()
         self.sim = Simulation(bundle)
+        if 'wrist_joint' in self.sim.names:
+            raise ValueError('Wrist bundles currently require the manual MuJoCo view command')
         self.history = []
         self.on_step = on_step
         self.diagnostic_unchecked = diagnostic_unchecked

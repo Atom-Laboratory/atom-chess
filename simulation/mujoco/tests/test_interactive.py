@@ -150,3 +150,37 @@ def test_dynamic_pawn_contact_grasp_lift_release_and_reset(interactive):
     np.testing.assert_array_equal(sim.data.qvel, 0)
     with pytest.raises(ValueError, match='equal targets'):
         sim.advance([0, .12, 0, -.01, 0])
+
+
+def test_bounded_wrist_rotates_both_pads_and_preserves_gripper_opening(tmp_path):
+    from atom_mujoco.model import build_bundle
+
+    source = Path(__file__).resolve().parents[2]/'src/urdf/atom.urdf.xacro'
+    output = tmp_path/'wrist'
+    build_bundle(source, output, interactive=True, wrist=True)
+    sim = Simulation(output)
+    assert sim.names[-3:] == ['finger_1', 'finger_2', 'wrist_joint']
+    joint = sim.model.joint('wrist_joint')
+    assert joint.limited
+    np.testing.assert_allclose(joint.range, [0, 2*np.pi])
+    home = sim.target.copy()
+    names = ['finger_1_pad', 'finger_2_pad']
+    initial = np.array([sim.data.geom(name).xpos.copy() for name in names])
+    pivot = sim.data.xanchor[joint.id].copy()
+    np.testing.assert_allclose(sim.data.xaxis[joint.id], [0, 0, 1], atol=1e-12)
+    turn = home.copy()
+    turn[-1] = np.pi/2
+    sim.reset(turn)
+    quarter_turn = np.array([sim.data.geom(name).xpos.copy() for name in names])
+    rotation = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]])
+    np.testing.assert_allclose(quarter_turn, pivot+(initial-pivot)@rotation.T, atol=1e-12)
+    sim.reset(home)
+    for angle in (sim.upper[-1], sim.lower[-1]):
+        turn[-1] = angle
+        for _ in range(180):
+            state = sim.advance(turn)
+        assert state['position'][-1] == pytest.approx(angle, abs=.002)
+        np.testing.assert_allclose(state['position'][3:5], home[3:5], atol=.0002)
+    turn[-1] = sim.upper[-1]+.01
+    with pytest.raises(ValueError, match='outside'):
+        sim.advance(turn)
