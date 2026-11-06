@@ -27,3 +27,7 @@ See [schema 2, build commands, tests and acceptance report](p032-contract-comple
 ## P033 geometry correction
 
 See [pattern validation and projective corners](p033-geometry-validation.md).
+
+## P034 ArUco reference
+
+See [installation, printing and current limits](aruco-installation-guide.md). Use only the measured-layout workflow; simulation dimensions are explicitly experimental.

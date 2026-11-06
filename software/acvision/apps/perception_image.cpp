@@ -34,7 +34,7 @@ void save(const std::filesystem::path& path,const cv::Mat& image) {
 }
 int main(int argc,char** argv) {
     if (argc != 3 && argc != 5) {
-        std::cerr << "Usage: perception_image IMAGE NEW_OUTPUT [--config acvision-defaults-800-v1]\n";
+        std::cerr << "Usage: perception_image IMAGE NEW_OUTPUT [--config acvision-defaults-800-v1 | --reference layout.json]\n";
         return 2;
     }
     const std::filesystem::path out(argv[2]);
@@ -47,10 +47,12 @@ int main(int argc,char** argv) {
     ac::offline::Result result;
     std::string error, detail, imageId;
     std::string config = argc == 5 ? argv[4] : ac::offline::configId;
+    const bool referenceMode=argc==5 && std::string(argv[3])=="--reference";
+    std::string referenceIdentity;
     bool completed=false, rawSaved=false, gridSaved=false, rectifiedSaved=false;
     size_t byteCount=0;
     try {
-        if ((argc == 5 && std::string(argv[3]) != "--config") || config != ac::offline::configId)
+        if (!referenceMode && ((argc == 5 && std::string(argv[3]) != "--config") || config != ac::offline::configId))
             throw std::invalid_argument("INVALID_CONFIGURATION");
         std::ifstream file(argv[1],std::ios::binary);
         if (!file) throw std::invalid_argument("IMAGE_NOT_READABLE");
@@ -61,7 +63,15 @@ int main(int argc,char** argv) {
         frame=cv::imdecode(bytes,cv::IMREAD_UNCHANGED);
         const auto invalid=ac::offline::inputError(frame);
         if (!invalid.empty()) throw std::invalid_argument(invalid);
-        result=ac::offline::process(frame);
+        std::optional<ac::BoardReference> reference;
+        if(referenceMode) {
+            std::ifstream layout(config,std::ios::binary);
+            if(!layout) throw std::invalid_argument("REFERENCE_NOT_READABLE");
+            const std::vector<unsigned char> bytes((std::istreambuf_iterator<char>(layout)),{});
+            referenceIdentity=fingerprint(bytes);
+            reference=ac::loadBoardReference(config);
+        }
+        result=ac::offline::process(frame,reference?&*reference:nullptr);
         auto raw=frame.clone();
         if (result.detected) for(int i=0;i<4;++i) {
             auto p=result.detected->corners[i];
@@ -100,7 +110,10 @@ int main(int argc,char** argv) {
              << ",\"status\":" << quote(completed?"completed":"failed")
              << ",\"board_detection_status\":" << quote(!result.detected?(completed?"not_detected":"not_run"):
                     result.geometryError.empty()?"unvalidated_candidate":"rejected_geometry")
-             << ",\"orientation\":\"unknown\",\"calibration_status\":\"absent\",\"perception_valid\":false,"
+             << ",\"reference_id\":" << (referenceIdentity.empty()?"null":quote(referenceIdentity))
+             << ",\"reference_residual_rectified_px\":" << (result.referenceOriented?std::to_string(result.referenceResidual):"null")
+             << ",\"orientation\":" << quote(result.referenceOriented?"a8_top_left_from_reference":"unknown")
+             << ",\"calibration_status\":\"physical_unvalidated\",\"perception_valid\":false,"
              << "\"motion_ready\":false,\"confidence\":null,\"gripper_pose\":null,\"corners_px\":";
         if (!result.detected) json << "null";
         else {
@@ -113,6 +126,11 @@ int main(int argc,char** argv) {
             }
             json << ']';
         }
+        json << ",\"detected_reference_ids\":[";
+        for(size_t i=0;i<result.detectedReferenceIds.size();++i) {
+            if(i) json << ','; json << result.detectedReferenceIds[i];
+        }
+        json << "]";
         json << ",\"homography\":";
         if(result.homography.empty()) json << "null";
         else {
@@ -131,14 +149,14 @@ int main(int argc,char** argv) {
             if(r||c) json << ',';
             auto state=result.observation->cells[r][c];
             const char* label=state==ac::CellObservationState::EMPTY?"empty":state==ac::CellObservationState::WHITE?"white":"black";
-            json << "{\"row\":" << r << ",\"column\":" << c << ",\"square\":null,\"candidate\":" << quote(label)
+            json << "{\"row\":" << r << ",\"column\":" << c << ",\"square\":" << (result.referenceOriented?quote(std::string(1,char('a'+c))+std::to_string(8-r)):"null") << ",\"candidate\":" << quote(label)
                  << ",\"occupancy\":\"unknown\",\"confidence\":null,\"visibility\":\"unknown\",\"piece_center\":null}";
         }
         json << "],\"overlays\":{\"raw_corners\":" << (rawSaved?"\"corners.png\"":"null")
              << ",\"rectified\":" << (rectifiedSaved?"\"rectified.png\"":"null")
              << ",\"rectified_grid\":" << (gridSaved?"\"rectified-grid.png\"":"null") << "},\"errors\":[";
         if(!error.empty()) json << "{\"code\":" << quote(error) << ",\"detail\":" << quote(detail) << '}';
-        json << "],\"warnings\":[\"ORIENTATION_UNKNOWN\",\"NO_OPTICAL_OR_METRIC_CALIBRATION\","
+        json << "],\"warnings\":[" << quote(result.referenceOriented?"ORIENTATION_FROM_CONFIGURED_REFERENCE":"ORIENTATION_UNKNOWN") << ",\"NO_OPTICAL_OR_METRIC_CALIBRATION\","
              << "\"CANDIDATES_NOT_VERIFIED_OCCUPANCY\",\"RECTANGLE_FALSE_POSITIVES_POSSIBLE\"";
         if(!result.geometryError.empty()) json << ',' << quote(result.geometryError);
         json << "]}\n";

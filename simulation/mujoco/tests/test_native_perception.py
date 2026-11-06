@@ -179,3 +179,31 @@ def test_independent_color_confusion_uses_candidates_without_mutating_observatio
     assert result['candidate_color_confusion']['empty']['empty']==56
     assert observation==before
     assert not result['motion_ready']
+
+
+def test_reference_mode_orientation_and_missing_marker(executable,tmp_path):
+    assets=Path(__file__).resolve().parents[3]/'docs/camera-rl/aruco-assets-v4'
+    layout=json.loads((assets/'layout.json').read_text())
+    canvas=Image.new('RGB',(1000,1000),'white')
+    # Place generated physical patterns with their configured orientation.
+    # New synthetic calibration maps black-square raster centers exactly.
+    locations=[(50,50),(750,50),(750,550),(50,550)]
+    for ident,(x,y) in enumerate(locations):
+        marker=Image.open(assets/f'marker-{ident}.png').convert('RGB').resize((144,144),Image.Resampling.NEAREST)
+        canvas.paste(marker,(x,y))
+        layout['markers'][ident]['corners_rectified_px']=[[x-8,y-8],[x+111,y-8],[x+111,y+111],[x-8,y+111]]
+    config=tmp_path/'layout.json'; config.write_text(json.dumps(layout))
+    image=tmp_path/'markers.png'; canvas.save(image)
+    subprocess.run([executable,str(image),str(tmp_path/'visible'),'--reference',str(config)],check=True)
+    obs=json.loads((tmp_path/'visible/observation.json').read_text())
+    assert obs['orientation']=='a8_top_left_from_reference'
+    assert obs['cells'][0]['square']=='a8'
+    assert obs['cells'][-1]['square']=='h1'
+    assert set(obs['detected_reference_ids'])=={0,1,2,3}
+    canvas.paste('white',(50,50,194,194)); canvas.save(image)
+    subprocess.run([executable,str(image),str(tmp_path/'missing'),'--reference',str(config)],check=True)
+    missing=json.loads((tmp_path/'missing/observation.json').read_text())
+    assert missing['homography'] is None and missing['orientation']=='unknown'
+    assert not missing['cells'] and not missing['motion_ready']
+    layout['markers'][1]['id']=0; config.write_text(json.dumps(layout))
+    assert subprocess.run([executable,str(image),str(tmp_path/'invalid'),'--reference',str(config)]).returncode==2

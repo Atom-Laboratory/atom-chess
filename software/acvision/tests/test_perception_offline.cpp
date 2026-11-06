@@ -87,3 +87,30 @@ TEST(OfflinePerception, RectangleIsNotBoard) {
     cv::rectangle(image,{100,100,400,400},{240,240,240},-1);
     EXPECT_FALSE(ac::BoardDetector().detect(image));
 }
+
+#include "board_reference/board_reference.hpp"
+TEST(OfflinePerception, ExplicitReferenceAndLossOfVisibility) {
+    cv::Mat image(600,600,CV_8UC3,cv::Scalar::all(255));
+    ac::BoardReference reference{{},2.0}; // synthetic raster tolerance
+    const std::array<cv::Point,4> origins{{{30,30},{470,30},{470,470},{30,470}}};
+    for(int id=0;id<4;++id) {
+        cv::Mat marker,bgr;
+        cv::aruco::generateImageMarker(cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50),id,100,marker);
+        cv::cvtColor(marker,bgr,cv::COLOR_GRAY2BGR);
+        bgr.copyTo(image(cv::Rect(origins[id],cv::Size(100,100))));
+        const float x=static_cast<float>(origins[id].x),y=static_cast<float>(origins[id].y);
+        reference.markers[id]={{{x,y},{x+99,y},{x+99,y+99},{x,y+99}}};
+    }
+    const auto found=ac::detectBoardReference(image,reference);
+    ASSERT_TRUE(found);
+    EXPECT_LT(found->maxReprojectionErrorPx,1.0);
+    // Subpixel refinement finds raster edge boundaries, not integer pixel centers.
+    // Verify mapped control points within half a source pixel, not matrix entries.
+    std::vector<cv::Point2f> control{{150,150},{450,150},{450,450},{150,450}},mapped;
+    cv::perspectiveTransform(control,mapped,found->imageToRectified);
+    for(size_t i=0;i<control.size();++i) EXPECT_LT(cv::norm(mapped[i]-control[i]),.5);
+    image(cv::Rect(origins[0],cv::Size(100,100))).setTo(cv::Scalar::all(255));
+    EXPECT_FALSE(ac::detectBoardReference(image,reference));
+    reference.markers.erase(0);
+    EXPECT_THROW(ac::detectBoardReference(image,reference),std::invalid_argument);
+}

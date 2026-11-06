@@ -3,6 +3,7 @@
 #include "board_vision/board_vision.hpp"
 #include "homography/homography.hpp"
 #include "piece_detector/piece_detector.hpp"
+#include "board_reference/board_reference.hpp"
 #include <cmath>
 #include <optional>
 #include <stdexcept>
@@ -36,16 +37,30 @@ struct Result {
     cv::Mat homography, rectified;
     std::optional<BoardObservation> observation;
     std::string geometryError;
+    bool referenceOriented=false;
+    double referenceResidual=0;
+    std::vector<int> detectedReferenceIds;
 };
-inline Result process(const cv::Mat& bgr) {
+inline Result process(const cv::Mat& bgr,const BoardReference* reference=nullptr) {
     const auto error = inputError(bgr);
     if (!error.empty()) throw std::invalid_argument(error);
     Result result;
-    result.detected = BoardDetector().detect(bgr);
-    if (!result.detected) return result;
+    if(reference) {
+        const auto found=detectBoardReference(bgr,*reference,&result.detectedReferenceIds);
+        if(!found) { result.geometryError="REFERENCE_NOT_VISIBLE_OR_INCONSISTENT"; return result; }
+        result.homography=found->imageToRectified;
+        result.referenceResidual=found->maxReprojectionErrorPx;
+        std::vector<cv::Point2f> corners;
+        cv::perspectiveTransform(std::vector<cv::Point2f>{{0,0},{800,0},{800,800},{0,800}},corners,result.homography.inv());
+        result.detected=BoardCorners{{corners[0],corners[1],corners[2],corners[3]}};
+        result.referenceOriented=true;
+    } else {
+        result.detected = BoardDetector().detect(bgr);
+        if (!result.detected) return result;
+        result.homography = Homography().compute(result.detected->corners);
+    }
     result.geometryError = cornerError(result.detected->corners,bgr.size());
-    if (!result.geometryError.empty()) return result;
-    result.homography = Homography().compute(result.detected->corners);
+    if (!result.geometryError.empty()) { result.homography.release(); result.referenceOriented=false; return result; }
     if (!cv::checkRange(result.homography) || cv::determinant(result.homography) == 0) {
         result.geometryError = "INVALID_HOMOGRAPHY";
         result.homography.release();

@@ -49,6 +49,7 @@ target_sources(acvision
             include/camera/camera.hpp
             include/board_vision/board_vision.hpp
             include/board_observation/board_observation.hpp
+            include/board_reference/board_reference.hpp
             include/piece_detector/piece_detector.hpp
             include/piece_detector/piece_detector_config.hpp
             include/homography/homography.hpp
@@ -75,6 +76,7 @@ endif()
 # AUTOMATIC TARGET GENERATION (Apps Folder)
 # ==========================================
 set(APP_LIST
+    "generate_board_reference"
     "perception_image"
     "board_demo"
     "benchmark_piece_detector"
