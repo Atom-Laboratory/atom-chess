@@ -16,6 +16,7 @@ from .native_motion import NativeMotion, PHASES, ACTOR_PHASES
 from .native_vision import NativeVision
 from .camera_reward import RewardEvaluator
 from .visual_verification import VisualVerification
+from .virtual_camera import make_camera
 
 
 class CameraManipulationEnv(gym.Env):
@@ -38,11 +39,7 @@ class CameraManipulationEnv(gym.Env):
         self.collision = SceneCollision(self.sim)
         camera_cfg = cfg['camera']
         self.renderer = mujoco.Renderer(self.sim.model, height=camera_cfg['height'], width=camera_cfg['width'])
-        self.camera = mujoco.MjvCamera()
-        mujoco.mjv_defaultCamera(self.camera)
-        self.camera.lookat[:] = camera_cfg['lookat']
-        for field in ('distance', 'azimuth', 'elevation'):
-            setattr(self.camera, field, camera_cfg[field])
+        self.camera = make_camera(camera_cfg)
         self.repeat, self.horizon, self.dwell = cfg['control_repeat'], cfg['horizon'], cfg['dwell_steps']
         if any(type(n) is not int or n <= 0 for n in (self.repeat, self.horizon, self.dwell)):
             raise ValueError('Positive control repeat, horizon and dwell required')
@@ -107,6 +104,7 @@ class CameraManipulationEnv(gym.Env):
         captured = time.monotonic()
         rgb = self.render() if rgb is None else rgb
         frame = self.vision.observe(rgb, captured_at_s=captured)
+        self.last_camera_frame = frame
         visual_state = self.visual.update(frame)
         phase_index = POLICY_PHASES.index(ACTOR_PHASES[self.phase])
         try:
