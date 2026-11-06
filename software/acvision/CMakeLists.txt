@@ -75,6 +75,7 @@ endif()
 # AUTOMATIC TARGET GENERATION (Apps Folder)
 # ==========================================
 set(APP_LIST
+    "perception_image"
     "board_demo"
     "benchmark_piece_detector"
     "color_calibrator"

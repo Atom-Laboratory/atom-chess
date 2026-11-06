@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "model_sha256": "2b439e465a9f048ed49df4d681a965650a5a1347f728c2b04cba9c4a935b6b59",
+  "executable_sha256": "3064b73e3b41bed6d456de50d6b29c86df14003f6f880721ab98ece6a8100c41",
+  "camera_status": "experimental_ideal_pinhole",
+  "calibration_status": "unvalidated",
+  "training_gate": "closed",
+  "results": [
+    {
+      "elevation": -35,
+      "azimuth": 270,
+      "distance_m": 0.85,
+      "status": "oracle_aligned_diagnostic",
+      "motion_ready": false,
+      "orientation_estimated_by_vision": false,
+      "squares_evaluated": 64,
+      "square_assignment_accuracy": 0.0,
+      "nominal_board_equivalent_error_mm": {
+        "mean": 1906.843599182273,
+        "median": 1885.428419523845,
+        "p95": 2982.4069716157665,
+        "max": 3191.124641262159
+      }
+    },
+    {
+      "elevation": -45,
+      "azimuth": 270,
+      "distance_m": 0.85,
+      "status": "oracle_aligned_diagnostic",
+      "motion_ready": false,
+      "orientation_estimated_by_vision": false,
+      "squares_evaluated": 64,
+      "square_assignment_accuracy": 0.96875,
+      "nominal_board_equivalent_error_mm": {
+        "mean": 8.481839446032733,
+        "median": 7.437458402207078,
+        "p95": 16.383101011945463,
+        "max": 19.91489832488004
+      }
+    },
+    {
+      "elevation": -55,
+      "azimuth": 270,
+      "distance_m": 0.85,
+      "status": "oracle_aligned_diagnostic",
+      "motion_ready": false,
+      "orientation_estimated_by_vision": false,
+      "squares_evaluated": 64,
+      "square_assignment_accuracy": 0.0,
+      "nominal_board_equivalent_error_mm": {
+        "mean": 1816.4384383754066,
+        "median": 1799.3389797541113,
+        "p95": 2838.7017583754864,
+        "max": 2875.2524390999097
+      }
+    }
+  ]
+}

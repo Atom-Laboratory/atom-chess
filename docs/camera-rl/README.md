@@ -15,3 +15,7 @@ Phase A is complete as a documentation increment. Phases B–F are not implement
 No new training command is provided because the perception and conventional
 baseline gates have not passed. Existing v3 experiments remain available and
 unchanged; their successful lift episodes are not full chess transfers.
+
+## Phase B1 update
+
+The real native image bridge is implemented. See [run instructions and measured blockers](native-perception-guide.md). Initial lateral perception validation failed; subsequent environment and training phases remain gated. The Phase A status above describes the historical audit increment.
