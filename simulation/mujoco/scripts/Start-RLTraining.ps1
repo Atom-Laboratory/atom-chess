@@ -4,6 +4,7 @@ param(
     [ValidateSet('auto','cpu','cuda')][string]$Device = 'auto',
     [double]$Speed = 2,
     [switch]$Headless,
+    [ValidateRange(1,8)][int]$Workers = 1,
     [string]$Resume,
     [string]$WarmStart,
     [switch]$WarmStartFeatures,
@@ -21,7 +22,7 @@ if ([double]::IsNaN($Speed) -or [double]::IsInfinity($Speed) -or $Speed -le 0) {
 if (-not $Output) { $Output = Join-Path $atomModule ('runs/visual-'+$Stage+'-'+[guid]::NewGuid().ToString('N')) }
 $atomArgs = @('-u', '-B', (Join-Path $atomModule 'examples/train_visual_grasp.py'), '--bundle', $atomBundle,
     '--output', $Output, '--steps', $Steps, '--stage', $Stage, '--device', $Device, '--speed', $Speed,
-    '--eval-episodes', 5)
+    '--eval-episodes', 5, '--workers', $Workers)
 if (-not $Headless) { $atomArgs += '--watch' }
 if ($Resume) { $atomArgs += @('--resume',$Resume) }
 if ($WarmStartFeatures) { $atomArgs += '--warm-start-features' }

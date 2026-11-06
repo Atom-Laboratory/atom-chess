@@ -1,18 +1,27 @@
 """Train and evaluate an experimental pixel-only PPO grasp policy."""
 import argparse
+from functools import partial
 import hashlib
 import json
 from pathlib import Path
 import time
 
 import numpy as np
+import mujoco
 import torch
 from stable_baselines3 import PPO
 from stable_baselines3.common.env_checker import check_env
 from stable_baselines3.common.callbacks import BaseCallback
+from stable_baselines3.common.vec_env import SubprocVecEnv
 from atom_mujoco.training_monitor import RunRecorder, TrainingDisplay
 
 from atom_mujoco.visual_grasp_env import VisualGraspEnv
+
+
+def make_worker(bundle, horizon, stage, mirror):
+    env = VisualGraspEnv(bundle, horizon=horizon, stage=stage)
+    env.mirror_state = mirror
+    return env
 
 
 def evaluate(env, policy, seeds):
@@ -50,6 +59,7 @@ def main():
     initialization.add_argument('--resume',type=Path,help='Previous run directory; new output is required')
     parser.add_argument('--warm-start-features', action='store_true',
                         help='Transfer the visual encoder and initialize fresh policy heads')
+    parser.add_argument('--workers', type=int, choices=range(1, 9), default=1)
     args = parser.parse_args()
     if args.warm_start_features and not args.warm_start:
         parser.error('--warm-start-features requires --warm-start')
@@ -86,19 +96,26 @@ def main():
             lineage['transfer_scope'] = 'features' if args.warm_start_features else 'policy'
     args.output.mkdir(parents=True)
     (args.output/'run.json').write_text(json.dumps(dict(environment=config,
-        requested_steps=args.steps, seed=args.seed, watch=args.watch, initialization=lineage,
+        requested_steps=args.steps, seed=args.seed, watch=args.watch, workers=args.workers, initialization=lineage,
         resume=str(args.resume) if args.resume else None),indent=2)+'\n')
     torch.set_num_threads(2)
     started = time.perf_counter()
     env = VisualGraspEnv(args.bundle, horizon=args.horizon, stage=args.stage)
     display = None
-    recorder = RunRecorder(args.output)
+    recorder = RunRecorder(args.output, workers=args.workers)
+    parallel = None
     try:
         check_env(env, warn=True)
-        policy = PPO('CnnPolicy',env,n_steps=128,batch_size=32,n_epochs=4,
+        if args.workers > 1:
+            parallel = SubprocVecEnv([
+                partial(make_worker, args.bundle, args.horizon, args.stage, args.watch and index == 0)
+                for index in range(args.workers)
+            ], start_method='spawn')
+        training_env = parallel if parallel is not None else env
+        policy = PPO('CnnPolicy',training_env,n_steps=128,batch_size=32,n_epochs=4,
                      learning_rate=3e-4,seed=args.seed,device=args.device,verbose=1)
         if args.resume:
-            policy = PPO.load(args.resume/'policy.zip',env=env,device=args.device)
+            policy = PPO.load(args.resume/'policy.zip',env=training_env,device=args.device)
             policy.set_random_seed(args.seed)
         if args.warm_start:
             donor = PPO.load(source/'policy.zip', device='cpu')
@@ -121,19 +138,29 @@ def main():
         if args.watch:
             env.reset(seed=args.seed)
             display = TrainingDisplay(env,speed=args.speed,device=str(policy.device))
-            env.on_transition = display.update
+            if parallel is None:
+                env.on_transition = display.update
         class Progress(BaseCallback):
             stopped = False
 
             def _on_step(self):
-                recorder.step(self.num_timesteps,self.locals['rewards'][0],
-                              self.locals['dones'][0],self.locals['infos'][0])
+                for index, (reward, done, info) in enumerate(zip(
+                        self.locals['rewards'], self.locals['dones'], self.locals['infos'])):
+                    recorder.step(self.num_timesteps, reward, done, info, worker=index)
                 if display:
                     display.step = self.num_timesteps
                     display.episodes = recorder.episodes
                     display.successes = recorder.successes
-                    display.pump()
-                if self.num_timesteps % 2048 == 0:
+                    if parallel is None:
+                        display.pump()
+                    else:
+                        info = self.locals['infos'][0]
+                        with display.viewer.lock():
+                            env.sim.data.qpos[:] = info['mirror_qpos']
+                            mujoco.mj_forward(env.sim.model, env.sim.data)
+                        pixels = info.get('terminal_observation', self.locals['new_obs'][0])
+                        display.update(pixels, info)
+                if self.num_timesteps // 2048 > (self.num_timesteps-args.workers) // 2048:
                     self.model.save(args.output/f'checkpoint-{self.num_timesteps}')
                 self.stopped = bool(display and display.stopped) or (args.output/'STOP').exists()
                 return not self.stopped
@@ -163,7 +190,7 @@ def main():
         a,_ = policy.predict(obs,deterministic=True)
         b,_ = loaded.predict(obs,deterministic=True)
         assert np.allclose(a,b), 'Checkpoint reload changed deterministic action'
-        report = dict(schema=2, environment=config, initialization=lineage, interrupted=interrupted, algorithm='PPO', observation='96x96 RGB only',
+        report = dict(schema=2, environment=config, workers=args.workers, initialization=lineage, interrupted=interrupted, algorithm='PPO', observation='96x96 RGB only',
             task='local E2 pawn '+args.stage, reward_source='simulation_oracle',
             model_parameters_updated=changed, trained_steps=policy.num_timesteps,
             cuda_available=torch.cuda.is_available(), device=str(policy.device),
@@ -182,6 +209,8 @@ def main():
         env.on_transition = None
         if display:
             display.close()
+        if parallel is not None:
+            parallel.close()
         env.close()
 
 

@@ -34,6 +34,7 @@ class VisualGraspEnv(gym.Env):
         self.site = self.sim.model.site('grasp_center').id
         self.finished = True
         self.on_transition = None
+        self.mirror_state = False
         self.camera_fixed = False
 
     def render(self):
@@ -146,6 +147,8 @@ class VisualGraspEnv(gym.Env):
         obs = self.observation()
         if self.on_transition:
             self.on_transition(obs,info)
+        if self.mirror_state:
+            info['mirror_qpos'] = self.sim.data.qpos.copy()
         return obs,float(reward),terminated,truncated,info
 
     def close(self):

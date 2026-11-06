@@ -5,24 +5,24 @@ import time
 
 
 class RunRecorder:
-    def __init__(self, directory):
+    def __init__(self, directory, workers=1):
         self.directory = Path(directory)
-        self.episode_return = 0.
+        self.episode_returns = [0.] * workers
         self.episodes = 0
         self.successes = 0
 
-    def step(self, step, reward, done, info):
-        self.episode_return += float(reward)
+    def step(self, step, reward, done, info, *, worker=0):
+        self.episode_returns[worker] += float(reward)
         if done:
             self.episodes += 1
             self.successes += int(info.get('success', False))
             event = {key:info[key] for key in ('success','disturbed','lift_m','held',
                      'bystander_displacement_m','reward_source','stage','episode') if key in info}
             event.update(step=int(step), episode_index=self.episodes,
-                         episode_return=self.episode_return)
+                         worker=worker, episode_return=self.episode_returns[worker])
             with (self.directory/'episodes.jsonl').open('a', encoding='utf-8') as stream:
                 stream.write(json.dumps(event)+'\n')
-            self.episode_return = 0.
+            self.episode_returns[worker] = 0.
         if done or step % 32 == 0:
             self.progress(step, 'training')
 

@@ -34,3 +34,12 @@ def test_display_pause_and_stop_state_without_desktop():
     assert display.stopped and not display.paused
     display.viewer = SimpleNamespace(is_running=lambda:False)
     display.pump()  # Closed viewer requests stop without touching a destroyed UI.
+
+
+def test_parallel_worker_returns_stay_separate(tmp_path):
+    recorder = RunRecorder(tmp_path, workers=2)
+    recorder.step(2, 1., False, {}, worker=0)
+    recorder.step(2, 9., True, {}, worker=1)
+    recorder.step(4, 2., True, {}, worker=0)
+    records = [json.loads(line) for line in (tmp_path/'episodes.jsonl').read_text().splitlines()]
+    assert [(record['worker'], record['episode_return']) for record in records] == [(1, 9.), (0, 3.)]

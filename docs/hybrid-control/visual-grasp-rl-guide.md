@@ -97,3 +97,15 @@ environment version and horizon. Evaluate expanded collision geometry separately
 Use -WarmStartFeatures with -WarmStart to transfer the visual encoder alone.
 Grasp can then relearn the movement outputs without inheriting the lift
 policy's immediate upward command.
+
+## Parallel simulation
+
+Use -Workers 4 for four environments feeding the same PPO policy. The live
+viewer mirrors worker zero. Other workers run without windows. Add -Headless
+to remove display pacing. Image rendering remains active for every worker.
+
+    & ./simulation/mujoco/scripts/Start-RLTraining.ps1 -Stage grasp -Steps 100000 -Device cuda -Workers 4 -Headless
+
+Compare one, two and four workers using the same device and task. PPO collects
+128 transitions per worker per rollout. Changing workers changes the rollout
+size. Measure aggregate steps per second and held-out success separately.
