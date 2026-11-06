@@ -1,148 +1,509 @@
-# MuJoCo example catalog
+# MuJoCo Example Catalog
 
-Run from the repository root in Windows PowerShell. Start with the
-[module README](../README.md) for installation and the complete P038 setup.
-Each example below uses a fresh output directory.
+This catalog documents the MuJoCo examples available in the ATOM Chess repository, their input requirements, execution commands, generated artifacts, and experimental limitations.
 
-## Which bundle belongs to each example?
+All commands assume **Windows PowerShell** and must be executed from the repository root.
 
-A bundle is a directory containing model.xml and manifest.json. Filenames are
-labels. Joint names, actuators, pieces, geometry and model hashes define
-compatibility.
+Before running an example, read the [MuJoCo module README](../README.md). It contains installation instructions, build requirements, environment setup, and the complete P038 preparation procedure.
 
-| Example | Argument | Required input | Example prepared here |
+Each example that generates output must receive a **fresh output directory**. Do not manually create the final output directory unless the script explicitly requires it. Several scripts create their output directory internally and will fail if it already exists.
+
+---
+
+## 1. Bundle and fixture compatibility
+
+A bundle is a directory containing at least `model.xml` and `manifest.json`. The manifest records the identity and compatibility information associated with the model and its assets.
+
+A directory name or filename alone does not establish compatibility. Joint names, actuators, body identities, geometry, model hashes, and environment configuration must match the requirements of the example.
+
+| Example | Main argument | Required input | Existing example |
 |---|---|---|---|
-| simulation_playground.py | --bundle | Full interactive 32-piece scene, five actuator prototype | runs/playground-fingertip-only-v1 |
-| train_visual_grasp.py | --bundle | Legacy v3 32-piece scene with white_pawn_e2 and grasp_center | runs/playground-fingertip-only-v1 |
-| replay_visual_grasp.py | --bundle and --run | Same model hash and environment as the saved v3 run | Original bundle and its matching legacy run |
-| validate_native_perception.py | --bundle | Interactive board scene with named squares/pieces | $base |
-| validate_board_reference.py | --bundle | Same board size as the supplied marker layout | $base |
-| prepare_camera_task.py | --bundle and --reference-scene | Base metadata plus matching marker-scene XML | $base and $reference/reference-scene.xml |
-| preview_native_policy.py | --scene | Marker-scene XML with the expected joint names | $reference/reference-scene.xml |
-| train_camera_manipulation.py | --config | P038 environment.json pointing to a one-piece fixture | $task/environment.json |
-| qualify_saved_perception.py | --source and --bundle | Saved captures/evaluator files and their generating bundle | Homography output and $base |
-| compare_perception_reproductions.py | --p033, --p034, --audit | Preserved historical/current runs and matching initial audit | See P036 protocol |
-| inspect_joints.py | --bundle | Five-actuator interactive prototype with its inspection frames | runs/interactive-chess-v6 |
+| `simulation_playground.py` | `--bundle` | Full interactive 32-piece scene and five-actuator prototype | `runs/playground-fingertip-only-v1` |
+| `train_visual_grasp.py` | `--bundle` | Legacy v3 scene with `white_pawn_e2` and `grasp_center` | `runs/playground-fingertip-only-v1` |
+| `replay_visual_grasp.py` | `--bundle`, `--run` | Original v3 bundle and a matching saved run | Original bundle and its corresponding run |
+| `validate_native_perception.py` | `--bundle` | Interactive board scene with named squares and pieces | `$base` |
+| `validate_board_reference.py` | `--bundle` | Board scene compatible with the supplied ArUco marker layout | `$base` |
+| `prepare_camera_task.py` | `--bundle`, `--reference-scene` | Base bundle and matching reference-scene XML | `$base` and `$reference/reference-scene.xml` |
+| `preview_native_policy.py` | `--scene` | Reference-scene XML with expected joint names | `$reference/reference-scene.xml` |
+| `train_camera_manipulation.py` | `--config` | P038 configuration pointing to a prepared one-piece fixture | `$task/environment.json` |
+| `qualify_saved_perception.py` | `--source`, `--bundle` | Saved captures, evaluator artifacts, and their generating bundle | Homography output and `$base` |
+| `compare_perception_reproductions.py` | `--p033`, `--p034`, `--audit` | Preserved historical/current runs and matching initial audit | See the P036 protocol |
+| `inspect_joints.py` | `--bundle` | Five-actuator prototype and inspection frames | `runs/interactive-chess-v6` |
 
-The tutorial creates these related artifacts together.
+### Important compatibility distinctions
 
-~~~text
-$work/
-  base/                    $base, full robot + board + 32 pieces
-  reference/
-    reference-scene.xml    same base geometry + visual ArUco references
-    initial-270-75.png     an RGB capture for native integration tests
-  task/
-    model.xml              P038 one-piece physical fixture
-    manifest.json          exact model and asset identities
-    environment.json       $config, task/camera/library/bundle selection
-  smoke/
-    run.json               recorded training environment signature
-    policy.zip             compatible policy checkpoint
-~~~
+- The Playground bundle is a multi-piece interactive scene. It is not interchangeable with the P038 one-piece training fixture.
+- P038 receives its environment through `environment.json`. The configuration selects the fixture, camera, native libraries, and task parameters.
+- Legacy v3 checkpoints use a different observation/action contract and cannot be loaded as P038 policies.
+- Replaying or resuming a saved run requires compatible model, configuration, environment, and source signatures.
+- Current prototype bundles do not model the physical 360-degree wrist rotation reported for the robot. P038 models J1, Z, J2, and two coupled finger slides. Wrist-axis CAD mapping and a corresponding model/checkpoint version remain pending.
 
-For P038, pass the task configuration. The program loads its bundle from the
-configuration. For replay/resume, preserve the model/configuration/source hashes
-recorded by the run. A 32-piece Playground bundle cannot replace a P038 one-piece
-fixture. A checkpoint from legacy v3 has a different observation/action contract.
+---
 
-All current prototype bundles omit the physical 360-degree wrist rotation
-reported by the user. P038 models J1, Z, J2 and two coupled finger slides.
-Use these examples to study the existing prototype. Wrist-axis CAD mapping and
-the corresponding new bundle/checkpoint version remain pending.
+## 2. Directory conventions
 
-## Functional camera-guided manipulation
+The following variables are used throughout the examples:
 
-After completing the module README's preparation, keep these variables in the
-same terminal.
+```powershell
+$ErrorActionPreference = 'Stop'
 
-~~~powershell
 $py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+
+$work = 'simulation/mujoco/runs/exercise-p038'
+
+# Existing input bundle. This is not generated by the tutorial.
+$base = 'simulation/mujoco/runs/playground-fingertip-only-v1'
+
+$layout = 'docs/camera-rl/evidence-p035/high-camera-layout.json'
+
+$library = (Resolve-Path 'build/p038-core/bin/Release/acvision_runtime.dll').Path
+
+# Use the perception executable built for the native perception CLI.
+# See the module README for the corresponding build target.
+$perceptionExe = (Resolve-Path 'build/p032-contract/bin/Release/perception_image.exe').Path
+```
+
+The tutorial generates the following artifacts:
+
+```text
+simulation/mujoco/runs/
+├── playground-fingertip-only-v1/     Existing input bundle
+│   ├── model.xml
+│   └── manifest.json
+│
+└── exercise-p038/
+    ├── reference-validation/         Generated by validate_board_reference.py
+    │   ├── reference-scene.xml
+    │   ├── input captures
+    │   ├── native observations
+    │   ├── evaluator artifacts
+    │   └── report.json
+    │
+    ├── task/                         Generated by prepare_camera_task.py
+    │   ├── model.xml
+    │   ├── manifest.json
+    │   └── environment.json
+    │
+    ├── camera-preview/               Generated by preview_native_policy.py
+    │   ├── camera.png
+    │   ├── rectified.png
+    │   ├── actor-input.png
+    │   ├── empty-reference.png
+    │   └── report.json
+    │
+    ├── smoke/                        Optional training output
+    │   ├── run.json
+    │   └── policy.zip
+    │
+    └── paired/                       Optional perception qualification
+        ├── report.md
+        ├── metrics.json
+        ├── configuration.json
+        └── completion.json
+```
+
+The filenames above describe expected artifact categories. Exact capture filenames and optional outputs depend on the script and whether detection succeeds.
+
+**Important:** `$base` is an existing input bundle outside `$work`. The tutorial does not copy or regenerate it. `$reference`, `$task`, and other output directories are created by their respective scripts and must not exist before execution.
+
+---
+
+## 3. Functional camera-guided manipulation (P038)
+
+P038 implements an experimental camera-guided manipulation pipeline using the native ATOM perception and motion components.
+
+The current default task is a single white pawn transfer from e4 to e5. The nominal trajectory is generated through the native motion-planning integration. PPO can propose bounded residual corrections to nominal waypoints.
+
+The simulator evaluator independently verifies physical events such as grasp, lift, transport, placement, release, and stability.
+
+Native visual confirmation is a separate mechanism and remains unqualified. Simulator success must not be interpreted as proof of visual confirmation or hardware readiness.
+
+### 3.1 Prepare the reference scene
+
+First, create the parent working directory and define a fresh reference output path:
+
+```powershell
+$reference = Join-Path $work 'reference-validation'
+
+New-Item -ItemType Directory -Force -Path $work | Out-Null
+
+Test-Path (Join-Path $base 'manifest.json')
+Test-Path $perceptionExe
+Test-Path $library
+```
+
+All three checks must return `True`.
+
+Generate the reference scene:
+
+```powershell
+& $py -B simulation/mujoco/examples/validate_board_reference.py `
+  --bundle $base `
+  --assets docs/camera-rl/aruco-assets-v4 `
+  --layout $layout `
+  --executable $perceptionExe `
+  --output $reference `
+  --elevations -75 `
+  --save-evaluator
+```
+
+This script creates the output directory itself. Do not run `New-Item` on `$reference` before executing it.
+
+Inspect the generated artifacts:
+
+```powershell
+Get-ChildItem $reference -Recurse -File |
+    Select-Object FullName
+```
+
+The next stage requires:
+
+```powershell
+Test-Path (Join-Path $reference 'reference-scene.xml')
+```
+
+Do not proceed if this check returns `False`.
+
+### 3.2 Prepare the one-piece fixture
+
+```powershell
+$task = Join-Path $work 'task'
+
+& $py -B simulation/mujoco/examples/prepare_camera_task.py `
+  --bundle $base `
+  --reference-scene (Join-Path $reference 'reference-scene.xml') `
+  --layout $layout `
+  --output $task
+```
+
+The resulting fixture should contain:
+
+- `model.xml`
+- `manifest.json`
+- `environment.json`
+
+Verify the configuration:
+
+```powershell
 $config = Join-Path $task 'environment.json'
-~~~
 
-| Example | Purpose | Command options | Expected result |
-|---|---|---|---|
-| prepare_camera_task.py | New one-piece fixture | --bundle --reference-scene --layout --output | model.xml, manifest.json, environment.json |
-| train_camera_manipulation.py | Watch nominal motion | --config --output --mode baseline --episodes 1 --watch | Approach through retreat, physical result in report.json |
-| train_camera_manipulation.py | Short training cycle | --config --output --mode smoke --steps 128 --device cpu | PPO updates, policy.zip, reload check and evaluation |
-| train_camera_manipulation.py | Longer training | --config --output --mode train --steps 100000 | Fresh policy and periodic checkpoints |
-| train_camera_manipulation.py | Continue saved run | --mode train --resume PREVIOUS_RUN --steps 128 | Verified optimizer/timestep continuation in new output |
-| train_camera_manipulation.py | Evaluate saved actor | --mode evaluate --checkpoint POLICY_ZIP --episodes 2 --watch | Both nominal and residual results |
+Test-Path $config
+```
 
-Exact commands are in the [module README](../README.md) and
-[P038 guide](../../../docs/camera-rl/P038-camera-guided-manipulation.md).
-See the [pipeline walkthrough](../../../docs/camera-rl/P038-pipeline-walkthrough.md)
-for image sources, actor features, motion execution and PPO weight updates.
+### 3.3 Watch nominal motion
 
-The current default task is a fixed e4-to-e5 pawn transfer. Success is verified
-through a separate simulator evaluator. Native visual manipulation confirmation
-remains unqualified. The smoke test establishes execution, rather than a learned
-advantage or hardware readiness.
+Run one baseline episode without PPO residual corrections:
 
-## Native camera-to-policy preview
+```powershell
+$run = Join-Path $work ('baseline-' + [guid]::NewGuid().ToString('N'))
 
-Use the reference scene generated during setup. This example captures a static
-configured observation pose and displays raw/rectified RGB.
+& $py -B simulation/mujoco/examples/train_camera_manipulation.py `
+  --config $config `
+  --output $run `
+  --mode baseline `
+  --episodes 1 `
+  --watch
+```
 
-~~~powershell
+Expected behavior:
+
+1. Approach the source square.
+2. Lower to the grasp position.
+3. Close the gripper.
+4. Lift the pawn.
+5. Approach the destination square.
+6. Lower and release.
+7. Retract.
+
+Inspect `report.json` and the recorded execution artifacts. A successful simulator episode does not establish visual confirmation.
+
+### 3.4 Run a short PPO smoke test
+
+```powershell
+$smoke = Join-Path $work ('smoke-' + [guid]::NewGuid().ToString('N'))
+
+& $py -B simulation/mujoco/examples/train_camera_manipulation.py `
+  --config $config `
+  --output $smoke `
+  --mode smoke `
+  --steps 128 `
+  --episodes 1 `
+  --device cpu
+```
+
+Expected results include:
+
+- PPO training execution.
+- Updated policy weights.
+- `policy.zip`.
+- Saved run metadata.
+- Checkpoint reload and evaluation.
+
+The smoke test verifies the training and serialization pipeline. It does not demonstrate a learned performance advantage.
+
+### 3.5 Run longer training
+
+```powershell
+$training = Join-Path $work ('training-' + [guid]::NewGuid().ToString('N'))
+
+& $py -B simulation/mujoco/examples/train_camera_manipulation.py `
+  --config $config `
+  --output $training `
+  --mode train `
+  --steps 100000 `
+  --episodes 3 `
+  --device cuda
+```
+
+Use `--device cpu` if CUDA is unavailable.
+
+Training duration and checkpoint quality must be evaluated from recorded metrics. A longer training run is not, by itself, evidence of generalization.
+
+### 3.6 Resume a saved run
+
+```powershell
+$resumed = Join-Path $work ('resumed-' + [guid]::NewGuid().ToString('N'))
+
+& $py -B simulation/mujoco/examples/train_camera_manipulation.py `
+  --config $config `
+  --output $resumed `
+  --mode train `
+  --resume $smoke `
+  --steps 128 `
+  --episodes 1 `
+  --device cpu
+```
+
+Use a compatible previous run. The resume procedure must validate the saved environment and optimizer/timestep state rather than silently starting an unrelated training session.
+
+### 3.7 Evaluate a saved policy
+
+```powershell
+$evaluation = Join-Path $work ('evaluation-' + [guid]::NewGuid().ToString('N'))
+
+& $py -B simulation/mujoco/examples/train_camera_manipulation.py `
+  --config $config `
+  --output $evaluation `
+  --mode evaluate `
+  --checkpoint (Join-Path $smoke 'policy.zip') `
+  --episodes 2 `
+  --device cpu `
+  --watch
+```
+
+Compare nominal and residual execution results. Preserve the checkpoint, run metadata, and evaluation report together.
+
+---
+
+## 4. Native camera-to-policy preview
+
+The preview loads the reference scene generated in Section 3.1. It captures the configured observation pose and displays the raw and rectified camera images.
+
+```powershell
 $out = Join-Path $work 'camera-preview'
-& $py -B simulation/mujoco/examples/preview_native_policy.py --scene (Join-Path $reference 'reference-scene.xml') --layout docs/camera-rl/evidence-p035/high-camera-layout.json --library build/p038-core/bin/Release/acvision_runtime.dll --output $out --frames 30 --empty-fixture --preview
-~~~
 
-Expected files include camera.png, rectified.png, actor-input.png when reference
-detection succeeds, empty-reference.png and report.json. This preview has a
-fixed scene and creates no policy checkpoint.
+& $py -B simulation/mujoco/examples/preview_native_policy.py `
+  --scene (Join-Path $reference 'reference-scene.xml') `
+  --layout $layout `
+  --library $library `
+  --output $out `
+  --frames 30 `
+  --empty-fixture `
+  --preview
+```
 
-## ArUco homography captures
+Expected outputs may include:
 
-~~~powershell
+- `camera.png`
+- `rectified.png`
+- `actor-input.png`, when reference detection succeeds
+- `empty-reference.png`
+- `report.json`
+
+This is a perception and observation preview. It uses a fixed scene and does not create a policy checkpoint or demonstrate learned manipulation.
+
+---
+
+## 5. ArUco homography captures
+
+This example generates camera captures and native perception observations for the supplied marker layout.
+
+```powershell
 $out = Join-Path $work 'homography'
-$exe = (Resolve-Path build/p038-core/bin/Release/perception_image.exe).Path
-& $py -B simulation/mujoco/examples/validate_board_reference.py --bundle $base --assets docs/camera-rl/aruco-assets-v4 --layout docs/camera-rl/evidence-p035/high-camera-layout.json --executable $exe --output $out --elevations -75 --save-evaluator
-~~~
 
-The output contains input PNGs, native observation directories, rectified
-overlays where accepted, independent evaluator-only points and report.json.
-The detector gets RGB and layout. Only the evaluator gets projected truth.
+& $py -B simulation/mujoco/examples/validate_board_reference.py `
+  --bundle $base `
+  --assets docs/camera-rl/aruco-assets-v4 `
+  --layout $layout `
+  --executable $perceptionExe `
+  --output $out `
+  --elevations -75 `
+  --save-evaluator
+```
 
-## Paired checker/ArUco comparison
+The output contains input images, native observation directories, accepted rectified overlays, evaluator-only projected points, and a report.
 
-Use the output above so that evaluator-only files are available.
+The native detector receives the image and marker layout. Projected simulator truth is reserved for the independent evaluator and must not be passed to the perception algorithm.
 
-~~~powershell
+This example evaluates board-reference detection and homography. It does not perform robot motion or policy training.
+
+---
+
+## 6. Paired checker/ArUco perception qualification
+
+Use the output from Section 5 so that the evaluator-only artifacts are available.
+
+```powershell
 $paired = Join-Path $work 'paired'
-& $py -B simulation/mujoco/examples/qualify_saved_perception.py --source $out --bundle $base --layout docs/camera-rl/evidence-p035/high-camera-layout.json --executable $exe --output $paired
-~~~
 
-Read report.md, metrics.json, configuration.json and completion.json.
-This example measures perception. It performs no training.
+& $py -B simulation/mujoco/examples/qualify_saved_perception.py `
+  --source $out `
+  --bundle $base `
+  --layout $layout `
+  --executable $perceptionExe `
+  --output $paired
+```
 
-## Native integration tests from newly generated fixtures
+Inspect:
 
-~~~powershell
+- `report.md`
+- `metrics.json`
+- `configuration.json`
+- `completion.json`
+
+This example qualifies perception using saved captures. It performs no PPO training and does not authorize robot motion.
+
+---
+
+## 7. Native integration tests
+
+The integration tests require a valid P038 configuration and an existing RGB test image generated during reference-scene preparation.
+
+First, verify that the required files exist:
+
+```powershell
+$config = Join-Path $task 'environment.json'
+
+Test-Path $config
+Test-Path $library
+Test-Path $perceptionExe
+
+Get-ChildItem $reference -Recurse -File -Filter *.png |
+    Select-Object FullName
+```
+
+Select an actual RGB capture from the generated reference output. Do not assume that a particular filename exists without checking the output.
+
+For example, if the generated capture is named `initial-270-75.png`:
+
+```powershell
+$image = Join-Path $reference 'initial-270-75.png'
+
+Test-Path $image
+```
+
+Configure the opt-in environment variables:
+
+```powershell
 $env:P038_CONFIG = (Resolve-Path $config).Path
-$env:ACVISION_RUNTIME_DLL = (Resolve-Path build/p038-core/bin/Release/acvision_runtime.dll).Path
-$env:ACVISION_PERCEPTION_EXE = (Resolve-Path build/p038-core/bin/Release/perception_image.exe).Path
-$env:ACVISION_TEST_IMAGE = (Resolve-Path (Join-Path $reference 'initial-270-75.png')).Path
-$env:ACVISION_TEST_LAYOUT = (Resolve-Path docs/camera-rl/evidence-p035/high-camera-layout.json).Path
+$env:ACVISION_RUNTIME_DLL = $library
+$env:ACVISION_PERCEPTION_EXE = $perceptionExe
+$env:ACVISION_TEST_IMAGE = (Resolve-Path $image).Path
+$env:ACVISION_TEST_LAYOUT = (Resolve-Path $layout).Path
+```
 
-& $py -B -m pytest simulation/mujoco/tests/test_camera_manipulation.py simulation/mujoco/tests/test_native_runtime.py simulation/mujoco/tests/test_native_perception.py -q -p no:cacheprovider
-~~~
+Run the relevant test suites:
 
-Expected result is 31 passing tests with all prerequisites installed.
-Unset the opt-in environment variables when running unrelated tests.
+```powershell
+& $py -B -m pytest `
+  simulation/mujoco/tests/test_camera_manipulation.py `
+  simulation/mujoco/tests/test_native_runtime.py `
+  simulation/mujoco/tests/test_native_perception.py `
+  -q -p no:cacheprovider
+```
 
-## Older experiments
+The documented P038 validation baseline is **31 passing tests**, provided all prerequisites are installed and the fixtures are valid. Skipped tests must be reported separately; they must not be counted as passing tests.
 
-- simulation_playground.py is the interactive multi-piece GUI. Start it using
-  Start-MuJoCo.ps1 -Mode playground.
-- train_visual_grasp.py and replay_visual_grasp.py use the preserved v3 pixel
-  grasp/lift environment. Their checkpoints are separate from P038.
-- inspect_joints.py inspects a specified bundle. Supply a new --output filename.
-- validate_native_perception.py reproduces the earlier checker-only camera sweep.
-- simulation/learning is a separate legacy URDF/SAC exercise. Read its README
-  and use an independent virtual environment for its pinned dependencies.
+If a test fails because of an unavailable reference image, invalid configuration, or missing native dependency, fix the prerequisite before interpreting the result as a code regression.
 
-For every future example, add a catalog entry with prerequisites, an exact
-command, expected artifacts, test command and relevant limitations.
+Unset the opt-in variables after testing:
+
+```powershell
+Remove-Item Env:P038_CONFIG -ErrorAction SilentlyContinue
+Remove-Item Env:ACVISION_RUNTIME_DLL -ErrorAction SilentlyContinue
+Remove-Item Env:ACVISION_PERCEPTION_EXE -ErrorAction SilentlyContinue
+Remove-Item Env:ACVISION_TEST_IMAGE -ErrorAction SilentlyContinue
+Remove-Item Env:ACVISION_TEST_LAYOUT -ErrorAction SilentlyContinue
+```
+
+---
+
+## 8. Older experiments
+
+### Interactive Playground
+
+`simulation_playground.py` provides the interactive multi-piece simulation GUI.
+
+Start it using:
+
+```powershell
+.\simulation\mujoco\scripts\Start-MuJoCo.ps1 -Mode playground
+```
+
+### Legacy visual grasp
+
+`train_visual_grasp.py` and `replay_visual_grasp.py` use the preserved v3 pixel-based grasp/lift environment.
+
+Their observation/action contracts and checkpoints are independent of P038.
+
+### Joint inspection
+
+`inspect_joints.py` inspects a specified bundle. Always supply a new output filename to preserve previous inspection artifacts.
+
+### Native perception validation
+
+`validate_native_perception.py` reproduces the earlier checker-only camera sweep. It should not be interpreted as equivalent to the ArUco-based reference pipeline.
+
+### Legacy learning environment
+
+`simulation/learning` is a separate URDF/SAC exercise. Read its own README and use an independent virtual environment for its pinned dependencies.
+
+---
+
+## 9. Experimental limitations
+
+The following limitations apply when interpreting results from these examples:
+
+- P038 currently demonstrates a controlled one-piece e4-to-e5 task, not complete autonomous chess manipulation.
+- The simulator evaluator uses privileged physical state for reward and evaluation. This information is not part of the policy observation.
+- Native visual manipulation confirmation remains unqualified.
+- A successful MuJoCo grasp or placement does not establish equivalent physical hardware performance.
+- The current experiment does not demonstrate generalization across different board layouts, camera positions, lighting conditions, piece geometries, or physical disturbances.
+- The prototype does not yet represent the physical wrist rotation.
+- Simulation collision checks and contact proxies are experimental and do not establish physical collision safety.
+- No training result should be presented as evidence of improved manipulation until it is compared against the deterministic nominal baseline under controlled and repeatable conditions.
+
+For implementation details, see:
+
+- [P038 Camera-Guided Manipulation](../../../docs/camera-rl/P038-camera-guided-manipulation.md)
+- [P038 Pipeline Walkthrough](../../../docs/camera-rl/P038-pipeline-walkthrough.md)
+- [MuJoCo Module README](../README.md)
+
+---
+
+## 10. Adding a new example
+
+Every new MuJoCo example must have a catalog entry containing:
+
+1. Script name and purpose.
+2. Required input bundle, fixture, or configuration.
+3. Exact execution command from the repository root.
+4. Output directory and expected artifacts.
+5. Required build targets and dependencies.
+6. Relevant test command.
+7. Known limitations and compatibility constraints.
+8. Whether the example is diagnostic, simulation-only, training, or an execution component.
+
+Preserve historical experiments and their original contracts. New implementations should use separate output directories and must not overwrite existing evidence or checkpoints.
+
+The catalog should make it possible to reproduce an experiment without relying on undocumented shell history or assumptions about previously generated files.

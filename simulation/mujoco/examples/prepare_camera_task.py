@@ -78,7 +78,7 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--piece', default='white_pawn_e2')
     parser.add_argument('--source', default='e4')
-    parser.add_argument('--target', default='e5')
+    parser.add_argument('--target', default='d5')
     args = parser.parse_args()
     prepare(args.bundle, args.reference_scene, args.layout, args.output,
             piece=args.piece, source=args.source, target=args.target)
