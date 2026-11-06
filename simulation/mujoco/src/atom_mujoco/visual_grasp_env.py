@@ -13,11 +13,12 @@ class VisualGraspEnv(gym.Env):
 
     VERSION = 3
 
-    def __init__(self, bundle, horizon=100, stage='lift'):
+    def __init__(self, bundle, horizon=100, stage='lift', *, full_open_reset=True):
         super().__init__()
         if stage not in ('lift', 'grasp') or horizon <= 0:
             raise ValueError('Expected lift/grasp stage and positive horizon')
         self.stage = stage
+        self.full_open_reset = full_open_reset
         self.playground = Playground(bundle, diagnostic_unchecked=True)
         self.sim = self.playground.sim
         self.horizon = horizon
@@ -51,11 +52,17 @@ class VisualGraspEnv(gym.Env):
         self.origin = self.sim.data.xpos[self.body].copy()
         stem = self.sim.model.geom('white_pawn_e2_stem').id
         self.grip_offset = float(self.sim.model.geom_pos[stem,2]-self.sim.model.geom_size[stem,1]/4)
-        point = self.origin + [0, 0, self.grip_offset + (.008 if self.stage=='grasp' else 0.)]
+        approach_height = 0.
+        if self.stage == 'grasp':
+            approach_height = .020 if self.full_open_reset else .008
+        point = self.origin + [0, 0, self.grip_offset + approach_height]
         q = self.playground.solve(point)
         # Small arm perturbations; no piece pose is reset after settling.
         q[:3] += self.np_random.uniform(-1, 1, 3)*np.array([.003,.0005,.003])
-        q[3:] = pregrasp_opening(self.sim, 'white_pawn_e2')
+        if self.stage == 'grasp' and self.full_open_reset:
+            q[3:] = self.sim.upper[3:]
+        else:
+            q[3:] = pregrasp_opening(self.sim, 'white_pawn_e2')
         q = np.clip(q, self.sim.lower, self.sim.upper)
         self.initial = {p['name']: self.sim.data.body(p['name']).xpos.copy()
                         for p in self.sim.manifest['pieces']}
@@ -73,6 +80,9 @@ class VisualGraspEnv(gym.Env):
                 self.playground.controller.step(q)
             if not self.playground.feedback.grip_contacts('white_pawn_e2'):
                 raise RuntimeError('RESET_GRASP_FAILED: lift curriculum requires bilateral grip')
+        if self.stage == 'grasp' and self.full_open_reset:
+            if any(self.playground.feedback.pad_contacts('white_pawn_e2')):
+                raise RuntimeError('RESET_GRASP_HAS_CONTACT')
         if self.bystander_displacement() > .008:
             raise RuntimeError('RESET_DISTURBED_BYSTANDER')
         self.target = q.copy()

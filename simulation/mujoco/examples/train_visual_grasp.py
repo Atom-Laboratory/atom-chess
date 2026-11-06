@@ -58,6 +58,8 @@ def main():
     model_hash = hashlib.sha256((args.bundle/'model.xml').read_bytes()).hexdigest()
     config = dict(environment_version=VisualGraspEnv.VERSION, stage=args.stage,
                   horizon=args.horizon, model_sha256=model_hash)
+    if args.stage == 'grasp':
+        config['grasp_reset'] = 'fully_open_v1'
     lineage = None
     source = args.resume or args.warm_start
     if source:
@@ -67,6 +69,9 @@ def main():
         if previous_report['environment'] != previous or checkpoint_hash != previous_report['checkpoint_sha256']:
             parser.error('Source checkpoint or configuration differs from recorded result')
         expected = dict(config, stage=previous['stage']) if args.warm_start else config
+        if args.warm_start and previous['stage'] != args.stage:
+            expected.pop('grasp_reset', None)
+            expected.update({key: previous[key] for key in ('grasp_reset',) if key in previous})
         if previous != expected:
             parser.error('Resume requires an identical environment; warm-start may change only stage')
         lineage = dict(mode='warm_start' if args.warm_start else 'resume',

@@ -13,3 +13,8 @@ across tasks would also transfer accumulated gradient statistics.
 A lifted piece and an ungrasped piece require different actions. Transfer can
 hurt performance. Compare both initializations at matched budgets. Expanded
 collision geometry requires its own compatibility and evaluation experiment.
+
+The full-open grasp reset uses an explicit reset revision. It starts 20 mm
+above the stem and requires no initial fingertip contact with the target.
+Resume compares the reset revision. Weight transfer may cross this reset
+change when switching from lift to grasp on the same bundle.

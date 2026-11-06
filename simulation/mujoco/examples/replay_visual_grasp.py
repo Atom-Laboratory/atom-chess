@@ -25,7 +25,8 @@ def main():
     config=report.get('environment',{})
     if config.get('environment_version') != VisualGraspEnv.VERSION:
         parser.error('Checkpoint uses an older curriculum; replay with its original code revision')
-    env=VisualGraspEnv(args.bundle,horizon=config['horizon'],stage=config['stage'])
+    env=VisualGraspEnv(args.bundle,horizon=config['horizon'],stage=config['stage'],
+                       full_open_reset=config.get('grasp_reset') == 'fully_open_v1')
     try:
         policy=PPO.load(args.run/'policy.zip',device='cpu')
         obs,_=env.reset(seed=args.seed)

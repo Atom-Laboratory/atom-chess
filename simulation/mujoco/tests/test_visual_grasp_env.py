@@ -70,6 +70,8 @@ def test_grasp_curriculum_does_not_start_with_scripted_grip():
     try:
         _,info = env.reset(seed=7)
         assert not info['reset_grip']
+        np.testing.assert_allclose(env.sim.observe()['position'][3:], env.sim.upper[3:], atol=.0002)
+        assert not any(env.playground.feedback.pad_contacts('white_pawn_e2'))
         assert not env.playground.feedback.grip_contacts('white_pawn_e2')
         assert env.bystander_displacement() < .008
     finally:

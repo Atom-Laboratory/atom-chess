@@ -35,7 +35,7 @@ Once held-out lifts are reliable, start a separate grasp run:
 
     & ./simulation/mujoco/scripts/Start-RLTraining.ps1 -Stage grasp -Steps 100000 -Device cuda
 
-Stage grasp starts 8 mm above the proxy stem with pre-shaped jaws. Actions are
+Stage grasp starts 20 mm above the proxy grasp point with fully open jaws. The reset rejects initial pad contact with the target. Older grasp reports without a grasp_reset field replay the historical pre-shaped reset. Actions are
 bounded joint-reference increments for J1, Z, J2 and both coupled fingers. Both
 stages operate on the E2 pawn with small randomized initial arm offsets. Rewards
 and success use simulation oracle contacts, poses and bystander displacement;
