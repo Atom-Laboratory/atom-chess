@@ -8,6 +8,7 @@ KiCad revision will own electrical connectivity and its design BOM.
 | Deliverable | Scope |
 | --- | --- |
 | [BOM and parts registers](bom.md) | Inventory, installed snapshot and mechanical source register |
+| [Electronics blueprint](electronics-blueprint.md) | SCARA adaptation, power and control diagrams, and draft harness schedule |
 | [Architecture and interfaces](architecture.md) | Logical system, power design boundaries and simulation mapping |
 | [Verification and release](verification.md) | Evidence to collect, acceptance criteria and release gates |
 | [MuJoCo integration](../mujoco-integration.md) | Supported bundles and headless verification |
