@@ -8,6 +8,10 @@ positions, GPIO numbers, protection values and physical axis assignments are
 open. Use the [blueprint](electronics-blueprint.md) for the comparison with the
 original design and connector schedule.
 
+[Open the full-size ED-01 engineering drawing](diagrams/ed-01-electrical-architecture.svg).
+
+![ED-01 electrical architecture and stepper interface](diagrams/ed-01-electrical-architecture.svg)
+
 ## E01 — Power tree and return domains
 
 ```text

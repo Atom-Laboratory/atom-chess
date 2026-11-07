@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1050" width="1600" height="1050" role="img" aria-labelledby="title desc" font-family="Segoe UI, Arial, sans-serif"><title id="title">ATOM SCARA electrical architecture, ED-01 P0</title><desc id="desc">Functional engineering sheet with power distribution and stop path, control and feedback, and a repeated stepper channel.</desc><defs><marker id="a45411" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#a45411"/></marker><marker id="1764a0" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#1764a0"/></marker><marker id="ab3d45" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#ab3d45"/></marker></defs>
+<rect x="0" y="0" width="1600" height="1050" rx="0" fill="#f1f5fa" stroke="none" stroke-width="1.5"/>
+<rect x="0" y="0" width="1600" height="141" rx="0" fill="#102740" stroke="none" stroke-width="1.5"/>
+<text x="48" y="39" fill="#a9cce7" font-size="17" font-weight="700">ATOM CHESS  /  SCARA ELECTRONICS</text>
+<text x="48" y="88" fill="#ffffff" font-size="39" font-weight="700">Electrical architecture &amp; stepper interface</text>
+<text x="49" y="119" fill="#c7d8e9" font-size="17" font-weight="400">How To Mechatronics SCARA adaptation  •  ESP32-S3 motion control  •  DRV8825-family driver candidates</text>
+<rect x="1336" y="42" width="214" height="61" rx="12" fill="#213f5c" stroke="none" stroke-width="1.5"/>
+<text x="1352" y="67" fill="#fff" font-size="17" font-weight="700">ED-01  /  REV P0</text>
+<text x="1352" y="90" fill="#c7d8e9" font-size="14" font-weight="700">PRELIMINARY DESIGN</text>
+<rect x="40" y="163" width="1520" height="343" rx="12" fill="#fff" stroke="#cbd8e4" stroke-width="1.5"/>
+<text x="64" y="198" fill="#1764a0" font-size="16" font-weight="700">01</text>
+<text x="111" y="199" fill="#102740" font-size="24" font-weight="700">Power distribution and stop path</text>
+<rect x="68" y="250" width="205" height="65" rx="9" fill="#fff8ef" stroke="#a45411" stroke-width="1.5"/>
+<text x="81" y="276" fill="#102740" font-size="19" font-weight="700">J01  DC input</text>
+<text x="81" y="298" fill="#52677a" font-size="15" font-weight="400">12 V / 10 A reported</text>
+<rect x="327" y="250" width="218" height="65" rx="9" fill="#fff8ef" stroke="#a45411" stroke-width="1.5"/>
+<text x="340" y="276" fill="#102740" font-size="19" font-weight="700">Input protection</text>
+<text x="340" y="298" fill="#52677a" font-size="15" font-weight="400">F01 and polarity TBD</text>
+<rect x="606" y="222" width="222" height="65" rx="9" fill="#fff8ef" stroke="#a45411" stroke-width="1.5"/>
+<text x="619" y="248" fill="#102740" font-size="19" font-weight="700">Logic regulation</text>
+<text x="619" y="270" fill="#52677a" font-size="15" font-weight="400">Output per board TBD</text>
+<rect x="606" y="345" width="222" height="65" rx="9" fill="#fff8ef" stroke="#a45411" stroke-width="1.5"/>
+<text x="619" y="371" fill="#102740" font-size="19" font-weight="700">Actuator disconnect</text>
+<text x="619" y="393" fill="#52677a" font-size="15" font-weight="400">Topology and rating TBD</text>
+<rect x="910" y="345" width="242" height="65" rx="9" fill="#fff8ef" stroke="#a45411" stroke-width="1.5"/>
+<text x="923" y="371" fill="#102740" font-size="19" font-weight="700">Motor rail</text>
+<text x="923" y="393" fill="#52677a" font-size="15" font-weight="400">DRV8825 carriers</text>
+<rect x="1230" y="345" width="276" height="65" rx="9" fill="#fff8ef" stroke="#a45411" stroke-width="1.5"/>
+<text x="1243" y="371" fill="#102740" font-size="19" font-weight="700">Servo regulator → gripper</text>
+<text x="1243" y="393" fill="#52677a" font-size="15" font-weight="400">Output and peak load TBD</text>
+<rect x="910" y="222" width="242" height="65" rx="9" fill="#fff8ef" stroke="#a45411" stroke-width="1.5"/>
+<text x="923" y="248" fill="#102740" font-size="19" font-weight="700">Logic loads</text>
+<text x="923" y="270" fill="#52677a" font-size="15" font-weight="400">Host, ESP32-S3, camera</text>
+<path d="M273 283 H327" fill="none" stroke="#a45411" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#a45411)"/>
+<path d="M545 283 H573 V255 H606" fill="none" stroke="#a45411" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#a45411)"/>
+<path d="M573 283 V377 H606" fill="none" stroke="#a45411" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#a45411)"/>
+<path d="M828 255 H910" fill="none" stroke="#a45411" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#a45411)"/>
+<path d="M828 377 H910" fill="none" stroke="#a45411" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#a45411)"/>
+<path d="M866 377 V325 H1204 V377 H1230" fill="none" stroke="#a45411" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#a45411)"/>
+<text x="925" y="318" fill="#a45411" font-size="15" font-weight="700">+VM_ACT</text>
+<rect x="68" y="392" width="205" height="65" rx="9" fill="#fff2f2" stroke="#ab3d45" stroke-width="1.5"/>
+<text x="81" y="418" fill="#102740" font-size="19" font-weight="700">Emergency stop</text>
+<text x="81" y="440" fill="#52677a" font-size="15" font-weight="400">Device / contacts TBD</text>
+<path d="M273 416 H575 V398 H606" fill="none" stroke="#ab3d45" stroke-width="2.6" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#ab3d45)"/>
+<text x="290" y="405" fill="#ab3d45" font-size="15" font-weight="700">Independent stop path</text>
+<path d="M273 442 H485" fill="none" stroke="#ab3d45" stroke-width="2.6" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#ab3d45)"/>
+<text x="505" y="448" fill="#ab3d45" font-size="15" font-weight="700">Stop status to controller</text>
+<text x="912" y="451" fill="#52677a" font-size="17" font-weight="400">Verify Z load retention when torque is removed.</text>
+<rect x="40" y="524" width="712" height="365" rx="12" fill="#fff" stroke="#cbd8e4" stroke-width="1.5"/>
+<text x="64" y="559" fill="#1764a0" font-size="16" font-weight="700">02</text>
+<text x="111" y="560" fill="#102740" font-size="24" font-weight="700">Control and feedback</text>
+<rect x="69" y="590" width="245" height="65" rx="9" fill="#eff7ff" stroke="#1764a0" stroke-width="1.5"/>
+<text x="82" y="616" fill="#102740" font-size="19" font-weight="700">ESP32-CAM candidate</text>
+<text x="82" y="638" fill="#52677a" font-size="15" font-weight="400">Image transport TBD</text>
+<rect x="69" y="697" width="245" height="65" rx="9" fill="#eff7ff" stroke="#1764a0" stroke-width="1.5"/>
+<text x="82" y="723" fill="#102740" font-size="19" font-weight="700">ATOM host</text>
+<text x="82" y="745" fill="#52677a" font-size="15" font-weight="400">Chess, vision and planning</text>
+<rect x="409" y="697" width="298" height="65" rx="9" fill="#eff7ff" stroke="#1764a0" stroke-width="1.5"/>
+<text x="422" y="723" fill="#102740" font-size="19" font-weight="700">ESP32-S3 motion</text>
+<text x="422" y="745" fill="#52677a" font-size="15" font-weight="400">Four logical axes + gripper</text>
+<rect x="69" y="799" width="245" height="65" rx="9" fill="#eff7ff" stroke="#1764a0" stroke-width="1.5"/>
+<text x="82" y="825" fill="#102740" font-size="19" font-weight="700">Endstops and stop status</text>
+<text x="82" y="847" fill="#52677a" font-size="15" font-weight="400">Input circuit / polarity TBD</text>
+<rect x="409" y="799" width="298" height="65" rx="9" fill="#eff7ff" stroke="#1764a0" stroke-width="1.5"/>
+<text x="422" y="825" fill="#102740" font-size="19" font-weight="700">Axis channels + gripper</text>
+<text x="422" y="847" fill="#52677a" font-size="15" font-weight="400">STEP / DIR and servo PWM</text>
+<path d="M191 655 V697" fill="none" stroke="#1764a0" stroke-width="2.6" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#1764a0)"/>
+<path d="M314 729 H409" fill="none" stroke="#1764a0" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#1764a0)"/>
+<text x="324" y="718" fill="#1764a0" font-size="15" font-weight="700">ACM1</text>
+<path d="M314 832 H365 V751 H409" fill="none" stroke="#ab3d45" stroke-width="2.6" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#ab3d45)"/>
+<path d="M558 762 V799" fill="none" stroke="#1764a0" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#1764a0)"/>
+<rect x="774" y="524" width="786" height="365" rx="12" fill="#fff" stroke="#cbd8e4" stroke-width="1.5"/>
+<text x="798" y="559" fill="#1764a0" font-size="16" font-weight="700">03</text>
+<text x="845" y="560" fill="#102740" font-size="24" font-weight="700">Repeated stepper channel</text>
+<rect x="803" y="608" width="182" height="65" rx="9" fill="#eff7ff" stroke="#1764a0" stroke-width="1.5"/>
+<text x="816" y="634" fill="#102740" font-size="19" font-weight="700">ESP32-S3</text>
+<text x="816" y="656" fill="#52677a" font-size="15" font-weight="400">GPIOs TBD</text>
+<rect x="1064" y="590" width="245" height="65" rx="9" fill="#fff8ef" stroke="#a45411" stroke-width="1.5"/>
+<text x="1077" y="616" fill="#102740" font-size="19" font-weight="700">DRV_AX carrier</text>
+<text x="1077" y="638" fill="#52677a" font-size="15" font-weight="400">Variant / pinout TBD</text>
+<rect x="1390" y="590" width="139" height="65" rx="9" fill="#fff8ef" stroke="#a45411" stroke-width="1.5"/>
+<text x="1403" y="616" fill="#102740" font-size="19" font-weight="700">Motor AX</text>
+<text x="1403" y="638" fill="#52677a" font-size="15" font-weight="400">Phase pairs TBD</text>
+<path d="M985 630 H1064" fill="none" stroke="#1764a0" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#1764a0)"/>
+<text x="991" y="620" fill="#1764a0" font-size="14" font-weight="700">STEP</text>
+<path d="M985 650 H1064" fill="none" stroke="#1764a0" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#1764a0)"/>
+<text x="997" y="675" fill="#1764a0" font-size="14" font-weight="700">DIR</text>
+<path d="M1309 618 H1390" fill="none" stroke="#a45411" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#a45411)"/>
+<text x="1317" y="608" fill="#a45411" font-size="14" font-weight="700">A1/A2</text>
+<path d="M1309 640 H1390" fill="none" stroke="#a45411" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#a45411)"/>
+<text x="1317" y="665" fill="#a45411" font-size="14" font-weight="700">B1/B2</text>
+<path d="M1186 703 V655" fill="none" stroke="#a45411" stroke-width="2.6" stroke-linejoin="round" marker-end="url(#a45411)"/>
+<text x="1200" y="698" fill="#a45411" font-size="15" font-weight="700">+VM_ACT</text>
+<path d="M899 714 H1113 V655" fill="none" stroke="#ab3d45" stroke-width="2.6" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#ab3d45)"/>
+<text x="812" y="707" fill="#ab3d45" font-size="15" font-weight="700">nENBL</text>
+<text x="803" y="749" fill="#102740" font-size="19" font-weight="700">J1 / J2 / J3 / Z  ·  fifth motor assignment open</text>
+<text x="803" y="782" fill="#52677a" font-size="17" font-weight="400">Set MODE, nRESET and nSLEEP for the verified carrier.</text>
+<text x="803" y="811" fill="#52677a" font-size="17" font-weight="400">Check STEP timing, phase order, current limit and reset inhibit.</text>
+<text x="803" y="845" fill="#102740" font-size="18" font-weight="700">TI DRV8825 IC:  I_FS = V_REF / (5 × R_SENSE)</text>
+<rect x="40" y="910" width="1520" height="104" rx="12" fill="#e5edf6" stroke="#cbd8e4" stroke-width="1.5"/>
+<path d="M66 944 h34" fill="none" stroke="#a45411" stroke-width="2.6" stroke-linejoin="round"/>
+<text x="111" y="950" fill="#102740" font-size="16" font-weight="700">Power</text>
+<path d="M207 944 h34" fill="none" stroke="#1764a0" stroke-width="2.6" stroke-linejoin="round"/>
+<text x="252" y="950" fill="#102740" font-size="16" font-weight="700">Command / data</text>
+<path d="M412 944 h34" fill="none" stroke="#ab3d45" stroke-width="2.6" stroke-linejoin="round" stroke-dasharray="7 5"/>
+<text x="457" y="950" fill="#102740" font-size="16" font-weight="700">Stop / inhibit</text>
+<text x="652" y="950" fill="#52677a" font-size="16" font-weight="400">Dashed lines indicate interfaces that still need design or verification.</text>
+<text x="66" y="985" fill="#102740" font-size="15" font-weight="700">FUNCTIONAL SCHEMATIC</text>
+<text x="300" y="985" fill="#52677a" font-size="16" font-weight="400">Release requires verified carrier pinouts, physical axis mapping and reviewed protection.</text>
+</svg>
