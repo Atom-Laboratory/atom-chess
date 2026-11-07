@@ -59,7 +59,7 @@ class NativeMotion:
         if status:
             raise ValueError(self.native.acmotion_error().decode('utf-8'))
 
-    def solve(self, xyz, opening, wrist=None):
+    def solve(self, xyz, opening, wrist=None, *, elbow_down=True):
         geometry = self.geometry.copy()
         if self.has_wrist:
             wrist = self.default_wrist if wrist is None else float(wrist)
@@ -83,7 +83,7 @@ class NativeMotion:
         pose = np.array([*(np.asarray(xyz)*1000), (opening-low)/(high-low)*100], dtype=np.float64)
         output = np.empty(5, dtype=np.float64)
         self._check(self.native.acmotion_solve(self.pointer(geometry), self.pointer(pose),
-                                              1, self.pointer(output)))
+                                              int(elbow_down), self.pointer(output)))
         return np.append(output, wrist) if self.has_wrist else output
 
     def plan(self, source, target, safe_z, pick_z):
