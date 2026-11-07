@@ -255,6 +255,83 @@ a documented failure for subsequent curriculum work.
 [Final sparse-neighbor run](runs/wrist-c75050a5fba7486bae0b60e6c40ce766/full-gripper/ppo-neighbor-smooth-1024/README.md)
 contains the report, checkpoints, source snapshot and camera replay images.
 
+## Touch penalties and the 90% qualification protocol
+
+The policy observation remains RGB plus host command history. Setting
+non_target_contact_penalty to a positive value enables simulation contact
+supervision. The run reports rgb_plus_non_target_contacts as its reward source.
+Each environment step with robot-to-non-target or carried-piece-to-non-target
+contact receives a penalty, and execution continues. A piece tilting more than
+60 degrees stops physics stepping at the detected substep, terminates the
+episode and receives a larger toppling penalty. All pieces, including the
+selected piece, are monitored for toppling. These are training-only privileged
+signals and do not establish hardware sensing.
+
+The qualification fixture uses the complete gripper colliders, a d4 neighbor,
+and an e4-to-d5 transfer. It selects one wrist residual while elevated before
+grasping and another while elevated before placement. The nominal source and
+transport orientations are configured separately to clear different obstacle
+directions. Setup-only random placement offsets are sampled within +/-1 mm.
+The actor never receives the sampled physical offsets.
+
+qualify.py evaluates a saved run against at least thirty fixed seeds. It checks source
+and checkpoint identities, correct target appearance, stable neighbor images
+and absence of toppling. Contacts are counted separately and do not automatically
+reject an otherwise completed transfer. The 90% threshold applies to the
+declared simulation test distribution. The historical sparse run stopped
+after nine episodes with six approvals, so that run did not qualify.
+
+~~~powershell
+$py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+$root = 'simulation/mujoco/training/camera-manipulation/runs'
+$config = 'PATH_TO_THE_ENVIRONMENT_JSON_USED_TO_TRAIN'
+$run = 'PATH_TO_THE_COMPLETED_RUN_DIRECTORY'
+$output = Join-Path $root ('qualification-' + [guid]::NewGuid().ToString('N'))
+& $py -B simulation/mujoco/training/camera-manipulation/qualify.py --config $config --run $run --output $output --episodes 30 --start-seed 910000 --minimum-rate .9
+~~~
+
+Use a completed run that matches the current source and model provenance.
+For the historical sparse scenario, contact-environment.json records
+visual_qualification=true, placement_jitter_m=0.001,
+non_target_contact_penalty=20, the full-gripper fixture and phase-specific
+wrist orientations. Preserve that configuration with its historical run.
+Train a matching run on the current revision before qualifying this
+scenario with the current launcher.
+
+Outputs include protocol.json with the exact seed list, report.json with all
+decisions, and before/after RGB and board images for each episode. A passed
+field becomes true only when all requested episodes have completed and the
+acceptance rate meets the target. Interrupted evaluations retain partial results.
+
+Run tests with the MuJoCo Python environment.
+
+~~~powershell
+& $py -B -m pytest simulation/mujoco/tests/test_contact_supervision.py simulation/mujoco/tests/test_wrist_training.py -q
+~~~
+
+See ADR S016 for the appearance criteria and ADR S017 for the explicit split
+between visual actor inputs and training-only contact/toppling supervision.
+
+## Change the selected piece in a crowded fixture
+
+Pass --piece with the model identity and --source with its starting square when
+running examples/prepare_camera_task/run.py. For the center exercise use
+--piece white_pawn_d2 --source d4 --target e5. The identity refers to the
+original model piece and remains white_pawn_d2 after it is placed on d4.
+Each repeated --obstacle name@square adds a separate dynamic neighbor. Keep
+the source, target, neighbor squares and piece identities distinct.
+
+Generate a new fixture when changing the selected piece or its starting square.
+Editing only source in an existing environment.json changes the requested
+square but does not move the physical piece in model.xml. For a compatible
+curriculum, use --warm-start and keep the original checkpoint run intact.
+
+Capture fixtures accept the same repeated --obstacle option on
+examples/prepare_capture_task/prepare_capture_task.py. The RGB executor checks
+neighbor images after each transfer. It first removes the captured pawn to
+the Graveyard and then moves the attacker. Its swept preflight may reject
+crowded configurations. It is a deterministic validation path.
+
 ## Standard opening exercises
 
 Use [the fixture generator](../../examples/prepare_camera_task/README.md)
