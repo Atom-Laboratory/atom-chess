@@ -13,6 +13,11 @@ update. Plot raw loss and its exponential moving average on per-metric axes.
 Allow a signed-log scale for comparing trends with large outliers. Describe
 the instantiated PPO graph and measure activations from sampled forward passes.
 Keep rollout rendering and telemetry consumption in separate processes.
+Use the same stage and progress record for terminal messages and the
+dashboard. Count training steps from the beginning of the current execution
+and keep evaluation episodes separate. Use the effective PPO rollout budget
+as the denominator and display the original request when rounding applies.
+Publish stage transitions immediately and throttle in-stage updates.
 
 ## Alternatives
 

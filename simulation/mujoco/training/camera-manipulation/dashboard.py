@@ -7,6 +7,8 @@ import sys
 import tkinter as tk
 from tkinter import ttk
 
+from run_progress import progress_text
+
 
 BG, PANEL, TEXT, MUTED = '#101823', '#182435', '#ecf4fc', '#a9bfd4'
 GRID, ACCENT = '#344961', '#65e3cb'
@@ -39,6 +41,8 @@ class TrainingDashboard:
         self.window.protocol('WM_DELETE_WINDOW', self.close)
         self.stream = path.open(encoding='utf-8')
         self.status = 'Waiting for training'
+        self.progress = None
+        self.training_progress = None
         self.step = 0
         self.info = {}
         self.graph = []
@@ -51,8 +55,10 @@ class TrainingDashboard:
         self.loss_history = {key: deque(maxlen=240) for key, *_ in LOSSES}
         self.reward_history = deque(maxlen=360)
         self.header = tk.Label(self.window, bg=BG, fg=TEXT, font=('Segoe UI', 16, 'bold'),
-                               anchor='w', padx=16, pady=10)
+                               anchor='w', padx=16, pady=6)
         self.header.pack(fill='x')
+        self.stage_detail = tk.Label(self.window, bg=BG, fg=MUTED, anchor='w', padx=16)
+        self.stage_bar = ttk.Progressbar(self.window, mode='determinate')
         self.tabs = ttk.Notebook(self.window)
         self.tabs.pack(fill='both', expand=True, padx=12, pady=(0, 12))
         self.loss = self.make_tab('PPO losses')
@@ -90,6 +96,10 @@ class TrainingDashboard:
     def ingest(self, data):
         if 'status' in data:
             self.status = data['status']
+        if 'progress' in data:
+            self.progress = data['progress']
+            if self.progress['unit'] == 'steps':
+                self.training_progress = self.progress
         if 'graph' in data:
             self.graph = data['graph']
             self.parameters = data.get('trainable_parameters')
@@ -127,7 +137,7 @@ class TrainingDashboard:
         width, height = canvas.winfo_width(), canvas.winfo_height()
         if width < 2 or height < 2:
             return
-        self.header.configure(text=f'ATOM   /   PPO     ·     Step {self.step:,}     ·     {self.status}')
+        self.draw_progress()
         canvas.delete('all')
         if canvas is self.loss:
             self.draw_losses(width, height)
@@ -135,6 +145,29 @@ class TrainingDashboard:
             self.draw_network(width, height)
         else:
             self.draw_reward(width, height)
+
+    def draw_progress(self):
+        if self.progress is None:
+            self.header.configure(text=f'ATOM / PPO    ·    Step {self.step:,}    ·    {self.status}')
+            return
+        self.header.configure(text=f'ATOM / PPO    ·    {progress_text(self.progress)}')
+        detail = self.progress['detail']
+        if self.progress['unit'] != 'steps' and self.training_progress is not None:
+            training = progress_text(self.training_progress)
+            detail = f'{training}    ·    {detail}' if detail else training
+        if detail:
+            self.stage_detail.configure(text=detail)
+            if not self.stage_detail.winfo_manager():
+                self.stage_detail.pack(fill='x', before=self.tabs)
+        else:
+            self.stage_detail.pack_forget()
+        total = self.progress['total']
+        if total is None:
+            self.stage_bar.pack_forget()
+        else:
+            self.stage_bar.configure(maximum=total, value=self.progress['completed'])
+            if not self.stage_bar.winfo_manager():
+                self.stage_bar.pack(fill='x', padx=16, pady=(3, 6), before=self.tabs)
 
     def chart(self, canvas, x, y, width, height, title, subtitle, history, color,
               threshold=None, *, show_ema=True):

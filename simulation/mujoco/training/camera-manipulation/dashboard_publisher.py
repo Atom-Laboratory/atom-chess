@@ -78,7 +78,6 @@ class DashboardPublisher:
             self.process = subprocess.Popen(
                 [sys.executable, '-B', str(Path(__file__).with_name('dashboard.py')), str(path)],
                 creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
-            self.write(status='Baseline evaluation — PPO starts after validation')
         except Exception:
             self.stream.close()
             raise
@@ -87,7 +86,7 @@ class DashboardPublisher:
         graph, layers = policy_graph(policy)
         for name, layer in layers.items():
             self.hooks.append(layer.register_forward_hook(self.record_activation(name)))
-        self.write(status='Collecting PPO experience', graph=graph,
+        self.write(graph=graph,
                    trainable_parameters=sum(p.numel() for p in policy.parameters() if p.requires_grad))
 
     def record_activation(self, name):
@@ -126,8 +125,7 @@ class DashboardPublisher:
                        'failure', 'contact_steps', 'topple_event', 'episode_steps')},
                    activation=activation)
 
-    def close(self, completed=False):
+    def close(self):
         for hook in self.hooks:
             hook.remove()
-        self.write(status='Run complete' if completed else 'Run stopped')
         self.stream.close()

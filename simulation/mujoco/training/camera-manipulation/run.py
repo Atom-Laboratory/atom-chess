@@ -13,6 +13,7 @@ from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.env_checker import check_env
 
 from atom_mujoco.camera_manipulation_env import CameraManipulationEnv
+from run_progress import RunProgress
 from telemetry import TrainingCsv
 
 
@@ -28,23 +29,31 @@ def weights_sha(policy):
     return digest.hexdigest()
 
 
-def evaluate(env, policy, episodes, seed, viewer=None):
+def evaluate(env, policy, episodes, seed, viewer=None, *, progress=None, stage='Evaluating policy'):
     records = []
+    if progress is not None:
+        progress.stage(stage, total=episodes, unit='episodes')
     for index in range(episodes):
         targets = getattr(env, 'targets', [])
         options = dict(target=targets[index % len(targets)]) if len(targets) > 1 else None
         observation, info = env.reset(seed=seed+index, options=options)
         total = 0.
-        for _ in range(env.horizon):
+        for step in range(1, env.horizon+1):
             action = np.zeros(env.action_space.shape, dtype=np.float32) if policy is None else policy.predict(
                 observation, deterministic=True)[0]
             observation, reward, terminated, truncated, info = env.step(action)
             total += reward
             if viewer is not None:
                 viewer.sync()
+            if progress is not None:
+                phase = info.get('phase') or 'running'
+                progress.advance(index, f'Episode {index+1}/{episodes} | step {step}/{env.horizon} | {phase}')
             if terminated or truncated:
                 break
         records.append(dict(seed=seed+index, return_value=total, **info))
+        if progress is not None:
+            outcome = 'passed' if info['success'] else (info.get('failure') or 'did not pass')
+            progress.advance(index+1, f'Episode {index+1}: {outcome}', force=True)
     return dict(episodes=episodes, success_rate=sum(r['success'] for r in records)/episodes,
                 grasp_rate=(None if any(r['grasp'] is None for r in records) else
                             sum(r['grasp'] for r in records)/episodes),
@@ -54,10 +63,12 @@ def evaluate(env, policy, episodes, seed, viewer=None):
 
 
 class RecordEpisodes(BaseCallback):
-    def __init__(self, output, every, viewer=None, dashboard=None):
+    def __init__(self, output, every, viewer=None, dashboard=None, *, progress, requested_steps):
         super().__init__()
         self.output, self.every, self.viewer = output, every, viewer
         self.dashboard = dashboard
+        self.progress = progress
+        self.requested_steps = requested_steps
         self.next_save = every
         self.completed = []
 
@@ -65,12 +76,19 @@ class RecordEpisodes(BaseCallback):
         self.csv = TrainingCsv(self.output, self.model.policy)
         self.training_start = time.perf_counter()
         self.training_start_step = self.model.num_timesteps
+        rollout = self.model.n_steps*self.model.n_envs
+        total = ((self.requested_steps+rollout-1)//rollout)*rollout
+        detail = (f'Requested {self.requested_steps}; rounded to full PPO rollouts'
+                  if total != self.requested_steps else None)
+        self.progress.stage('Training PPO', total=total, unit='steps', detail=detail)
 
     def _on_rollout_start(self):
         self.record_update()
 
     def _on_training_end(self):
         self.record_update()
+        self.progress.advance(self.num_timesteps-self.training_start_step,
+                              'Final PPO update finished', force=True)
 
     def record_update(self):
         metrics = dict(self.logger.name_to_value)
@@ -91,6 +109,9 @@ class RecordEpisodes(BaseCallback):
         if self.dashboard is not None:
             self.dashboard.update(self.num_timesteps, float(self.locals['rewards'][0]),
                                   self.locals['infos'][0])
+        step = self.num_timesteps-self.training_start_step
+        info = self.locals['infos'][0]
+        self.progress.advance(step, info.get('phase'))
         for done, info in zip(self.locals['dones'], self.locals['infos']):
             if done:
                 record = {key: info.get(key) for key in (
@@ -101,7 +122,9 @@ class RecordEpisodes(BaseCallback):
                 with (self.output/'episodes.jsonl').open('a', encoding='utf-8') as stream:
                     stream.write(json.dumps(record)+'\n')
         if self.num_timesteps >= self.next_save:
-            self.model.save(self.output/f'checkpoint-{self.num_timesteps}')
+            name = f'checkpoint-{self.num_timesteps}'
+            self.progress.advance(step, f'Saving {name}.zip', force=True)
+            self.model.save(self.output/name)
             self.next_save = self.num_timesteps+self.every
         return True
 
@@ -139,6 +162,7 @@ def same_environment(previous, current):
         '6542e9045cc4b58096426d8b242fe86c6e4aa2e53452a044997e828e969aaad8',
         '4b1170a294838d7346e520099d50ab3b39fafe2900f73f272fb0301a1cdb30e8',
         '59da3952d5bd0a2040c88db30ecad6c765ea9deddd5a433f0078c9d67a478455',
+        '609af6ed96eaf48b06b3daa68a83474086d6af59dd9c097cb480bb84b9e14644',
     }:
         return False
     candidate = dict(current, files=dict(current['files'], **{launcher: old_hash}))
@@ -187,8 +211,13 @@ def main():
     viewer = None
     dashboard = None
     callback = None
-    completed = False
+    progress = RunProgress()
     try:
+        if args.dashboard:
+            from dashboard_publisher import DashboardPublisher
+            dashboard = DashboardPublisher(args.output)
+            progress.dashboard = dashboard
+        progress.stage('Loading environment and checking run files')
         if args.camera_only:
             from atom_mujoco.camera_only_env import CameraOnlyEnv
             env = CameraOnlyEnv(args.config)
@@ -227,14 +256,13 @@ def main():
                    actor='PPO MultiInputPolicy, P037 RGB/task/commands plus perception-valid mask',
                    reward=getattr(env, 'reward_source', 'simulation_oracle'))
         (args.output/'run.json').write_text(json.dumps(run, indent=2), encoding='utf-8')
-        if args.dashboard:
-            from dashboard_publisher import DashboardPublisher
-            dashboard = DashboardPublisher(args.output)
         if args.watch:
+            progress.stage('Opening MuJoCo viewer')
             import mujoco.viewer
             viewer = mujoco.viewer.launch_passive(env.sim.model, env.sim.data)
         started = time.perf_counter()
-        baseline = evaluate(env, None, args.episodes, 100000+args.seed, viewer)
+        baseline = evaluate(env, None, args.episodes, 100000+args.seed, viewer,
+                            progress=progress, stage='Evaluating baseline')
         report = dict(baseline=baseline, trained_steps=0)
         if args.camera_only:
             from PIL import Image
@@ -242,6 +270,7 @@ def main():
             Image.fromarray(frame.raw_rgb).save(args.output/'camera-final.png')
             Image.fromarray(frame.rectified_rgb).save(args.output/'homography-final.png')
         if args.mode in ('smoke', 'train'):
+            progress.stage('Checking the Gym environment and preparing PPO')
             check_env(env, warn=True, skip_render_check=True)
             policy = PPO.load(args.resume/'policy.zip', env=env, device=args.device) if args.resume else PPO(
                 'MultiInputPolicy', env, n_steps=32, batch_size=32, n_epochs=2,
@@ -254,34 +283,41 @@ def main():
             steps_before = policy.num_timesteps
             if dashboard is not None:
                 dashboard.attach(policy.policy)
-            callback = RecordEpisodes(args.output, args.checkpoint_every, viewer, dashboard)
+            callback = RecordEpisodes(args.output, args.checkpoint_every, viewer, dashboard,
+                                      progress=progress, requested_steps=args.steps)
             policy.learn(total_timesteps=args.steps, callback=callback,
                          reset_num_timesteps=not bool(args.resume))
+            progress.stage('Saving final policy')
             policy.save(args.output/'policy.zip')
             report.update(trained_steps=policy.num_timesteps-steps_before,
                           total_policy_steps=policy.num_timesteps,
                           weights_before=before, weights_after=weights_sha(policy),
                           training_episodes=callback.completed,
                           checkpoint_sha256=sha(args.output/'policy.zip'))
-            if dashboard is not None:
-                dashboard.write(status='Evaluating the saved policy')
             # Load a new actor instance and evaluate without an optimizer step.
             loaded = PPO.load(args.output/'policy.zip', device=args.device)
-            report['residual'] = evaluate(env, loaded, args.episodes, 100000+args.seed, viewer)
+            report['residual'] = evaluate(env, loaded, args.episodes, 100000+args.seed, viewer,
+                                          progress=progress, stage='Evaluating saved policy')
             report['checkpoint_reload_verified'] = weights_sha(loaded) == weights_sha(policy)
         elif args.mode == 'evaluate':
+            progress.stage('Loading policy for evaluation')
             loaded = PPO.load(args.checkpoint, device=args.device)
             if loaded.observation_space != env.observation_space or loaded.action_space != env.action_space:
                 raise ValueError('Checkpoint observation/action schema mismatch')
             report['checkpoint_sha256'] = sha(args.checkpoint)
-            report['residual'] = evaluate(env, loaded, args.episodes, 100000+args.seed, viewer)
+            report['residual'] = evaluate(env, loaded, args.episodes, 100000+args.seed, viewer,
+                                          progress=progress)
         report['wall_time_s'] = time.perf_counter()-started
         report['status'] = 'completed'
         report['interpretation'] = 'Cycle execution evidence. Physical and visual qualification remain experimental.'
         (args.output/'report.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
-        completed = True
         print(json.dumps(report, indent=2))
+        progress.stage('Run complete', detail=str(args.output/'report.json'))
+    except KeyboardInterrupt:
+        progress.stage('Run interrupted', detail=str(args.output))
+        raise
     except Exception as exception:
+        progress.stage('Run failed', detail=str(exception))
         (args.output/'failure.json').write_text(json.dumps(dict(error=repr(exception)), indent=2),
                                               encoding='utf-8')
         raise
@@ -289,7 +325,7 @@ def main():
         if callback is not None and hasattr(callback, 'csv'):
             callback.csv.close()
         if dashboard is not None:
-            dashboard.close(completed=completed)
+            dashboard.close()
         if viewer is not None:
             viewer.close()
         if env is not None:

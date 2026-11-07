@@ -330,6 +330,14 @@ to open the MuJoCo viewer at the same time. The dashboard opens during baseline 
 It runs in a separate process from MuJoCo. Graph activations and losses appear
 once PPO begins. After training ends, the window stays open for inspection.
 
+The terminal and the dashboard header show the current stage and its
+progress. For example, `Training PPO | 200/2048 steps (9.8%)` counts the
+steps collected in the current execution, including when resuming a policy
+with an existing lifetime counter. Baseline and saved-policy evaluations
+show completed episodes and the current simulation step. If PPO must round
+a step request up to a full rollout, the progress denominator is the rounded
+total and the initial training message shows the original request.
+
 - **PPO losses** plots raw values and an exponential moving average against
   the optimizer's training step. Switch between linear and signed-log axes.
   Each chart shows the latest value, EMA and range. The header also shows

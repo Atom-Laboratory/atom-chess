@@ -1,6 +1,7 @@
 from collections import deque
 import importlib.util
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -15,7 +16,8 @@ def load_module(name):
     return module
 
 
-def test_update_ingest_uses_optimizer_step_and_keeps_final_packet():
+def test_update_ingest_uses_optimizer_step_and_keeps_final_packet(monkeypatch):
+    monkeypatch.syspath_prepend(str(LAUNCHER))
     dashboard = load_module('dashboard')
     view = dashboard.TrainingDashboard.__new__(dashboard.TrainingDashboard)
     view.last_update = None
@@ -44,3 +46,18 @@ def test_dashboard_graph_tracks_actual_feature_and_head_modules():
     assert by_id['action']['parents'] == ['Actor-2']
     assert hooks['action'] is policy.action_net
     assert isinstance(hooks['Actor-2'], torch.nn.Tanh)
+
+
+def test_progress_shares_stage_and_count_with_terminal_and_dashboard(capsys):
+    progress = load_module('run_progress').RunProgress()
+    events = []
+    progress.dashboard = SimpleNamespace(write=lambda **event: events.append(event['progress']))
+    progress.stage('Training PPO', total=2048, unit='steps')
+    progress.advance(200, 'APPROACH', force=True)
+    progress.stage('Evaluating saved policy', total=1, unit='episodes')
+
+    lines = capsys.readouterr().out.splitlines()
+    assert lines[1] == '[ATOM] Training PPO | 200/2048 steps (9.8%) | APPROACH'
+    assert events[1] == dict(stage='Training PPO', completed=200, total=2048,
+                             unit='steps', detail='APPROACH')
+    assert events[2]['completed'] == 0 and events[2]['unit'] == 'episodes'
