@@ -4,7 +4,9 @@ Revision 0.1 · Design baseline · Pin assignments and installed hardware pendin
 
 This blueprint adapts the [How To Mechatronics SCARA circuit](https://howtomechatronics.com/projects/scara-robot-how-to-build-your-own-arduino-based-robot/#scara-robot-circuit-diagram)
 to the ATOM Chess architecture. It defines power domains, signal interfaces and
-the connector schedule to complete before releasing a wiring schematic.
+the connector schedule to complete before releasing a wiring schematic. See
+[ED-01 Electrical Design Sheet](electrical-design-sheet.md) for signal nets,
+design equations, fault states and verification criteria.
 
 ## Original SCARA and ATOM changes
 
