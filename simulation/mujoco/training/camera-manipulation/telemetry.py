@@ -12,6 +12,9 @@ REWARD_FIELDS = ('time', 'action', 'approach', 'grasp', 'lift', 'transport',
 UPDATE_FIELDS = ('learning_rate', 'loss', 'policy_gradient_loss', 'value_loss',
                  'entropy_loss', 'approx_kl', 'clip_fraction', 'clip_range',
                  'clip_range_vf', 'explained_variance', 'std')
+ROLLOUT_FIELDS = {'mean_episode_return': 'rollout/ep_rew_mean',
+                  'mean_episode_length': 'rollout/ep_len_mean',
+                  'steps_per_second': 'time/fps'}
 
 
 class TrainingCsv:
@@ -28,7 +31,7 @@ class TrainingCsv:
                 'action_values', *(f'reward_{key}' for key in REWARD_FIELDS),
                 'reward_components'))
             self.updates = self.writer(output/'ppo_updates.csv', (
-                'training_step', 'n_updates', *UPDATE_FIELDS))
+                'training_step', 'n_updates', *UPDATE_FIELDS, *ROLLOUT_FIELDS))
             with (output/'network.csv').open('x', newline='', encoding='utf-8') as stream:
                 writer = csv.writer(stream)
                 writer.writerow(('module', 'type', 'input_units_or_channels',
@@ -72,10 +75,12 @@ class TrainingCsv:
     def record_update(self, step, metrics):
         count = metrics.get('train/n_updates')
         if count is None or count == self.last_update:
-            return
+            return False
         self.last_update = count
-        self.updates.writerow(dict(training_step=step, n_updates=count, **{
-            key: metrics.get('train/'+key) for key in UPDATE_FIELDS}))
+        row = {key: metrics.get('train/'+key) for key in UPDATE_FIELDS}
+        row.update({key: metrics.get(name) for key, name in ROLLOUT_FIELDS.items()})
+        self.updates.writerow(dict(training_step=step, n_updates=count, **row))
+        return True
 
     def close(self):
         self.streams.close()

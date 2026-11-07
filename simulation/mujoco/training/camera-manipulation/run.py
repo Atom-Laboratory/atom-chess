@@ -63,12 +63,24 @@ class RecordEpisodes(BaseCallback):
 
     def _on_training_start(self):
         self.csv = TrainingCsv(self.output, self.model.policy)
+        self.training_start = time.perf_counter()
+        self.training_start_step = self.model.num_timesteps
 
     def _on_rollout_start(self):
-        self.csv.record_update(self.num_timesteps, self.logger.name_to_value)
+        self.record_update()
 
     def _on_training_end(self):
-        self.csv.record_update(self.num_timesteps, self.logger.name_to_value)
+        self.record_update()
+
+    def record_update(self):
+        metrics = dict(self.logger.name_to_value)
+        elapsed = time.perf_counter()-self.training_start
+        metrics['time/fps'] = (self.num_timesteps-self.training_start_step)/max(elapsed, 1e-9)
+        if self.model.ep_info_buffer:
+            metrics['rollout/ep_rew_mean'] = float(np.mean([item['r'] for item in self.model.ep_info_buffer]))
+            metrics['rollout/ep_len_mean'] = float(np.mean([item['l'] for item in self.model.ep_info_buffer]))
+        if self.csv.record_update(self.num_timesteps, metrics) and self.dashboard is not None:
+            self.dashboard.optimization(self.num_timesteps, metrics)
 
     def _on_step(self):
         if self.viewer is not None:
@@ -78,7 +90,7 @@ class RecordEpisodes(BaseCallback):
                              self.locals['infos'][0])
         if self.dashboard is not None:
             self.dashboard.update(self.num_timesteps, float(self.locals['rewards'][0]),
-                                  self.locals['infos'][0], self.logger.name_to_value)
+                                  self.locals['infos'][0])
         for done, info in zip(self.locals['dones'], self.locals['infos']):
             if done:
                 record = {key: info.get(key) for key in (
@@ -120,12 +132,13 @@ def provenance(env):
 def same_environment(previous, current):
     if previous['signature'] == current['signature']:
         return True
-    # Dashboard instrumentation is compatible with this exact pre-dashboard launcher.
+    # These launcher revisions differ only in instrumentation for exact resume.
     launcher = str(Path(__file__).resolve())
     old_hash = previous['files'].get(launcher)
     if old_hash not in {
         '6542e9045cc4b58096426d8b242fe86c6e4aa2e53452a044997e828e969aaad8',
         '4b1170a294838d7346e520099d50ab3b39fafe2900f73f272fb0301a1cdb30e8',
+        '59da3952d5bd0a2040c88db30ecad6c765ea9deddd5a433f0078c9d67a478455',
     }:
         return False
     candidate = dict(current, files=dict(current['files'], **{launcher: old_hash}))
@@ -250,6 +263,8 @@ def main():
                           weights_before=before, weights_after=weights_sha(policy),
                           training_episodes=callback.completed,
                           checkpoint_sha256=sha(args.output/'policy.zip'))
+            if dashboard is not None:
+                dashboard.write(status='Evaluating the saved policy')
             # Load a new actor instance and evaluate without an optimizer step.
             loaded = PPO.load(args.output/'policy.zip', device=args.device)
             report['residual'] = evaluate(env, loaded, args.episodes, 100000+args.seed, viewer)

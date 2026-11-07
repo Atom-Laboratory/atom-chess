@@ -330,6 +330,30 @@ to open the MuJoCo viewer at the same time. The dashboard opens during baseline 
 It runs in a separate process from MuJoCo. Graph activations and losses appear
 once PPO begins. After training ends, the window stays open for inspection.
 
+- **PPO losses** plots raw values and an exponential moving average against
+  the optimizer's training step. Switch between linear and signed-log axes.
+  Each chart shows the latest value, EMA and range. The header also shows
+  approximate KL, clipping, explained variance, action standard deviation,
+  learning rate, recent rollout means and throughput when PPO reports them.
+- **Policy network** traces the instantiated RGB encoder, host context,
+  concatenated features, actor, critic and output heads. Click a layer to
+  inspect shape, parameters, RMS and peak. The activity bar shows the fraction
+  of nonzero values in the sampled forward output.
+- **Reward** shows sampled step rewards, current components and accumulated
+  episode components when available.
+
+Optimizer events are emitted independently of the sampled activation feed.
+To review an existing run, pass its JSONL log to the dashboard from the
+repository root. Earlier logs expose their recorded metrics and activation
+summary. Per-layer history requires a run created with the updated publisher.
+
+~~~powershell
+$py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+$replay = 'PATH_TO_THE_RUN_DIRECTORY'
+& $py -B simulation/mujoco/training/camera-manipulation/dashboard.py "$replay/dashboard.jsonl"
+& $py -B -m pytest simulation/mujoco/tests/test_ppo_dashboard.py -q
+~~~
+
 ~~~powershell
 Set-Location 'F:\Users\EHD\Github\Atom\atom-chess'
 $py = '.\simulation\mujoco\.venv\Scripts\python.exe'
@@ -349,7 +373,7 @@ leaves training active. CSV export works with or without the dashboard.
 | File | One row per | Contents |
 |---|---|---|
 | steps.csv | Environment step | Reward before PPO timeout bootstrapping, cumulative episode return, actions sent to the environment, phase, target, contact count, toppling, appearance and reward components |
-| ppo_updates.csv | PPO optimization round | Update count, learning rate, policy gradient loss, value loss, entropy loss, reported combined loss, KL, clipping, explained variance and exploration standard deviation |
+| ppo_updates.csv | PPO optimization round | Update count, learning rate, policy loss, value loss, entropy loss, reported combined loss, KL, clipping, explained variance, exploration standard deviation, mean episode return and length, throughput |
 | network.csv | Network module | Module name and type, linear input and output units or convolution channels, parameter count and trainable parameter count |
 
 The PPO combined loss is the value reported by Stable Baselines3 for its
