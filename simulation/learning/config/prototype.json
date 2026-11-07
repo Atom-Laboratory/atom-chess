@@ -1,0 +1,15 @@
+{
+  "profile": "uncalibrated-urdf-prototype-v1",
+  "model": "../../src/urdf/atom.urdf.xacro",
+  "tip": "arm2_link",
+  "dt": 0.05,
+  "velocity_fraction": 0.5,
+  "action_slew_per_step": 0.25,
+  "sampling_fraction": 0.4,
+  "horizon": 100,
+  "position_tolerance_m": 0.005,
+  "orientation_tolerance_rad": 0.05,
+  "joint_tolerance_fraction": 0.015,
+  "reward": {"progress": 8.0, "distance": 2.0, "time": 0.02, "smoothness": 0.01, "success": 5.0, "failure": 20.0},
+  "training": {"learning_rate": 0.0003, "batch_size": 128, "buffer_size": 100000, "learning_starts": 1000, "net_arch": [64, 64], "gamma": 0.98, "tau": 0.005, "ent_coef": "auto_0.1"}
+}

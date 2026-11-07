@@ -72,3 +72,15 @@ opencv_world*.dll
 # Colcon generated artifacts
 install/
 simulation/install/
+
+# Source Wavefront mesh consumed by the chess-piece bundle builder.
+!hardware/Project/chess_pieces/exports/knight.obj
+
+# Colocated example experiment outputs
+simulation/mujoco/examples/**/results/
+
+# Owned MuJoCo experiment artifacts
+simulation/mujoco/examples/**/runs/
+simulation/mujoco/playground/sessions/
+simulation/mujoco/training/**/runs/
+simulation/mujoco/assets/bundles/

@@ -1,4 +1,28 @@
+[MuJoCo operational guide](simulation/mujoco/docs/mujoco-user-guide.md) | [Develop your RL experiment](simulation/docs/learning/rl-getting-started.md)
+
 # ATOM Chess
+
+## Simulação e integração
+
+MuJoCo é o simulador principal. O modelo é um protótipo não calibrado;
+a garra e as peças são visuais. Não há partida autônoma física validada.
+A branch integra os módulos C++ da main, sem executar treinamento.
+
+## Começar pelo módulo
+
+| Módulo | Documentação e relatório |
+|---|---|
+| Visão C++/OpenCV | [Guia](software/acvision/README.md), [auditoria](software/acvision/docs/audit.md) |
+| ROS 2 e controle simulado | [Guia](simulation/README.md), [auditoria](simulation/docs/audit.md) |
+| MuJoCo e preparação de experimentos | [Instalação, visualização e testes](simulation/mujoco/README.md) |
+| Mecânica | [Fontes e lacunas](docs/mechanics/README.md) |
+| Preparação para RL | [Trilha de estudo](simulation/docs/learning/README.md) |
+| Projeto e integração | [Arquitetura](docs/architecture.md), [roadmap](docs/roadmap.md) |
+
+[Índice completo por módulo](docs/README.md). Comece pelos comandos do módulo
+que deseja executar; o build CMake da raiz não compila o pacote ROS.
+
+
 
 ATOM Chess is a research and development project focused on building an autonomous robotic chess system capable of perceiving a physical chessboard, analyzing the current game state, selecting a move, and physically executing it.
 
@@ -85,7 +109,7 @@ All contributions are expected to follow the project's contribution guidelines, 
 
 For information about contributing, see [`CONTRIBUTING.md`](CONTRIBUTING.MD).
 
-Community members are also encouraged to review existing pull requests. Review guidelines and the community review template are available in [`.github/REVIEW_TEMPLATE.md`](.github/REVIEW_TEMPLATE.md).
+Community members are also encouraged to review existing pull requests. Review guidelines and the community review template are available in [`.github/REVIEW_TEMPLATE.md`](.github/PR_REVIEW_TEMPLATE.MD).
 
 ## Licensing
 
@@ -119,7 +143,7 @@ This includes, but is not limited to:
 
 Unless explicitly stated otherwise, no permission is granted to reproduce, manufacture, modify, distribute, or commercially exploit the ATOM Chess hardware designs.
 
-See [`HARDWARE_LICENSE.md`](HARDWARE_LICENSE.md) for the current hardware licensing policy.
+See [`HARDWARE_LICENSE.md`](hardware/LICENSE) for the current hardware licensing policy.
 
 ### Third-Party Materials
 

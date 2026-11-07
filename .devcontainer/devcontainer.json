@@ -1,0 +1,25 @@
+{
+    "name": "ATOM ROS 2 Lyrical",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "runArgs": [
+        "--net=host",
+        "-e", "DISPLAY=${env:DISPLAY}",
+        "-e", "WAYLAND_DISPLAY=${env:WAYLAND_DISPLAY}",
+        "-e", "XDG_RUNTIME_DIR=${env:XDG_RUNTIME_DIR}",
+        "-v", "/mnt/wslg:/mnt/wslg"
+    ],
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "twxs.cmake",
+                "ms-iot.vscode-ros"
+            ]
+        }
+    },
+    "remoteUser": "ubuntu"
+}

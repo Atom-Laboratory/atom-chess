@@ -1,0 +1,169 @@
+{
+  "schema": 2,
+  "mujoco_version": "3.17.0",
+  "camera_lookat": [
+    0.245,
+    0.0,
+    0.012
+  ],
+  "image_size": [
+    800,
+    600
+  ],
+  "model_fovy_degrees": 45.0,
+  "model_sha256": "2b439e465a9f048ed49df4d681a965650a5a1347f728c2b04cba9c4a935b6b59",
+  "executable_sha256": "1ffda79f6c957b639f3eaa8a9ea00995d5f3ecc40fc08d1ab36ad813baf72435",
+  "camera_status": "experimental_ideal_pinhole",
+  "calibration_status": "unvalidated",
+  "training_gate": "closed",
+  "results": [
+    {
+      "elevation": -35,
+      "azimuth": 265.0,
+      "distance_m": 0.85,
+      "image_sha256": "1da5c745a7fe4ce06d44f918e071ae636aa217e1e596a0bb2260755a8fc28f7e",
+      "observation_path": "acvision-265-35\\observation.json",
+      "source_sha256": "52451e9178df27394ff9a623a8f64a7bdd742178a7ae004e4a5f1ffdc7f080a0",
+      "status": "no_detection",
+      "motion_ready": false
+    },
+    {
+      "elevation": -45,
+      "azimuth": 265.0,
+      "distance_m": 0.85,
+      "image_sha256": "32aaf7c7be5f3bcc105ff6d04b68fb3d0b32ed9f55d4884c25d812cac31fd69c",
+      "observation_path": "acvision-265-45\\observation.json",
+      "source_sha256": "52451e9178df27394ff9a623a8f64a7bdd742178a7ae004e4a5f1ffdc7f080a0",
+      "status": "no_detection",
+      "motion_ready": false
+    },
+    {
+      "elevation": -55,
+      "azimuth": 265.0,
+      "distance_m": 0.85,
+      "image_sha256": "fc88e3ef5c630ffa338ca0cc2097d098afc14e7e54f1cb0d1e8837358d679739",
+      "observation_path": "acvision-265-55\\observation.json",
+      "source_sha256": "52451e9178df27394ff9a623a8f64a7bdd742178a7ae004e4a5f1ffdc7f080a0",
+      "candidate_color_confusion": {
+        "empty": {
+          "empty": 32,
+          "white": 0,
+          "black": 0,
+          "unknown": 0
+        },
+        "white": {
+          "empty": 0,
+          "white": 16,
+          "black": 0,
+          "unknown": 0
+        },
+        "black": {
+          "empty": 0,
+          "white": 0,
+          "black": 16,
+          "unknown": 0
+        }
+      },
+      "status": "oracle_aligned_diagnostic",
+      "motion_ready": false,
+      "orientation_estimated_by_vision": false,
+      "squares_evaluated": 64,
+      "square_assignment_accuracy": 1.0,
+      "nominal_board_equivalent_error_mm": {
+        "mean": 1.8216481753940745,
+        "median": 1.873803553330277,
+        "p95": 2.9197125105341852,
+        "max": 3.778977820529801
+      }
+    },
+    {
+      "elevation": -35,
+      "azimuth": 270.0,
+      "distance_m": 0.85,
+      "image_sha256": "12197195e223fb9ec60e45256345b01e035d737c1c8cf33c2a359e23cdd00ea6",
+      "observation_path": "acvision-270-35\\observation.json",
+      "source_sha256": "52451e9178df27394ff9a623a8f64a7bdd742178a7ae004e4a5f1ffdc7f080a0",
+      "status": "no_detection",
+      "motion_ready": false
+    },
+    {
+      "elevation": -45,
+      "azimuth": 270.0,
+      "distance_m": 0.85,
+      "image_sha256": "27674fc014ec4882b62785d885928067ba86e80b881d645c12f3efac8f8678ad",
+      "observation_path": "acvision-270-45\\observation.json",
+      "source_sha256": "52451e9178df27394ff9a623a8f64a7bdd742178a7ae004e4a5f1ffdc7f080a0",
+      "candidate_color_confusion": {
+        "empty": {
+          "empty": 24,
+          "white": 4,
+          "black": 4,
+          "unknown": 0
+        },
+        "white": {
+          "empty": 0,
+          "white": 16,
+          "black": 0,
+          "unknown": 0
+        },
+        "black": {
+          "empty": 0,
+          "white": 0,
+          "black": 16,
+          "unknown": 0
+        }
+      },
+      "status": "oracle_aligned_diagnostic",
+      "motion_ready": false,
+      "orientation_estimated_by_vision": false,
+      "squares_evaluated": 64,
+      "square_assignment_accuracy": 1.0,
+      "nominal_board_equivalent_error_mm": {
+        "mean": 1.7490585886897423,
+        "median": 1.6481210740205188,
+        "p95": 3.187787206776626,
+        "max": 3.351037724515347
+      }
+    },
+    {
+      "elevation": -55,
+      "azimuth": 270.0,
+      "distance_m": 0.85,
+      "image_sha256": "c253425ca0d9b67e09b7fadb5a0967b7656046e4973397fcf8f8fe78c815ea7a",
+      "observation_path": "acvision-270-55\\observation.json",
+      "source_sha256": "52451e9178df27394ff9a623a8f64a7bdd742178a7ae004e4a5f1ffdc7f080a0",
+      "status": "no_detection",
+      "motion_ready": false
+    },
+    {
+      "elevation": -35,
+      "azimuth": 275.0,
+      "distance_m": 0.85,
+      "image_sha256": "c63247864aeef9f184b0ce49fe0f829867c37f138e77fe8f8945562f46ad4393",
+      "observation_path": "acvision-275-35\\observation.json",
+      "source_sha256": "52451e9178df27394ff9a623a8f64a7bdd742178a7ae004e4a5f1ffdc7f080a0",
+      "status": "no_detection",
+      "motion_ready": false
+    },
+    {
+      "elevation": -45,
+      "azimuth": 275.0,
+      "distance_m": 0.85,
+      "image_sha256": "2f0351ed71669f6d7736f903529ae62881228cf8dd8c512e069575bddbe741ae",
+      "observation_path": "acvision-275-45\\observation.json",
+      "source_sha256": "52451e9178df27394ff9a623a8f64a7bdd742178a7ae004e4a5f1ffdc7f080a0",
+      "status": "no_detection",
+      "motion_ready": false
+    },
+    {
+      "elevation": -55,
+      "azimuth": 275.0,
+      "distance_m": 0.85,
+      "image_sha256": "cec7ec0f3f0d4d9d0cb2a4ca326b7a4cc9faac9054f47e7017906181d3c99bd7",
+      "observation_path": "acvision-275-55\\observation.json",
+      "source_sha256": "52451e9178df27394ff9a623a8f64a7bdd742178a7ae004e4a5f1ffdc7f080a0",
+      "status": "no_detection",
+      "motion_ready": false
+    }
+  ]
+}

@@ -1,0 +1,250 @@
+{
+  "schema": 1,
+  "mujoco_version": "3.17.0",
+  "image_size": [
+    1920,
+    1440
+  ],
+  "camera_distance_m": 1.05,
+  "executable_sha256": "2b8acd872e7052bb3afbaf60fadc975de8e1d30e2b08e77b6d95dbc05aca2702",
+  "layout_provenance": "experimental simulated 280mm board; measure real installation",
+  "geometry_only": true,
+  "layout_sha256": "f43edd499846a4db6c1f815b19812fb94f1895a65dedae6979ed8ce1a9051274",
+  "source_model_sha256": "2b439e465a9f048ed49df4d681a965650a5a1347f728c2b04cba9c4a935b6b59",
+  "results": [
+    {
+      "case": "initial-265-35",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "ab4fff33712d86b285f9a0c8bad8db3844a8aca7e51fa745abdef1085366fd3d",
+      "mean_error_mm": 0.6381220882739023,
+      "max_error_mm": 0.7404018363957534,
+      "correct_squares": 64
+    },
+    {
+      "case": "initial-265-45",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "587b1d79bdd1622efb7dde0b5a589492b276ac1fc45bb88fc102d5a2536406ed",
+      "mean_error_mm": 0.4760633070648609,
+      "max_error_mm": 0.5338220666823466,
+      "correct_squares": 64
+    },
+    {
+      "case": "initial-265-55",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "67724338d9d3ff6acbb47230f50699fc5cf1b0cc132c60b416aa8315b9066e85"
+    },
+    {
+      "case": "initial-270-35",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "5f16308d4632450488975c091523db0df41a9b69b9c3c1dc23db8684957740f6",
+      "mean_error_mm": 0.6476582377715783,
+      "max_error_mm": 0.7482192400732403,
+      "correct_squares": 64
+    },
+    {
+      "case": "initial-270-45",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "d9586e13d7ad981fb52e75185d7d0174d4564d3944f541a97b86999bd52c552a",
+      "mean_error_mm": 0.5355395774316394,
+      "max_error_mm": 0.5976720049802947,
+      "correct_squares": 64
+    },
+    {
+      "case": "initial-270-55",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "2ebc6a587035505dd103e4e4eba67bd90ea8f127427133c3fdf75d95de61e550",
+      "mean_error_mm": 0.43124657367344876,
+      "max_error_mm": 0.4407473099425116,
+      "correct_squares": 64
+    },
+    {
+      "case": "initial-275-35",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "29b03dc668ef884d97023a26f18d2d1cd121944537010f0ccd856513af244530",
+      "mean_error_mm": 0.6354961543347616,
+      "max_error_mm": 0.706657019179459,
+      "correct_squares": 64
+    },
+    {
+      "case": "initial-275-45",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "7b256db6f46221d06e0a1da383d146c15e6bc52dd677c778430d4d2c9701f88f",
+      "mean_error_mm": 0.5354397720924718,
+      "max_error_mm": 0.5758442557369364,
+      "correct_squares": 64
+    },
+    {
+      "case": "initial-275-55",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "78a83a6b43f7d39589d3bc48ccad54e0ab98f3d89bfd14a308e7f105e9e6ec22",
+      "mean_error_mm": 0.4706178571249968,
+      "max_error_mm": 0.5038399209105621,
+      "correct_squares": 64
+    },
+    {
+      "case": "empty-265-35",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "692e8fbe078016ada9ab42d3a8d80897342a38538ff48df5c8716c81d7c2f694",
+      "mean_error_mm": 0.6381220882739023,
+      "max_error_mm": 0.7404018363957534,
+      "correct_squares": 64
+    },
+    {
+      "case": "empty-265-45",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "721778afb6627f9b5b00595ec56de07dc89b0d16591b740d3b57b49f6579df5b",
+      "mean_error_mm": 0.4760633070648609,
+      "max_error_mm": 0.5338220666823466,
+      "correct_squares": 64
+    },
+    {
+      "case": "empty-265-55",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "19252e81b355063902e758c29fcf6e5a795aaa434611fbf93f6a3247c46208b5"
+    },
+    {
+      "case": "empty-270-35",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "97fcf274d30d744deeb4f6b48be6440dd9af44ff62d2af6d27d18e8c995e2c82",
+      "mean_error_mm": 0.6476582377715783,
+      "max_error_mm": 0.7482192400732403,
+      "correct_squares": 64
+    },
+    {
+      "case": "empty-270-45",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "85e8b746740c49bcf790702f3b64b870e95ba85220553dd22ecb17701a53f445",
+      "mean_error_mm": 0.5355395774316394,
+      "max_error_mm": 0.5976720049802947,
+      "correct_squares": 64
+    },
+    {
+      "case": "empty-270-55",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "9033d5c6bdadc11c625f1aa122b8c8fa53e6a3c4198de758b5aea63512d32818",
+      "mean_error_mm": 0.43124657367344876,
+      "max_error_mm": 0.4407473099425116,
+      "correct_squares": 64
+    },
+    {
+      "case": "empty-275-35",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "16cfb42beb3b6d0e201a970f9983bdd04feff5aa63aa1a06a8d23b8efa21c506",
+      "mean_error_mm": 0.6354961543347616,
+      "max_error_mm": 0.706657019179459,
+      "correct_squares": 64
+    },
+    {
+      "case": "empty-275-45",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "ff44ad945dbcec70419081c246cb94814024dc245da739b5ca591adf4a3d275c",
+      "mean_error_mm": 0.5354397720924718,
+      "max_error_mm": 0.5758442557369364,
+      "correct_squares": 64
+    },
+    {
+      "case": "empty-275-55",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "7389c459df4eaedda5201576cfc8540b07a5123e24734b90c4a58622451f74fb",
+      "mean_error_mm": 0.4706178571249968,
+      "max_error_mm": 0.5038399209105621,
+      "correct_squares": 64
+    },
+    {
+      "case": "offset-265-35",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "eb048f6972539b46ddec1a9337d725199642560423a45d55c30dc3842fd496f6",
+      "mean_error_mm": 0.6381220882739023,
+      "max_error_mm": 0.7404018363957534,
+      "correct_squares": 64
+    },
+    {
+      "case": "offset-265-45",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "e38e4e8c69b8b7e59ae7ef2c0cbb341fadc2b0873803032bcf9362363aeef799",
+      "mean_error_mm": 0.4760633070648609,
+      "max_error_mm": 0.5338220666823466,
+      "correct_squares": 64
+    },
+    {
+      "case": "offset-265-55",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "eca02a574228b1107793bae16de67e47494ccdbc5972c706c507101db5cd4be8"
+    },
+    {
+      "case": "offset-270-35",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "9d6fb1b02e4796cde51f0a3e5e91d302b8391cdbbe4d1b074b828804a77723eb",
+      "mean_error_mm": 0.6476582377715783,
+      "max_error_mm": 0.7482192400732403,
+      "correct_squares": 64
+    },
+    {
+      "case": "offset-270-45",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "9cfcde84ec7bfdc41eb641514b734e99ac67dd736f4657ca5d615ae83f5b1e8b",
+      "mean_error_mm": 0.5355395774316394,
+      "max_error_mm": 0.5976720049802947,
+      "correct_squares": 64
+    },
+    {
+      "case": "offset-270-55",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "917f1c9980cb04890aebd7e09d963fdc9238d546a1f8dcbdd826d12540e119c9",
+      "mean_error_mm": 0.43124657367344876,
+      "max_error_mm": 0.4407473099425116,
+      "correct_squares": 64
+    },
+    {
+      "case": "offset-275-35",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "4050e70afa1ce9a1305b253215118d3cf563ceaf0ea5460144f9ea59f5e42931",
+      "mean_error_mm": 0.6354961543347616,
+      "max_error_mm": 0.706657019179459,
+      "correct_squares": 64
+    },
+    {
+      "case": "offset-275-45",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "1c59ed7696126cbe264eb2d1929a6924f052046ee472441054b552c71cb95fa0",
+      "mean_error_mm": 0.5354397720924718,
+      "max_error_mm": 0.5758442557369364,
+      "correct_squares": 64
+    },
+    {
+      "case": "offset-275-55",
+      "orientation": "a8_top_left_from_reference",
+      "detected": true,
+      "image_sha256": "a8dc9f34f2b0d15a3694adf02e01c4712e2dc61c2fe22cfac15bc314d060c7fc",
+      "mean_error_mm": 0.4706178571249968,
+      "max_error_mm": 0.5038399209105621,
+      "correct_squares": 64
+    }
+  ]
+}

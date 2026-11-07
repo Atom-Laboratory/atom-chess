@@ -1,0 +1,218 @@
+[
+  {
+    "original": "simulation\\mujoco\\runs\\capture-a6d0325ce59c43c9964e82a5a3bae581",
+    "destination": "simulation\\mujoco\\examples\\prepare_capture_task\\runs\\capture-a6d0325ce59c43c9964e82a5a3bae581",
+    "files": [
+      {
+        "path": "bishop_visual_lod.obj",
+        "sha256": "5290c994933b0df5749230ebbf61276fb90496b7b1b2aafb740cac3abdef1da9"
+      },
+      {
+        "path": "capture_task.json",
+        "sha256": "b0784f23da565ed9ad657d5dacf15def54e7f912f74bd4b188b9fc0e8b6c2b57"
+      },
+      {
+        "path": "gripper_back.stl",
+        "sha256": "4f582b4950315ab9c77b12fc23022a9b3ba59bc6f7f6c9bb2d3a3c31738bf7a4"
+      },
+      {
+        "path": "gripper_hand1.stl",
+        "sha256": "e60d1aeb67c59edb023a3bfcedad1afb7288a2022c884b918956137159063b5a"
+      },
+      {
+        "path": "gripper_hand2.stl",
+        "sha256": "ff9404c16c6e9fdd919a28ffbf61835c8aab4618bab61e461aac5b3a5fa0edc9"
+      },
+      {
+        "path": "king_visual_lod.obj",
+        "sha256": "45359667806ef172b558c70dc23e1b0bb6eac7e46bfdfeff418e7adfb0af5349"
+      },
+      {
+        "path": "knight_visual_lod.obj",
+        "sha256": "469333354e29639584840aaf6ac077a33fcf199d2de21ab89dfdf59290921f01"
+      },
+      {
+        "path": "manifest.json",
+        "sha256": "69a16f110df245f543278ea2e495f199edb551813d5800c6686348f4abf8adb3"
+      },
+      {
+        "path": "marker-0.png",
+        "sha256": "5d207e3aba499e6cc21729755e00fecdf3ad8d25c870088488487fa40333e911"
+      },
+      {
+        "path": "marker-1.png",
+        "sha256": "1ee29d5335b3ecc5014edb2a87e5e2742be515846f7d0a0c0b1454d2a07c6d24"
+      },
+      {
+        "path": "marker-2.png",
+        "sha256": "9dc17bf61040b0ad642f10f697061da9bf5ab0ff713995e0f8f2733569d399f7"
+      },
+      {
+        "path": "marker-3.png",
+        "sha256": "7b4575c7a35ed8495bcaa7912d7ab12c6b08d83e3afaef9ac566f49ba2ac3100"
+      },
+      {
+        "path": "mesh_0.stl",
+        "sha256": "8c2ee6b9b9d26f0750106270a6ef3f7ce6ad18726cab4a9f6b64287377f199d2"
+      },
+      {
+        "path": "mesh_1.stl",
+        "sha256": "f6fab8b6ca0b782020fdc266d1ea30b21e40ba1ff6a255e159e33dfc72e69728"
+      },
+      {
+        "path": "mesh_2.stl",
+        "sha256": "5fa613e90968f957d2eae04a3644d65353e9941a90754c4c972949f7166cbd11"
+      },
+      {
+        "path": "mesh_3.stl",
+        "sha256": "a9e87a8a7004474e7d09adcd1cdb30056f2cbb0627850fe8f8d36009dad3056d"
+      },
+      {
+        "path": "model.xml",
+        "sha256": "84862b3e8640b939de2ffa364f9fb07a0552d8a21e2850e69a47e6d4aecef510"
+      },
+      {
+        "path": "pawn_visual_lod.obj",
+        "sha256": "fde2c9b4b5e9237b86013fc01ac7ca11041330188de122f5b42f063e4e418b07"
+      },
+      {
+        "path": "playground_request.json",
+        "sha256": "43d67d921feb0b0a55b823090fbde5c9ac7cdefd76ea5b0da063e9fdd1f0b854"
+      },
+      {
+        "path": "queen_visual_lod.obj",
+        "sha256": "c3b825b8eda82f25636409adc8c9b59d8af9ae64eb151b4a0f4bf24d1ecced1d"
+      },
+      {
+        "path": "reference-layout.json",
+        "sha256": "008f7958239b7d5c582ebe5893264f448fb7191a87df9af31d4e467b2d7ff2f5"
+      },
+      {
+        "path": "result.json",
+        "sha256": "e3d757be2d607dd4ae9753a0b72f3bf20072f601010437a71d376e6cc3e3cdaa"
+      },
+      {
+        "path": "rook_visual_lod.obj",
+        "sha256": "ac4ab980cad4d4eeaa4f2e5154fedcde47b6ab11bf8305b68866f144e46e8931"
+      }
+    ]
+  },
+  {
+    "original": "simulation\\mujoco\\runs\\official-piece-exports",
+    "destination": "simulation\\mujoco\\examples\\export_atom_piece_meshes\\runs\\official-piece-exports",
+    "files": [
+      {
+        "path": "bishop.stl",
+        "sha256": "e8e17c55cf5768ba2805d7d28056e2f49fd1bab0b9a3706781fe0dbb8cbf107b"
+      },
+      {
+        "path": "king.stl",
+        "sha256": "ee6deb866de77650bc38b42a4a323ebcacdd45f2fbb0ee86fb9c18cea00447b9"
+      },
+      {
+        "path": "knight.obj",
+        "sha256": "bac16474f42b94d19bece84f603126f5f5211d68d34c4c954f819d51426c78cb"
+      },
+      {
+        "path": "knight.stl",
+        "sha256": "335577442f8c22c3a89f022c85ed407fef0a988b8128ec648c4867c5c09ce681"
+      },
+      {
+        "path": "manifest.json",
+        "sha256": "9fd28787b9564ba9f035364192b077e88c4f14a8a3661bb485a5b24ae160c6a2"
+      },
+      {
+        "path": "pawn.stl",
+        "sha256": "be653fb2f9b9a7fa95afda9787f676ebf1e0523f95bde1ef2a32c6281c0a0103"
+      },
+      {
+        "path": "queen.stl",
+        "sha256": "f05fb0e22fc4d82f0913a9a1b0129d701361ff0a9a072a2eb0c8971c78d7d77a"
+      },
+      {
+        "path": "rook.stl",
+        "sha256": "256a7e8cc920e1e8a04e77921a293e3526e8b03cd07abd88ab827dffa5facf04"
+      }
+    ]
+  },
+  {
+    "original": "simulation\\mujoco\\runs\\p034-diagnostic",
+    "destination": "simulation\\mujoco\\examples\\validate_board_reference\\runs\\p034-diagnostic",
+    "files": [
+      {
+        "path": "corners.png",
+        "sha256": "f3918ebc5f748f8ac86b44c4f950e9292c97bb613bbbc5e534158e5bfc7ee32c"
+      },
+      {
+        "path": "observation.json",
+        "sha256": "e02c35955b71bc4336a5d501f37e4677ad70a40b0a801e4f3c1f76c4b7bccd14"
+      }
+    ]
+  },
+  {
+    "original": "simulation\\mujoco\\runs\\p034-markers-v1",
+    "destination": "simulation\\mujoco\\examples\\validate_board_reference\\runs\\p034-markers-v1",
+    "files": [
+      {
+        "path": "reference-scene.xml",
+        "sha256": "900b7172d36acfa1927e04a34c101dcb702187723bb8a2bafe6ef727909ad1fb"
+      }
+    ]
+  },
+  {
+    "original": "simulation\\mujoco\\runs\\p034-residual",
+    "destination": "simulation\\mujoco\\examples\\validate_board_reference\\runs\\p034-residual",
+    "files": [
+      {
+        "path": "corners.png",
+        "sha256": "5c607faee0e3e8252708f3959f155b3a3e575dd9056eb9df59bcbd7c459b8f07"
+      },
+      {
+        "path": "observation.json",
+        "sha256": "4d45654b36d1ea614838f2de2056e5fe6cc025b68c3cfc8d27fc02729a05305e"
+      }
+    ]
+  },
+  {
+    "original": "simulation\\mujoco\\runs\\p037-folded-cli",
+    "destination": "simulation\\mujoco\\examples\\preview_native_policy\\runs\\p037-folded-cli",
+    "files": [
+      {
+        "path": "corners.png",
+        "sha256": "99073345126baf7b39b543c77d7e163c9857eaf818e22491c7b0b8ff29187094"
+      },
+      {
+        "path": "observation.json",
+        "sha256": "d72b51aa304b088d44474014fb104449201a14da8ae9d4608fac07056d0d2cb1"
+      }
+    ]
+  },
+  {
+    "original": "simulation\\mujoco\\runs\\rgb-capture-966977a780d24d88b60ba324f82f6e00",
+    "destination": "simulation\\mujoco\\examples\\prepare_capture_task\\runs\\rgb-capture-966977a780d24d88b60ba324f82f6e00",
+    "files": [
+      {
+        "path": "empty-calibration.png",
+        "sha256": "f2198f86b7cf7e9f2143678ace318f0b644432ef877ea155bc5eb854c9d93a23"
+      }
+    ]
+  },
+  {
+    "original": "simulation\\mujoco\\runs\\rgb-capture-da609c442e8a492da7b0ee4cc5f4fde8",
+    "destination": "simulation\\mujoco\\examples\\prepare_capture_task\\runs\\rgb-capture-da609c442e8a492da7b0ee4cc5f4fde8",
+    "files": [
+      {
+        "path": "empty-calibration.png",
+        "sha256": "eba7b9a6e6b0a85d2e1771d6b262dbfc95707e0279893dc7e93debfd586d73c2"
+      },
+      {
+        "path": "diagnostics/corners.png",
+        "sha256": "25f94adfd61b9ed300b2acdc8c89c45ad094999467468978d0c8d87d7a4afee7"
+      },
+      {
+        "path": "diagnostics/observation.json",
+        "sha256": "294dc155e034af5bb8689b7b4d3cb99a6c88f1997160ed270563b7d5547a24dd"
+      }
+    ]
+  }
+]

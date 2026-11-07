@@ -1,0 +1,78 @@
+{
+  "schema": 2,
+  "mujoco_version": "3.17.0",
+  "camera_lookat": [
+    0.245,
+    0.0,
+    0.012
+  ],
+  "image_size": [
+    800,
+    600
+  ],
+  "model_fovy_degrees": 45.0,
+  "model_sha256": "2b439e465a9f048ed49df4d681a965650a5a1347f728c2b04cba9c4a935b6b59",
+  "executable_sha256": "96bacdb7cff7ba9e4a8644fbaa5d8713e9f68577db3272a3e5eeaadc930df969",
+  "camera_status": "experimental_ideal_pinhole",
+  "calibration_status": "unvalidated",
+  "training_gate": "closed",
+  "results": [
+    {
+      "elevation": -35,
+      "azimuth": 270,
+      "distance_m": 0.85,
+      "image_sha256": "23f4f31bcd08e429777d96bdb07b96611ba77e1c4c0b698c14f642e75bfa97fb",
+      "observation_path": "acvision-35\\observation.json",
+      "source_sha256": "75882b74bafc039c01aa850e74e4ab1f2b9ae8892a7d540088caf3c40ddb0580",
+      "status": "oracle_aligned_diagnostic",
+      "motion_ready": false,
+      "orientation_estimated_by_vision": false,
+      "squares_evaluated": 64,
+      "square_assignment_accuracy": 0.0,
+      "nominal_board_equivalent_error_mm": {
+        "mean": 1906.843599182273,
+        "median": 1885.428419523845,
+        "p95": 2982.4069716157665,
+        "max": 3191.124641262159
+      }
+    },
+    {
+      "elevation": -45,
+      "azimuth": 270,
+      "distance_m": 0.85,
+      "image_sha256": "27674fc014ec4882b62785d885928067ba86e80b881d645c12f3efac8f8678ad",
+      "observation_path": "acvision-45\\observation.json",
+      "source_sha256": "75882b74bafc039c01aa850e74e4ab1f2b9ae8892a7d540088caf3c40ddb0580",
+      "status": "oracle_aligned_diagnostic",
+      "motion_ready": false,
+      "orientation_estimated_by_vision": false,
+      "squares_evaluated": 64,
+      "square_assignment_accuracy": 0.96875,
+      "nominal_board_equivalent_error_mm": {
+        "mean": 8.481839446032733,
+        "median": 7.437458402207078,
+        "p95": 16.383101011945463,
+        "max": 19.91489832488004
+      }
+    },
+    {
+      "elevation": -55,
+      "azimuth": 270,
+      "distance_m": 0.85,
+      "image_sha256": "c253425ca0d9b67e09b7fadb5a0967b7656046e4973397fcf8f8fe78c815ea7a",
+      "observation_path": "acvision-55\\observation.json",
+      "source_sha256": "75882b74bafc039c01aa850e74e4ab1f2b9ae8892a7d540088caf3c40ddb0580",
+      "status": "oracle_aligned_diagnostic",
+      "motion_ready": false,
+      "orientation_estimated_by_vision": false,
+      "squares_evaluated": 64,
+      "square_assignment_accuracy": 0.0,
+      "nominal_board_equivalent_error_mm": {
+        "mean": 1816.4384383754066,
+        "median": 1799.3389797541113,
+        "p95": 2838.7017583754864,
+        "max": 2875.2524390999097
+      }
+    }
+  ]
+}

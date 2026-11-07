@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <string_view>
 #include <vector>
 
 #include "board/board.hpp"
@@ -25,6 +26,10 @@ namespace ac::chess {
  */
 class MoveValidator {
 public:
+    /// Validate a standard UCI move against the current board without changing it.
+    [[nodiscard]] static std::optional<Move> validateUci(
+        const Board& board, std::string_view token);
+
     /**
      * @brief Validates a newly observed Board against the previous state.
      * @param previous Authoritative Board before the observed move.

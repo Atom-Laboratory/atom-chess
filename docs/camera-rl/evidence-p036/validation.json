@@ -1,0 +1,42 @@
+{
+  "native_ctest": {
+    "passed": 4,
+    "total": 4,
+    "command": "ctest --test-dir build/p032-contract -C Release --output-on-failure"
+  },
+  "python_pytest": {
+    "passed": 31,
+    "total": 31,
+    "new_infrastructure": 14,
+    "elapsed_s": 5.29,
+    "command": "python -B -m pytest simulation/mujoco/tests/test_native_perception.py simulation/mujoco/tests/test_perception_qualification.py -q -p no:cacheprovider",
+    "environment": {
+      "ACVISION_PERCEPTION_EXE": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+      "P036_RUN_ROOT": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036"
+    }
+  },
+  "replay_equal_observations": 54,
+  "protected_files_checked": 232,
+  "protected_changes": [],
+  "current_head": "dcf2dc1e9d0d3be10a8371c6ef54fae694ed6265",
+  "staged_diff": "",
+  "source_files": {
+    "simulation/mujoco/examples/validate_board_reference.py": "8edc53c33d8e8fe68d80e234eed6198d5d72ae60fc07679fc03de2be128f1e39",
+    "simulation/mujoco/examples/qualify_saved_perception.py": "225bf60a285dd31e04ff08a8c10023f0b8f7cbc8fd75180ac0700408fcd02b5b",
+    "simulation/mujoco/examples/compare_perception_reproductions.py": "de01c18e9d4dbbe3b18a8b8b1dc42ae0ef97e305b888c468bde3e8f29111091c",
+    "simulation/mujoco/tests/test_perception_qualification.py": "9142df16c63b46edf0399248fe13c9b5fed77ba04cb16be5a5ad92458fdda599"
+  },
+  "evidence": {
+    "audit-before.json": "ecc67b8e4115d7915daa750ceb199ee624d72901a6b178825460d02d6c953465",
+    "reproduction-report.md": "87f74005feace20270e93b0f3b0b2a849f8d09ff00fd797dfe71129eaf3890a9",
+    "reproduction-metrics.json": "50da27833102aae05dabbe46ed7ac215eb6993e90bee09b96350423e49cbbea9",
+    "paired-report.md": "74869f8943056dbb8c33be156b8eb370ff1fcb9c7d29de7c4a0d2f25e0f5d765",
+    "paired-metrics.json": "803f814f20c980fc5c35ca728ab7a943d49d814b37fffd51011a430b9e3f8c81",
+    "paired-configuration.json": "e743da1c955af10834dcff322419149d3d0fd1cf774d96c5ac114223c564f4d8",
+    "paired-manifest.json": "864ea4f602b40eb859caaec1a584cd04172415c87d3bc371919c04bb04b8b8fc",
+    "paired-completion.json": "52225aff97b8f4ee03a9d9b454de30d96ccae1a6437983e8d9206bf562dc0da0",
+    "replay-metrics.json": "1b7f2042937189f7ab9558fa494c10ab1da607af5bc2172823c7d9d82609cf55",
+    "replay-manifest.json": "3ce949bd7909c1df7c519dff9911938cffc2240419364c4b97e4f99196d5992b"
+  },
+  "status": "first-delivery validated; physical and algorithm qualification pending"
+}

@@ -1,3 +1,4 @@
+#include "board/move_applier.hpp"
 #include "board/move_validator.hpp"
 
 #include "board/board_comparator.hpp"
@@ -432,6 +433,7 @@ bool isPawnMoveValid(const Board& board, const Move& move, PieceColor color)
 
     if (move.enPassant) {
         if (!move.capture
+            || move.promotion != PieceType::None
             || !isEmpty(target)
             || rowDelta != direction
             || std::abs(colDelta) != 1) {
@@ -789,6 +791,49 @@ std::optional<Move> MoveValidator::validate(
     }
 
     return move;
+}
+
+std::optional<Move> MoveValidator::validateUci(const Board& board, std::string_view token)
+{
+    if (token.size() != 4 && token.size() != 5) {
+        return std::nullopt;
+    }
+    const auto squareAt = [&](std::size_t index) {
+        const char file = token[index];
+        const char rank = token[index + 1];
+        if (file < 'a' || file > 'h' || rank < '1' || rank > '8') {
+            return Square{};
+        }
+        return Square{'8' - rank, file - 'a'};
+    };
+    Move move{.from = squareAt(0), .to = squareAt(2)};
+    if (!isInside(move.from) || !isInside(move.to) || !hasValidKings(board)) {
+        return std::nullopt;
+    }
+    if (token.size() == 5) {
+        switch (token[4]) {
+        case 'q': move.promotion = PieceType::Queen; break;
+        case 'r': move.promotion = PieceType::Rook; break;
+        case 'b': move.promotion = PieceType::Bishop; break;
+        case 'n': move.promotion = PieceType::Knight; break;
+        default: return std::nullopt;
+        }
+    }
+    const Piece moving = board.pieceAt(move.from);
+    const Piece target = board.pieceAt(move.to);
+    move.castle = moving.type == PieceType::King && move.from.row == move.to.row
+        && std::abs(move.from.col - move.to.col) == 2;
+    move.enPassant = moving.type == PieceType::Pawn && move.from.col != move.to.col
+        && isEmpty(target) && board.enPassantTarget() == move.to;
+    move.capture = !isEmpty(target) || move.enPassant;
+    const PieceColor side = board.sideToMove();
+    if (side == PieceColor::None || !isMovementValid(board, move, side)
+        || !isCastlingPathSafe(board, move, side)) {
+        return std::nullopt;
+    }
+    Board candidate = board;
+    MoveApplier::apply(candidate, move);
+    return isKingSafe(candidate, side) ? std::optional{move} : std::nullopt;
 }
 
 } // namespace ac::chess

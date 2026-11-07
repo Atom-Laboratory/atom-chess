@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "bundle": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece",
+  "vision_library": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p038-core\\bin\\Release\\acvision_runtime.dll",
+  "motion_library": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p038-core\\bin\\Release\\motion_runtime.dll",
+  "layout": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\reference-layout.json",
+  "piece": "white_pawn_e2",
+  "source": "e4",
+  "target": "e5",
+  "initial_command": [
+    -1.5,
+    0.12,
+    -1.5,
+    0,
+    0
+  ],
+  "camera": {
+    "lookat": [
+      0.245,
+      0.0,
+      0.012
+    ],
+    "distance": 1.05,
+    "azimuth": 270,
+    "elevation": -75,
+    "width": 1920,
+    "height": 1440
+  },
+  "control_repeat": 5,
+  "dwell_steps": 10,
+  "horizon": 240,
+  "max_perception_age_s": 1.0,
+  "model_status": "experimental model geometry; fingertip contact proxies",
+  "reward_weights": {
+    "approach": 0.2,
+    "grasp": 2.0,
+    "lift": 3.0,
+    "transport": 2.0,
+    "placement": 3.0,
+    "success": 10.0,
+    "failure": -5.0,
+    "time": -0.01,
+    "action": -0.001
+  }
+}
