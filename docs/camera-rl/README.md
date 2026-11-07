@@ -1,5 +1,22 @@
 # Camera-based manipulation and RL
 
+The recommended next direction is documented in the
+[planned-motion and local-learning architecture](hybrid-motion-learning.md).
+Read the [MoPA-RL study guide](mopa-rl-reading-guide.md) alongside the paper
+and [ADR S027](../../simulation/docs/adrs/S027-planned-motion-local-learning.md).
+The complete planner/policy handoff remains proposed.
+
+Start with the [current autonomous platform audit and implementation gates](autonomous-multi-object-audit.md)
+for object support, measured failures, CUDA, checkpoint inventory and the shared-policy plan.
+
+The [autonomous reach pilot results](autonomous-reach-results.md) explain the
+watched run's approach-only outcomes, failed evaluations and numerical diagnosis.
+
+[Approach strategy study](approach-strategy-study.md) audits P038 residual
+control and records the physical feasibility gate for a learned strategy selector.
+Its revised scope and [autonomous temporal prototype](../../simulation/mujoco/training/autonomous-manipulation/README.md)
+extend exploration to grasp height, elbow branch and continuous motion.
+
 This module documents the proposed transition from the isolated E2 pixel-lift
 experiment to camera-guided manipulation through the actual ATOM modules.
 
