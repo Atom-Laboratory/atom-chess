@@ -251,3 +251,114 @@ a documented failure for subsequent curriculum work.
 
 [Final sparse-neighbor run](runs/wrist-c75050a5fba7486bae0b60e6c40ce766/full-gripper/ppo-neighbor-smooth-1024/README.md)
 contains the report, checkpoints, source snapshot and camera replay images.
+
+## Standard opening exercises
+
+Use [the fixture generator](../../examples/prepare_camera_task/README.md)
+with --starting-position. The opening curriculum keeps all 32 pieces in
+the scene and uses separate tasks for pawn e2 to e4 and knight g1 to f3.
+Run each baseline separately before transferring policy weights. A legal
+chess move can still fail the physical or visual checks.
+
+## Board-state and RGB localization for the full-board pawn
+
+Enable `localize_source_rgb` with a `board_fen` exported by Chess Core.
+The simulation fixture and task endpoints must agree with the FEN. For the
+opening pawn exercise, use the pre-move FEN and E2-to-E4 transfer returned
+by `atom_mujoco.chess_commands.plan_move([], 'e2e4')`. This is an offline
+snapshot of the logical game. The launcher does not subscribe to a live game.
+To prepare a new configuration, start from the full-board pawn configuration
+emitted by the fixture generator. Use a fresh directory under the training runs
+folder. The Chess Core bridge described by the interactive Playground
+must be available to export the pre-move FEN.
+
+~~~powershell
+$py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+$base = 'FILL_IN_THE_GENERATED_PAWN_JSON_PATH'
+$runs = 'simulation/mujoco/training/camera-manipulation/runs'
+$prepared = Join-Path $runs ("pawn-e2-e4-rgb-" + [guid]::NewGuid().ToString('N'))
+$fen = & $py -c "from atom_mujoco.chess_commands import plan_move; print(plan_move([], 'e2e4')['fen'])"
+if ($LASTEXITCODE -ne 0) { throw 'Chess Core FEN export failed' }
+$cfg = Get-Content $base -Raw | ConvertFrom-Json
+$cfg | Add-Member -NotePropertyName board_fen -NotePropertyValue $fen
+$cfg | Add-Member -NotePropertyName localize_source_rgb -NotePropertyValue $true
+$cfg | Add-Member -NotePropertyName neighbor_displacement_penalty_per_mm -NotePropertyValue 1.0
+$cfg | Add-Member -Force -NotePropertyName non_target_contact_penalty -NotePropertyValue 20.0
+$cfg | Add-Member -Force -NotePropertyName visual_qualification -NotePropertyValue $true
+New-Item -ItemType Directory $prepared | Out-Null
+$config = Join-Path $prepared 'environment.json'
+[IO.File]::WriteAllText((Join-Path (Get-Location) $config), ($cfg | ConvertTo-Json -Depth 12))
+~~~
+
+ACVision rectifies the RGB frame using the ArUco reference layout. The
+localizer compares each logically occupied cell against a centered RGB
+calibration and estimates its XY offset in the board plane. The source
+estimate moves the AC:Motion pickup waypoint. Unknown offsets are omitted.
+A missing source estimate aborts reset. The actor receives RGB, task squares,
+commanded joints, its previous action, phase and the perception validity
+flag. Its observation space is compatible with the previous opening policy.
+The simulated robot still uses static geometry for the board-to-base
+transform, TCP, gripper opening and joint limits. The real installation
+requires equivalent calibration and its own empty and centered RGB
+references. This fixture does not qualify a movable board or a real camera.
+
+With `neighbor_displacement_penalty_per_mm` set to 1.0, a new maximum
+displacement of a bystander costs one reward unit per millimeter beyond the
+0.25 mm dead band. Returning toward the original point does not refund the
+penalty. MuJoCo measures this displacement, contact and toppling for reward
+and termination only. The camera still verifies final placement and neighbor
+appearance. Individual grasp and lift bonuses require a separate validated
+RGB verification step.
+
+For an interrupted run, pass `--warm-start-checkpoint` with the intermediate
+ZIP in its original run directory. Optionally pin it with
+`--checkpoint-sha256`. The new run records the archive digest, saved
+source steps, environment signature and weight digest in `run.json`.
+Its `report.json` records the initial and final weight digests. For the
+camera/FEN test, set `ATOM_CAMERA_FEN_CONFIG` to the generated environment
+configuration, then run the following from the repository root.
+
+~~~powershell
+& .\simulation\mujoco\.venv\Scripts\python.exe -B -m pytest simulation/mujoco/tests/test_board_piece_localization.py simulation/mujoco/tests/test_contact_supervision.py simulation/mujoco/tests/test_camera_only.py -q
+~~~
+
+## Live dashboard and CSV exports
+
+Add --dashboard to train or smoke mode to open the live Tk dashboard. On Windows,
+use the repository's MuJoCo Python environment with Tk available. Add --watch
+to open the MuJoCo viewer at the same time. The dashboard opens during baseline evaluation and shows the current stage.
+It runs in a separate process from MuJoCo. Graph activations and losses appear
+once PPO begins. After training ends, the window stays open for inspection.
+
+~~~powershell
+Set-Location 'F:\Users\EHD\Github\Atom\atom-chess'
+$py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+$r = 'simulation/mujoco/training/camera-manipulation/runs/qualification90-1794004012529819900'
+$d = "$r/density-98ce29b538414c87aa7b210573f3556e"
+$previous = "$d/center-clearance-watch-d54929be1816433d8f9ed76728c31dfc"
+& $py -u -B simulation/mujoco/training/camera-manipulation/run.py --config "$d/center-clearance-v1.json" --camera-only --mode train --resume $previous --steps 2048 --episodes 1 --checkpoint-every 512 --watch --dashboard
+~~~
+
+The graph groups the actual forward activations by feature extractor, actor,
+critic and output head. Brightness represents RMS activation magnitude in the
+latest sampled forward pass. It does not show individual neurons or gradients.
+Loss curves use PPO logger values and update after an optimization round.
+Reward and its components are observed on rollout steps. Closing the dashboard
+leaves training active. CSV export works with or without the dashboard.
+
+| File | One row per | Contents |
+|---|---|---|
+| steps.csv | Environment step | Reward before PPO timeout bootstrapping, cumulative episode return, actions sent to the environment, phase, target, contact count, toppling, appearance and reward components |
+| ppo_updates.csv | PPO optimization round | Update count, learning rate, policy gradient loss, value loss, entropy loss, reported combined loss, KL, clipping, explained variance and exploration standard deviation |
+| network.csv | Network module | Module name and type, linear input and output units or convolution channels, parameter count and trainable parameter count |
+
+The PPO combined loss is the value reported by Stable Baselines3 for its
+last minibatch in an optimization round. It is distinct from task reward.
+Episode outcomes remain in episodes.jsonl. The CSV files are created in the
+same fresh output directory and flushed as rows arrive. The dashboard also writes sampled activations and live status to dashboard.jsonl.
+Earlier runs have only the telemetry captured when they were recorded.
+
+To check the export, use --mode smoke --steps 64 with a compatible configuration.
+Inspect steps.csv for 64 rows, ppo_updates.csv for two optimization rounds and
+network.csv for both actor and critic layers. Initial evaluation and final
+evaluation results are recorded separately in report.json.

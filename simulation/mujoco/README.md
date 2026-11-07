@@ -268,3 +268,6 @@ parts to their actual moving bodies. The wrist model supports six-command
 native IK and a five-action camera residual policy. See the
 [training guide](training/camera-manipulation/README.md) for the staged
 isolated-piece, full-collision and sparse-neighbor workflow.
+
+The P038 launcher also supports a [live PPO dashboard and CSV export](training/camera-manipulation/README.md#live-dashboard-and-csv-exports).
+For the opening pawn, see [FEN and RGB localization with intermediate checkpoint transfer](training/camera-manipulation/README.md#board-state-and-rgb-localization-for-the-full-board-pawn).

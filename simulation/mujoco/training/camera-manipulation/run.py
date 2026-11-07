@@ -13,6 +13,7 @@ from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.env_checker import check_env
 
 from atom_mujoco.camera_manipulation_env import CameraManipulationEnv
+from telemetry import TrainingCsv
 
 
 def sha(path):
@@ -53,20 +54,36 @@ def evaluate(env, policy, episodes, seed, viewer=None):
 
 
 class RecordEpisodes(BaseCallback):
-    def __init__(self, output, every, viewer=None):
+    def __init__(self, output, every, viewer=None, dashboard=None):
         super().__init__()
         self.output, self.every, self.viewer = output, every, viewer
+        self.dashboard = dashboard
         self.next_save = every
         self.completed = []
+
+    def _on_training_start(self):
+        self.csv = TrainingCsv(self.output, self.model.policy)
+
+    def _on_rollout_start(self):
+        self.csv.record_update(self.num_timesteps, self.logger.name_to_value)
+
+    def _on_training_end(self):
+        self.csv.record_update(self.num_timesteps, self.logger.name_to_value)
 
     def _on_step(self):
         if self.viewer is not None:
             self.viewer.sync()
+        self.csv.record_step(self.num_timesteps, float(self.locals['rewards'][0]),
+                             self.locals['dones'][0], self.locals['clipped_actions'][0],
+                             self.locals['infos'][0])
+        if self.dashboard is not None:
+            self.dashboard.update(self.num_timesteps, float(self.locals['rewards'][0]),
+                                  self.locals['infos'][0], self.logger.name_to_value)
         for done, info in zip(self.locals['dones'], self.locals['infos']):
             if done:
                 record = {key: info.get(key) for key in (
                     'success', 'failure', 'grasp', 'placement', 'collisions', 'phase',
-                    'visual_state', 'visual_confirmed', 'target', 'wrist_command_rad', 'wrist_travel_rad', 'neighbor_change', 'episode_steps', 'episode_wall_s', 'episode_reward_components')}
+                    'visual_state', 'visual_confirmed', 'target', 'wrist_command_rad', 'wrist_travel_rad', 'neighbor_change', 'appearance_iou', 'forbidden_contact', 'contact_steps', 'topple_event', 'observed_offsets_m', 'neighbor_displacements_mm', 'episode_steps', 'episode_wall_s', 'episode_reward_components')}
                 record['training_step'] = self.num_timesteps
                 self.completed.append(record)
                 with (self.output/'episodes.jsonl').open('a', encoding='utf-8') as stream:
@@ -87,7 +104,9 @@ def provenance(env):
     paths += [package/name for name in (
         'camera_manipulation_env.py', 'camera_reward.py', 'camera_policy.py',
         'native_vision.py', 'native_motion.py', 'visual_verification.py',
-        'collision.py', 'motion_controller.py', 'backend.py', 'camera_only_env.py', 'neighbor_vision.py')]
+        'collision.py', 'motion_controller.py', 'backend.py', 'camera_only_env.py', 'neighbor_vision.py', 'piece_vision.py', 'contact_supervision.py')]
+    if cfg.get('localize_source_rgb'):
+        paths.extend([package/'board_piece_localization.py', package/'chess_commands.py'])
     paths += [Path(__file__)]
     record = dict(environment_version=env.VERSION, configuration=cfg,
                   files={str(path.resolve()): sha(path) for path in sorted(set(paths))},
@@ -96,6 +115,22 @@ def provenance(env):
                   runtime=dict(torch=torch.__version__, numpy=np.__version__))
     record['signature'] = hashlib.sha256(json.dumps(record, sort_keys=True).encode()).hexdigest()
     return record
+
+
+def same_environment(previous, current):
+    if previous['signature'] == current['signature']:
+        return True
+    # Dashboard instrumentation is compatible with this exact pre-dashboard launcher.
+    launcher = str(Path(__file__).resolve())
+    old_hash = previous['files'].get(launcher)
+    if old_hash not in {
+        '6542e9045cc4b58096426d8b242fe86c6e4aa2e53452a044997e828e969aaad8',
+        '4b1170a294838d7346e520099d50ab3b39fafe2900f73f272fb0301a1cdb30e8',
+    }:
+        return False
+    candidate = dict(current, files=dict(current['files'], **{launcher: old_hash}))
+    candidate.pop('signature')
+    return hashlib.sha256(json.dumps(candidate, sort_keys=True).encode()).hexdigest() == previous['signature']
 
 
 def main():
@@ -109,16 +144,24 @@ def main():
     parser.add_argument('--device', choices=['cpu', 'cuda', 'auto'], default='cpu')
     parser.add_argument('--checkpoint', type=Path)
     parser.add_argument('--resume', type=Path, help='Prior run directory, verified before continuing')
-    parser.add_argument('--warm-start', type=Path, help='Prior run supplying policy weights; resets optimizer')
+    warm = parser.add_mutually_exclusive_group()
+    warm.add_argument('--warm-start', type=Path, help='Prior run supplying policy weights; resets optimizer')
+    warm.add_argument('--warm-start-checkpoint', type=Path, help='Intermediate PPO archive in a prior run')
+    parser.add_argument('--checkpoint-sha256', help='Expected archive SHA-256 for --warm-start-checkpoint')
     parser.add_argument('--checkpoint-every', type=int, default=10000)
-    parser.add_argument('--camera-only', action='store_true', help='Use RGB-only task reward and termination')
+    parser.add_argument('--camera-only', action='store_true', help='Use RGB task evidence with optional simulated contact and toppling supervision')
     parser.add_argument('--watch', action='store_true')
+    parser.add_argument('--dashboard', action='store_true', help='Live PPO graph, losses and reward components (train/smoke)')
     args = parser.parse_args()
     args.output = args.output or new_run('training/camera-manipulation/runs')
+    if args.dashboard and args.mode not in ('train', 'smoke'):
+        parser.error('--dashboard requires train or smoke mode')
     if min(args.steps, args.episodes, args.checkpoint_every) <= 0:
         parser.error('Positive step and episode counts required')
-    if args.warm_start and (args.mode != 'train' or args.resume or args.checkpoint):
+    if (args.warm_start or args.warm_start_checkpoint) and (args.mode != 'train' or args.resume or args.checkpoint):
         parser.error('Warm start requires train mode and excludes resume/checkpoint')
+    if args.checkpoint_sha256 and not args.warm_start_checkpoint:
+        parser.error('--checkpoint-sha256 requires --warm-start-checkpoint')
     if args.mode == 'evaluate' and not args.checkpoint:
         parser.error('Evaluation requires --checkpoint')
     if args.resume and (args.mode != 'train' or args.checkpoint):
@@ -129,6 +172,9 @@ def main():
     torch.set_num_threads(2)
     env = None
     viewer = None
+    dashboard = None
+    callback = None
+    completed = False
     try:
         if args.camera_only:
             from atom_mujoco.camera_only_env import CameraOnlyEnv
@@ -139,24 +185,38 @@ def main():
         if args.resume:
             previous = json.loads((args.resume/'run.json').read_text(encoding='utf-8'))
             previous_report = json.loads((args.resume/'report.json').read_text(encoding='utf-8'))
-            if (previous['environment']['signature'] != identity['signature'] or
+            if (not same_environment(previous['environment'], identity) or
                     sha(args.resume/'policy.zip') != previous_report['checkpoint_sha256']):
                 raise ValueError('Resume environment or checkpoint differs from recorded provenance')
         transfer = None
-        if args.warm_start:
-            source = args.warm_start.resolve(strict=True)
-            previous_report = json.loads((source/'report.json').read_text(encoding='utf-8'))
-            checkpoint_hash = sha(source/'policy.zip')
-            if checkpoint_hash != previous_report['checkpoint_sha256']:
+        source_policy = None
+        if args.warm_start or args.warm_start_checkpoint:
+            archive = (args.warm_start_checkpoint or args.warm_start/'policy.zip').resolve(strict=True)
+            source = archive.parent
+            donor = json.loads((source/'run.json').read_text(encoding='utf-8'))
+            expected = args.checkpoint_sha256
+            if args.warm_start:
+                expected = json.loads((source/'report.json').read_text(encoding='utf-8'))['checkpoint_sha256']
+            checkpoint_hash = sha(archive)
+            if expected and checkpoint_hash != expected.lower():
                 raise ValueError('Warm-start checkpoint integrity mismatch')
-            transfer = dict(source=str(source), checkpoint_sha256=checkpoint_hash,
+            source_policy = PPO.load(archive, device=args.device)
+            if (source_policy.observation_space != env.observation_space
+                    or source_policy.action_space != env.action_space):
+                raise ValueError('Warm-start policy spaces differ')
+            transfer = dict(source=str(source), checkpoint=str(archive), checkpoint_sha256=checkpoint_hash,
+                            source_steps=source_policy.num_timesteps, weights_sha256=weights_sha(source_policy),
+                            source_environment=donor['environment']['signature'],
                             scope='policy weights; fresh optimizer and step counter')
         run = dict(mode=args.mode, seed=args.seed, requested_steps=args.steps,
                    episodes=args.episodes, environment=identity,
                    resume=str(args.resume) if args.resume else None, warm_start=transfer,
                    actor='PPO MultiInputPolicy, P037 RGB/task/commands plus perception-valid mask',
-                   reward='rgb_only' if args.camera_only else 'simulation_oracle')
+                   reward=getattr(env, 'reward_source', 'simulation_oracle'))
         (args.output/'run.json').write_text(json.dumps(run, indent=2), encoding='utf-8')
+        if args.dashboard:
+            from dashboard_publisher import DashboardPublisher
+            dashboard = DashboardPublisher(args.output)
         if args.watch:
             import mujoco.viewer
             viewer = mujoco.viewer.launch_passive(env.sim.model, env.sim.data)
@@ -173,15 +233,15 @@ def main():
             policy = PPO.load(args.resume/'policy.zip', env=env, device=args.device) if args.resume else PPO(
                 'MultiInputPolicy', env, n_steps=32, batch_size=32, n_epochs=2,
                 learning_rate=3e-4, seed=args.seed, device=args.device, verbose=1)
-            if args.warm_start:
-                source_policy = PPO.load(args.warm_start/'policy.zip', device=args.device)
-                if (source_policy.observation_space != env.observation_space
-                        or source_policy.action_space != env.action_space):
-                    raise ValueError('Warm-start policy spaces differ')
+            if source_policy is not None:
                 policy.policy.load_state_dict(source_policy.policy.state_dict())
+                if weights_sha(policy) != transfer['weights_sha256']:
+                    raise RuntimeError('Warm-start weights failed verification')
             before = weights_sha(policy)
             steps_before = policy.num_timesteps
-            callback = RecordEpisodes(args.output, args.checkpoint_every, viewer)
+            if dashboard is not None:
+                dashboard.attach(policy.policy)
+            callback = RecordEpisodes(args.output, args.checkpoint_every, viewer, dashboard)
             policy.learn(total_timesteps=args.steps, callback=callback,
                          reset_num_timesteps=not bool(args.resume))
             policy.save(args.output/'policy.zip')
@@ -204,12 +264,17 @@ def main():
         report['status'] = 'completed'
         report['interpretation'] = 'Cycle execution evidence. Physical and visual qualification remain experimental.'
         (args.output/'report.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+        completed = True
         print(json.dumps(report, indent=2))
     except Exception as exception:
         (args.output/'failure.json').write_text(json.dumps(dict(error=repr(exception)), indent=2),
                                               encoding='utf-8')
         raise
     finally:
+        if callback is not None and hasattr(callback, 'csv'):
+            callback.csv.close()
+        if dashboard is not None:
+            dashboard.close(completed=completed)
         if viewer is not None:
             viewer.close()
         if env is not None:
