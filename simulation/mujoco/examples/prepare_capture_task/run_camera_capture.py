@@ -14,6 +14,7 @@ from atom_mujoco.collision import SceneCollision, SweptChecker, pregrasp_opening
 from atom_mujoco.graveyard_vision import GraveyardEvidence
 from atom_mujoco.motion_controller import MotionController
 from atom_mujoco.native_motion import NativeMotion
+from atom_mujoco.neighbor_vision import NeighborEvidence
 from atom_mujoco.native_vision import NativeVision
 from validate_graveyard_camera import project
 
@@ -22,6 +23,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('bundle', 'library', 'motion-library', 'output'):
         parser.add_argument('--'+name, required=True, type=Path)
+    parser.add_argument('--wrist-deg', type=float, nargs=4,
+                        metavar=('REMOVE_PICK', 'REMOVE_PLACE', 'ATTACK_PICK', 'ATTACK_PLACE'),
+                        help='Wrist angles per transfer endpoint for a wrist-enabled fixture')
     parser.add_argument('--preview', action='store_true', help='Show live RGB and rectified board')
     parser.add_argument('--fixture-offset-mm', type=float, nargs=4, default=[0.]*4,
                         metavar=('WHITE_X', 'WHITE_Y', 'BLACK_X', 'BLACK_Y'),
@@ -45,15 +49,24 @@ def execute(args, publish=None):
     args.output.mkdir(parents=True, exist_ok=False)
     model = sim.model
     park = np.array([-1.5, .12, -1.5, 0., 0.])
+    if "wrist_joint" in sim.names:
+        park = np.append(park, (sim.lower[-1]+sim.upper[-1])/2)
     sim.reset(park)
     controller = MotionController(sim)
     motion = NativeMotion(args.motion_library, sim)
+    if args.wrist_deg is not None and (
+            not motion.has_wrist or not np.isfinite(args.wrist_deg).all()
+            or np.any(np.deg2rad(args.wrist_deg) < sim.lower[-1])
+            or np.any(np.deg2rad(args.wrist_deg) > sim.upper[-1])):
+        raise ValueError('Wrist angles require a wrist bundle and must respect its joint limits')
     attacker, victim = task['attacker'], task['captured']
     source, contested, slot = attacker['source'], victim['source'], victim['target']['slot']
     pieces = {source: attacker['piece'], contested: victim['piece']}
     if attacker['target'] != contested or any(
-            p['kind'] != 'pawn' for p in sim.manifest['pieces']):
+            p['kind'] != 'pawn' for p in sim.manifest['pieces'] if p['name'] in pieces.values()):
         raise ValueError('This experimental executor expects the two-pawn capture fixture')
+    neighbor_squares = [p['initial_square'] for p in sim.manifest['pieces']
+                        if p['name'] not in pieces.values()]
     board = model.body('chessboard').pos
     board_support = board[2] + model.geom('board_frame').size[2]
     centers = {square: (board + model.site('square_center_'+square).pos).copy()
@@ -67,7 +80,8 @@ def execute(args, publish=None):
     width, height = settings['width'], settings['height']
     report = dict(status='FAILED', evidence_source='rgb_only', completed_transfers=0,
                   observations={}, preflight=[], grasp_position='RGB match against calibrated pawn templates',
-                  scope='fixed two-pawn fixture; experimental camera evidence')
+                  scope='two-pawn capture with static nominal neighbor geometry', neighbor_change={},
+                  wrist_deg=args.wrist_deg)
 
     # Synthetic empty RGB calibration: independent scratch state, never read live piece poses.
     scratch = mujoco.MjData(model)
@@ -198,7 +212,12 @@ def execute(args, publish=None):
             poses[5:7, 2] = end_z
             aperture = pregrasp_opening(proxy, piece)
             grasp = pregrasp_opening(proxy, piece, side_gap_m=-.0005)
-            solutions = [motion.solve(poses[i, :3], aperture) for i in (0, 1, 3, 4, 5)]
+            pick_wrist = place_wrist = None
+            if args.wrist_deg is not None:
+                start = 0 if piece == victim['piece'] else 2
+                pick_wrist, place_wrist = np.deg2rad(args.wrist_deg[start:start+2])
+            solutions = [motion.solve(poses[i, :3], aperture, wrist=pick_wrist if i < 4 else place_wrist)
+                         for i in (0, 1, 3, 4, 5)]
             collision = SceneCollision(proxy)
             checked = collision.check_plan(solutions, piece, centers[end],
                                            aperture=aperture, grasp=grasp)
@@ -217,11 +236,21 @@ def execute(args, publish=None):
 
         try:
             frames = check('before', {source, contested})
+            neighbor_evidence = NeighborEvidence(frames[-1], neighbor_squares)
+
+            def check_neighbors(label, frame):
+                if not neighbor_squares:
+                    return
+                changes = neighbor_evidence.observe(frame)
+                report['neighbor_change'][label] = changes
+                if changes is None or any(value > neighbor_evidence.limit for value in changes.values()):
+                    raise RuntimeError('NEIGHBOR_VISUAL_CHANGE: '+label)
             transfer(victim['piece'], slot, {
                 victim['piece']: locate(contested, victim['piece'], frames),
                 attacker['piece']: locate(source, attacker['piece'], frames),
             })
             frames = check('removed', {source, slot})
+            check_neighbors('removed', frames[-1])
             removed = locate(slot, victim['piece'], frames)
             report['completed_transfers'] = 1
             transfer(attacker['piece'], contested, {
@@ -229,6 +258,7 @@ def execute(args, publish=None):
                 victim['piece']: removed,
             })
             frames = check('placed', {contested, slot})
+            check_neighbors('placed', frames[-1])
             locate(contested, attacker['piece'], frames)
             locate(slot, victim['piece'], frames)
             report['completed_transfers'] = 2
