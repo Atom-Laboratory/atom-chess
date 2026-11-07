@@ -2,6 +2,7 @@ from types import SimpleNamespace
 
 import mujoco
 import numpy as np
+import pytest
 
 from atom_mujoco.collision import SweptChecker, SceneCollision
 
@@ -29,6 +30,26 @@ def test_unresolved_intervals_fail_closed():
     value = checker(.04)
     value.max_depth = 0
     assert value.interval([-.1], [.1])['status'] == 'unresolved'
+
+
+@pytest.mark.parametrize('offset,depth', [(0., 16), (.04, 16), (.04, 0)])
+def test_sphere_pruning_preserves_clear_blocked_and_unresolved_outcomes(offset, depth):
+    plain, optimized = checker(offset), checker(offset)
+    plain.max_depth = optimized.max_depth = depth
+    expected = plain.interval([-.1], [.1])
+    actual = optimized.interval([-.1], [.1], prune_spheres=True)
+    assert (actual or {}).get('status') == (expected or {}).get('status')
+    assert optimized.samples <= plain.samples
+
+
+def test_sphere_pruning_keeps_unbounded_planes():
+    model = mujoco.MjModel.from_xml_string('''<mujoco><worldbody>
+      <geom name="floor" type="plane" size="1 1 .1" pos="100 0 0"/>
+      <body><joint type="slide" axis="0 0 1" range="-1 1"/>
+        <geom name="moving" type="sphere" size=".01" mass="1"/>
+      </body></worldbody></mujoco>''')
+    value = SweptChecker(model, np.zeros(1), [0], [(0, 1)])
+    assert value.interval([.05], [-.05], prune_spheres=True)['status'] == 'collision'
 
 
 def test_preflight_does_not_mutate_live_scene(tmp_path):
