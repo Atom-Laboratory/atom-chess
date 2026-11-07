@@ -114,3 +114,5 @@ The selected physical arm is Dejan's How To Mechatronics SCARA design with J1, J
 The acmotion joint-space contract now represents all four NEMA-driven axes. `Pose.toolYawRad` defines planar end-effector orientation; inverse kinematics solves J1/J2 for XY and derives J3 to maintain that orientation. ACM1 transports J1/J2/J3/Z/gripper.
 
 Physical dimensions, J3 zero offset, joint limits, transmission ratios and motor-direction conventions remain hardware calibration values and must be measured before powered autonomous motion.
+
+P015 adds experimental C++ MotionPlanner/IK playback. See docs/hybrid-control/p015-execution-guide.md. Legacy square-based Python planning remains active separately.

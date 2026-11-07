@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "status": "running",
+  "configuration_sha256": "e743da1c955af10834dcff322419149d3d0fd1cf774d96c5ac114223c564f4d8",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "versions": {
+    "numpy": "2.5.4",
+    "mujoco": "3.17.0",
+    "Pillow": "12.3.0"
+  },
+  "invocation": [
+    "simulation/mujoco/examples/qualify_saved_perception.py",
+    "--source",
+    "simulation/mujoco/runs/p036/p034-repeat",
+    "--bundle",
+    "simulation/mujoco/runs/playground-fingertip-only-v1",
+    "--layout",
+    "docs/camera-rl/aruco-assets-v4/layout.json",
+    "--executable",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+    "--output",
+    "simulation/mujoco/runs/p036/paired-final"
+  ]
+}

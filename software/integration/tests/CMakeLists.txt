@@ -27,3 +27,11 @@ target_link_libraries(test_observation_interpreter PRIVATE
 )
 
 add_test(NAME test_observation_interpreter COMMAND test_observation_interpreter)
+
+add_executable(test_board_move_adapter test_board_move_adapter.cpp)
+target_link_libraries(test_board_move_adapter PRIVATE acintegration GTest::gtest_main)
+add_test(NAME test_board_move_adapter COMMAND test_board_move_adapter)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND STOCKFISH_EXECUTABLE)
+    target_compile_definitions(test_board_move_adapter PRIVATE ATOM_TEST_STOCKFISH="${STOCKFISH_EXECUTABLE}")
+endif()

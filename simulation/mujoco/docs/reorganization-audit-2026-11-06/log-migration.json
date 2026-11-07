@@ -1,0 +1,62 @@
+[
+  {
+    "destination": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\training\\grasp-lift\\runs\\grasp-fast-4-workers\\process-logs\\grasp-fast-4-workers.stderr.log",
+    "original": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\grasp-fast-4-workers.stderr.log",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "destination": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\training\\grasp-lift\\runs\\grasp-fast-4-workers\\process-logs\\grasp-fast-4-workers.stdout.log",
+    "original": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\grasp-fast-4-workers.stdout.log",
+    "sha256": "E3C0BF4032CE4223329A7876CD362CB83CCC479FE82446BD0479DA70341B1117"
+  },
+  {
+    "destination": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\training\\grasp-lift\\runs\\visual-grasp-camera-v3-first\\process-logs\\visual-grasp-camera-v3-first.stderr.log",
+    "original": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\visual-grasp-camera-v3-first.stderr.log",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "destination": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\training\\grasp-lift\\runs\\visual-grasp-camera-v3-first\\process-logs\\visual-grasp-camera-v3-first.stdout.log",
+    "original": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\visual-grasp-camera-v3-first.stdout.log",
+    "sha256": "49CC5C87C93390A01DD0AD225E7FD03BD3B3CA95F44ADF87D7346779DDDCD18D"
+  },
+  {
+    "destination": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\training\\grasp-lift\\runs\\visual-grasp-features-v1\\process-logs\\visual-grasp-features-v1.stderr.log",
+    "original": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\visual-grasp-features-v1.stderr.log",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "destination": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\training\\grasp-lift\\runs\\visual-grasp-features-v1\\process-logs\\visual-grasp-features-v1.stdout.log",
+    "original": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\visual-grasp-features-v1.stdout.log",
+    "sha256": "88623B45271E8A6034A0549EA24C7F8886B6F78D311CB33AE712A7CEC40DCDE7"
+  },
+  {
+    "destination": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\training\\grasp-lift\\runs\\visual-grasp-warm-full-open-v1\\process-logs\\visual-grasp-warm-full-open-v1.stderr.log",
+    "original": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\visual-grasp-warm-full-open-v1.stderr.log",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "destination": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\training\\grasp-lift\\runs\\visual-grasp-warm-full-open-v1\\process-logs\\visual-grasp-warm-full-open-v1.stdout.log",
+    "original": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\visual-grasp-warm-full-open-v1.stdout.log",
+    "sha256": "6DFC54CB0B5004B8EDA71CF67A85FD88BFB69B2B58DB5411AF3CF5C037E0C56A"
+  },
+  {
+    "destination": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\training\\grasp-lift\\runs\\visual-grasp-warm-v3\\process-logs\\visual-grasp-warm-v3.stderr.log",
+    "original": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\visual-grasp-warm-v3.stderr.log",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "destination": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\training\\grasp-lift\\runs\\visual-grasp-warm-v3\\process-logs\\visual-grasp-warm-v3.stdout.log",
+    "original": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\visual-grasp-warm-v3.stdout.log",
+    "sha256": "C8539AF695F466915A181C4749D2CDBA0B515A5764A9F36ED18142221371502D"
+  },
+  {
+    "destination": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\training\\grasp-lift\\runs\\visual-lift-camera-v3-20000\\process-logs\\visual-lift-camera-v3-20000.stderr.log",
+    "original": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\visual-lift-camera-v3-20000.stderr.log",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "destination": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\training\\grasp-lift\\runs\\visual-lift-camera-v3-20000\\process-logs\\visual-lift-camera-v3-20000.stdout.log",
+    "original": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\visual-lift-camera-v3-20000.stdout.log",
+    "sha256": "1A3F254D88B0A303939D174B03EAFEABFD238DB896E95031686332F6D6B78A6A"
+  }
+]

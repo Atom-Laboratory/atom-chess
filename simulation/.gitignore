@@ -1,0 +1,6 @@
+# New local runs; existing tracked install/log artifacts are left untouched.
+/build/
+/install/
+/log/
+**/__pycache__/
+.pytest_cache/
