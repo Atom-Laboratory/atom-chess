@@ -1,5 +1,8 @@
 # camera-manipulation
 
+To study the full pipeline and rebuild it independently, start with the
+[P038 camera PPO reconstruction guide](../../../docs/learning/camera-ppo/README.md).
+
 Requires a prepared one-piece environment.json and native vision/motion libraries.
 
 Install the environment using the [module guide](../../README.md). Run these

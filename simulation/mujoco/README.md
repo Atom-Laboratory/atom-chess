@@ -12,7 +12,8 @@ history and the linked profile documents.
 | Watch one controlled transfer | P038 launcher --mode baseline --watch | C++ nominal planner, supervised physics, one pawn e4 to e5 |
 | Watch a saved residual policy | P038 launcher --mode evaluate --checkpoint ... --watch | Same nominal plan with PPO local corrections |
 | Test the training loop | P038 launcher --mode smoke --steps 128 | New PPO, short optimization, save/reload and evaluation |
-| Study image acquisition and weights | [Pipeline walkthrough](../../docs/camera-rl/P038-pipeline-walkthrough.md) | Source-by-source explanation |
+| Study or rebuild camera-guided PPO | [Reconstruction guide](../docs/learning/camera-ppo/README.md) | Camera geometry, control, network, PPO derivation and experiments |
+| Trace image acquisition and weights | [Pipeline walkthrough](../../docs/camera-rl/P038-pipeline-walkthrough.md) | Source-by-source explanation |
 | Run perception-only examples | [Examples README](examples/README.md) | Homography, reference and camera-to-policy checks |
 
 The current prototype has J1, Z, J2 and two coupled finger slides. The physical

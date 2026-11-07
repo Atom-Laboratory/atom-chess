@@ -6,6 +6,8 @@ learning system, and then transfer a qualified behavior to hardware. Watching a
 successful animation is an observation; mastering the subject requires explaining
 why it works, where it fails, and which experiment could disprove the explanation.
 
+For the current camera PPO experiment, start with the
+[P038 reconstruction guide](../../simulation/docs/learning/camera-ppo/README.md).
 The operational descriptions below belong to the earlier v3 lift/grasp study
 material. Current setup and training commands are in the
 [MuJoCo README](../../simulation/mujoco/README.md), with the

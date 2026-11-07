@@ -1,5 +1,9 @@
 [Current English RL guide](rl-getting-started.md) | [Dependencies](dependencies.md)
 
+For the running P038 wrist and camera experiment, start with the
+[camera PPO reconstruction guide](camera-ppo/README.md). The material
+below describes an earlier simulation-learning workflow.
+
 # Preparação para RL — estudo guiado
 
 Comece pelo [guia do usuário de RL](user-guide-rl.md): terminal correto, comandos,
