@@ -1,0 +1,13 @@
+id,category,status,identification_status,manufacturer,model,inventory_quantity,datasheet,evidence
+drv8825_driver_lot_01,stepper_driver,owned,unverified,,DRV8825-compatible carrier,,,
+electrolytic_capacitor_lot_01,passive_component,owned,unverified,,,,,
+esp32_cam_board_01,camera_board,owned,incomplete,,,1,,
+esp32_s3_board_01,controller_board,owned,incomplete,,,1,,
+esp32_s3_board_02,controller_board,owned,incomplete,,,1,,
+power_supply_01,power_supply,owned,unverified,,,1,,
+servo_motor_01,servo_motor,owned,incomplete,,,1,,
+stepper_motor_01,stepper_motor,owned,incomplete,,,1,,
+stepper_motor_02,stepper_motor,owned,incomplete,,,1,,
+stepper_motor_03,stepper_motor,owned,incomplete,,,1,,
+stepper_motor_04,stepper_motor,owned,incomplete,,,1,,
+stepper_motor_05,stepper_motor,owned,incomplete,,,1,,

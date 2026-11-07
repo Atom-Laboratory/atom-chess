@@ -4,6 +4,9 @@ This directory is the engineering record for ATOM Chess hardware. Phase 1
 establishes traceable inventory and assembly data; it does **not** define a
 safe electrical design or claim that the simulation is physically calibrated.
 
+The [engineering baseline](docs/README.md) contains the BOMs, mechanical source
+register, architecture diagrams and verification gates.
+
 ## Phase 1 layout
 
 - [`inventory/components.yaml`](inventory/components.yaml): components owned or
