@@ -70,3 +70,18 @@ For wrist physics and camera-only neighbor rewards, follow the full build,
 reference generation and training commands in
 [the training guide](../../training/camera-manipulation/README.md).
 A generated fixture records obstacle identities in environment.json.
+
+## Standard opening position
+
+Pass --starting-position to retain all 32 pieces at their standard starting
+squares. Use a complete board bundle and its matching reference scene. Select
+the pawn with --piece white_pawn_e2 --source e2 --target e4, or the knight
+with --piece white_knight_g1 --source g1 --target f3. Use a fresh output
+directory for each task. This option rejects custom obstacles and a source
+that differs from the selected piece's starting square.
+
+Run the generated configuration in baseline mode before training. To apply
+the dense curriculum rules, use the wrist and full-gripper bundle and carry
+over the contact, toppling and visual qualification settings from the dense
+experiment. These are separate fixtures and each episode resets to the
+standard position. The knight uses the existing experimental grasp proxy.

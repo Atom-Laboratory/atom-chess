@@ -13,13 +13,23 @@ import numpy as np
 from atom_mujoco.virtual_camera import add_camera_override, camera_settings
 
 
-def prepare(bundle, reference_scene, layout, output, *, piece, source, target, camera=None, obstacles=()):
+def prepare(bundle, reference_scene, layout, output, *, piece, source, target, camera=None, obstacles=(), starting_position=False):
     output = Path(output)
     if source == target or any(len(s) != 2 or s[0] not in 'abcdefgh' or s[1] not in '12345678'
                                for s in (source, target)):
         raise ValueError('Distinct algebraic squares required')
     manifest = json.loads((Path(bundle)/'manifest.json').read_text())
     selected = next(p for p in manifest['pieces'] if p['name'] == piece)
+    if starting_position:
+        initial_squares = {file+rank for file in 'abcdefgh' for rank in '1278'}
+        if (len(manifest['pieces']) != 32
+                or {p['initial_square'] for p in manifest['pieces']} != initial_squares):
+            raise ValueError('Starting position requires the full standard board bundle')
+        if obstacles or selected['initial_square'] != source:
+            raise ValueError('Use the selected piece starting square and omit --obstacle')
+        obstacles = [f"{p['name']}@{p['initial_square']}"
+                     for p in manifest['pieces'] if p['name'] != piece]
+
     neighbors = []
     for spec in obstacles:
         name, square = spec.split('@')
@@ -99,12 +109,14 @@ def main():
     parser.add_argument('--source', default='e4')
     parser.add_argument('--target', default='d5')
     parser.add_argument('--obstacle', action='append', default=[], help='Physical piece@initial_square, repeatable')
+    parser.add_argument('--starting-position', action='store_true', help='Retain all other pieces on their initial squares')
     resolve_camera = add_camera_override(parser)
     args = parser.parse_args()
     manifest = json.loads((args.bundle / "manifest.json").read_text())
     prepare(args.bundle, args.reference_scene, args.layout, args.output,
             piece=args.piece, source=args.source, target=args.target,
-            camera=resolve_camera(args, manifest["scene"]["board_center_m"]), obstacles=args.obstacle)
+            camera=resolve_camera(args, manifest["scene"]["board_center_m"]), obstacles=args.obstacle,
+            starting_position=args.starting_position)
 
 
 if __name__ == '__main__':

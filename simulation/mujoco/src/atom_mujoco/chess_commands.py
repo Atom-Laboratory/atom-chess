@@ -24,6 +24,28 @@ def plan_move(history, move):
     return json.loads(result.stdout)
 
 
+def fen_occupancy(fen):
+    """Decode the placement field exported by Chess Core."""
+    fields = fen.split()
+    ranks = fields[0].split('/') if fields else []
+    if len(ranks) != 8:
+        raise ValueError('Expected eight ranks in Chess Core FEN')
+    occupied = {}
+    for row, rank in enumerate(ranks):
+        column = 0
+        for symbol in rank:
+            if symbol in '12345678':
+                column += int(symbol)
+            elif symbol in 'pnbrqkPNBRQK' and column < 8:
+                occupied[chr(97+column)+str(8-row)] = symbol
+                column += 1
+            else:
+                raise ValueError('Invalid Chess Core FEN placement')
+        if column != 8:
+            raise ValueError('Expected eight files in Chess Core FEN rank')
+    return occupied
+
+
 def execute_chess_move(playground, source, target):
     if playground.manual.active or playground.physical.reconciliation_required:
         raise ValueError('Autonomous chess requires a reconciled scene and manual mode off')
@@ -38,15 +60,7 @@ def execute_chess_move(playground, source, target):
     # Verify the complete observed physical occupancy against the logical FEN.
     symbols = {'pawn':'p','knight':'n','bishop':'b','rook':'r','queen':'q','king':'k'}
     kinds = {p['name']: p for p in playground.sim.manifest['pieces']}
-    expected = {}
-    for rank_index,row in enumerate(plan['fen'].split()[0].split('/')):
-        file = 0
-        for char in row:
-            if char.isdigit():
-                file += int(char)
-            else:
-                expected[chr(97+file)+str(8-rank_index)] = char
-                file += 1
+    expected = fen_occupancy(plan['fen'])
     actual = {}
     for square,identity in playground.physical.confirmed.occupancy.items():
         if identity:

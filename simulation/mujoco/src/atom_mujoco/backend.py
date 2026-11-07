@@ -74,7 +74,7 @@ class Simulation:
         mujoco.mj_forward(self.model, self.data)
         return self.observe()
 
-    def advance(self, target):
+    def advance(self, target, *, stop_when=None):
         """One control interval of physics; target is SI joint position, not normalized action."""
         value = self.validate(target)  # Reject invalid input before changing state.
         self.target = value
@@ -83,6 +83,8 @@ class Simulation:
             self.reference += np.clip(value-self.reference, -delta, delta)
             self.data.ctrl[:] = self.reference
             mujoco.mj_step(self.model, self.data)
+            if stop_when is not None and stop_when():
+                break
         mujoco.mj_forward(self.model, self.data)
         if not np.isfinite(self.data.qpos).all() or not np.isfinite(self.data.qvel).all():
             raise RuntimeError('Nonfinite physics state; reset required')

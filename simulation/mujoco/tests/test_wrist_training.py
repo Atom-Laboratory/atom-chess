@@ -88,3 +88,15 @@ def test_neighbor_failure_overrides_successful_target_camera_evidence(monkeypatc
         assert info['reward_components']['neighbor_disturbance'] < 0
     finally:
         env.close()
+
+def test_target_appearance_rejects_empty_or_different_silhouette():
+    from atom_mujoco.piece_vision import PieceAppearance
+    empty = np.zeros((800, 800, 3), dtype=np.uint8)
+    upright = empty.copy()
+    upright[320:380, 340:360] = 255
+    evidence = PieceAppearance(empty, upright, 'd5')
+    assert evidence.score(upright) == 1.
+    assert evidence.score(empty) == 0.
+    fallen = empty.copy()
+    fallen[340:360, 320:380] = 255
+    assert evidence.score(fallen) < evidence.minimum_iou
