@@ -10,6 +10,16 @@ PHASES = ('APPROACH_SOURCE', 'LOWER_TO_SOURCE', 'GRASP_PIECE', 'LIFT_PIECE',
 ACTOR_PHASES = ('APPROACH', 'APPROACH', 'GRASP', 'LIFT', 'TRANSPORT', 'PLACE', 'RELEASE', 'RETREAT')
 
 
+def commanded_elbow_down(sim, command, scratch):
+    """Match native IK's effective elbow using static geometry and issued joints."""
+    scratch.qpos[:] = sim.model.qpos0
+    scratch.qpos[sim.qadr] = 0.
+    scratch.qpos[sim.qadr[-1]] = command[-1]
+    mujoco.mj_kinematics(sim.model, scratch)
+    offset = scratch.site('grasp_center').xpos-scratch.xanchor[sim.joint_ids[2]]
+    return bool(command[2]+np.arctan2(offset[1], offset[0]) <= 0)
+
+
 class NativeMotion:
     def __init__(self, library, sim):
         self.library_path = Path(library).resolve(strict=True)
@@ -59,7 +69,7 @@ class NativeMotion:
         if status:
             raise ValueError(self.native.acmotion_error().decode('utf-8'))
 
-    def solve(self, xyz, opening, wrist=None):
+    def solve(self, xyz, opening, wrist=None, *, elbow_down=True):
         geometry = self.geometry.copy()
         if self.has_wrist:
             wrist = self.default_wrist if wrist is None else float(wrist)
@@ -83,7 +93,7 @@ class NativeMotion:
         pose = np.array([*(np.asarray(xyz)*1000), (opening-low)/(high-low)*100], dtype=np.float64)
         output = np.empty(5, dtype=np.float64)
         self._check(self.native.acmotion_solve(self.pointer(geometry), self.pointer(pose),
-                                              1, self.pointer(output)))
+                                              int(elbow_down), self.pointer(output)))
         return np.append(output, wrist) if self.has_wrist else output
 
     def plan(self, source, target, safe_z, pick_z):

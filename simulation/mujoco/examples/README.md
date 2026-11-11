@@ -4,6 +4,10 @@ This catalog documents the MuJoCo examples available in the ATOM Chess repositor
 
 All commands assume **Windows PowerShell** and must be executed from the repository root.
 
+For the current native six-command hybrid approach experiment, use
+[qualify_hybrid_approach](qualify_hybrid_approach/README.md). Watch is enabled
+by default. This validates approach/retreat and does not start RL training.
+
 Before running an example, read the [MuJoCo module README](../README.md). It contains installation instructions, build requirements, environment setup, and the complete P038 preparation procedure.
 
 Each example that generates output must receive a **fresh output directory**. Do not manually create the final output directory unless the script explicitly requires it. Several scripts create their output directory internally and will fail if it already exists.
@@ -36,7 +40,7 @@ A directory name or filename alone does not establish compatibility. Joint names
 - P038 receives its environment through `environment.json`. The configuration selects the fixture, camera, native libraries, and task parameters.
 - Legacy v3 checkpoints use a different observation/action contract and cannot be loaded as P038 policies.
 - Replaying or resuming a saved run requires compatible model, configuration, environment, and source signatures.
-- The opt-in wrist bundle supports manual rotation through one bounded revolution. Automatic examples and P038 currently retain the five-actuator contract pending migration.
+- Wrist support is entry-point dependent. Legacy five-actuator examples are not interchangeable with the six-command wrist-aware hybrid qualification. Check the selected example's current README and bundle joint names before running it.
 
 ---
 

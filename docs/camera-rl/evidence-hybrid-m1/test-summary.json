@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "source_head": "1997dd60bdb1738afb3cccba973d64087b7117ef",
+  "scope": "M1 audit, existing tests only; no implementation or training",
+  "cpp": {
+    "command": "wsl -d Ubuntu -- ctest --test-dir <repo>/build/headless --output-on-failure",
+    "suites_passed": 16,
+    "suites_failed": 0,
+    "wall_s": 2.55,
+    "fresh_build": false
+  },
+  "python": {
+    "passed": 64,
+    "failed": 1,
+    "skipped": 2,
+    "wall_s": 59.64,
+    "failure": "test_physical_capture_removes_before_attacker: GRIP_LOST_DURING_TRANSPORTING",
+    "skipped_fixture": "ATOM_CAMERA_ONLY_CONFIG not supplied",
+    "enabled_fixtures": [
+      "ATOM_AUTONOMOUS_CONFIG",
+      "ATOM_CAMERA_FEN_CONFIG",
+      "ACVISION_RUNTIME_DLL",
+      "ACVISION_PERCEPTION_EXE"
+    ]
+  },
+  "isolated_capture": {
+    "passed": 0,
+    "failed": 1,
+    "wall_s": 5.12,
+    "completed_transfers": 0,
+    "failure": "GRIP_LOST_DURING_TRANSPORTING"
+  },
+  "evidence_sha256": {
+    "capture-reproduction.txt": "dbd04cd2f863a1ca732019ffae2e8a7dcb85dbd88d69d6181cf84143394af956",
+    "cpp-tests.txt": "2164d713c79be9a45af776fa9f1e100576444c5d94d60d74a9f79d20e3e22028",
+    "inspection.json": "a7ecaa5e39f69540aa9fda6b0678c60a6c6d7db4b01aa4ce6919c4f517d6df9f",
+    "python-tests.txt": "4292d09016e53c533de82b303dcd474b83e5f95ff333e9907b51c93ddc741346"
+  }
+}
