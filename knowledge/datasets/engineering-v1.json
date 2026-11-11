@@ -1,0 +1,69 @@
+[
+  {
+    "id": "adr-physical-state", "category": "architecture", "question": "Qual ADR define o contrato de estado físico confirmado?",
+    "evidence": [{"path": "docs/adrs/P007-confirmed-physical-board-state.md", "quote": "Keep live observations separate from\nthe last confirmed snapshot"}]
+  },
+  {
+    "id": "exact-p014", "category": "identifier", "question": "O que determina P014?",
+    "evidence": [{"path": "docs/adrs/P014-validate-engine-moves-before-planning.md", "quote": "calls TaskPlanner only with a validated move"}]
+  },
+  {
+    "id": "engine-validation", "category": "code", "question": "Onde planEngineTurn valida movimentos do Stockfish antes de planejar?",
+    "evidence": [{"path": "software/integration/src/engine_turn_planner.cpp", "quote": "plan.validatedMove = chess::MoveValidator::validateUci(board, response.move);"}]
+  },
+  {
+    "id": "physical-class", "category": "code", "question": "What is the responsibility of PhysicalBoardState?",
+    "evidence": [{"path": "simulation/mujoco/src/atom_mujoco/physical_state.py", "quote": "Single-owner store. Adapters must serialize access and supply measured evidence."}]
+  },
+  {
+    "id": "vision-limitations", "category": "architecture", "question": "Quais limitações de identificação de peças tem a visão acvision?",
+    "filters": {"module": "acvision"},
+    "evidence": [{"path": "software/acvision/README.md", "quote": "EMPTY/WHITE/BLACK; não identifica tipo de peça"}]
+  },
+  {
+    "id": "confirmation-gates", "category": "contract", "question": "Em P005, um ACK do controlador confirma uma captura?",
+    "evidence": [{"path": "docs/adrs/P005-feedback-gated-execution.md", "quote": "Controller ACK does not confirm a grasp."}]
+  },
+  {
+    "id": "commit-evidence", "category": "contract", "question": "What does P007 require before committing a physical snapshot?",
+    "evidence": [{"path": "docs/adrs/P007-confirmed-physical-board-state.md", "quote": "Commit only with the matching completed P005 execution and a fresh full snapshot"}]
+  },
+  {
+    "id": "p038-v3", "category": "experiment", "question": "Como P038 se distingue do ambiente legado v3?",
+    "evidence": [{"path": "docs/adrs/P038-camera-guided-residual-environment.md", "quote": "The legacy v3 environment uses\noracle reset/IK and an isolated lift task."}]
+  },
+  {
+    "id": "p038-smoke", "category": "experiment", "question": "O teste smoke de P038 comprova sucesso físico e confirmação visual?",
+    "evidence": [{"path": "docs/adrs/P038-camera-guided-residual-environment.md", "quote": "Smoke completion validates the training cycle, while measured task success and\nvisual confirmation remain separate report fields."}]
+  },
+  {
+    "id": "state-boundary", "category": "architecture", "question": "Are vision observations and legal chess state the same responsibility?",
+    "evidence": [{"path": "docs/architecture.md", "quote": "Vision observations, legal chess state, task planning and motion\nexecution have separate responsibilities."}]
+  },
+  {
+    "id": "p038-numeric", "category": "numeric", "question": "Quantos trained_steps estão no smoke-report.json de P038?",
+    "filters": {"experiment": "docs/camera-rl/evidence-p038"},
+    "evidence": [{"path": "docs/camera-rl/evidence-p038/smoke-report.json", "quote": "\"trained_steps\": 128"}],
+    "numeric": {"experiment": "docs/camera-rl/evidence-p038", "metric": "/trained_steps", "source_path": "docs/camera-rl/evidence-p038/smoke-report.json", "value": 128}
+  },
+  {
+    "id": "rl-diagnosis", "category": "experiment", "question": "Por que o treinamento de RL está apresentando estagnação?",
+    "evidence": [{"path": "simulation/mujoco/reports/training-diagnostics/README.md", "quote": "The experiments cannot establish generalization, diagnose the reboot, or attribute the learning plateau to CUDA, observation design or a single hyperparameter."}]
+  },
+  {
+    "id": "unrelated-topic", "category": "absence", "question": "Qual a receita de bolo de chocolate da minha avó?",
+    "evidence": [], "absence_basis": "No personal recipe source is included in this engineering corpus."
+  },
+  {
+    "id": "unknown-boardstate", "category": "absence", "question": "Qual é a responsabilidade da classe BoardState?",
+    "evidence": [], "absence_basis": "Audit found Board and PhysicalBoardState, not an exact BoardState declaration. Do not silently rename the requested type."
+  },
+  {
+    "id": "unknown-adr", "category": "absence", "question": "O que foi decidido no ADR P9999?",
+    "evidence": [], "absence_basis": "No P9999 source found in the audited repository."
+  },
+  {
+    "id": "unknown-metric", "category": "absence", "question": "Qual a taxa de sucesso do experimento EXP_UNPUBLISHED_9999?",
+    "evidence": [], "absence_basis": "No such experiment identity or measurement exists in the audited sources."
+  }
+]

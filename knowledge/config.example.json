@@ -1,0 +1,10 @@
+{
+  "roots": ["docs", "Software", "simulation", "firmware", "hardware", "README.md", "CMakeLists.txt"],
+  "registry": "knowledge/sources/registry.json",
+  "model": "intfloat/multilingual-e5-small",
+  "model_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "threads": 2,
+  "max_file_bytes": 2000000,
+  "context_chars": 14000,
+  "min_semantic_score": 0.82
+}

@@ -1,0 +1,142 @@
+{
+  "date": "2026-11-11",
+  "runtime": {
+    "version": "0.40.16"
+  },
+  "models": {
+    "models": [
+      {
+        "name": "qwen3:4b",
+        "model": "qwen3:4b",
+        "modified_at": "2026-11-10T22:09:20.0939848-03:00",
+        "size": 2497293931,
+        "digest": "359d7dd4bcdab3d86b87d73ac27966f4dbb9f5efdfcc75d34a8764a09474fae7",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3",
+          "families": [
+            "qwen3"
+          ],
+          "parameter_size": "4.0B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 262144,
+          "embedding_length": 2560,
+          "runner": "ggml"
+        },
+        "capabilities": [
+          "completion",
+          "tools",
+          "thinking"
+        ]
+      }
+    ]
+  },
+  "selected_model": "qwen3:4b",
+  "cases": [
+    {
+      "question": "O que determina P014?",
+      "elapsed_seconds": 3.61,
+      "status": "generated",
+      "facts": [
+        {
+          "citation": "S1",
+          "quote": "# P014 — Validate engine moves before physical planning"
+        },
+        {
+          "citation": "S1",
+          "quote": "The Stockfish transport validates response syntax. The existing Chess Core"
+        },
+        {
+          "citation": "S1",
+          "quote": "The new path keeps the board const and distinguishes a terminal engine response"
+        }
+      ],
+      "inferences": [
+        {
+          "text": "O que determina P014 é a validação de movimentos do motor antes da planejamento físico",
+          "citations": [
+            "S1"
+          ]
+        }
+      ],
+      "insufficient_evidence": false,
+      "generation_error": null,
+      "citations": [
+        {
+          "citation": "S1",
+          "source_path": "docs/adrs/P014-validate-engine-moves-before-planning.md",
+          "source_hash": "b8c999f7c987d3e2b7ba9bc854ce4b6279dd2445e4a99b26e0e54753dd0a7824",
+          "locator": "lines:1-25"
+        }
+      ]
+    },
+    {
+      "question": "What is the responsibility of PhysicalBoardState?",
+      "elapsed_seconds": 3.78,
+      "status": "generated",
+      "facts": [
+        {
+          "citation": "S1",
+          "quote": "class PhysicalBoardState:\n    \"\"\"Single-owner store. Adapters must serialize access and supply measured evidence.\n\n    Failure blocks dispatch; it neither rolls back physics nor confirms a stop.\n    Initialization must receive an externally verified full scene snapshot.\n    \"\"\""
+        }
+      ],
+      "inferences": [
+        {
+          "text": "O PhysicalBoardState é um armazenamento de proprietário único que requer que os adaptadores serializem o acesso e fornecam evidências medidas. Se houver falha, o dispatch é bloqueado e não há rollback da física nem confirmação de parada. A inicialização deve receber um snapshot completo da cena verificado externamente.",
+          "citations": [
+            "S1"
+          ]
+        }
+      ],
+      "insufficient_evidence": false,
+      "generation_error": null,
+      "citations": [
+        {
+          "citation": "S1",
+          "source_path": "simulation/mujoco/src/atom_mujoco/physical_state.py",
+          "source_hash": "48f8ef3734744bd7ed1c0aae341ea3b3977e3ae51d85eb1efb54e2f52d18b113",
+          "locator": "lines:120-125"
+        },
+        {
+          "citation": "S2",
+          "source_path": "simulation/mujoco/src/atom_mujoco/physical_state.py",
+          "source_hash": "48f8ef3734744bd7ed1c0aae341ea3b3977e3ae51d85eb1efb54e2f52d18b113",
+          "locator": "lines:206-210"
+        },
+        {
+          "citation": "S3",
+          "source_path": "simulation/mujoco/src/atom_mujoco/physical_state.py",
+          "source_hash": "48f8ef3734744bd7ed1c0aae341ea3b3977e3ae51d85eb1efb54e2f52d18b113",
+          "locator": "lines:141-143"
+        },
+        {
+          "citation": "S4",
+          "source_path": "simulation/mujoco/src/atom_mujoco/physical_state.py",
+          "source_hash": "48f8ef3734744bd7ed1c0aae341ea3b3977e3ae51d85eb1efb54e2f52d18b113",
+          "locator": "lines:149-151"
+        },
+        {
+          "citation": "S5",
+          "source_path": "simulation/mujoco/src/atom_mujoco/physical_state.py",
+          "source_hash": "48f8ef3734744bd7ed1c0aae341ea3b3977e3ae51d85eb1efb54e2f52d18b113",
+          "locator": "lines:145-147"
+        }
+      ]
+    },
+    {
+      "question": "O que determina P9999?",
+      "elapsed_seconds": 0.11,
+      "status": "insufficient_evidence",
+      "facts": [],
+      "inferences": [],
+      "insufficient_evidence": true,
+      "generation_error": null,
+      "citations": []
+    }
+  ],
+  "tests": {
+    "passed": 20
+  },
+  "limitations": "Three-case smoke only, not a held-out synthesis benchmark. Initial schema and weak synthesis failures led to constrained source quotes and an explicit answer instruction. Interpretations and Portuguese grammar still require review. Optional second downloaded model is not selected or qualified."
+}
