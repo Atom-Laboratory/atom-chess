@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atom-knowledge"
+version = "0.1.0"
+description = "Read-only, source-grounded ATOM engineering knowledge assistant"
+requires-python = ">=3.12"
+dependencies = ["numpy>=2,<3", "fastembed>=0.7,<0.8", "tree-sitter>=0.25,<0.26", "tree-sitter-cpp>=0.23,<0.24"]
+
+[project.optional-dependencies]
+pdf = ["pypdf>=6,<8"]
+test = ["pytest>=9,<10"]
+
+[project.scripts]
+atom-knowledge = "atom_knowledge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
