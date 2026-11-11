@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "environment_version": 6,
+  "policy_version": 2,
+  "torch": "2.14.1+cu130",
+  "cuda": "13.0",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti",
+  "cpu_threads": 2,
+  "config": "<local-path-1ef1303fcd620b6d>",
+  "scope": "actual policy forward/backward/Adam updates, excluding physics and rollout",
+  "observation_snapshot": {
+    "task": {
+      "shape": [
+        4
+      ],
+      "min": 0.5714285969734192,
+      "max": 0.8571428656578064,
+      "mean": 0.6428571343421936,
+      "std": 0.12371790409088135
+    },
+    "commanded_joints": {
+      "shape": [
+        6
+      ],
+      "min": -1.0,
+      "max": 1.0,
+      "mean": 0.06527328491210938,
+      "std": 0.7696079015731812
+    },
+    "previous_action": {
+      "shape": [
+        3
+      ],
+      "min": 0.0,
+      "max": 0.0,
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "perception_valid": {
+      "shape": [
+        1
+      ],
+      "min": 1.0,
+      "max": 1.0,
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "visual_target": {
+      "shape": [
+        5
+      ],
+      "min": -0.41817817091941833,
+      "max": 0.03125,
+      "mean": -0.08133372664451599,
+      "std": 0.16917522251605988
+    },
+    "object_context": {
+      "shape": [
+        8
+      ],
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.25,
+      "std": 0.4330126941204071
+    },
+    "goal": {
+      "shape": [
+        3
+      ],
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.3333333432674408,
+      "std": 0.471404492855072
+    }
+  },
+  "results": [
+    {
+      "device": "cpu",
+      "batch_size": 64,
+      "updates": 8,
+      "timed_updates": 6,
+      "gradient_norms": [
+        2.235900402069092,
+        1.408026099205017,
+        0.610385537147522,
+        0.11134416610002518,
+        0.6799635291099548,
+        1.0358636379241943,
+        1.1717969179153442,
+        1.1281293630599976
+      ],
+      "median_update_s": 0.004842499999767824,
+      "samples_per_s": 13216.313888088489,
+      "finite_nonzero_gradients": true,
+      "parameters_changed": true,
+      "inputs_on_device": true,
+      "parameters_on_device": true,
+      "gradients_on_device": true,
+      "adam_state_on_device": true,
+      "checkpoint_reload_verified": true,
+      "optimizer_reload_verified": true,
+      "checkpoint_sha256": "077bfd27f703137deec1edf50e28e048a8f94c4a1944f451dcf2bc9677970513",
+      "allocated_bytes": null,
+      "reserved_bytes": null,
+      "hardware": null
+    },
+    {
+      "device": "cuda",
+      "batch_size": 64,
+      "updates": 8,
+      "timed_updates": 6,
+      "gradient_norms": [
+        2.235900402069092,
+        1.4080268144607544,
+        0.6103849411010742,
+        0.1113443523645401,
+        0.6799641251564026,
+        1.0358643531799316,
+        1.1717979907989502,
+        1.1281280517578125
+      ],
+      "median_update_s": 0.006270249999943189,
+      "samples_per_s": 10206.929548356104,
+      "finite_nonzero_gradients": true,
+      "parameters_changed": true,
+      "inputs_on_device": true,
+      "parameters_on_device": true,
+      "gradients_on_device": true,
+      "adam_state_on_device": true,
+      "checkpoint_reload_verified": true,
+      "optimizer_reload_verified": true,
+      "checkpoint_sha256": "f388ba96e43584843d92747d41702e6ee674d045bdaae8d6dd830510eb1194ba",
+      "allocated_bytes": 67501568,
+      "reserved_bytes": 69206016,
+      "hardware": "NVIDIA GeForce RTX 5070 Ti, 617.14, 1, 2033, 34"
+    }
+  ],
+  "cuda_speedup": 0.7722977552428849
+}

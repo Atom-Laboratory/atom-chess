@@ -1,0 +1,198 @@
+[
+  {
+    "run": "seed-1007",
+    "status": "no_final_report",
+    "environment_version": 3,
+    "policy_version": 2,
+    "algorithm": "PPO",
+    "seed": 1007,
+    "steps": 3003,
+    "episodes": 23,
+    "validation": {
+      "ACCEPTED": 2590,
+      "SWEEP_REJECTED": 77,
+      "VELOCITY_REJECTED": 270,
+      "IK_OR_LIMIT_REJECTED": 66
+    },
+    "accepted_fraction": 0.8624708624708625,
+    "projected_accepted": 173,
+    "terminations": {
+      "TIME_LIMIT": 23
+    },
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -30.030000000001895,
+      "motion": -3.4724774369522966,
+      "proximity": -91.17299766851134,
+      "rejected_action": -414.23181804978987,
+      "timeout": -115.0
+    },
+    "reward_nonzero_steps": {
+      "time": 3003,
+      "motion": 3003,
+      "proximity": 2590,
+      "rejected_action": 413,
+      "timeout": 23
+    },
+    "action_mean": [
+      0.009989806157209617,
+      -0.019333093051243196,
+      0.03844243746165272,
+      0.16419379433348422,
+      0.09062305840226638,
+      0.1609233068255754,
+      -0.013771010520444675
+    ],
+    "action_std": [
+      0.40800429694979995,
+      0.3942989575971972,
+      0.3972626610559289,
+      0.38677753538285853,
+      0.38905742857422454,
+      0.39019445190696217,
+      0.40019447100146377
+    ],
+    "action_saturation": [
+      0.016317016317016316,
+      0.013653013653013654,
+      0.013986013986013986,
+      0.015984015984015984,
+      0.014985014985014986,
+      0.01998001998001998,
+      0.01431901431901432
+    ],
+    "summed_step_timing_s": {
+      "validation": 158.76626809970185,
+      "physics": 27.360131399982492,
+      "perception": 320.3282243001886,
+      "feedback": 0.9444692000834038,
+      "total": 507.39985689954483
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 23,
+    "hardware_medians": {
+      "cpu_percent": 57.3,
+      "gpu_utilization_percent": 12.0,
+      "gpu_memory_mib": 3071.0,
+      "torch_reserved_bytes": 167772160.0
+    },
+    "weights_changed": null,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": null,
+    "initial_evaluation": null,
+    "checkpoints": {
+      "checkpoint-1024.zip": {
+        "sha256": "1600b78316d42fbfb69000ae0cd25398dc408870940d3bd8769d2ec1179bb0a9",
+        "verified": true
+      },
+      "checkpoint-2048.zip": {
+        "sha256": "18d5ada0c62d0f436993d50ca6612514322683370eddf25c049a6a89975d0527",
+        "verified": true
+      }
+    }
+  },
+  {
+    "run": "seed-1044",
+    "status": "no_final_report",
+    "environment_version": 3,
+    "policy_version": 2,
+    "algorithm": "PPO",
+    "seed": 1044,
+    "steps": 2987,
+    "episodes": 23,
+    "validation": {
+      "ACCEPTED": 2552,
+      "VELOCITY_REJECTED": 297,
+      "SWEEP_REJECTED": 93,
+      "IK_OR_LIMIT_REJECTED": 45
+    },
+    "accepted_fraction": 0.8543689320388349,
+    "projected_accepted": 122,
+    "terminations": {
+      "TIME_LIMIT": 23
+    },
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -29.87000000000187,
+      "motion": -3.405602385912091,
+      "proximity": -99.341882483034,
+      "rejected_action": -435.9653752533327,
+      "timeout": -115.0
+    },
+    "reward_nonzero_steps": {
+      "time": 2987,
+      "motion": 2987,
+      "proximity": 2552,
+      "rejected_action": 435,
+      "timeout": 23
+    },
+    "action_mean": [
+      -0.0003411130175467769,
+      0.02419120637659,
+      0.03958298430528964,
+      0.13940625701874126,
+      0.053258060075111614,
+      0.10817529407069823,
+      -0.08820189280548624
+    ],
+    "action_std": [
+      0.4079537751884483,
+      0.3966043871016233,
+      0.40041325306183817,
+      0.3904249349856273,
+      0.3920531554074447,
+      0.38828268507915137,
+      0.39406144761986295
+    ],
+    "action_saturation": [
+      0.016069635085369936,
+      0.014730498828255775,
+      0.015400066956812855,
+      0.015400066956812855,
+      0.014060930699698694,
+      0.015734851021091397,
+      0.015065282892534315
+    ],
+    "summed_step_timing_s": {
+      "validation": 160.2118275998946,
+      "physics": 25.548952500263113,
+      "perception": 322.0519773998967,
+      "feedback": 0.9228372998040868,
+      "total": 508.7363272997318
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 23,
+    "hardware_medians": {
+      "cpu_percent": 57.1,
+      "gpu_utilization_percent": 4.0,
+      "gpu_memory_mib": 3071.0,
+      "torch_reserved_bytes": 167772160.0
+    },
+    "weights_changed": null,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": null,
+    "initial_evaluation": null,
+    "checkpoints": {
+      "checkpoint-1024.zip": {
+        "sha256": "8c38b0362b6c5a627f642428f40f9b30684f5c04eda823ec122aac528719651d",
+        "verified": true
+      },
+      "checkpoint-2048.zip": {
+        "sha256": "e6f7e91f185d48846a6639e94021d32df65e26764a88afbdd281c9f66bbc3fea",
+        "verified": true
+      }
+    }
+  }
+]

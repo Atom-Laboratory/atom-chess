@@ -1,0 +1,3 @@
+device,batch_size,median_update_s,samples_per_s,allocated_bytes,reserved_bytes
+cpu,64,0.004842499999767824,13216.313888088489,,
+cuda,64,0.006270249999943189,10206.929548356104,67501568,69206016

@@ -1,0 +1,273 @@
+[
+  {
+    "run": "9a418ad05a3c4ab285a9a7fd9cabee91",
+    "status": "completed",
+    "environment_version": 4,
+    "policy_version": 2,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 1024,
+    "episodes": 16,
+    "validation": {
+      "ACCEPTED": 1007,
+      "SWEEP_REJECTED": 17
+    },
+    "accepted_fraction": 0.9833984375,
+    "projected_accepted": 0,
+    "terminations": {
+      "TIME_LIMIT": 16
+    },
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -10.239999999999826,
+      "motion": -0.4821226584329272,
+      "proximity": 0.7848681112185582,
+      "timeout": -80.0,
+      "rejected_action": -17.0
+    },
+    "reward_nonzero_steps": {
+      "time": 1024,
+      "motion": 1024,
+      "proximity": 1007,
+      "timeout": 16,
+      "rejected_action": 17
+    },
+    "action_mean": [
+      -0.03005675161148247,
+      0.030612725537253027,
+      -0.04697837158528273
+    ],
+    "action_std": [
+      0.40825277317368763,
+      0.3798881217445713,
+      0.3947025240481394
+    ],
+    "action_saturation": [
+      0.0166015625,
+      0.0126953125,
+      0.0146484375
+    ],
+    "summed_step_timing_s": {
+      "validation": 16.18654970000034,
+      "physics": 1.8749969999976202,
+      "perception": 87.20751679999807,
+      "feedback": 0.26694420000421815,
+      "total": 105.5362240000004
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 8,
+    "hardware_medians": {
+      "cpu_percent": 40.0,
+      "gpu_utilization_percent": 12.0,
+      "gpu_memory_mib": 2107.0,
+      "torch_reserved_bytes": 167772160.0
+    },
+    "weights_changed": true,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": {
+      "episodes": 8,
+      "seeds": [
+        910000,
+        910001,
+        910002,
+        910003,
+        910004,
+        910005,
+        910006,
+        910007
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.03133935690830669
+    },
+    "initial_evaluation": {
+      "episodes": 8,
+      "seeds": [
+        910000,
+        910001,
+        910002,
+        910003,
+        910004,
+        910005,
+        910006,
+        910007
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.03313331713045779
+    },
+    "checkpoints": {
+      "checkpoint-1024.zip": {
+        "sha256": "e85a5273f986c0fe856c56b21b49a9a343518c11107b1f16e1c01cb6c07c5e98",
+        "verified": true
+      },
+      "checkpoint-256.zip": {
+        "sha256": "1f479f84c2645cfd3f9a4ab22247cd9950a5f73da95a39fcacf265c1cd8ec966",
+        "verified": true
+      },
+      "checkpoint-512.zip": {
+        "sha256": "3744b731346215f96231de3e472b9c5547f0d3ac5dab6f95edb7ed369843ac42",
+        "verified": true
+      },
+      "checkpoint-768.zip": {
+        "sha256": "94efb482235bf68e3a748fb483f99eb222ebf71c00a3a2b7a81309a3028547f3",
+        "verified": true
+      },
+      "policy.zip": {
+        "sha256": "7667b8169dc1a18cf866505a0778b0afa08db34a5c96b0a324d7664fd4617644",
+        "verified": true
+      }
+    }
+  },
+  {
+    "run": "8fd65591d4b841c2af8f92b4a299cba0",
+    "status": "completed",
+    "environment_version": 5,
+    "policy_version": 2,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 2048,
+    "episodes": 32,
+    "validation": {
+      "ACCEPTED": 1961,
+      "SWEEP_REJECTED": 87
+    },
+    "accepted_fraction": 0.95751953125,
+    "projected_accepted": 0,
+    "terminations": {
+      "TIME_LIMIT": 31,
+      "success": 1
+    },
+    "success_episodes": 1,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -20.480000000000402,
+      "motion": -1.0326630896067959,
+      "proximity": 5.343789688491716,
+      "timeout": 0.0,
+      "rejected_action": -87.0,
+      "success": 10.0
+    },
+    "reward_nonzero_steps": {
+      "time": 2048,
+      "motion": 2048,
+      "proximity": 1961,
+      "timeout": 0,
+      "rejected_action": 87,
+      "success": 1
+    },
+    "action_mean": [
+      0.10660255692164355,
+      0.08260038561297733,
+      -0.09554664751271957
+    ],
+    "action_std": [
+      0.40763545477053625,
+      0.38860104200736817,
+      0.39967048869627325
+    ],
+    "action_saturation": [
+      0.02197265625,
+      0.01611328125,
+      0.02294921875
+    ],
+    "summed_step_timing_s": {
+      "validation": 33.786652199999935,
+      "physics": 3.7701631999968868,
+      "perception": 187.65586589999793,
+      "feedback": 0.5732144999969933,
+      "total": 225.78634839999472
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 16,
+    "hardware_medians": {
+      "cpu_percent": 43.7,
+      "gpu_utilization_percent": 15.5,
+      "gpu_memory_mib": 2280.0,
+      "torch_reserved_bytes": 167772160.0
+    },
+    "weights_changed": true,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": {
+      "episodes": 8,
+      "seeds": [
+        910000,
+        910001,
+        910002,
+        910003,
+        910004,
+        910005,
+        910006,
+        910007
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.033108194998658164
+    },
+    "initial_evaluation": {
+      "episodes": 8,
+      "seeds": [
+        910000,
+        910001,
+        910002,
+        910003,
+        910004,
+        910005,
+        910006,
+        910007
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.033133317392555164
+    },
+    "checkpoints": {
+      "checkpoint-1024.zip": {
+        "sha256": "1b10ec77781686549ccb4f33f50f93055d830981ea4050adfadd49e38da9be46",
+        "verified": true
+      },
+      "checkpoint-1280.zip": {
+        "sha256": "a522717a5dd0964c0bc6807a69ef8f459eca3c818958113463302e5e91a6d40b",
+        "verified": true
+      },
+      "checkpoint-1536.zip": {
+        "sha256": "f023afdf686dd8d027c095d8596b2929626e3bf8ec662fbf2bca429cdd283ec0",
+        "verified": true
+      },
+      "checkpoint-1792.zip": {
+        "sha256": "f5e6be3a5e6815154fc4327b99646c5b18a8b99c3f17951c273d39ddafed4505",
+        "verified": true
+      },
+      "checkpoint-2048.zip": {
+        "sha256": "337679b924f2649b8aadda736a7747faccf9c26ff11251fbacbe6997f94cb11c",
+        "verified": true
+      },
+      "checkpoint-256.zip": {
+        "sha256": "0d36262f30dd4f596d65acff2439c403c9ab2f538f6cd1f3098673414434e981",
+        "verified": true
+      },
+      "checkpoint-512.zip": {
+        "sha256": "4a953020532d20a5d5f6fc371c27cf1f7d9a2684540f99ab3a9beb862d27432d",
+        "verified": true
+      },
+      "checkpoint-768.zip": {
+        "sha256": "c43694bf8cf04a7e8d0cd5d4eccb80197c769a68beb6c4a65be1eca856ad9b21",
+        "verified": true
+      },
+      "policy.zip": {
+        "sha256": "2aee7eb84c62a96b2fbbcf566c26f5d796e08463ed0331f69a2e3dc282c055e8",
+        "verified": true
+      }
+    }
+  }
+]
