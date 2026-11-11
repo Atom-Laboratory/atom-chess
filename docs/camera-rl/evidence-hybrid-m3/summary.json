@@ -1,0 +1,20 @@
+{
+  "milestone": "M3",
+  "contract_version": 1,
+  "implemented": "planner/local-policy interface only",
+  "actuator_execution_connected": false,
+  "ppo_training_started": false,
+  "actual_manipulation_workspace_qualified": false,
+  "tests": {
+    "command": "python -B -m pytest simulation/mujoco/tests/test_hybrid_contract.py simulation/mujoco/tests/test_supervision.py simulation/mujoco/tests/test_hybrid_approach.py simulation/mujoco/tests/test_autonomous_manipulation.py -q",
+    "passed": 56,
+    "skipped": 2,
+    "elapsed_s": 5.09
+  },
+  "known_unresolved_capture_error": "GRIP_LOST_DURING_TRANSPORTING",
+  "source_sha256": {
+    "simulation\\mujoco\\src\\atom_mujoco\\hybrid_contract.py": "92a857a87d560d90dd95aee72f789eddb97c57cad53d47757f38b31749155ff3",
+    "simulation\\mujoco\\tests\\test_hybrid_contract.py": "b1f390f8b0afed2898bfc6886e98076bbb7dcc0864908ce126c1a91ef50e6409",
+    "simulation\\docs\\adrs\\S030-planner-local-policy-contract.md": "6eb3573e4d845dbbe4fb9f4997d958402e7488380fdb0b1fec84a2a2cb005064"
+  }
+}

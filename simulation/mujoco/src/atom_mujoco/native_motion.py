@@ -10,6 +10,16 @@ PHASES = ('APPROACH_SOURCE', 'LOWER_TO_SOURCE', 'GRASP_PIECE', 'LIFT_PIECE',
 ACTOR_PHASES = ('APPROACH', 'APPROACH', 'GRASP', 'LIFT', 'TRANSPORT', 'PLACE', 'RELEASE', 'RETREAT')
 
 
+def commanded_elbow_down(sim, command, scratch):
+    """Match native IK's effective elbow using static geometry and issued joints."""
+    scratch.qpos[:] = sim.model.qpos0
+    scratch.qpos[sim.qadr] = 0.
+    scratch.qpos[sim.qadr[-1]] = command[-1]
+    mujoco.mj_kinematics(sim.model, scratch)
+    offset = scratch.site('grasp_center').xpos-scratch.xanchor[sim.joint_ids[2]]
+    return bool(command[2]+np.arctan2(offset[1], offset[0]) <= 0)
+
+
 class NativeMotion:
     def __init__(self, library, sim):
         self.library_path = Path(library).resolve(strict=True)

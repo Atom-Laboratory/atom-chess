@@ -31,7 +31,46 @@ class AutonomousManipulationEnv(gym.Env):
             self.control = AutonomousControl(self.base)
             self.feedback = ManipulationFeedback(self.base)
             sim = self.base.sim
-            self.action_space = spaces.Box(-1., 1., (7,), dtype=np.float32)
+            cfg = self.base.config.get('autonomous', {})
+            mode = cfg.get('action_mode', 'temporal')
+            if mode not in ('temporal', 'reach_xyz'):
+                raise ValueError('Unknown autonomous action profile')
+            self.xyz_only = mode == 'reach_xyz'
+            self.vision_features_only = False
+            self.action_axes = (['vx', 'vy', 'vz'] if self.xyz_only else
+                ['vx', 'vy', 'vz', 'wrist_velocity', 'finger_velocity', 'elbow_branch', 'duration'])
+            if self.xyz_only:
+                self.VERSION = 4
+                reward_profile = cfg.get('reward_profile', 'v1')
+                if reward_profile not in ('v1', 'dense_progress_v2'):
+                    raise ValueError('Unknown reach reward profile')
+                self.reach_progress_weight = 1.
+                self.reach_timeout_penalty = 5.
+                if reward_profile == 'dense_progress_v2':
+                    self.VERSION = 5
+                    self.reach_progress_weight = float(cfg['reach_progress_weight'])
+                    self.reach_timeout_penalty = float(cfg['reach_timeout_penalty'])
+                    if (not np.isfinite([self.reach_progress_weight, self.reach_timeout_penalty]).all()
+                            or self.reach_progress_weight <= 0 or self.reach_timeout_penalty < 0):
+                        raise ValueError('Invalid reach reward weights')
+                observation_profile = cfg.get('observation_profile', 'rgb_history')
+                if observation_profile not in ('rgb_history', 'vision_features_v1'):
+                    raise ValueError('Unknown reach observation profile')
+                self.vision_features_only = observation_profile == 'vision_features_v1'
+                if self.vision_features_only:
+                    self.VERSION = 6
+                if objective != 'reach':
+                    raise ValueError('reach_xyz only supports the reach objective')
+                self.xyz_scale = float(cfg['xyz_action_scale'])
+                self.workspace_squares = float(cfg['workspace_radius_squares'])
+                self.fixed_wrist = float(cfg['fixed_wrist_rad'])
+                self.fixed_elbow = cfg['fixed_elbow_down']
+                if (not np.isfinite([self.xyz_scale, self.workspace_squares, self.fixed_wrist]).all()
+                        or not 0 < self.xyz_scale <= 1 or self.workspace_squares <= 0
+                        or not sim.lower[-1] <= self.fixed_wrist <= sim.upper[-1]
+                        or type(self.fixed_elbow) is not bool):
+                    raise ValueError('Invalid reach_xyz curriculum parameters')
+            self.action_space = spaces.Box(-1., 1., (len(self.action_axes),), dtype=np.float32)
             self.observation_space = spaces.Dict(
                 image=spaces.Box(0, 255, (6, 96, 96), dtype=np.uint8),
                 task=spaces.Box(0., 1., (4,), dtype=np.float32),
@@ -42,6 +81,9 @@ class AutonomousManipulationEnv(gym.Env):
                 previous_action=self.action_space,
                 perception_valid=spaces.Box(0., 1., (1,), dtype=np.float32),
                 goal=spaces.Box(0., 1., (3,), dtype=np.float32))
+            if self.vision_features_only:
+                self.observation_space = spaces.Dict({key: value for key, value in self.observation_space.spaces.items()
+                    if key not in ('image', 'command_history')})
             self.history = VisualHistory()
             self.finished = True
             self.observer = None
@@ -69,11 +111,15 @@ class AutonomousManipulationEnv(gym.Env):
         predicted = self.control.commanded_tcp(self.command)
         # Host FK is an estimate from issued commands. No measured robot pose enters here.
         relative = np.array([*(self.source_xy-predicted[:2]), predicted[2]-self.base.surface_z])
+        scale = 8*self.base.pitch
+        if self.vision_features_only:
+            relative[2] = self.base.surface_z+self.base.piece_height-predicted[2]
+            scale = self.workspace_squares*self.base.pitch
         command = 2*(self.command-self.sim.lower)/(self.sim.upper-self.sim.lower)-1
         observation = self.history.observe(frame, command, self.previous_action,
                                            self.base.config['source'], self.base.task_target)
         observation['visual_target'] = np.array([
-            *np.clip(relative/(8*self.base.pitch), -1., 1.), float(visible),
+            *np.clip(relative/scale, -1., 1.), float(visible),
             min(1., (frame.sequence-self.source_frame)/32)], dtype=np.float32)
         kinds = ('pawn', 'knight', 'bishop', 'rook', 'queen', 'king')
         context = np.zeros(8, dtype=np.float32)
@@ -81,6 +127,8 @@ class AutonomousManipulationEnv(gym.Env):
         context[6+(self.base.selected['color'] == 'black')] = 1
         observation['object_context'] = context
         observation['goal'] = np.eye(3, dtype=np.float32)[self.OBJECTIVES.index(self.objective)]
+        if self.vision_features_only:
+            observation = {key: value for key, value in observation.items() if key in self.observation_space.spaces}
         if not self.observation_space.contains(observation):
             raise RuntimeError('Autonomous observation violates its schema')
         return observation
@@ -94,7 +142,7 @@ class AutonomousManipulationEnv(gym.Env):
         self.source_xy = self.base.source[:2].copy()
         self.source_frame = self.base.last_camera_frame.sequence
         self._randomize_start()
-        self.previous_action = np.zeros(7, dtype=np.float32)
+        self.previous_action = np.zeros(self.action_space.shape, dtype=np.float32)
         self.history.clear()
         self.feedback.reset()
         self.steps, self.episode_return = 0, 0.
@@ -127,10 +175,12 @@ class AutonomousManipulationEnv(gym.Env):
             direction /= np.linalg.norm(direction)
             position = np.array([*self.source_xy, self.base.surface_z])
             position += direction*self.np_random.uniform(*region)*self.base.pitch
-            wrist = self.np_random.uniform(self.sim.lower[-1], self.sim.upper[-1])
+            wrist = (self.fixed_wrist if self.xyz_only else
+                     self.np_random.uniform(self.sim.lower[-1], self.sim.upper[-1]))
             try:
                 command = self.sim.validate(self.base.motion.solve(position, 0., wrist=wrist,
-                                           elbow_down=bool(self.np_random.integers(2))))
+                                           elbow_down=(self.fixed_elbow if self.xyz_only else
+                                                       bool(self.np_random.integers(2)))))
             except ValueError:
                 continue
             data.qpos[:], data.qvel[:], data.time = snapshot
@@ -166,11 +216,30 @@ class AutonomousManipulationEnv(gym.Env):
             return
         raise RuntimeError('NO_SAFE_RANDOMIZED_START: inspect the configured distribution and model')
 
+    def _decode_action(self, action):
+        if not self.xyz_only:
+            return self.control.decode(action, self.command)
+        value = np.asarray(action, dtype=float)
+        if value.shape != (3,) or not np.isfinite(value).all() or np.any(abs(value) > 1):
+            raise ValueError('reach_xyz requires three finite normalized actions')
+        # The actor cannot change wrist, finger targets, elbow branch or duration.
+        expanded = np.r_[value*self.xyz_scale, 0., 0., 0., -1.]
+        return self.control.decode(expanded, self.command)
+
+    def _validate_choice(self, choice):
+        if self.xyz_only:
+            center = np.array([*self.source_xy, self.base.surface_z])
+            distance = float(np.linalg.norm(np.asarray(choice.xyz_m)-center))
+            radius = self.workspace_squares*self.base.pitch
+            if distance > radius:
+                return None, dict(status='LOCAL_WORKSPACE_REJECTED', distance_m=distance, radius_m=radius)
+        return self.control.validate(choice, self.command, project=not self.xyz_only)
+
     def step(self, action):
         started = time.perf_counter()
         if self.finished:
             raise RuntimeError('Reset required')
-        choice = self.control.decode(action, self.command)
+        choice = self._decode_action(action)
         self.pending_action = dict(action=np.asarray(action).tolist(), choice=asdict(choice),
                                    start_command=self.command.tolist())
         self.previous_action = np.asarray(action, dtype=np.float32).copy()
@@ -187,7 +256,7 @@ class AutonomousManipulationEnv(gym.Env):
             if self.observer is not None:
                 self.observer(dict(choice=asdict(choice), phase='VALIDATING',
                                    validation=dict(status='PENDING'), executed_path=[]))
-            end, validation = self.control.validate(choice, self.command, project=True)
+            end, validation = self._validate_choice(choice)
         validated = time.perf_counter()
 
         disturbed = False
@@ -229,10 +298,12 @@ class AutonomousManipulationEnv(gym.Env):
         if max(guard.displacements_mm().values(), default=0.) > .25:
             failure = failure or 'DISTURBED_SCENE_REQUIRES_RECONCILIATION'
         components, physical = self.feedback.evaluate(action, validation, self.objective, failure)
+        if self.xyz_only:
+            components['proximity'] *= self.reach_progress_weight
         self.steps += 1
         truncated = self.steps >= self.horizon and not (failure or physical['success'])
         if truncated:
-            components['timeout'] = -5.
+            components['timeout'] = -self.reach_timeout_penalty if self.xyz_only else -5.
         for name, value in components.items():
             self.totals[name] = self.totals.get(name, 0.)+value
         reward = sum(components.values())

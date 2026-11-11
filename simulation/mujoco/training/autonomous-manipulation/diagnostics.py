@@ -71,6 +71,7 @@ def benchmark(env, observation, device, batch_size, output):
         for key, value in state.items():
             torch.testing.assert_close(value.cpu(), loaded_states[parameter][key].cpu(), rtol=0, atol=0)
     return dict(device=device, batch_size=batch_size, updates=8, timed_updates=len(times),
+                gradient_norms=gradients,
                 median_update_s=float(np.median(times)), samples_per_s=batch_size/float(np.median(times)),
                 finite_nonzero_gradients=True, parameters_changed=True, inputs_on_device=True,
                 parameters_on_device=True, gradients_on_device=True, adam_state_on_device=True,
@@ -101,6 +102,9 @@ def main():
                       cuda=torch.version.cuda, gpu=torch.cuda.get_device_name(),
                       cpu_threads=torch.get_num_threads(), config=str(args.config.resolve()),
                       scope='actual policy forward/backward/Adam updates, excluding physics and rollout',
+                      observation_snapshot={key: dict(shape=list(value.shape), min=float(value.min()),
+                          max=float(value.max()), mean=float(value.mean()), std=float(value.std()))
+                          for key, value in observation.items()},
                       results=results, cuda_speedup=results[0]['median_update_s']/results[1]['median_update_s'])
         (output/'diagnostic.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
         with (output/'benchmark.csv').open('x', newline='', encoding='utf-8') as stream:

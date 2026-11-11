@@ -55,3 +55,16 @@ def square_offsets(empty, reference, observed, occupied, square_size_m):
         if shift is not None:
             estimates[square] = (shift*scale).tolist()
     return estimates
+
+
+def configuration_from_offsets(model, pieces, addresses, command, offsets, occupied):
+    """Static calibrated scene plus RGB XY offsets, with no live object poses."""
+    if set(offsets) != set(occupied):
+        raise ValueError('Incomplete RGB localization of the expected occupied squares')
+    configuration = model.qpos0.copy()
+    for piece in pieces:
+        body = model.body(piece['name']).id
+        address = model.jnt_qposadr[model.body_jntadr[body]]
+        configuration[address:address+2] += offsets[piece['initial_square']]
+    configuration[addresses] = command
+    return configuration

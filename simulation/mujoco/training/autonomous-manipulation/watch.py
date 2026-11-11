@@ -31,6 +31,9 @@ class NativeWatch:
             self.handle.cam.distance = .7
             self.handle.cam.elevation = -40.
             self.handle.cam.azimuth = 135.
+            if getattr(env, 'xyz_only', False):
+                self.handle.cam.lookat[:] = [*env.base.source[:2], env.base.surface_z+env.base.piece_height]
+                self.handle.cam.distance = .35  # Debug viewer only; not the perception camera.
             self.handle.opt.flags[mujoco.mjtVisFlag.mjVIS_CONTACTPOINT] = True
             self.handle.opt.geomgroup[3] = show_colliders
 
@@ -42,8 +45,9 @@ class NativeWatch:
         with self.handle.lock():
             mujoco.mj_copyData(self.data, self.env.sim.model, self.env.sim.data)
         threshold = 1000*self.env.feedback.reach_threshold
-        step = self.env.steps if self.stage == 'EVALUATION' else self.step
-        total = self.env.horizon if self.stage == 'EVALUATION' else self.total
+        evaluating = self.stage.endswith('EVALUATION')
+        step = self.env.steps if evaluating else self.step
+        total = self.env.horizon if evaluating else self.total
         label = (f'{self.stage} / {self.env.objective.upper()} | Episode {self.episode} | '
                  f'{step}/{total} decisions')
         status = info.get('validation', {}).get('status', '')
@@ -51,12 +55,14 @@ class NativeWatch:
         gap = info.get('pad_distance_m', self.env.last_info.get('pad_distance_m'))
         gap_text = f'{1000*gap:.1f}' if gap is not None else '?'
         result = 'GOAL REACHED' if info.get('success') else failure or 'IN PROGRESS'
+        tcp = self.env.sim.data.site('grasp_center').xpos*1000
         self.handle.set_texts((mujoco.mjtFontScale.mjFONTSCALE_100,
                                mujoco.mjtGridPos.mjGRID_TOPLEFT, label,
                                f'{result} | {status} | Return {self.env.episode_return:.2f}\n'
                                f'Pad gap {gap_text} mm | Reach threshold {threshold:.1f} mm\n'
                                f'Bilateral grip {info.get("bilateral_contact", False)} | '
-                               f'Lifted {info.get("lifted", False)}'))
+                               f'Lifted {info.get("lifted", False)}\n'
+                               f'Actual TCP mm: {tcp[0]:.2f}, {tcp[1]:.2f}, {tcp[2]:.2f}'))
         self.handle.sync(state_only=True)
 
     def wait_until_closed(self):

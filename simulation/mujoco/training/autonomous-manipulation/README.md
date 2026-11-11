@@ -1,5 +1,268 @@
 # Autonomous visual manipulation experiment
 
+## Reproduce the canonical reach experiment
+
+Start with the [contribution guide](../../TRAINING_CONTRIBUTION_GUIDE.md) for
+installation and the native C++ build. `canonical_reach.py` reads
+`canonical-reach.json`, rebuilds the scene from tracked assets, qualifies the
+lateral camera and prepares an isolated pawn fixture. It runs 128 decisions
+on CPU with fixed seeds and saves checkpoints and held-out evaluation under
+`training/`. Use `--prepare-only` to inspect the generated environment before
+training. This v6 configuration uses the vector-only vision geometry actor.
+Earlier walkthroughs below record historical experiments with different inputs.
+
+`report_training.py --output <fresh-directory> --plots <training-directory>`
+exports a portable inventory, archived telemetry and plots. Install the
+`diagnostics` extra for plots. The [training diagnosis](../../reports/training-diagnostics/README.md)
+explains the observed learning and timing results.
+
+## Hybrid workflow and qualification gates
+
+```mermaid
+flowchart LR
+    C[ac:chess task] --> P[ac:motion approach]
+    V[ac:vision pose and piece evidence] --> P
+    P --> H[Validated approach and handoff]
+    H --> R[PPO local reach and manipulation proposal]
+    V --> R
+    R --> S[Local supervisor: IK, limits, swept collision]
+    S --> E[Bounded actuator commands]
+    E --> Q[Visual outcome check]
+    Q --> T[Planned transfer and retreat]
+```
+
+The diagram shows the target runtime workflow. The autonomous PPO runner
+currently samples a screened local reset and uses native IK and swept
+validation on each decision. The approach adapter, frame and lease contract,
+and local supervisor have independent fixtures. The native planner does
+not produce the start state of the PPO episode. Full-board descent and
+stable lift still require qualification before transport is connected.
+
+1. Use the chess task's source/target squares and expected piece context.
+   Calibrate the lateral RGB camera with ArUco geometry and express the
+   observed target in the robot frame. Track frame validity and provenance.
+2. Check deterministic approach and retreat with the
+   [hybrid approach example](../../examples/qualify_hybrid_approach/README.md).
+   Inspect endpoint and obstacle clearance under the same scene geometry.
+   The [handoff contract](../../../../docs/camera-rl/hybrid-m3-contract.md)
+   defines how a fresh approach grants bounded local authority.
+3. Train local reach with signed progress feedback, fixed open gripper and
+   a bounded XYZ action. Compare against the deterministic visual reference
+   under identical reset seeds. An accepted action says the validator
+   permitted the command. Reach success uses the measured pad gap.
+4. Qualify the [local supervisor](../../../../docs/camera-rl/hybrid-m4-supervision.md)
+   with camera and contact telemetry. Expand to wrist/opening, grasp and
+   lift only after approach is repeatable. Inspect toppling and unintended
+   contact before attempting populated boards and captured-piece transfer.
+5. Reacquire vision before transport or recovery. Use the chess task for the
+   destination and verified outcomes to reconcile the physical board.
+
+In the v6 reach profile, native vision and model geometry supply target
+features. Command history is available to the actor without simulated
+joint feedback. PPO learns a Gaussian XYZ action distribution and a value
+estimate from observations. Its training reward can use simulation
+clearance and safety events. Grasp, lift and transfer objectives require
+separate evaluation. No checkpoint in this report qualifies real hardware.
+
+### What one PPO episode does
+
+The seeded reset places the configured piece with bounded jitter, acquires
+the board image, and screens a local upper-hemisphere start against IK and
+the scene. The isolated fixture leaves the approach start distribution
+explicit so another developer can repeat it. The policy receives source
+and target square features, commanded joints normalized by joint limits,
+the previous action, perception validity, and one-hot piece and objective
+context. Visual target features include normalized XYZ deltas, visibility and
+frame age. XY comes from the RGB estimate. The Z candidate uses configured
+piece height and commanded FK. The actor has no depth measurement of the
+piece. The reset and validator have independent simulator access.
+
+PPO samples three normalized Cartesian rate commands. Native model-derived
+limits and the configured scale convert these into a short proposed interval
+with fixed wrist and open fingers. IK, workspace, velocity and the swept
+collision check can reject the proposal before actuation. Accepted actions
+advance physics. The next image is acquired after either outcome. Reach
+reward combines signed progress in pad gap with time and motion costs,
+rejection costs and physical safety signals. Reach ends on the gap
+threshold. Loss of perception, forbidden contact or scene disturbance can
+terminate earlier. The horizon caps attempts at 64 decisions in the
+canonical profile. Timeout carries zero additional cost in that profile.
+
+The rollout buffer collects transitions for clipped PPO updates of the actor
+and the discounted-return critic. Check episode behavior and held-out
+evaluation alongside the logged losses. Evaluate the deterministic action
+mean on fixed held-out seeds before and after training and retain a different
+seed set for independent assessment. Keep observation and controller versions,
+scene geometry, and thresholds fixed when comparing one change.
+
+[MoPA-RL](https://proceedings.mlr.press/v155/yamada21a.html) is useful background
+on combining a planner with RL. That method invokes planning based on action
+magnitude. The ATOM design above uses a stage handoff with bounded authority.
+
+## Current first stage: XYZ-only reach (2026-11-10)
+
+The previous seven-action grasp comparisons were stopped after recorded wandering
+and no bilateral contact. Their policies/checkpoints remain preserved. The new
+opt-in environment version 5 starts fresh and learns only local XYZ approach:
+fixed wrist zero, elbow-down, open fingers and one control interval per action.
+It reuses native IK and complete swept checks, disables action projection and
+rejects exits from a declared camera-centered local workspace. See
+[S033](../../../docs/adrs/S033-reach-first-curriculum.md).
+
+From the repository root:
+
+```powershell
+$py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+$source = 'simulation/mujoco/training/camera-manipulation/runs/pawn-e2-e4-vision-fen-v1/environment.json'
+$fixture = Join-Path 'simulation/mujoco/training/autonomous-manipulation/runs' ('reach-xyz-' + [guid]::NewGuid().ToString('N'))
+& $py -B simulation/mujoco/training/autonomous-manipulation/prepare.py `
+  --config $source --output $fixture --isolated --start-radius-squares 1.25 2 `
+  --reach-distance-squares .5 --reach-xyz
+$config = Join-Path $fixture 'environment.json'
+& $py -u -B simulation/mujoco/training/autonomous-manipulation/run.py `
+  --config $config --objective reach --steps 2048 --rollout-steps 128 `
+  --batch-size 64 --epochs 5 --horizon 64 --episodes 8 --checkpoint-every 256 `
+  --ent-coef .005 --device cuda --watch-native --evaluate-before
+```
+
+The supplied 35 mm-pitch fixture defines reach as mean pad clearance at most
+17.5 mm. It is approach only, not contact, grasp or lift. Starts are sampled in
+a 1.25–2-square upper hemisphere and screened; the 2.5-square workspace is a
+provisional curriculum boundary, not a collision-free or hardware-qualified
+volume. Cartesian action scale is .25 of existing model-derived rates and is
+recorded in the configuration. The policy receives camera/host task data only;
+independent simulator feedback supplies the geometric reward and safety checks.
+Pose initialization is a reset, not executed MotionPlanner travel.
+
+Versions 4/5 have three previous-action features rather than seven. Old version-3
+policies cannot be resumed into this profile. The runner rejects incompatible
+versions/spaces. Outputs include before/after evaluation on the same selection
+seeds, actual PPO updates, weights hashes, checkpoints, CSVs and camera images.
+Watch stays open after evaluation. No difficulty progression is automatic yet:
+first demonstrate approach improvement, then add neighboring obstacles, then
+grasp, lift and eventual planned transport. A successful reach threshold is not
+a successful grasp. The historical background grasp session below is stopped;
+its orchestration must not be mistaken for this single watched pilot.
+
+```powershell
+& $py -B -m pytest simulation/mujoco/tests/test_reach_curriculum.py simulation/mujoco/tests/test_autonomous_manipulation.py -q
+```
+
+The initial version-4 pilot completed 1024 training decisions with 0/8 reach
+successes before and after; median best clearance improved from 33.13 to 31.34 mm.
+This does not pass the stage. Version 5's explicit `dense_progress_v2` profile
+weights signed distance progress by 10 and sets the extra timeout penalty to
+zero, retaining normal step costs and all collision/failure/toppling penalties.
+Version-4 checkpoints are distinct and cannot be silently resumed as version 5.
+
+The bounded native integration check reset seeds 7/8/9, verified observation
+space membership and executed a zero action with fixed open fingers/wrist.
+The focused suite passed 10 tests with 2 native-fixture tests skipped; those
+skips are not counted as native successes. This does not establish learning.
+
+To check physical feasibility without claiming learning:
+
+```powershell
+& $py -u -B simulation/mujoco/training/autonomous-manipulation/reference_reach.py --config $config --episodes 2
+```
+
+This deterministic local reference follows camera-derived XY and a static
+model-height candidate through the same environment/native checks. It receives
+no live piece pose for command generation and does not execute global planned
+travel. The initial check passed 2/2 reach attempts (17.49 and 17.28 mm clearance).
+It is not an RL result, grasp or lift. It writes a fresh report with config,
+model and script hashes; the prepared fixture and native DLLs are prerequisites.
+
+## Authorized background grasp experiment (2026-11-09)
+
+The operator authorized experimental training before hybrid deployment
+qualification, with camera-only actor inputs and privileged simulation reward/
+safety feedback. See [S032](../../../docs/adrs/S032-experimental-camera-actor-ppo.md).
+This uses the existing seven-action autonomous **comparison** interface; it is
+not the new five-action hybrid controller and does not establish robot readiness.
+
+A CUDA pilot completed 128 grasp-training decisions, changed the policy weights,
+saved/reloaded the checkpoint with matching hashes and achieved **0/2** grasp
+successes in evaluation. The camera/hidden-state isolation integration test passed.
+The current policy is fresh version 2; older incompatible policies are preserved.
+
+`parallel_session.py` runs independent headless policies starting from a verified
+pilot. Each round uses separate seeds/output directories and selects the best
+validation candidate for the next round. It does not merge neural weights.
+The default aggregate additional budget is 131072 decisions, with chunks of
+8192 per worker. It starts two workers, and attempts four then eight only after
+at least 50% grasp success in eight selection episodes and projected GPU/RAM
+headroom. A larger stage first uses 2048-step chunks as a capacity comparison.
+If aggregate round throughput falls by more than 10%, later rounds return to
+the previous capacity and do not retry the rejected level in that session.
+Throughput includes training and round evaluation overhead.
+
+Selection seeds are deliberately reused for comparisons. They are validation,
+not an untouched final test set. Successful training episodes or selection
+scores are not physical qualification. The isolated fixture keeps the original
+gravity and 66 full-gripper collision hulls. Starts are initialized at checked
+camera-relative configurations, not executed planner approach trajectories.
+
+From the repository root, after preparing a fixture and completing a pilot:
+
+```powershell
+$py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+$config = 'simulation/mujoco/training/autonomous-manipulation/runs/grasp-camera-fixture-39b4ce321ca34422936313e4863a45db/environment.json'
+$pilot = 'simulation/mujoco/training/autonomous-manipulation/runs/cb3eddf4d4ff4893bc1a3a1e3365352c'
+$session = Join-Path 'simulation/mujoco/training/autonomous-manipulation/runs' ('parallel-grasp-' + [guid]::NewGuid().ToString('N'))
+& $py -u -B simulation/mujoco/training/autonomous-manipulation/parallel_session.py `
+  --config $config --source-run $pilot --output $session --chunk-steps 8192 --total-steps 131072
+```
+
+The example paths above are preserved local experiment artifacts; a fresh
+checkout must prepare its own fixture and pilot using this README. Install the
+module's `rl` extra, including psutil for resource monitoring. All workers require
+CUDA explicitly and run headless because background execution was requested.
+`--torch-threads` on the serial runner defaults to two; the session reduces it
+when more processes share the CPU.
+
+Session outputs are organized under `session.json`, `logs/` and
+`round-NN/seed-N/`. Each worker saves `steps.csv`, `ppo_updates.csv`, `network.csv`,
+`performance.csv`, checkpoint ZIPs/SHA sidecars, source/configuration identities,
+hardware samples and final evaluation. Checkpoints are saved every 1024 steps.
+`session.json` records running PIDs, worker paths, capacity decisions and errors.
+Create a file named `STOP` in the session directory to stop **after the active
+round finishes**; this is not an immediate interruption of an in-flight chunk.
+The background launcher also preserves its own stdout/stderr and launch metadata
+in the enclosing run folder. Failed attempts and previous checkpoints are retained.
+
+Tests for admission, worker arguments, policy selection, bounded lifecycle and
+resource/success escalation:
+
+```powershell
+& $py -B -m pytest simulation/mujoco/tests/test_parallel_session.py -q
+```
+
+### Recovery and trustworthy liveness (2026-11-10)
+
+An abrupt Windows restart left the first background session's persisted status
+at `running`. A status file alone cannot establish that processes survived.
+New sessions record a wall-clock heartbeat and manager process creation time.
+Use the status inspector to distinguish actual liveness, reused PIDs and stale
+heartbeats:
+
+```powershell
+& $py -B simulation/mujoco/training/autonomous-manipulation/parallel_session_status.py --session $session
+```
+
+The inspector labels missing processes as interrupted and heartbeats older than
+120 seconds as stalled/suspended. It does not promise survival across power loss,
+manual termination or a Windows restart. Kernel-Power event 41 confirms an
+unclean restart but does not, by itself, identify the underlying cause.
+
+To recover each original branch rather than resetting both to the pilot, add
+`--initial-checkpoints PATH_TO_BRANCH_A_CHECKPOINT PATH_TO_BRANCH_B_CHECKPOINT`
+to the session launcher. Both archives must have matching `.sha256` sidecars and
+their original `run.json`. The first round uses one archive per branch; later
+rounds resume the selected completed policy as before. This restores **weights
+with a fresh optimizer**, not exact interrupted optimizer/RNG state. Use a
+fresh output directory. Original runs, CSVs and checkpoints remain preserved.
+
 This runner is the free temporal comparison experiment. The recommended next
 deployment architecture and its planner/policy handoff are documented in the
 [hybrid motion guide](../../../../docs/camera-rl/hybrid-motion-learning.md).

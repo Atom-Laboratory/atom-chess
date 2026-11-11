@@ -1,5 +1,24 @@
 # Camera-based manipulation and RL
 
+The current simplified [XYZ-only reach curriculum](../../simulation/mujoco/training/autonomous-manipulation/README.md)
+and [S033](../../simulation/docs/adrs/S033-reach-first-curriculum.md) supersede
+the stopped seven-action grasp comparison as the immediate training experiment.
+This is a local skill pilot, not qualified full-board manipulation or deployment.
+
+The latest hybrid roadmap begins with the
+[M1 repository audit and current test results](hybrid-m1-audit.md).
+It records the planner/wrist integration gaps and the reproduced capture
+failure. The [M2 approach qualification and actual command flow](hybrid-m2-qualification.md)
+records the subsequent native approach/retreat experiment. Local grasp/lift
+learning and complete hardware execution remain unqualified.
+The subsequent [M3 planner-to-policy contract](hybrid-m3-contract.md) defines
+local action proposals, actor inputs and explicit control ownership. It was
+tested independently before the M4 execution adapter; PPO integration into
+that hybrid contract remains unqualified.
+The [M4 supervisor and actual diagnostic results](hybrid-m4-supervision.md)
+record the subsequent simulation execution adapter, failed lift attempts and
+the separately authorized experimental background PPO comparisons.
+
 The recommended next direction is documented in the
 [planned-motion and local-learning architecture](hybrid-motion-learning.md).
 Read the [MoPA-RL study guide](mopa-rl-reading-guide.md) alongside the paper

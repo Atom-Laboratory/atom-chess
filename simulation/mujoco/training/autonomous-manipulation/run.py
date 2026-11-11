@@ -39,6 +39,19 @@ def weights_sha(policy):
     return digest.hexdigest()
 
 
+class TimedPPO(PPO):
+    """Measure optimizer wall time without changing the update."""
+
+    def train(self):
+        if self.device.type == 'cuda':
+            torch.cuda.synchronize()
+        started = time.perf_counter()
+        super().train()
+        if self.device.type == 'cuda':
+            torch.cuda.synchronize()
+        self.optimizer_wall_s = getattr(self, 'optimizer_wall_s', 0.) + time.perf_counter()-started
+
+
 def save_checkpoint(model, path):
     temporary = path.with_name(path.stem+'-writing.zip')
     model.save(temporary)
@@ -143,11 +156,11 @@ class Recorder(BaseCallback):
             self.csv.close()
 
 
-def evaluate(env, policy, seeds, stochastic, progress, watch, dashboard=None):
+def evaluate(env, policy, seeds, stochastic, progress, watch, dashboard=None, *, stage='EVALUATION'):
     records = []
     progress.stage('Evaluating autonomous policy', total=len(seeds), unit='episodes')
     if watch:
-        watch.stage = 'EVALUATION'
+        watch.stage = stage
     for index, seed in enumerate(seeds):
         observation, _ = env.reset(seed=seed)
         if watch:
@@ -193,6 +206,8 @@ def main():
                         help='Completed autonomous run supplying weights with a fresh optimizer')
     parser.add_argument('--warm-start-checkpoint', type=Path,
                         help='Checkpoint with run.json and SHA-256 sidecar; fresh optimizer')
+    parser.add_argument('--allow-config-transfer', action='store_true',
+                        help='Explicitly transfer compatible weights to a different environment configuration')
     viewer = parser.add_mutually_exclusive_group()
     viewer.add_argument('--watch', action='store_true', help='Three-panel camera diagnostics')
     viewer.add_argument('--watch-native', action='store_true', help='Interactive MuJoCo 3D window')
@@ -203,6 +218,7 @@ def main():
     parser.add_argument('--device', choices=('cpu', 'cuda', 'auto'), default='cuda',
                         help='PPO inference and optimizer device')
     parser.add_argument('--stochastic-evaluation', action='store_true')
+    parser.add_argument('--torch-threads', type=int, default=2)
     args = parser.parse_args()
     if not args.watch and not args.watch_native and not args.headless:
         args.watch_native = True
@@ -211,7 +227,7 @@ def main():
     if args.keep_watch_open and not args.watch_native:
         parser.error('--keep-watch-open requires --watch-native')
     if min(args.steps, args.episodes, args.horizon, args.checkpoint_every, args.rollout_steps,
-           args.batch_size, args.epochs) <= 0 or args.rollout_steps < 2 or args.batch_size < 2:
+           args.batch_size, args.epochs, args.torch_threads) <= 0 or args.rollout_steps < 2 or args.batch_size < 2:
         parser.error('Step, horizon, episode and checkpoint counts must be positive')
     if args.rollout_steps % args.batch_size:
         parser.error('--rollout-steps must be divisible by --batch-size')
@@ -228,7 +244,7 @@ def main():
     device = 'cuda' if args.device == 'auto' else args.device
     output = args.output or new_run('training/autonomous-manipulation/runs')
     output.mkdir(parents=True, exist_ok=False)
-    torch.set_num_threads(2)
+    torch.set_num_threads(args.torch_threads)
     env = watch = recorder = model = dashboard = None
     progress = RunProgress()
     try:
@@ -253,7 +269,7 @@ def main():
                    files_sha256={str(path.resolve()): sha(path) for path in (*sources, *assets, *libraries)},
                    control_rates_si=env.control.rates.tolist(),
                    max_action_intervals=env.control.max_intervals,
-                   action_schema=['vx', 'vy', 'vz', 'wrist_velocity', 'finger_velocity', 'elbow_branch', 'duration'],
+                   action_schema=env.action_axes,
                    actor_inputs=list(env.observation_space.spaces),
                    reward_source='simulation_supervised_camera_actor',
                    initial_weights='fresh; previous residual checkpoint semantics differ')
@@ -266,7 +282,7 @@ def main():
             env.observer = lambda info: watch.update(info, force=env.finished)
             watch.total = ((args.steps+args.rollout_steps-1)//args.rollout_steps)*args.rollout_steps
             watch.update(env.last_info, force=True)
-        model = PPO('MultiInputPolicy', env, n_steps=args.rollout_steps, batch_size=args.batch_size, n_epochs=args.epochs,
+        model = TimedPPO('MultiInputPolicy', env, n_steps=args.rollout_steps, batch_size=args.batch_size, n_epochs=args.epochs,
                     learning_rate=args.learning_rate, ent_coef=args.ent_coef,
                     target_kl=args.target_kl,
                     seed=args.seed, device=device, verbose=1,
@@ -282,6 +298,9 @@ def main():
                 raise ValueError('Warm-start action semantics differ')
             if source_run.get('policy_version', 1) != POLICY_VERSION:
                 raise ValueError('Warm-start policy architecture differs. Use its original runner or train a fresh policy.')
+            config_transfer = source_run.get('config_sha256') != run['config_sha256']
+            if config_transfer and not args.allow_config_transfer:
+                raise ValueError('Warm-start configuration differs. Use the original config or explicitly pass --allow-config-transfer.')
             if sha(archive) != expected:
                 raise ValueError('Warm-start checkpoint identity differs')
             source = PPO.load(archive, device='cpu')
@@ -289,6 +308,8 @@ def main():
                 raise ValueError('Warm-start policy spaces differ')
             model.policy.load_state_dict(source.policy.state_dict())
             run['initial_weights'] = dict(source=str(archive.resolve()),
+                                          config_transfer=config_transfer,
+                                          source_config_sha256=source_run.get('config_sha256'),
                                           sha256=sha(archive), weights_sha256=weights_sha(source),
                                           scope='autonomous policy weights; fresh optimizer')
             (output/'run.json').write_text(json.dumps(run, indent=2), encoding='utf-8')
@@ -299,14 +320,19 @@ def main():
                             objective=args.objective, device=device, algorithm='PPO'),
                             hardware=sample_hardware(device), status='Preparing evaluation/training')
         seeds = list(range(args.evaluation_seed, args.evaluation_seed+args.episodes))
-        baseline = (evaluate(env, model, seeds, args.stochastic_evaluation, progress, watch, dashboard)
+        baseline = (evaluate(env, model, seeds, args.stochastic_evaluation, progress, watch, dashboard,
+                             stage='INITIAL EVALUATION')
                     if args.evaluate_before else None)
         if baseline is not None:
             (output/'baseline.json').write_text(json.dumps(baseline, indent=2), encoding='utf-8')
+        training_wall_s = 0.
         if not args.evaluate_only:
             env.reset(seed=args.seed)
             recorder = Recorder(env, output, progress, args.checkpoint_every, watch, dashboard)
+            started = time.perf_counter()
             model.learn(args.steps, callback=recorder)
+            training_wall_s = time.perf_counter()-started
+        optimizer_wall_s = getattr(model, 'optimizer_wall_s', 0.)
         after = weights_sha(model)
         progress.stage('Saving autonomous policy')
         save_checkpoint(model, output/'policy.zip')
@@ -318,6 +344,7 @@ def main():
         Image.fromarray(env.last_frame.raw_rgb).save(output/'camera-final.png')
         Image.fromarray(env.last_frame.rectified_rgb).save(output/'board-final.png')
         report = dict(status='completed', steps=recorder.num_timesteps if recorder else 0,
+                      training_wall_s=training_wall_s, optimizer_wall_s=optimizer_wall_s,
                       checkpoint_sha256=sha(output/'policy.zip'), evaluation=evaluation,
                       weights_before=before, weights_after=after, checkpoint_reload_verified=True,
                       baseline=baseline,

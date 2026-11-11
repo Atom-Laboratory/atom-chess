@@ -5,6 +5,7 @@ import mujoco
 import numpy as np
 
 from .collision import SweptChecker
+from .native_motion import commanded_elbow_down
 
 
 def interpolate_command(start, end, index, intervals):
@@ -76,14 +77,7 @@ class AutonomousControl:
                             bool(elbow_down), intervals, duration)
 
     def commanded_elbow_down(self, command):
-        # Match the effective elbow angle used by native IK with a wrist offset.
-        self.scratch.qpos[:] = self.model.qpos0
-        self.scratch.qpos[self.sim.qadr] = 0.
-        self.scratch.qpos[self.sim.qadr[-1]] = command[-1]
-        mujoco.mj_forward(self.model, self.scratch)
-        elbow = self.scratch.xanchor[self.sim.joint_ids[2]]
-        offset = self.scratch.site_xpos[self.site]-elbow
-        return command[2]+np.arctan2(offset[1], offset[0]) <= 0
+        return commanded_elbow_down(self.sim, command, self.scratch)
 
     def validate(self, choice, command, *, project=False):
         sim = self.sim

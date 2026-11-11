@@ -16,6 +16,7 @@ from PIL import Image
 from atom_mujoco.camera_only_env import CameraOnlyEnv
 from atom_mujoco.collision import SweptChecker
 from atom_mujoco.scene_feedback import SceneFeedback
+from atom_mujoco.board_piece_localization import configuration_from_offsets
 from run import provenance, sha
 
 
@@ -90,15 +91,9 @@ class PickupSweep:
         self.pair_radii = model.geom_rbound[self.pair_indices].sum(axis=1)
 
     def visual_scene(self):
-        env, model = self.env, self.model
-        if set(env.observed_offsets) != set(env.occupied):
-            raise ValueError('Incomplete RGB localization of the expected occupied squares')
-        self.checker.initial[:] = model.qpos0
-        for piece in self.sim.manifest['pieces']:
-            body = model.body(piece['name']).id
-            address = model.jnt_qposadr[model.body_jntadr[body]]
-            self.checker.initial[address:address+2] += env.observed_offsets[piece['initial_square']]
-        self.checker.initial[self.sim.qadr] = self.park
+        self.checker.initial[:] = configuration_from_offsets(
+            self.model, self.sim.manifest['pieces'], self.sim.qadr, self.park,
+            self.env.observed_offsets, self.env.occupied)
 
     def allowed(self, phase):
         # Match the established preflight exemption for selected pads during
