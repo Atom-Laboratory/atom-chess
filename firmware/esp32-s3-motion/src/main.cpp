@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <AccelStepper.h>
 #include <ESP32Servo.h>
+#include <cerrno>
 
 #include "robot_config.hpp"
 
@@ -15,7 +16,9 @@ enum class ErrorCode : int {
     NotConfigured = 100,
     EmergencyStop = 101,
     LimitTriggered = 102,
-    UnexpectedCommand = 103
+    UnexpectedCommand = 103,
+    RecoveryRequired = 104,
+    NoActiveSegment = 105
 };
 
 AccelStepper joint1(AccelStepper::DRIVER,
@@ -31,6 +34,10 @@ AccelStepper zAxis(AccelStepper::DRIVER,
                    atom_motion_config::zStepPin,
                    atom_motion_config::zDirPin);
 Servo gripper;
+bool motionInhibited = false;
+char incomingLine[192];
+size_t incomingUsed = 0;
+bool discardLine = false;
 
 /**
  * @brief Returns whether a configurable digital input is active.
@@ -51,7 +58,7 @@ bool inputActive(int pin, bool activeLow)
 /**
  * @brief Sends one ACM1 response event.
  * @param sequence Host command sequence.
- * @param event ACK, DONE, ESTOP or LIMIT.
+ * @param event ACK, DONE, CANCELLED, ESTOP or LIMIT.
  */
 void sendEvent(unsigned long sequence, const char* event)
 {
@@ -82,12 +89,18 @@ void sendError(unsigned long sequence, ErrorCode code)
 size_t splitFields(char* line, char** fields, size_t maxFields)
 {
     size_t count = 0;
-    char* save = nullptr;
-    char* token = strtok_r(line, "|", &save);
-
-    while (token != nullptr && count < maxFields) {
+    char* token = line;
+    while (true) {
+        if (*token == '\0' || count == maxFields) {
+            return 0;
+        }
         fields[count++] = token;
-        token = strtok_r(nullptr, "|", &save);
+        char* separator = strchr(token, '|');
+        if (separator == nullptr) {
+            break;
+        }
+        *separator = '\0';
+        token = separator + 1;
     }
 
     return count;
@@ -108,9 +121,18 @@ bool parseDouble(const char* text, double& value)
  */
 bool parseUnsigned(const char* text, unsigned long& value)
 {
+    if (*text == '\0') {
+        return false;
+    }
+    for (const char* digit = text; *digit != '\0'; ++digit) {
+        if (*digit < '0' || *digit > '9') {
+            return false;
+        }
+    }
     char* end = nullptr;
+    errno = 0;
     value = strtoul(text, &end, 10);
-    return end != text && *end == '\0';
+    return errno != ERANGE && end != text && *end == '\0';
 }
 
 /**
@@ -127,14 +149,13 @@ int gripperPulse(double percent)
 }
 
 /**
- * @brief Stops all four stepper axes immediately.
+ * @brief Discards STEP targets and speed; does not measure mechanical standstill.
  */
 void stopAxes()
 {
-    joint1.stop();
-    joint2.stop();
-    joint3.stop();
-    zAxis.stop();
+    for (AccelStepper* axis : {&joint1, &joint2, &joint3, &zAxis}) {
+        axis->setCurrentPosition(axis->currentPosition());
+    }
 }
 
 /**
@@ -158,6 +179,49 @@ bool anyLimitActive()
                atom_motion_config::zLimitPin,
                atom_motion_config::limitsActiveLow
            );
+}
+
+/** @brief Safety inputs override cancellation and latch further motion off. */
+bool checkSafety(unsigned long sequence)
+{
+    const bool emergency = inputActive(atom_motion_config::emergencyStopPin,
+        atom_motion_config::emergencyStopActiveLow);
+    if (!emergency && !anyLimitActive()) {
+        return false;
+    }
+    motionInhibited = true;
+    stopAxes();
+    sendEvent(sequence, emergency ? "ESTOP" : "LIMIT");
+    return true;
+}
+
+/** @brief One bounded serial reader shared across idle/active motion boundaries. */
+bool readFrame()
+{
+    size_t budget = sizeof(incomingLine);
+    while (Serial.available() > 0 && budget-- > 0) {
+        const char ch = static_cast<char>(Serial.read());
+        if (ch == '\n') {
+            incomingLine[incomingUsed] = '\0';
+            if (incomingUsed > 0 && incomingLine[incomingUsed - 1] == '\r') {
+                incomingLine[incomingUsed - 1] = '\0';
+            }
+            incomingUsed = 0;
+            if (discardLine) {
+                discardLine = false;
+                sendError(0, ErrorCode::InvalidFrame);
+                return false;
+            }
+            return true;
+        }
+        if (ch == '\0' || incomingUsed + 1 >= sizeof(incomingLine)) {
+            discardLine = true;
+        }
+        if (!discardLine) {
+            incomingLine[incomingUsed++] = ch;
+        }
+    }
+    return false;
 }
 
 /**
@@ -194,47 +258,22 @@ bool configurationValid()
  */
 bool cancellationRequested(unsigned long activeSequence)
 {
-    static char cancelLine[96];
-    static size_t cancelUsed = 0;
-
-    while (Serial.available() > 0) {
-        const char ch = static_cast<char>(Serial.read());
-
-        if (ch == '\n') {
-            cancelLine[cancelUsed] = '\0';
-            if (cancelUsed > 0 && cancelLine[cancelUsed - 1] == '\r') {
-                cancelLine[cancelUsed - 1] = '\0';
-            }
-
-            char* fields[4]{};
-            const size_t count = splitFields(cancelLine, fields, 4);
-            cancelUsed = 0;
-
-            unsigned long sequence = 0;
-            if (count == 3
-                && strcmp(fields[0], "ACM1") == 0
-                && parseUnsigned(fields[1], sequence)
-                && strcmp(fields[2], "CANCEL") == 0) {
-                if (sequence == activeSequence) {
-                    return true;
-                }
-
-                sendError(sequence, ErrorCode::UnexpectedCommand);
-                continue;
-            }
-
-            sendError(activeSequence, ErrorCode::UnexpectedCommand);
-            continue;
-        }
-
-        if (cancelUsed + 1 < sizeof(cancelLine)) {
-            cancelLine[cancelUsed++] = ch;
-        } else {
-            cancelUsed = 0;
-            sendError(activeSequence, ErrorCode::InvalidFrame);
-        }
+    if (!readFrame()) {
+        return false;
     }
-
+    char* fields[4]{};
+    const size_t count = splitFields(incomingLine, fields, 4);
+    unsigned long sequence = 0;
+    if (count == 3 && strcmp(fields[0], "ACM1") == 0
+        && parseUnsigned(fields[1], sequence) && sequence != 0
+        && strcmp(fields[2], "CANCEL") == 0) {
+        if (sequence == activeSequence) {
+            return true;
+        }
+        sendError(sequence, ErrorCode::UnexpectedCommand);
+        return false;
+    }
+    sendError(activeSequence, ErrorCode::UnexpectedCommand);
     return false;
 }
 
@@ -254,15 +293,15 @@ bool executeSegment(
     double gripperPercent,
     unsigned long durationMs)
 {
-    if (!configurationValid()) {
-        sendError(sequence, ErrorCode::NotConfigured);
+    if (checkSafety(sequence)) {
         return false;
     }
-
-    if (inputActive(
-            atom_motion_config::emergencyStopPin,
-            atom_motion_config::emergencyStopActiveLow)) {
-        sendEvent(sequence, "ESTOP");
+    if (motionInhibited) {
+        sendError(sequence, ErrorCode::RecoveryRequired);
+        return false;
+    }
+    if (!configurationValid()) {
+        sendError(sequence, ErrorCode::NotConfigured);
         return false;
     }
 
@@ -298,23 +337,17 @@ bool executeSegment(
            || joint2.distanceToGo() != 0
            || joint3.distanceToGo() != 0
            || zAxis.distanceToGo() != 0) {
-        if (cancellationRequested(sequence)) {
-            stopAxes();
-            sendEvent(sequence, "DONE");
+        if (checkSafety(sequence)) {
             return false;
         }
-
-        if (inputActive(
-                atom_motion_config::emergencyStopPin,
-                atom_motion_config::emergencyStopActiveLow)) {
-            stopAxes();
-            sendEvent(sequence, "ESTOP");
+        const bool cancel = cancellationRequested(sequence);
+        if (checkSafety(sequence)) {
             return false;
         }
-
-        if (anyLimitActive()) {
+        if (cancel) {
+            motionInhibited = true;
             stopAxes();
-            sendEvent(sequence, "LIMIT");
+            sendEvent(sequence, "CANCELLED");
             return false;
         }
 
@@ -325,6 +358,9 @@ bool executeSegment(
         yield();
     }
 
+    if (checkSafety(sequence)) {
+        return false;
+    }
     sendEvent(sequence, "DONE");
     return true;
 }
@@ -348,9 +384,11 @@ void handleFrame(char* line)
         return;
     }
 
+    if (checkSafety(sequence)) {
+        return;
+    }
     if (strcmp(fields[2], "CANCEL") == 0 && count == 3) {
-        stopAxes();
-        sendEvent(sequence, "DONE");
+        sendError(sequence, ErrorCode::NoActiveSegment);
         return;
     }
 
@@ -436,27 +474,7 @@ void setup()
 
 void loop()
 {
-    static char line[192];
-    static size_t used = 0;
-
-    while (Serial.available() > 0) {
-        const char ch = static_cast<char>(Serial.read());
-
-        if (ch == '\n') {
-            line[used] = '\0';
-            if (used > 0 && line[used - 1] == '\r') {
-                line[used - 1] = '\0';
-            }
-            handleFrame(line);
-            used = 0;
-            continue;
-        }
-
-        if (used + 1 < sizeof(line)) {
-            line[used++] = ch;
-        } else {
-            used = 0;
-            sendError(0, ErrorCode::InvalidFrame);
-        }
+    while (readFrame()) {
+        handleFrame(incomingLine);
     }
 }
