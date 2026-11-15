@@ -88,11 +88,15 @@ std::optional<JointTarget> InverseKinematics::solve(const Pose& pose) const
         geometry_.preferredElbow == ElbowConfiguration::Up
             ? baseTheta2
             : -baseTheta2;
+    // Remove sin(pi) roundoff without changing the folded-origin convention.
+    const double sinTheta2 = cosTheta2 == -1.0 && radiusSquared > 0.0
+        ? std::copysign(0.0, theta2)
+        : std::sin(theta2);
 
     const double theta1 =
         std::atan2(pose.y, pose.x)
         - std::atan2(
-            l2 * std::sin(theta2),
+            l2 * sinTheta2,
             l1 + l2 * std::cos(theta2)
         );
 
