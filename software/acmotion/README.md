@@ -4,6 +4,30 @@
 
 It runs primarily on the Linux SBC / Brain and converts validated chess moves into physically executable SCARA motion while keeping low-level motor control on the ESP32-S3.
 
+## Numerical IK qualification (#153)
+
+From the repository root on Linux/WSL, with CMake, a C++20 compiler and the
+repository build dependencies installed:
+
+```bash
+cmake -S . -B build/headless -DACCHESS_BUILD_VIEWER=OFF -DACVISION_BUILD_HARDWARE_TESTS=OFF
+cmake --build build/headless --target test_inverse_kinematics -j 2
+ctest --test-dir build/headless -R test_inverse_kinematics --output-on-failure
+```
+
+The suite includes 120 synthetic FK-to-IK round trips (both elbow branches,
+20 planar configurations each and three Z heights), inclusive inner boundaries,
+the equal-link folded origin and explicit branch/wrist-travel counterexamples.
+Expected output: the `test_inverse_kinematics` CTest target passes. Synthetic
+100/70 mm links are numerical fixtures, not measured robot dimensions.
+
+The configured branch is mandatory: the solver can reject a pose solvable by the
+other branch. It does not wrap a requested wrist angle by 2 pi into cable limits.
+These tests characterize that restriction rather than establish full solution
+search, trajectory continuity, collision safety or physical calibration. See
+[ADR-006](../docs/adrs/ADR-006-ik-contract-validation.md). Issue #153 remains
+pending that branch-selection policy and the remaining qualification evidence.
+
 ## Runtime pipeline
 
 ```

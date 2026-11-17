@@ -17,6 +17,16 @@ def smooth_fraction(index, intervals):
     return fraction**3*(10.-15.*fraction+6.*fraction**2)
 
 
+def board_reference_shift(frame, planned_homography, pitch):
+    """Maximum rectified board-corner displacement in metres."""
+    height, width = frame.rectified_rgb.shape[:2]
+    corners = np.array([[0., width, width, 0.], [0., 0., height, height], [1., 1., 1., 1.]])
+    mapped = frame.homography@np.linalg.solve(planned_homography, corners)
+    with np.errstate(divide='ignore', invalid='ignore'):
+        delta = (mapped[:2]/mapped[2]-corners[:2])*np.array([8*pitch/width, 8*pitch/height])[:, None]
+    return float(np.linalg.norm(delta, axis=0).max()) if np.isfinite(delta).all() else float('inf')
+
+
 def execute_approach(scene, plan, *, observer=None, retreat=True, settle_timeout_s=2., speed_fraction=.25):
     sim, model, data = scene.sim, scene.sim.model, scene.sim.data
     report = dict(schema=1, status='REJECTED', approach_complete=False, retreat_complete=False,
@@ -87,12 +97,7 @@ def execute_approach(scene, plan, *, observer=None, retreat=True, settle_timeout
         if any(np.linalg.norm(np.array(offsets[square])-plan['offsets_m'][square]) > checker.clearance
                for square in offsets):
             raise ValueError('VISUAL_SCENE_CHANGED_SINCE_PLANNING')
-        height, width = frame.rectified_rgb.shape[:2]
-        corners = np.array([[0., width, width, 0.], [0., 0., height, height], [1., 1., 1., 1.]])
-        mapped = frame.homography@np.linalg.inv(np.asarray(plan['homography']))@corners
-        mapped = mapped[:2]/mapped[2]
-        delta = (mapped-corners[:2])*np.array([8*scene.pitch/width, 8*scene.pitch/height])[:, None]
-        if not np.isfinite(delta).all() or np.linalg.norm(delta, axis=0).max() > checker.clearance:
+        if board_reference_shift(frame, plan['homography'], scene.pitch) > checker.clearance:
             raise ValueError('BOARD_REFERENCE_CHANGED_SINCE_PLANNING')
         report['fresh_frame_sequence'] = frame.sequence
         stages = [('APPROACH', plan['approach'])]
