@@ -1,5 +1,43 @@
 # Autonomous visual manipulation experiment
 
+## M1 native approach handoff
+
+The opt-in environment version 7 runs the existing native approach in MuJoCo
+before constructing the local actor observation. The qualification runner
+expects a prepared wrist-aware temporal fixture with native vision and motion
+libraries, ArUco references and no randomized robot start. The existing
+canonical v6 XYZ configuration uses a different observation/action contract.
+
+From the repository root in PowerShell:
+
+```powershell
+$py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+$config = 'simulation/mujoco/training/camera-manipulation/runs/pawn-e2-e4-vision-fen-v1/environment.json'
+$out = Join-Path 'simulation/mujoco/runs' ('native-handoff-' + [guid]::NewGuid().ToString('N'))
+& $py -u -B simulation/mujoco/training/autonomous-manipulation/qualify_handoff.py --config $config --seeds 7 8 --output $out --watch
+$env:ATOM_HANDOFF_CONFIG = (Resolve-Path $config).Path
+& $py -B -m pytest simulation/mujoco/tests/test_approach_handoff.py simulation/mujoco/tests/test_hybrid_approach.py -q
+```
+
+Use the fixture preparation instructions in the
+[native approach example](../../examples/qualify_hybrid_approach/README.md)
+if the local configuration is absent. Omit `--watch` for headless replay.
+Each run writes a configuration, input hashes, a summary, and seed-level
+plan, preflight and execution diagnostics with planned, commanded and measured
+endpoints. It saves arrival RGB and rectified board images when available.
+Exit code 1 means at least one seed failed qualification. Version 7 stops
+before local actuation until the workspace and deterministic reference are
+qualified. See [ADR S035](../../../docs/adrs/S035-native-approach-episode-start.md)
+and the [M1 results](../../../../docs/camera-rl/native-approach-handoff-m1.md).
+
+For the fixed-camera endpoint experiment, add `--require-visible-target`
+and choose a fresh output directory. The existing approach candidates are
+rendered in a scratch scene built from visual offsets. The same RGB localizer
+screens each candidate; the live trajectory and arrival still pass the
+independent checks. Inspect `plan.candidates[].visual_preview` and the
+arrival images to distinguish rejected poses from runtime perception failures.
+The filter is opt-in. See [ADR S036](../../../docs/adrs/S036-visual-approach-screen.md).
+
 ## Reproduce the canonical reach experiment
 
 Start with the [contribution guide](../../TRAINING_CONTRIBUTION_GUIDE.md) for

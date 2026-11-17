@@ -7,6 +7,7 @@ from gymnasium import spaces
 import mujoco
 import numpy as np
 
+from .approach_handoff import approach_handoff
 from .autonomous_control import AutonomousControl, interpolate_command
 from .autonomous_feedback import ManipulationFeedback
 from .autonomous_observation import VisualHistory
@@ -32,10 +33,18 @@ class AutonomousManipulationEnv(gym.Env):
             self.feedback = ManipulationFeedback(self.base)
             sim = self.base.sim
             cfg = self.base.config.get('autonomous', {})
+            start_mode = cfg.get('start_mode', 'legacy')
+            if start_mode not in ('legacy', 'native_approach'):
+                raise ValueError('Unknown autonomous start mode')
+            self.native_approach = start_mode == 'native_approach'
             mode = cfg.get('action_mode', 'temporal')
             if mode not in ('temporal', 'reach_xyz'):
                 raise ValueError('Unknown autonomous action profile')
             self.xyz_only = mode == 'reach_xyz'
+            if self.native_approach:
+                if self.xyz_only or cfg.get('start_radius_squares') is not None:
+                    raise ValueError('native_approach requires temporal controls and no randomized robot start')
+                self.VERSION = 7
             self.vision_features_only = False
             self.action_axes = (['vx', 'vy', 'vz'] if self.xyz_only else
                 ['vx', 'vy', 'vz', 'wrist_velocity', 'finger_velocity', 'elbow_branch', 'duration'])
@@ -87,6 +96,8 @@ class AutonomousManipulationEnv(gym.Env):
             self.history = VisualHistory()
             self.finished = True
             self.observer = None
+            self.approach_observer = None
+            self.last_handoff = None
         except Exception:
             self.base.close()
             raise
@@ -135,21 +146,47 @@ class AutonomousManipulationEnv(gym.Env):
 
     def reset(self, *, seed=None, options=None):
         super().reset(seed=seed)
+        self.finished = True
+        self.last_handoff = None
+        if self.native_approach:
+            self.last_handoff = dict(schema=1, environment_version=self.VERSION, seed=seed,
+                piece=self.base.config['piece'], source=self.base.config['source'],
+                objective=self.objective, horizon=self.horizon, stage='SCENE_RESET',
+                status='PENDING', manipulation_initialized=False, training_eligible=False)
+        try:
+            return self._reset_episode(seed, options)
+        except Exception as error:
+            if self.last_handoff is not None:
+                self.last_handoff.update(status='FAILED', failure_category=str(error),
+                    reconciliation_required=self.last_handoff.get('execution', {}).get('motion_applied', False))
+            raise
+
+    def _reset_episode(self, seed, options):
         self.base.reset(seed=seed, options=options)
         if not self.base.displacement_penalty_per_mm:
             self.base.contact_guard.start_displacement(self.sim.data)
         self.command = self.base.command.copy()
         self.source_xy = self.base.source[:2].copy()
         self.source_frame = self.base.last_camera_frame.sequence
-        self._randomize_start()
+        if self.native_approach:
+            self.last_handoff.update(target=self.base.task_target,
+                initial_command=self.command.tolist(), initial_measured=self.sim.data.qpos[self.sim.qadr].tolist(),
+                initial_source_xy_m=self.source_xy.tolist())
+            frame, self.source_xy = approach_handoff(self.base, self.last_handoff, observer=self.approach_observer)
+            self.last_handoff['stage'] = 'INITIAL_OBSERVATION'
+            self.command = self.base.command.copy()
+            self.source_frame = frame.sequence
+        else:
+            self._randomize_start()
         self.previous_action = np.zeros(self.action_space.shape, dtype=np.float32)
         self.history.clear()
         self.feedback.reset()
         self.steps, self.episode_return = 0, 0.
         self.totals = {}
-        self.finished = False
         observation = self._observation(self.base.last_camera_frame)
         self.perception_valid = bool(observation['perception_valid'][0])
+        if self.native_approach and not self.perception_valid:
+            raise RuntimeError('ARRIVAL_OBSERVATION_INVALID')
         self.last_info = dict(phase='FREE_MOTION', objective=self.objective,
                               target=self.base.task_target, episode_steps=0, success=False,
                               reward_components={}, validation=dict(status='RESET'),
@@ -158,6 +195,12 @@ class AutonomousManipulationEnv(gym.Env):
                               best_pad_distance_m=self.feedback.initial_distance,
                               reach_threshold_m=self.feedback.reach_threshold,
                               reward_source='simulation_supervised_camera_actor')
+        if self.native_approach:
+            self.last_handoff.update(status='INITIALIZED', stage='COMPLETE',
+                manipulation_initialized=True, reconciliation_required=False,
+                actor_observation_keys=sorted(observation))
+            self.last_info['handoff_status'] = self.last_handoff['status']
+        self.finished = False
         return observation, self.last_info.copy()
 
     def _randomize_start(self):
@@ -239,6 +282,8 @@ class AutonomousManipulationEnv(gym.Env):
         started = time.perf_counter()
         if self.finished:
             raise RuntimeError('Reset required')
+        if self.native_approach:
+            raise RuntimeError('LOCAL_WORKSPACE_NOT_QUALIFIED: native handoff is observation-only')
         choice = self._decode_action(action)
         self.pending_action = dict(action=np.asarray(action).tolist(), choice=asdict(choice),
                                    start_command=self.command.tolist())

@@ -274,6 +274,8 @@ def main():
                    reward_source='simulation_supervised_camera_actor',
                    initial_weights='fresh; previous residual checkpoint semantics differ')
         (output/'run.json').write_text(json.dumps(run, indent=2), encoding='utf-8')
+        if env.native_approach:
+            raise ValueError('Native approach is gated for M1. Use qualify_handoff.py to evaluate resets.')
         env.reset(seed=args.seed)
         if args.watch or args.watch_native:
             from watch import NativeWatch, Watch

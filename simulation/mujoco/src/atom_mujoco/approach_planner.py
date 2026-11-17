@@ -103,7 +103,7 @@ class ApproachPlanner:
                             scope='initial collision-free neighborhood; contact workspace not qualified')
         return None
 
-    def plan(self, *, max_candidates=48):
+    def plan(self, *, max_candidates=48, require_visible_target=False):
         if type(max_candidates) is not int or max_candidates <= 0:
             raise ValueError('Positive integer candidate budget required')
         scene, sim, model = self.scene, self.sim, self.sim.model
@@ -142,7 +142,8 @@ class ApproachPlanner:
                       derived_geometry=dict(tool_drop_m=drop, highest_obstacle_m=highest,
                           minimum_candidate_tcp_z_m=minimum, maximum_tcp_z_m=maximum,
                           height_step_m=scene.pitch, clearance_m=self.checker.clearance),
-                      candidates=[], scope='native six-command simulation approach qualification',
+                      candidates=[], require_visible_target=require_visible_target,
+                      scope='native six-command simulation approach qualification',
                       local_manipulation_workspace_qualified=False, training_eligible=False)
         initial_check = self._edge(command, command, 'INITIAL_CONFIGURATION')
         if not initial_check['valid']:
@@ -168,6 +169,23 @@ class ApproachPlanner:
                             result['reason'] = 'CANDIDATE_BUDGET_EXHAUSTED'
                             return result
                         continue
+                    if require_visible_target:
+                        self.scratch.qpos[:] = observed
+                        self.scratch.qpos[sim.qadr] = target
+                        mujoco.mj_forward(model, self.scratch)
+                        preview = scene.observe(self.scratch)
+                        estimate = square_offsets(scene.empty_reference, scene.centered_reference,
+                                                  preview, [scene.config['source']], scene.pitch)
+                        offset = estimate.get(scene.config['source'])
+                        shift = None if offset is None else float(np.linalg.norm(
+                            np.asarray(offset)-offsets[scene.config['source']]))
+                        candidate['visual_preview'] = dict(oriented=preview.oriented, shift_m=shift)
+                        if shift is None or shift > self.checker.clearance:
+                            candidate['status'] = 'VISUAL_TARGET_REJECTED'
+                            if len(result['candidates']) >= max_candidates:
+                                result['reason'] = 'CANDIDATE_BUDGET_EXHAUSTED'
+                                return result
+                            continue
                     endpoint = self._edge(target, target, 'APPROACH_ENDPOINT')
                     candidate['endpoint'] = endpoint
                     if not endpoint['valid']:
