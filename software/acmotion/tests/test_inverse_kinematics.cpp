@@ -81,6 +81,41 @@ TEST(InverseKinematicsTest, RejectsPointOutsideRadialWorkspace)
     );
 }
 
+TEST(InverseKinematicsTest, AcceptsInnerBoundaryAtInclusiveShoulderLimit)
+{
+    for (auto elbow : {ElbowConfiguration::Up, ElbowConfiguration::Down}) {
+        auto geometry = defaultGeometry(elbow);
+        geometry.link2Mm = 50.0;
+        geometry.limits.joint1MinRad = 0.0;
+        geometry.limits.joint1MaxRad = 0.0;
+        const InverseKinematics ik(geometry);
+
+        const auto target = ik.solve(Pose{50.0, 0.0, 20.0, 50.0, "INNER"});
+
+        ASSERT_TRUE(target.has_value());
+        const double expectedElbow = elbow == ElbowConfiguration::Up
+            ? std::numbers::pi : -std::numbers::pi;
+        EXPECT_DOUBLE_EQ(target->joint1Rad, 0.0);
+        EXPECT_DOUBLE_EQ(target->joint2Rad, expectedElbow);
+        EXPECT_DOUBLE_EQ(target->joint3Rad, -expectedElbow);
+    }
+}
+
+TEST(InverseKinematicsTest, PreservesFoldedOriginConvention)
+{
+    for (auto elbow : {ElbowConfiguration::Up, ElbowConfiguration::Down}) {
+        const InverseKinematics ik(defaultGeometry(elbow));
+        const auto target = ik.solve(Pose{0.0, 0.0, 20.0, 50.0, "ORIGIN"});
+
+        ASSERT_TRUE(target.has_value());
+        const double expectedElbow = elbow == ElbowConfiguration::Up
+            ? std::numbers::pi : -std::numbers::pi;
+        EXPECT_NEAR(target->joint1Rad, -expectedElbow / 2.0, 1e-9);
+        EXPECT_NEAR(target->joint2Rad, expectedElbow, 1e-9);
+        EXPECT_NEAR(target->joint3Rad, -expectedElbow / 2.0, 1e-9);
+    }
+}
+
 TEST(InverseKinematicsTest, RejectsZOutsideMechanicalLimits)
 {
     InverseKinematics ik(defaultGeometry());

@@ -23,7 +23,8 @@ enum class MotionExecutionState {
     Completed,  ///< All trajectory segments completed successfully.
     Error,      ///< Execution stopped because of transport/protocol/controller failure.
     SafeStop,   ///< Execution stopped because of E-stop or a limit condition.
-    Cancelled   ///< Host cancellation was transmitted successfully.
+    Cancelled,  ///< Controller confirmed logical cancellation; not physical standstill.
+    CancelRequested ///< CANCEL sent; waiting for matching CANCELLED.
 };
 
 /**
@@ -38,7 +39,8 @@ enum class MotionExecutionResult {
     ControllerError,///< ESP32-S3 explicitly reported an execution error.
     EmergencyStop,  ///< Emergency-stop event interrupted execution.
     LimitTriggered, ///< Limit/endstop event interrupted execution.
-    Cancelled       ///< Execution was explicitly cancelled by the host.
+    Cancelled,      ///< Controller confirmed logical cancellation.
+    RecoveryRequired ///< Latched state forbids starting another trajectory.
 };
 
 /**
@@ -50,6 +52,10 @@ enum class MotionExecutionResult {
  *
  * MotionExecution does not perform inverse kinematics, interpolation, motion
  * profiling, STEP/DIR generation, chess logic, or GPIO access.
+ * @note Single-owner, blocking API; not thread-safe or reentrant. Never call
+ *       cancel(), execute(), diagnostics or transport concurrently. Live
+ *       cancellation during execute() is not supported.
+ *       shortcut: blocking execution; add the owner event loop in PR 4B.
  */
 class MotionExecution {
 public:
@@ -70,6 +76,7 @@ public:
      * @brief Executes all joint segments sequentially.
      * @param trajectory Ordered non-empty joint trajectory.
      * @return Structured terminal result.
+     *         RecoveryRequired preserves a latched Error/SafeStop/Cancelled state.
      *
      * @throws std::invalid_argument when trajectory is empty, sequence IDs are
      *         zero/non-increasing, or timeout values are non-positive.
@@ -82,10 +89,14 @@ public:
     );
 
     /**
-     * @brief Sends an explicit cancellation request for the active sequence.
-     * @return true when the cancel frame was accepted by the transport.
+     * @brief Requests and waits for logical cancellation after failed execution.
+     * @return true only after matching CANCELLED, never merely on transmission.
      *
-     * @post state() becomes Cancelled when transmission succeeds.
+     * @pre execute() has returned Error with a possibly outstanding sequence.
+     * @note Blocks for doneTimeout. DONE is not cancellation confirmation.
+     *       No physical stop is proven. This does not clear a recovery latch.
+     *       Idle/Completed/SafeStop/Cancelled calls return false without I/O.
+     * @post Cancelled only on confirmation; failures remain Error or SafeStop.
      */
     bool cancel();
 
