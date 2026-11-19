@@ -1,0 +1,10 @@
+{
+  "schema": 2,
+  "operation": "PLAN",
+  "transfers": [
+    { "source": "e2", "target": "e4" },
+    { "source": "e7", "target": "e5" },
+    { "source": "g1", "target": "f3" },
+    { "source": "b8", "target": "c6" }
+  ]
+}

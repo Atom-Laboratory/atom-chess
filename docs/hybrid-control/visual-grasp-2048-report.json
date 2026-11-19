@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "algorithm": "PPO",
+  "observation": "96x96 RGB only",
+  "task": "local E2 pawn grasp and lift",
+  "reward_source": "simulation_oracle",
+  "model_parameters_updated": true,
+  "trained_steps": 2048,
+  "cuda_available": false,
+  "device": "cpu",
+  "torch_version": "2.15.0+cpu",
+  "seed": 7,
+  "wall_time_s": 114.3822296999997,
+  "model_sha256": "2b439e465a9f048ed49df4d681a965650a5a1347f728c2b04cba9c4a935b6b59",
+  "checkpoint_sha256": "21c8dfcea733a16b8d1592c81a587bae99c018a0dab35ed8a936a7547f4f9fc1",
+  "evaluation": [
+    {
+      "seed": 10000,
+      "return_value": -0.17566020262376458,
+      "success": false,
+      "disturbed": true,
+      "lift_m": -0.004620677146683414,
+      "reward_source": "simulation_oracle"
+    },
+    {
+      "seed": 10001,
+      "return_value": 0.4078797734721187,
+      "success": false,
+      "disturbed": true,
+      "lift_m": -0.004789247921840914,
+      "reward_source": "simulation_oracle"
+    },
+    {
+      "seed": 10002,
+      "return_value": 0.185211913363176,
+      "success": false,
+      "disturbed": true,
+      "lift_m": -0.004734910975721646,
+      "reward_source": "simulation_oracle"
+    },
+    {
+      "seed": 10003,
+      "return_value": -0.7657411280192541,
+      "success": false,
+      "disturbed": true,
+      "lift_m": -0.004463981455356578,
+      "reward_source": "simulation_oracle"
+    },
+    {
+      "seed": 10004,
+      "return_value": 0.5697302261443475,
+      "success": false,
+      "disturbed": true,
+      "lift_m": -0.004844500644613536,
+      "reward_source": "simulation_oracle"
+    }
+  ],
+  "hold_baseline": [
+    {
+      "seed": 10000,
+      "return_value": -1.0000030354756453,
+      "success": false,
+      "disturbed": false,
+      "lift_m": -2.2616243307641004e-07,
+      "reward_source": "simulation_oracle"
+    },
+    {
+      "seed": 10001,
+      "return_value": -1.0000031159050191,
+      "success": false,
+      "disturbed": false,
+      "lift_m": -2.2616243307641004e-07,
+      "reward_source": "simulation_oracle"
+    },
+    {
+      "seed": 10002,
+      "return_value": -1.0000030403372226,
+      "success": false,
+      "disturbed": false,
+      "lift_m": -2.2616243307641004e-07,
+      "reward_source": "simulation_oracle"
+    },
+    {
+      "seed": 10003,
+      "return_value": -1.0007496951286423,
+      "success": false,
+      "disturbed": false,
+      "lift_m": -2.2616243307641004e-07,
+      "reward_source": "simulation_oracle"
+    },
+    {
+      "seed": 10004,
+      "return_value": -1.0000029366148722,
+      "success": false,
+      "disturbed": false,
+      "lift_m": -2.2616243307641004e-07,
+      "reward_source": "simulation_oracle"
+    }
+  ],
+  "success_rate": 0.0,
+  "validated_for_playground": false
+}

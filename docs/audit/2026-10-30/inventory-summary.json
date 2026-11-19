@@ -1,0 +1,78 @@
+{
+  "HEAD": {
+    "files": 224,
+    "extensions": {
+      "": 21,
+      ".json": 11,
+      ".txt": 6,
+      ".cpp": 12,
+      ".excalidraw": 6,
+      ".png": 11,
+      ".svg": 6,
+      ".pdf": 4,
+      ".md": 45,
+      ".f3d": 2,
+      ".hpp": 4,
+      ".yml": 1,
+      ".py": 21,
+      ".bash": 6,
+      ".ps1": 7,
+      ".sh": 9,
+      ".zsh": 6,
+      ".log": 14,
+      ".bat": 1,
+      ".code-workspace": 1,
+      ".cmake": 2,
+      ".dsv": 5,
+      ".pyc": 1,
+      ".fish": 1,
+      ".stl": 14,
+      ".xml": 2,
+      ".xacro": 2,
+      ".toml": 1,
+      ".lock": 1,
+      ".rviz": 1
+    }
+  },
+  "main": {
+    "files": 494,
+    "extensions": {
+      "": 14,
+      ".md": 26,
+      ".yml": 2,
+      ".json": 9,
+      ".txt": 12,
+      ".hpp": 31,
+      ".ini": 1,
+      ".cpp": 51,
+      ".excalidraw": 3,
+      ".png": 20,
+      ".svg": 17,
+      ".pdf": 3,
+      ".mmd": 1,
+      ".3mf": 2,
+      ".bat": 1,
+      ".sh": 4,
+      ".code-workspace": 1,
+      ".log": 212,
+      ".yaml": 1,
+      ".py": 6,
+      ".xml": 4,
+      ".stl": 14,
+      ".xacro": 2,
+      ".jpg": 57
+    }
+  },
+  "CAD-external": {
+    "files": 79,
+    "extensions": {
+      "": 1,
+      ".f3d": 1,
+      ".zip": 4,
+      ".pdf": 1,
+      ".step": 11,
+      ".sldprt": 59,
+      ".sldasm": 2
+    }
+  }
+}

@@ -1,0 +1,308 @@
+{
+  "schema": 1,
+  "native_source_sha256": "7123cd893d8233c81f7c2c2e9b9d9eef94a2de129bdbfe6fca9a2b79dd9481ec",
+  "library_sha256": "c5bd9eb98d5e2b4a348cfa6a1c046a15db62c0ab795b82a417c57b7dc511fd93",
+  "scene_sha256": "d2fd9726a7d8f5a17c76a6bb4f013c9507839abf617998b86e38ef6e940788f0",
+  "layout_sha256": "008f7958239b7d5c582ebe5893264f448fb7191a87df9af31d4e467b2d7ff2f5",
+  "observation_pose": [
+    -1.5,
+    0.12,
+    -1.5,
+    0.0,
+    0.0
+  ],
+  "source": "e2",
+  "target": "e4",
+  "camera": {
+    "lookat": [
+      0.245,
+      0.0,
+      0.012
+    ],
+    "distance": 1.05,
+    "azimuth": 270,
+    "elevation": -75
+  },
+  "actor_features": [
+    "image",
+    "task",
+    "previous_action",
+    "commanded_joints",
+    "phase"
+  ],
+  "background_ready": true,
+  "background_source": "synthetic empty RGB fixture",
+  "training_ready": false,
+  "records": [
+    {
+      "sequence": 1,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 30.04759999748785,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 2,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 32.04139999434119,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 3,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 29.581800001324154,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 4,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 30.62080000381684,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 5,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 30.67169999849284,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 6,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 31.114099998376332,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 7,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 30.68910000001779,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 8,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 32.18460000061896,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 9,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 31.952899997122586,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 10,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 29.825500001606997,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 11,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 31.09759999642847,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 12,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 29.540000003180467,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 13,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 30.96219999861205,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 14,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 29.461699996318202,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 15,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 33.332299994071946,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 16,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 34.10160000203177,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 17,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 31.643099995562807,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 18,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 30.036600001039915,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 19,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 32.1719000057783,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 20,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 33.126100002846215,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 21,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 33.26509999897098,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 22,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 33.227400002942886,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 23,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 32.9730000012205,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 24,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 31.446799999685027,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 25,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 32.16529999917839,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 26,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 35.260500000731554,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 27,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 34.09480000118492,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 28,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 35.171199997421354,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 29,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 32.31289999530418,
+      "error": null,
+      "foreground_candidates": 15
+    },
+    {
+      "sequence": 30,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 32.496700005140156,
+      "error": null,
+      "foreground_candidates": 15
+    }
+  ]
+}

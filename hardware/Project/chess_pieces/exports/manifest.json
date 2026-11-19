@@ -1,0 +1,82 @@
+{
+  "source": "ChessPieces.3mf",
+  "source_sha256": "7ccd83f8078bc92ad68f387b3731ea9f1318cafb1d267ec681f29fe3494a95bb",
+  "units": "millimetres",
+  "frame": "foot centered in XY, lowest surface at Z=0, source yaw",
+  "use": "visual reference meshes",
+  "pieces": {
+    "bishop": {
+      "source_part": "3D/Objects/object_74.model",
+      "source_object": "8",
+      "size_mm": [
+        25.8596,
+        25.8596,
+        56.8397
+      ],
+      "triangles": 43603,
+      "degenerate_triangles": 0,
+      "sha256": "e8e17c55cf5768ba2805d7d28056e2f49fd1bab0b9a3706781fe0dbb8cbf107b"
+    },
+    "king": {
+      "source_part": "3D/Objects/object_71.model",
+      "source_object": "1",
+      "size_mm": [
+        25.9175,
+        25.9176,
+        71.2265
+      ],
+      "triangles": 28746,
+      "degenerate_triangles": 0,
+      "sha256": "ee6deb866de77650bc38b42a4a323ebcacdd45f2fbb0ee86fb9c18cea00447b9"
+    },
+    "knight": {
+      "source_part": "3D/Objects/object_72.model",
+      "source_object": "4",
+      "size_mm": [
+        32.7474,
+        25.9174,
+        54.4412
+      ],
+      "triangles": 902216,
+      "degenerate_triangles": 0,
+      "sha256": "335577442f8c22c3a89f022c85ed407fef0a988b8128ec648c4867c5c09ce681",
+      "obj_sha256": "bac16474f42b94d19bece84f603126f5f5211d68d34c4c954f819d51426c78cb"
+    },
+    "pawn": {
+      "source_part": "3D/Objects/object_75.model",
+      "source_object": "10",
+      "size_mm": [
+        18.0498,
+        18.0498,
+        34.6348
+      ],
+      "triangles": 35422,
+      "degenerate_triangles": 2,
+      "sha256": "be653fb2f9b9a7fa95afda9787f676ebf1e0523f95bde1ef2a32c6281c0a0103"
+    },
+    "queen": {
+      "source_part": "3D/Objects/object_73.model",
+      "source_object": "6",
+      "size_mm": [
+        25.8984,
+        25.8986,
+        62.7168
+      ],
+      "triangles": 36406,
+      "degenerate_triangles": 0,
+      "sha256": "f05fb0e22fc4d82f0913a9a1b0129d701361ff0a9a072a2eb0c8971c78d7d77a"
+    },
+    "rook": {
+      "source_part": "3D/Objects/object_76.model",
+      "source_object": "12",
+      "size_mm": [
+        23.2114,
+        23.2116,
+        43.0898
+      ],
+      "triangles": 24182,
+      "degenerate_triangles": 0,
+      "sha256": "256a7e8cc920e1e8a04e77921a293e3526e8b03cd07abd88ab827dffa5facf04"
+    }
+  }
+}

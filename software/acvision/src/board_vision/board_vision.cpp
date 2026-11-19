@@ -35,7 +35,7 @@ namespace ac {
             return result;
         }
 
-        return detectByContours(frame);
+        return std::nullopt; // A rectangle alone is not evidence of a chessboard.
     }
 
     /**
@@ -86,106 +86,25 @@ namespace ac {
                 cv::TermCriteria(cv::TermCriteria::EPS + cv::TermCriteria::COUNT, 30, 0.1)
             );
 
-            cv::Point2f tl_in = innerCorners[0];
-            cv::Point2f tr_in = innerCorners[6];
-            cv::Point2f bl_in = innerCorners[42];
-            cv::Point2f br_in = innerCorners[48];
-
-            cv::Point2f vx = (tr_in - tl_in) / 6.0f;
-            cv::Point2f vy = (bl_in - tl_in) / 6.0f;
-
-            float MultConst = 0.8;
-
-            cv::Point2f tl = tl_in - MultConst * vx - MultConst * vy;
-            cv::Point2f tr = tr_in + MultConst * vx - MultConst * vy;
-            cv::Point2f br = br_in + MultConst * vx + MultConst * vy;
-            cv::Point2f bl = bl_in - MultConst * vx + MultConst * vy;
-
-            return BoardCorners{{tl, tr, br, bl}};
-    }
-
-    /**
-    * @brief Contour-based fallback detection.
-    *
-    * Attempts to detect a large convex quadrilateral in the image, which is useful
-    * when the internal chessboard pattern is occluded by pieces or when contrast is insufficient.
-    */
-    std::optional<BoardCorners> BoardDetector::detectByContours(const cv::Mat& frame) const {
-        cv::Mat gray;
-        if (frame.channels() == 3) {
-            cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
-        } else {
-            gray = frame.clone();
-        }
-
-        cv::Mat blurred;
-        cv::GaussianBlur(gray, blurred, cv::Size(5, 5), 0);
-
-        cv::Mat edges;
-        cv::Canny(blurred, edges, 50, 150);
-
-        std::vector<std::vector<cv::Point>> contours;
-        cv::findContours(edges, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-
-        double bestArea = 0.0;
-        std::vector<cv::Point> bestQuad;
-
-        for (const auto& contour : contours) {
-            double area = cv::contourArea(contour);
-            if (area < 5000.0) {
-                continue;
-            }
-
-            std::vector<cv::Point> approx;
-            cv::approxPolyDP(contour, approx, 0.02 * cv::arcLength(contour, true), true);
-
-            if (approx.size() == 4 && cv::isContourConvex(approx)) {
-                if (area > bestArea) {
-                    bestArea = area;
-                    bestQuad = approx;
-                }
-            }
-        }
-
-        if (bestQuad.empty()) {
-            return std::nullopt;
-        }
-
-        return BoardCorners{orderCorners(bestQuad)};
-    }
-
-    /**
-    * @brief Orders the 4 corners of the quadrilateral.
-    *
-    * Order:
-    * 0 - top-left
-    * 1 - top-right
-    * 2 - bottom-right
-    * 3 - bottom-left
-    */
-    std::array<cv::Point2f, 4> BoardDetector::orderCorners(const std::vector<cv::Point>& quad) {
-        std::array<cv::Point2f, 4> ordered{};
-        std::vector<cv::Point2f> pts;
-        pts.reserve(4);
-
-        for (const auto& p : quad) {
-            pts.emplace_back(static_cast<float>(p.x), static_cast<float>(p.y));
-        }
-
-        auto sumCmp = [](const cv::Point2f& a, const cv::Point2f& b) {
-            return (a.x + a.y) < (b.x + b.y);
-        };
-
-        auto diffCmp = [](const cv::Point2f& a, const cv::Point2f& b) {
-            return (a.y - a.x) < (b.y - b.x);
-        };
-
-        ordered[0] = *std::min_element(pts.begin(), pts.end(), sumCmp); 
-        ordered[2] = *std::max_element(pts.begin(), pts.end(), sumCmp);  
-        ordered[1] = *std::min_element(pts.begin(), pts.end(), diffCmp); 
-        ordered[3] = *std::max_element(pts.begin(), pts.end(), diffCmp); 
-
-        return ordered;
+            std::vector<cv::Point2f> grid;
+            for (int r=1;r<=7;++r) for (int c=1;c<=7;++c)
+                grid.emplace_back(static_cast<float>(c),static_cast<float>(r));
+            const auto gridToImage = cv::findHomography(grid,innerCorners,0);
+            if (gridToImage.empty() || !cv::checkRange(gridToImage)) return std::nullopt;
+            std::vector<cv::Point2f> outer;
+            cv::perspectiveTransform(std::vector<cv::Point2f>{{0,0},{8,0},{8,8},{0,8}},outer,gridToImage);
+            if (!cv::isContourConvex(outer)) return std::nullopt;
+            for (const auto& p : outer)
+                if (!std::isfinite(p.x) || !std::isfinite(p.y) || p.x<0 || p.y<0 ||
+                    p.x>=frame.cols || p.y>=frame.rows) return std::nullopt;
+            // Rotate the ordered perimeter to its image top-left. Chess orientation
+            // remains unknown; never choose corners independently (duplicate risk).
+            if (cv::contourArea(outer,true)<0) std::reverse(outer.begin(),outer.end());
+            const auto first=std::min_element(outer.begin(),outer.end(),[](const auto& a,const auto& b){
+                return a.x+a.y < b.x+b.y;
+            });
+            std::rotate(outer.begin(),first,outer.end());
+            return BoardCorners{{outer[0],outer[1],outer[2],outer[3]}};
     }
 
     /**

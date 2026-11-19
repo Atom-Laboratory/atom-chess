@@ -1,0 +1,661 @@
+{
+  "schema": 1,
+  "source_report": {
+    "schema": 1,
+    "mujoco_version": "3.17.0",
+    "image_size": [
+      1920,
+      1440
+    ],
+    "camera_distance_m": 1.05,
+    "camera_lookat": [
+      0.245,
+      0.0,
+      0.012
+    ],
+    "model_fovy_degrees": 45.0,
+    "evaluator_export": true,
+    "executable_sha256": "f035ad0995190fdd9c8afa730c4f817dba440da9217fd9af34387a97894736b7",
+    "layout_provenance": "experimental simulated 280mm board; measure real installation",
+    "geometry_only": true,
+    "layout_sha256": "f43edd499846a4db6c1f815b19812fb94f1895a65dedae6979ed8ce1a9051274",
+    "source_model_sha256": "2b439e465a9f048ed49df4d681a965650a5a1347f728c2b04cba9c4a935b6b59",
+    "results": [
+      {
+        "case": "initial-265-35",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "f3a1427726d5ae3ea6b72f91098914955d0d735ec8ba154d9236f05b8aad2855",
+        "mean_error_mm": 0.6381220882739023,
+        "max_error_mm": 0.7404018363957534,
+        "correct_squares": 64
+      },
+      {
+        "case": "initial-265-45",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "c55f8da9a1199101e219a46886cd08e284b0264970c1479a8116800687a66659",
+        "mean_error_mm": 0.4760633070648609,
+        "max_error_mm": 0.5338220666823466,
+        "correct_squares": 64
+      },
+      {
+        "case": "initial-265-55",
+        "orientation": "unknown",
+        "detected": false,
+        "image_sha256": "1f6e0431d74c7f57cb7bed216aa610fa7e74395c2d62500fdb0a075e17a5ced9"
+      },
+      {
+        "case": "initial-270-35",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "b1f2d49b27a1524fce3da97f6ea09d164209363b97531b7d2b183508f500620e",
+        "mean_error_mm": 0.6476582377715783,
+        "max_error_mm": 0.7482192400732403,
+        "correct_squares": 64
+      },
+      {
+        "case": "initial-270-45",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "a24849745709f98c874de0af4078fd53cdb60a6e8e71dc8b2561fdcb4b945b4f",
+        "mean_error_mm": 0.5355395774316394,
+        "max_error_mm": 0.5976720049802947,
+        "correct_squares": 64
+      },
+      {
+        "case": "initial-270-55",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "ba9a70790498fadd9f3a4296296446b3c5842296400cc26e38851530fa1f9671",
+        "mean_error_mm": 0.43124657367344876,
+        "max_error_mm": 0.4407473099425116,
+        "correct_squares": 64
+      },
+      {
+        "case": "initial-275-35",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "ae41efcff18ec59c1dba4dcddf22c4d88302006dbd8d61b0c155cb790c0b5f41",
+        "mean_error_mm": 0.6354961543347616,
+        "max_error_mm": 0.706657019179459,
+        "correct_squares": 64
+      },
+      {
+        "case": "initial-275-45",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "d1174705f50eab30a511f06aed500597d57c561ed8d31a22b7bca9ede2b5f9f0",
+        "mean_error_mm": 0.5354397720924718,
+        "max_error_mm": 0.5758442557369364,
+        "correct_squares": 64
+      },
+      {
+        "case": "initial-275-55",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "529c8d260c9cc8c3b163beff4c358d00211e6a145bc7a7b170a48b33d02bc786",
+        "mean_error_mm": 0.4706178571249968,
+        "max_error_mm": 0.5038399209105621,
+        "correct_squares": 64
+      },
+      {
+        "case": "empty-265-35",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "692e8fbe078016ada9ab42d3a8d80897342a38538ff48df5c8716c81d7c2f694",
+        "mean_error_mm": 0.6381220882739023,
+        "max_error_mm": 0.7404018363957534,
+        "correct_squares": 64
+      },
+      {
+        "case": "empty-265-45",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "721778afb6627f9b5b00595ec56de07dc89b0d16591b740d3b57b49f6579df5b",
+        "mean_error_mm": 0.4760633070648609,
+        "max_error_mm": 0.5338220666823466,
+        "correct_squares": 64
+      },
+      {
+        "case": "empty-265-55",
+        "orientation": "unknown",
+        "detected": false,
+        "image_sha256": "fe2404e091adfc7a625cdd223816dde088014b5214d2065042243699d41605c3"
+      },
+      {
+        "case": "empty-270-35",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "97fcf274d30d744deeb4f6b48be6440dd9af44ff62d2af6d27d18e8c995e2c82",
+        "mean_error_mm": 0.6476582377715783,
+        "max_error_mm": 0.7482192400732403,
+        "correct_squares": 64
+      },
+      {
+        "case": "empty-270-45",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "85e8b746740c49bcf790702f3b64b870e95ba85220553dd22ecb17701a53f445",
+        "mean_error_mm": 0.5355395774316394,
+        "max_error_mm": 0.5976720049802947,
+        "correct_squares": 64
+      },
+      {
+        "case": "empty-270-55",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "9fd08feb6d96cab4cca0f071c0d31a5521cb15ab2ef73bfe54bc9e672cabbcde",
+        "mean_error_mm": 0.43124657367344876,
+        "max_error_mm": 0.4407473099425116,
+        "correct_squares": 64
+      },
+      {
+        "case": "empty-275-35",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "16cfb42beb3b6d0e201a970f9983bdd04feff5aa63aa1a06a8d23b8efa21c506",
+        "mean_error_mm": 0.6354961543347616,
+        "max_error_mm": 0.706657019179459,
+        "correct_squares": 64
+      },
+      {
+        "case": "empty-275-45",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "59ee130e1404a9859f23d478e9f1b862dbc80c93f442cb1de0139e0b63009b75",
+        "mean_error_mm": 0.5354397720924718,
+        "max_error_mm": 0.5758442557369364,
+        "correct_squares": 64
+      },
+      {
+        "case": "empty-275-55",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "3574fea724122f5f6f46aa596dc91112b0de180c3965f71c197e58a2212325ef",
+        "mean_error_mm": 0.4706178571249968,
+        "max_error_mm": 0.5038399209105621,
+        "correct_squares": 64
+      },
+      {
+        "case": "offset-265-35",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "e10f5c013e345792fc17fbe58f60307f88ce03c2d74f2d5658aa229457bf1e32",
+        "mean_error_mm": 0.6381220882739023,
+        "max_error_mm": 0.7404018363957534,
+        "correct_squares": 64
+      },
+      {
+        "case": "offset-265-45",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "d2d59218524647a8ef90f9d1d6dda1f29c06e8a9a626468796304aaeda26579b",
+        "mean_error_mm": 0.4760633070648609,
+        "max_error_mm": 0.5338220666823466,
+        "correct_squares": 64
+      },
+      {
+        "case": "offset-265-55",
+        "orientation": "unknown",
+        "detected": false,
+        "image_sha256": "132d22fb45023509321be37262222420f9287ec0b31c47fb9adc7b3e627a85e0"
+      },
+      {
+        "case": "offset-270-35",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "b1d7a73dbb2308e9b222073746c3c3cb9a22dafe4d050a56fd648386e9f7151f",
+        "mean_error_mm": 0.6476582377715783,
+        "max_error_mm": 0.7482192400732403,
+        "correct_squares": 64
+      },
+      {
+        "case": "offset-270-45",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "e9f35c8e96b70e1a50b873b8f1ca346f4b2359a695ceb3934c1e6dad0ff56086",
+        "mean_error_mm": 0.5355395774316394,
+        "max_error_mm": 0.5976720049802947,
+        "correct_squares": 64
+      },
+      {
+        "case": "offset-270-55",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "14831dfbfa20e191fbf2d86d24ecdd568d140d1d93b1a3822e884db169a0fa38",
+        "mean_error_mm": 0.43124657367344876,
+        "max_error_mm": 0.4407473099425116,
+        "correct_squares": 64
+      },
+      {
+        "case": "offset-275-35",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "04b0228ae7b002b18d91a9213dbbb9d7b4266a3721587f50dff0cce949ed6201",
+        "mean_error_mm": 0.6354961543347616,
+        "max_error_mm": 0.706657019179459,
+        "correct_squares": 64
+      },
+      {
+        "case": "offset-275-45",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "5ceda76ad94806010f453b75103ae738407664fafbedf05d47f74f49fd4da4b7",
+        "mean_error_mm": 0.5354397720924718,
+        "max_error_mm": 0.5758442557369364,
+        "correct_squares": 64
+      },
+      {
+        "case": "offset-275-55",
+        "orientation": "a8_top_left_from_reference",
+        "detected": true,
+        "image_sha256": "f36b6846bf3b9e1d95d720cbec383a8a1dbdc4cf59f53836f1b16543aa243723",
+        "mean_error_mm": 0.4706178571249968,
+        "max_error_mm": 0.5038399209105621,
+        "correct_squares": 64
+      }
+    ]
+  },
+  "frames": [
+    {
+      "id": "initial-265-35",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-265-35.png",
+        "sha256": "f3a1427726d5ae3ea6b72f91098914955d0d735ec8ba154d9236f05b8aad2855"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-initial-265-35.json",
+        "sha256": "d4704f00f4bbbf0afbb1a8ba582a25ebe091caa93dccabb756f8db1742387003"
+      }
+    },
+    {
+      "id": "initial-265-45",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-265-45.png",
+        "sha256": "c55f8da9a1199101e219a46886cd08e284b0264970c1479a8116800687a66659"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-initial-265-45.json",
+        "sha256": "4b201ff60dcb3d2cd6ada986bd20bf0dacdbbf77e49779a535d74172e24906cd"
+      }
+    },
+    {
+      "id": "initial-265-55",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-265-55.png",
+        "sha256": "1f6e0431d74c7f57cb7bed216aa610fa7e74395c2d62500fdb0a075e17a5ced9"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-initial-265-55.json",
+        "sha256": "47cc16a39e21f34b9184447e3cb52b40bec996380bd7b77fc9312f4ac9174258"
+      }
+    },
+    {
+      "id": "initial-270-35",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-270-35.png",
+        "sha256": "b1f2d49b27a1524fce3da97f6ea09d164209363b97531b7d2b183508f500620e"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-initial-270-35.json",
+        "sha256": "983031416657e3f773611381a4c7028bfee473498a0852108f43ff740675f121"
+      }
+    },
+    {
+      "id": "initial-270-45",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-270-45.png",
+        "sha256": "a24849745709f98c874de0af4078fd53cdb60a6e8e71dc8b2561fdcb4b945b4f"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-initial-270-45.json",
+        "sha256": "8dd36024ebf1e4fb19a8056a581f2788206fb914688bf5c1caa0722ffb0d5703"
+      }
+    },
+    {
+      "id": "initial-270-55",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-270-55.png",
+        "sha256": "ba9a70790498fadd9f3a4296296446b3c5842296400cc26e38851530fa1f9671"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-initial-270-55.json",
+        "sha256": "ec3f0e5d0b8b7a522f427f7891af08217ca9965304aeab80b4f57564cb1798b2"
+      }
+    },
+    {
+      "id": "initial-275-35",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-275-35.png",
+        "sha256": "ae41efcff18ec59c1dba4dcddf22c4d88302006dbd8d61b0c155cb790c0b5f41"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-initial-275-35.json",
+        "sha256": "33454a1b79b98e6ce62a6c411f791418dfd5e56432b2cc46b58916dece1182aa"
+      }
+    },
+    {
+      "id": "initial-275-45",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-275-45.png",
+        "sha256": "d1174705f50eab30a511f06aed500597d57c561ed8d31a22b7bca9ede2b5f9f0"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-initial-275-45.json",
+        "sha256": "9b6fe0b0afd43ba8071b20464cc69e89dd0a9940b70a38ad58d0cd9b85f29eb9"
+      }
+    },
+    {
+      "id": "initial-275-55",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\initial-275-55.png",
+        "sha256": "529c8d260c9cc8c3b163beff4c358d00211e6a145bc7a7b170a48b33d02bc786"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-initial-275-55.json",
+        "sha256": "8bc968f7cb9e10d3e7610310cd20018ee78c6a843eb5ff792af384b80d6ea7a3"
+      }
+    },
+    {
+      "id": "empty-265-35",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-265-35.png",
+        "sha256": "692e8fbe078016ada9ab42d3a8d80897342a38538ff48df5c8716c81d7c2f694"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-empty-265-35.json",
+        "sha256": "9983d59027dcea7406646fd8d3b6e04fafb21bb5c001116e9d78a3a53f23e194"
+      }
+    },
+    {
+      "id": "empty-265-45",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-265-45.png",
+        "sha256": "721778afb6627f9b5b00595ec56de07dc89b0d16591b740d3b57b49f6579df5b"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-empty-265-45.json",
+        "sha256": "e92be08494123ce43613b63fe393b5ccbced58d930f84420a678b2450678d890"
+      }
+    },
+    {
+      "id": "empty-265-55",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-265-55.png",
+        "sha256": "fe2404e091adfc7a625cdd223816dde088014b5214d2065042243699d41605c3"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-empty-265-55.json",
+        "sha256": "6b04aef55e82c4b7e6c56d65a318b91a8c8c3bc77aaec8685d3de5133310bea2"
+      }
+    },
+    {
+      "id": "empty-270-35",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-270-35.png",
+        "sha256": "97fcf274d30d744deeb4f6b48be6440dd9af44ff62d2af6d27d18e8c995e2c82"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-empty-270-35.json",
+        "sha256": "aa22dc31644de96a224e5d7ee400e710bc5f846a1c78815762bf44a3757cadda"
+      }
+    },
+    {
+      "id": "empty-270-45",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-270-45.png",
+        "sha256": "85e8b746740c49bcf790702f3b64b870e95ba85220553dd22ecb17701a53f445"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-empty-270-45.json",
+        "sha256": "b7a61e9ade89dd385acdf9537c427e67269bc07e023329ce2c5b25428392bfa9"
+      }
+    },
+    {
+      "id": "empty-270-55",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-270-55.png",
+        "sha256": "9fd08feb6d96cab4cca0f071c0d31a5521cb15ab2ef73bfe54bc9e672cabbcde"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-empty-270-55.json",
+        "sha256": "05a3189b98550e58c57cbd8d6249c5f89c86a6818f33fff9844a49f783c11c47"
+      }
+    },
+    {
+      "id": "empty-275-35",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-275-35.png",
+        "sha256": "16cfb42beb3b6d0e201a970f9983bdd04feff5aa63aa1a06a8d23b8efa21c506"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-empty-275-35.json",
+        "sha256": "a289ce82f02e71013d6b7620db0e98a9a59f3456660e84e14facf2158e2cc85d"
+      }
+    },
+    {
+      "id": "empty-275-45",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-275-45.png",
+        "sha256": "59ee130e1404a9859f23d478e9f1b862dbc80c93f442cb1de0139e0b63009b75"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-empty-275-45.json",
+        "sha256": "4dc9e60238c266584f0f7884e1ef766b829e502c9e0692e5981b7e3c230cf608"
+      }
+    },
+    {
+      "id": "empty-275-55",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\empty-275-55.png",
+        "sha256": "3574fea724122f5f6f46aa596dc91112b0de180c3965f71c197e58a2212325ef"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-empty-275-55.json",
+        "sha256": "0f0585c5c3cb1b259dbc97e5382bff961d1caa4075fc7a01b5ef01fea0dd5620"
+      }
+    },
+    {
+      "id": "offset-265-35",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-265-35.png",
+        "sha256": "e10f5c013e345792fc17fbe58f60307f88ce03c2d74f2d5658aa229457bf1e32"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-offset-265-35.json",
+        "sha256": "d973c531680dfa01731b81009d5be390a10ccb12ac7554b763974a1e405e651a"
+      }
+    },
+    {
+      "id": "offset-265-45",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-265-45.png",
+        "sha256": "d2d59218524647a8ef90f9d1d6dda1f29c06e8a9a626468796304aaeda26579b"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-offset-265-45.json",
+        "sha256": "5b63ae99848f2536663febfbe4f4ce2144a8c514973dc2b8d6ab9e7bb1cc77d6"
+      }
+    },
+    {
+      "id": "offset-265-55",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-265-55.png",
+        "sha256": "132d22fb45023509321be37262222420f9287ec0b31c47fb9adc7b3e627a85e0"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-offset-265-55.json",
+        "sha256": "f4169cde2a4d949aaf354cabdb7fbad71cc2f8ca709154582befcda93b6fddf7"
+      }
+    },
+    {
+      "id": "offset-270-35",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-270-35.png",
+        "sha256": "b1d7a73dbb2308e9b222073746c3c3cb9a22dafe4d050a56fd648386e9f7151f"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-offset-270-35.json",
+        "sha256": "f542180bc35821cbca7cb0739d7c0163308efafe958c4e2efe730ff92219d68b"
+      }
+    },
+    {
+      "id": "offset-270-45",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-270-45.png",
+        "sha256": "e9f35c8e96b70e1a50b873b8f1ca346f4b2359a695ceb3934c1e6dad0ff56086"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-offset-270-45.json",
+        "sha256": "de1dfed1941369da64dc874035beb7980c49f23be1c464b379f3e44303659d3f"
+      }
+    },
+    {
+      "id": "offset-270-55",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-270-55.png",
+        "sha256": "14831dfbfa20e191fbf2d86d24ecdd568d140d1d93b1a3822e884db169a0fa38"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-offset-270-55.json",
+        "sha256": "da49925f14434543f9cb2d8e832c54d1760525eeeb3580a6c5896da45e10e36c"
+      }
+    },
+    {
+      "id": "offset-275-35",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-275-35.png",
+        "sha256": "04b0228ae7b002b18d91a9213dbbb9d7b4266a3721587f50dff0cce949ed6201"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-offset-275-35.json",
+        "sha256": "988eacffcba49ae5c9913d61f58d18b7c8053c13151c0459b3734712b8202be4"
+      }
+    },
+    {
+      "id": "offset-275-45",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-275-45.png",
+        "sha256": "5ceda76ad94806010f453b75103ae738407664fafbedf05d47f74f49fd4da4b7"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-offset-275-45.json",
+        "sha256": "2c7406ad20796fcca5a2d2d1392ecec92978f902a02014ebc7305570247f07ae"
+      }
+    },
+    {
+      "id": "offset-275-55",
+      "image": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\offset-275-55.png",
+        "sha256": "f36b6846bf3b9e1d95d720cbec383a8a1dbdc4cf59f53836f1b16543aa243723"
+      },
+      "evaluator": {
+        "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\evaluator-only-offset-275-55.json",
+        "sha256": "699f6fd52ab397e0c20e5638e91a12f39af9aad51b13521e3a6fbdfbc80a79a5"
+      }
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\bishop_visual_lod.obj",
+      "sha256": "5290c994933b0df5749230ebbf61276fb90496b7b1b2aafb740cac3abdef1da9"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\gripper_back.stl",
+      "sha256": "4f582b4950315ab9c77b12fc23022a9b3ba59bc6f7f6c9bb2d3a3c31738bf7a4"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\gripper_hand1.stl",
+      "sha256": "e60d1aeb67c59edb023a3bfcedad1afb7288a2022c884b918956137159063b5a"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\gripper_hand2.stl",
+      "sha256": "ff9404c16c6e9fdd919a28ffbf61835c8aab4618bab61e461aac5b3a5fa0edc9"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\king_visual_lod.obj",
+      "sha256": "45359667806ef172b558c70dc23e1b0bb6eac7e46bfdfeff418e7adfb0af5349"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\knight_visual_lod.obj",
+      "sha256": "469333354e29639584840aaf6ac077a33fcf199d2de21ab89dfdf59290921f01"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\manifest.json",
+      "sha256": "8f5b9c1ed194b7827b4ccd40fff1d70a1b33076ad27a38308814f98bc6bd9939"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\mesh_0.stl",
+      "sha256": "8c2ee6b9b9d26f0750106270a6ef3f7ce6ad18726cab4a9f6b64287377f199d2"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\mesh_1.stl",
+      "sha256": "f6fab8b6ca0b782020fdc266d1ea30b21e40ba1ff6a255e159e33dfc72e69728"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\mesh_2.stl",
+      "sha256": "5fa613e90968f957d2eae04a3644d65353e9941a90754c4c972949f7166cbd11"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\mesh_3.stl",
+      "sha256": "a9e87a8a7004474e7d09adcd1cdb30056f2cbb0627850fe8f8d36009dad3056d"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\model.xml",
+      "sha256": "2b439e465a9f048ed49df4d681a965650a5a1347f728c2b04cba9c4a935b6b59"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\pawn_visual_lod.obj",
+      "sha256": "fde2c9b4b5e9237b86013fc01ac7ca11041330188de122f5b42f063e4e418b07"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\queen_visual_lod.obj",
+      "sha256": "c3b825b8eda82f25636409adc8c9b59d8af9ae64eb151b4a0f4bf24d1ecced1d"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\playground-fingertip-only-v1\\rook_visual_lod.obj",
+      "sha256": "ac4ab980cad4d4eeaa4f2e5154fedcde47b6ab11bf8305b68866f144e46e8931"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p036\\p034-repeat\\report.json",
+      "sha256": "d058cc7dc0bed7df7fe45659fc54636b993e0e776012315ba56c851ea50e9e07"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_saved_perception.py",
+      "sha256": "225bf60a285dd31e04ff08a8c10023f0b8f7cbc8fd75180ac0700408fcd02b5b"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\validate_native_perception.py",
+      "sha256": "37c151fbafd073591b68cfb1b2a7a4e1afdea3802a370235a39b6116762605be"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\validate_board_reference.py",
+      "sha256": "8edc53c33d8e8fe68d80e234eed6198d5d72ae60fc07679fc03de2be128f1e39"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\acvision.dll",
+      "sha256": "83b424f785046ad21a1e2a59ff133992242663e5e42679e4c061c2309319b157"
+    },
+    {
+      "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\opencv_world4120.dll",
+      "sha256": "0455560c75bc456b5f758c94af653b6f0397ed8a28b9605cf52c62e7c8f18781"
+    }
+  ],
+  "executable": {
+    "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p032-contract\\bin\\Release\\perception_image.exe",
+    "sha256": "f035ad0995190fdd9c8afa730c4f817dba440da9217fd9af34387a97894736b7"
+  },
+  "layout": {
+    "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\docs\\camera-rl\\aruco-assets-v4\\layout.json",
+    "sha256": "f43edd499846a4db6c1f815b19812fb94f1895a65dedae6979ed8ce1a9051274"
+  },
+  "methods": [
+    "checker",
+    "aruco"
+  ],
+  "evaluation": "same D4 oracle-aligned geometry; named orientation separately",
+  "latency_scope": "one subprocess including startup, decode, processing and export",
+  "repetitions": 1,
+  "independence": "static deterministic fixtures; no statistical trials"
+}

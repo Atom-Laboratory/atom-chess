@@ -1,0 +1,276 @@
+{
+  "schema": 1,
+  "native_source_sha256": "7123cd893d8233c81f7c2c2e9b9d9eef94a2de129bdbfe6fca9a2b79dd9481ec",
+  "library_sha256": "c5bd9eb98d5e2b4a348cfa6a1c046a15db62c0ab795b82a417c57b7dc511fd93",
+  "scene_sha256": "d2fd9726a7d8f5a17c76a6bb4f013c9507839abf617998b86e38ef6e940788f0",
+  "layout_sha256": "008f7958239b7d5c582ebe5893264f448fb7191a87df9af31d4e467b2d7ff2f5",
+  "observation_pose": [
+    -1.5,
+    0.12,
+    -1.5,
+    0.0,
+    0.0
+  ],
+  "source": "e2",
+  "target": "e4",
+  "camera": {
+    "lookat": [
+      0.245,
+      0.0,
+      0.012
+    ],
+    "distance": 1.05,
+    "azimuth": 270,
+    "elevation": -75
+  },
+  "actor_features": [
+    "image",
+    "task",
+    "previous_action",
+    "commanded_joints",
+    "phase"
+  ],
+  "training_ready": false,
+  "records": [
+    {
+      "sequence": 1,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 37.48189999896567,
+      "error": null
+    },
+    {
+      "sequence": 2,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 30.69810000306461,
+      "error": null
+    },
+    {
+      "sequence": 3,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 28.304500003287103,
+      "error": null
+    },
+    {
+      "sequence": 4,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 33.46379999857163,
+      "error": null
+    },
+    {
+      "sequence": 5,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 34.90310000051977,
+      "error": null
+    },
+    {
+      "sequence": 6,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 33.61300000688061,
+      "error": null
+    },
+    {
+      "sequence": 7,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 32.15459999773884,
+      "error": null
+    },
+    {
+      "sequence": 8,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 36.07210000336636,
+      "error": null
+    },
+    {
+      "sequence": 9,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 34.311800001887605,
+      "error": null
+    },
+    {
+      "sequence": 10,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 33.22140000091167,
+      "error": null
+    },
+    {
+      "sequence": 11,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 42.56850000092527,
+      "error": null
+    },
+    {
+      "sequence": 12,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 33.65990000020247,
+      "error": null
+    },
+    {
+      "sequence": 13,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 31.749199995829258,
+      "error": null
+    },
+    {
+      "sequence": 14,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 29.47390000190353,
+      "error": null
+    },
+    {
+      "sequence": 15,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 31.72920000361046,
+      "error": null
+    },
+    {
+      "sequence": 16,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 28.66840000206139,
+      "error": null
+    },
+    {
+      "sequence": 17,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 28.078800001821946,
+      "error": null
+    },
+    {
+      "sequence": 18,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 29.308299999684095,
+      "error": null
+    },
+    {
+      "sequence": 19,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 27.96890000172425,
+      "error": null
+    },
+    {
+      "sequence": 20,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 29.441399994539097,
+      "error": null
+    },
+    {
+      "sequence": 21,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 30.235100006393623,
+      "error": null
+    },
+    {
+      "sequence": 22,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 30.617699994763825,
+      "error": null
+    },
+    {
+      "sequence": 23,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 33.736099998350255,
+      "error": null
+    },
+    {
+      "sequence": 24,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 33.632099999522325,
+      "error": null
+    },
+    {
+      "sequence": 25,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 44.171100002131425,
+      "error": null
+    },
+    {
+      "sequence": 26,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 36.29519999958575,
+      "error": null
+    },
+    {
+      "sequence": 27,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 36.162600001262035,
+      "error": null
+    },
+    {
+      "sequence": 28,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 35.22759999759728,
+      "error": null
+    },
+    {
+      "sequence": 29,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 35.04139999859035,
+      "error": null
+    },
+    {
+      "sequence": 30,
+      "geometry": true,
+      "oriented": true,
+      "policy_input_available": true,
+      "processing_ms": 38.47920000407612,
+      "error": null
+    }
+  ]
+}
