@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "assembly": {
+    "id": "atom_robot_current",
+    "status": "unverified",
+    "description": "Current physical ATOM robot assembly record. No component installation has yet been evidenced.",
+    "installed_components": [],
+    "available_not_installed": [
+      "stepper_motor_01",
+      "stepper_motor_02",
+      "stepper_motor_03",
+      "stepper_motor_04",
+      "stepper_motor_05",
+      "servo_motor_01",
+      "drv8825_driver_lot_01",
+      "power_supply_01",
+      "esp32_s3_board_01",
+      "esp32_s3_board_02",
+      "esp32_cam_board_01",
+      "electrolytic_capacitor_lot_01"
+    ],
+    "subsystems": [
+      {"id": "motion_control", "controller_component_id": null, "evidence": [], "notes": "ESP32-S3 responsibility is architectural; no physical board assignment is confirmed."},
+      {"id": "image_acquisition", "controller_component_id": null, "evidence": [], "notes": "ESP32-CAM responsibility is architectural; no physical board installation is confirmed."}
+    ],
+    "simulation": {
+      "source": "simulation/mujoco",
+      "bundle_manifest": "simulation/mujoco/assets/bundles/<bundle>/manifest.json",
+      "calibration_status": "uncalibrated",
+      "joint_mappings": [
+        {"simulation_joint": "joint_base_to_link1", "physical_motor_id": null, "driver_id": null, "controller_id": null, "physical_location": null, "connection_reference": null, "mapping_status": "unresolved", "evidence": []},
+        {"simulation_joint": "joint_z_axis_arm1", "physical_motor_id": null, "driver_id": null, "controller_id": null, "physical_location": null, "connection_reference": null, "mapping_status": "unresolved", "evidence": []},
+        {"simulation_joint": "joint_arm1_link_arm2_link", "physical_motor_id": null, "driver_id": null, "controller_id": null, "physical_location": null, "connection_reference": null, "mapping_status": "unresolved", "evidence": []},
+        {"simulation_joint": "wrist_joint", "physical_motor_id": null, "driver_id": null, "controller_id": null, "physical_location": null, "connection_reference": null, "mapping_status": "unresolved", "evidence": []},
+        {"simulation_joint": "finger_1", "physical_motor_id": null, "driver_id": null, "controller_id": null, "physical_location": null, "connection_reference": null, "mapping_status": "unresolved", "evidence": []},
+        {"simulation_joint": "finger_2", "physical_motor_id": null, "driver_id": null, "controller_id": null, "physical_location": null, "connection_reference": null, "mapping_status": "unresolved", "evidence": []}
+      ],
+      "notes": "Joint names reflect the interactive MuJoCo bundle generator. The wrist is present only in wrist-enabled bundles. Inspect the selected bundle manifest before using this list. Finger joints are simulated coupled slides and must not be interpreted as two physical motors."
+    }
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "components": [
+    {
+      "id": "stepper_motor_01",
+      "category": "stepper_motor",
+      "status": "owned",
+      "identification": {"status": "incomplete"},
+      "manufacturer": null,
+      "model": null,
+      "quantity": 1,
+      "specifications": {
+        "frame_size": {"value": null, "unit": null, "confidence": "unknown", "source": null},
+        "rated_current_per_phase": {"value": null, "unit": "A", "confidence": "unknown", "source": null},
+        "holding_torque": {"value": null, "unit": "N.m", "confidence": "unknown", "source": null},
+        "steps_per_revolution": {"value": null, "unit": "steps/rev", "confidence": "unknown", "source": null},
+        "winding_resistance": {"value": null, "unit": "ohm", "confidence": "unknown", "source": null}
+      },
+      "datasheet": null,
+      "evidence": [],
+      "notes": "One of five available stepper motors. Label, dimensions, wiring, and ratings have not been recorded."
+    },
+    {
+      "id": "stepper_motor_02",
+      "category": "stepper_motor",
+      "status": "owned",
+      "identification": {"status": "incomplete"},
+      "manufacturer": null,
+      "model": null,
+      "quantity": 1,
+      "specifications": {
+        "frame_size": {"value": null, "unit": null, "confidence": "unknown", "source": null},
+        "rated_current_per_phase": {"value": null, "unit": "A", "confidence": "unknown", "source": null},
+        "holding_torque": {"value": null, "unit": "N.m", "confidence": "unknown", "source": null},
+        "steps_per_revolution": {"value": null, "unit": "steps/rev", "confidence": "unknown", "source": null},
+        "winding_resistance": {"value": null, "unit": "ohm", "confidence": "unknown", "source": null}
+      },
+      "datasheet": null,
+      "evidence": [],
+      "notes": "One of five available stepper motors. Not assumed to be identical to the other motors."
+    },
+    {
+      "id": "stepper_motor_03",
+      "category": "stepper_motor",
+      "status": "owned",
+      "identification": {"status": "incomplete"},
+      "manufacturer": null,
+      "model": null,
+      "quantity": 1,
+      "specifications": {
+        "frame_size": {"value": null, "unit": null, "confidence": "unknown", "source": null},
+        "rated_current_per_phase": {"value": null, "unit": "A", "confidence": "unknown", "source": null},
+        "holding_torque": {"value": null, "unit": "N.m", "confidence": "unknown", "source": null},
+        "steps_per_revolution": {"value": null, "unit": "steps/rev", "confidence": "unknown", "source": null},
+        "winding_resistance": {"value": null, "unit": "ohm", "confidence": "unknown", "source": null}
+      },
+      "datasheet": null,
+      "evidence": [],
+      "notes": "One of five available stepper motors. Not assigned to a robot axis."
+    },
+    {
+      "id": "stepper_motor_04",
+      "category": "stepper_motor",
+      "status": "owned",
+      "identification": {"status": "incomplete"},
+      "manufacturer": null,
+      "model": null,
+      "quantity": 1,
+      "specifications": {
+        "frame_size": {"value": null, "unit": null, "confidence": "unknown", "source": null},
+        "rated_current_per_phase": {"value": null, "unit": "A", "confidence": "unknown", "source": null},
+        "holding_torque": {"value": null, "unit": "N.m", "confidence": "unknown", "source": null},
+        "steps_per_revolution": {"value": null, "unit": "steps/rev", "confidence": "unknown", "source": null},
+        "winding_resistance": {"value": null, "unit": "ohm", "confidence": "unknown", "source": null}
+      },
+      "datasheet": null,
+      "evidence": [],
+      "notes": "One of five available stepper motors. Not assigned to a robot axis."
+    },
+    {
+      "id": "stepper_motor_05",
+      "category": "stepper_motor",
+      "status": "owned",
+      "identification": {"status": "incomplete"},
+      "manufacturer": null,
+      "model": null,
+      "quantity": 1,
+      "specifications": {
+        "frame_size": {"value": null, "unit": null, "confidence": "unknown", "source": null},
+        "rated_current_per_phase": {"value": null, "unit": "A", "confidence": "unknown", "source": null},
+        "holding_torque": {"value": null, "unit": "N.m", "confidence": "unknown", "source": null},
+        "steps_per_revolution": {"value": null, "unit": "steps/rev", "confidence": "unknown", "source": null},
+        "winding_resistance": {"value": null, "unit": "ohm", "confidence": "unknown", "source": null}
+      },
+      "datasheet": null,
+      "evidence": [],
+      "notes": "One of five available stepper motors. Not assigned to a robot axis."
+    },
+    {
+      "id": "servo_motor_01",
+      "category": "servo_motor",
+      "status": "owned",
+      "identification": {"status": "incomplete"},
+      "manufacturer": null,
+      "model": null,
+      "quantity": 1,
+      "specifications": {
+        "rated_voltage": {"value": null, "unit": "V", "confidence": "unknown", "source": null},
+        "stall_torque": {"value": null, "unit": "N.m", "confidence": "unknown", "source": null},
+        "control_signal": {"value": null, "unit": null, "confidence": "unknown", "source": null}
+      },
+      "datasheet": null,
+      "evidence": [],
+      "notes": "Available servo motor; no model or physical role has been confirmed."
+    },
+    {
+      "id": "drv8825_driver_lot_01",
+      "category": "stepper_driver",
+      "status": "owned",
+      "identification": {"status": "unverified"},
+      "manufacturer": null,
+      "model": "DRV8825-compatible carrier",
+      "quantity": null,
+      "specifications": {
+        "integrated_circuit": {"value": "DRV8825 reported", "unit": null, "confidence": "reported", "source": "Phase 1 preliminary inventory supplied by project owner"},
+        "sense_resistor": {"value": null, "unit": "ohm", "confidence": "unknown", "source": null},
+        "current_limit": {"value": null, "unit": "A", "confidence": "unknown", "source": null},
+        "board_variant": {"value": null, "unit": null, "confidence": "unknown", "source": null}
+      },
+      "datasheet": null,
+      "evidence": [],
+      "notes": "Quantity and board variants are unknown. Do not assume identical sense resistors or current-limit calibration."
+    },
+    {
+      "id": "power_supply_01",
+      "category": "power_supply",
+      "status": "owned",
+      "identification": {"status": "unverified"},
+      "manufacturer": null,
+      "model": null,
+      "quantity": 1,
+      "specifications": {
+        "output_voltage": {"value": 12, "unit": "V DC", "confidence": "reported", "source": "Phase 1 preliminary inventory supplied by project owner"},
+        "maximum_output_current": {"value": 10, "unit": "A", "confidence": "reported", "source": "Phase 1 preliminary inventory supplied by project owner"},
+        "input_voltage": {"value": null, "unit": "V AC", "confidence": "unknown", "source": null},
+        "protection_features": {"value": null, "unit": null, "confidence": "unknown", "source": null}
+      },
+      "datasheet": null,
+      "evidence": [],
+      "notes": "Reported 12 V / 10 A. Suitability for the robot has not been evaluated."
+    },
+    {
+      "id": "esp32_s3_board_01",
+      "category": "controller_board",
+      "status": "owned",
+      "identification": {"status": "incomplete"},
+      "manufacturer": null,
+      "model": null,
+      "quantity": 1,
+      "specifications": {
+        "microcontroller_family": {"value": "ESP32-S3", "unit": null, "confidence": "reported", "source": "Phase 1 preliminary inventory supplied by project owner"},
+        "board_variant": {"value": null, "unit": null, "confidence": "unknown", "source": null},
+        "pinout_revision": {"value": null, "unit": null, "confidence": "unknown", "source": null}
+      },
+      "datasheet": null,
+      "evidence": [],
+      "notes": "Not assumed to have the same board layout or pinout as esp32_s3_board_02."
+    },
+    {
+      "id": "esp32_s3_board_02",
+      "category": "controller_board",
+      "status": "owned",
+      "identification": {"status": "incomplete"},
+      "manufacturer": null,
+      "model": null,
+      "quantity": 1,
+      "specifications": {
+        "microcontroller_family": {"value": "ESP32-S3", "unit": null, "confidence": "reported", "source": "Phase 1 preliminary inventory supplied by project owner"},
+        "board_variant": {"value": null, "unit": null, "confidence": "unknown", "source": null},
+        "pinout_revision": {"value": null, "unit": null, "confidence": "unknown", "source": null}
+      },
+      "datasheet": null,
+      "evidence": [],
+      "notes": "Not assumed to have the same board layout or pinout as esp32_s3_board_01."
+    },
+    {
+      "id": "esp32_cam_board_01",
+      "category": "camera_board",
+      "status": "owned",
+      "identification": {"status": "incomplete"},
+      "manufacturer": null,
+      "model": null,
+      "quantity": 1,
+      "specifications": {
+        "product_family": {"value": "ESP32-CAM", "unit": null, "confidence": "reported", "source": "Phase 1 preliminary inventory supplied by project owner"},
+        "board_variant": {"value": null, "unit": null, "confidence": "unknown", "source": null},
+        "camera_sensor": {"value": null, "unit": null, "confidence": "unknown", "source": null}
+      },
+      "datasheet": null,
+      "evidence": [],
+      "notes": "Exact board and camera-sensor variants are unknown."
+    },
+    {
+      "id": "electrolytic_capacitor_lot_01",
+      "category": "passive_component",
+      "status": "owned",
+      "identification": {"status": "unverified"},
+      "manufacturer": null,
+      "model": null,
+      "quantity": null,
+      "specifications": {
+        "capacitance": {"value": 100, "unit": "uF", "confidence": "reported", "source": "Phase 1 preliminary inventory supplied by project owner"},
+        "voltage_rating": {"value": null, "unit": "V", "confidence": "unknown", "source": null},
+        "polarity": {"value": "polarized", "unit": null, "confidence": "reported", "source": "Component described as electrolytic in preliminary inventory"},
+        "temperature_rating": {"value": null, "unit": "degC", "confidence": "unknown", "source": null}
+      },
+      "datasheet": null,
+      "evidence": [],
+      "notes": "Reported 100 uF. Quantity and voltage ratings must be read from each component before use."
+    }
+  ]
+}

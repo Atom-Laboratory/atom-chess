@@ -1,0 +1,69 @@
+ATOM Hardware Workspace validation
+Result: PASSED WITH WARNINGS
+Errors: 0  Warnings: 63  Info: 2
+
+[WARNING] components[0]: manufacturer or model is not identified
+[WARNING] components[0].specifications.frame_size: technical value is unknown
+[WARNING] components[0].specifications.rated_current_per_phase: technical value is unknown
+[WARNING] components[0].specifications.holding_torque: technical value is unknown
+[WARNING] components[0].specifications.steps_per_revolution: technical value is unknown
+[WARNING] components[0].specifications.winding_resistance: technical value is unknown
+[WARNING] components[1]: manufacturer or model is not identified
+[WARNING] components[1].specifications.frame_size: technical value is unknown
+[WARNING] components[1].specifications.rated_current_per_phase: technical value is unknown
+[WARNING] components[1].specifications.holding_torque: technical value is unknown
+[WARNING] components[1].specifications.steps_per_revolution: technical value is unknown
+[WARNING] components[1].specifications.winding_resistance: technical value is unknown
+[WARNING] components[2]: manufacturer or model is not identified
+[WARNING] components[2].specifications.frame_size: technical value is unknown
+[WARNING] components[2].specifications.rated_current_per_phase: technical value is unknown
+[WARNING] components[2].specifications.holding_torque: technical value is unknown
+[WARNING] components[2].specifications.steps_per_revolution: technical value is unknown
+[WARNING] components[2].specifications.winding_resistance: technical value is unknown
+[WARNING] components[3]: manufacturer or model is not identified
+[WARNING] components[3].specifications.frame_size: technical value is unknown
+[WARNING] components[3].specifications.rated_current_per_phase: technical value is unknown
+[WARNING] components[3].specifications.holding_torque: technical value is unknown
+[WARNING] components[3].specifications.steps_per_revolution: technical value is unknown
+[WARNING] components[3].specifications.winding_resistance: technical value is unknown
+[WARNING] components[4]: manufacturer or model is not identified
+[WARNING] components[4].specifications.frame_size: technical value is unknown
+[WARNING] components[4].specifications.rated_current_per_phase: technical value is unknown
+[WARNING] components[4].specifications.holding_torque: technical value is unknown
+[WARNING] components[4].specifications.steps_per_revolution: technical value is unknown
+[WARNING] components[4].specifications.winding_resistance: technical value is unknown
+[WARNING] components[5]: manufacturer or model is not identified
+[WARNING] components[5].specifications.rated_voltage: technical value is unknown
+[WARNING] components[5].specifications.stall_torque: technical value is unknown
+[WARNING] components[5].specifications.control_signal: technical value is unknown
+[WARNING] components[6].quantity: quantity is unknown
+[WARNING] components[6]: manufacturer or model is not identified
+[WARNING] components[6].specifications.sense_resistor: technical value is unknown
+[WARNING] components[6].specifications.current_limit: technical value is unknown
+[WARNING] components[6].specifications.board_variant: technical value is unknown
+[WARNING] components[7]: manufacturer or model is not identified
+[WARNING] components[7].specifications.input_voltage: technical value is unknown
+[WARNING] components[7].specifications.protection_features: technical value is unknown
+[WARNING] components[8]: manufacturer or model is not identified
+[WARNING] components[8].specifications.board_variant: technical value is unknown
+[WARNING] components[8].specifications.pinout_revision: technical value is unknown
+[WARNING] components[9]: manufacturer or model is not identified
+[WARNING] components[9].specifications.board_variant: technical value is unknown
+[WARNING] components[9].specifications.pinout_revision: technical value is unknown
+[WARNING] components[10]: manufacturer or model is not identified
+[WARNING] components[10].specifications.board_variant: technical value is unknown
+[WARNING] components[10].specifications.camera_sensor: technical value is unknown
+[WARNING] components[11].quantity: quantity is unknown
+[WARNING] components[11]: manufacturer or model is not identified
+[WARNING] components[11].specifications.voltage_rating: technical value is unknown
+[WARNING] components[11].specifications.temperature_rating: technical value is unknown
+[INFO] components: loaded 12 unique component records
+[WARNING] assembly.subsystems[0]: controller assignment is unresolved
+[WARNING] assembly.subsystems[1]: controller assignment is unresolved
+[WARNING] assembly.simulation.joint_mappings[0]: physical mapping is unresolved
+[WARNING] assembly.simulation.joint_mappings[1]: physical mapping is unresolved
+[WARNING] assembly.simulation.joint_mappings[2]: physical mapping is unresolved
+[WARNING] assembly.simulation.joint_mappings[3]: physical mapping is unresolved
+[WARNING] assembly.simulation.joint_mappings[4]: physical mapping is unresolved
+[WARNING] assembly.simulation.joint_mappings[5]: physical mapping is unresolved
+[INFO] assembly: loaded 0 installed and 12 available references
