@@ -1,0 +1,227 @@
+{
+  "validated_on_local_date": "2026-11-10",
+  "index": {
+    "ok": true,
+    "errors": [],
+    "documents": 568,
+    "chunks": 4477,
+    "numeric_observations": 4781
+  },
+  "manifest_run_id": "2143d692ba2e42ea97606fde7d4127bc",
+  "git_head": "59ac5ecaba3d08f26e8816e5daa11e35a6c84cc5",
+  "embedding": {
+    "dimension": 384,
+    "files": {
+      "config.json": "bbb7c1333fc4b3e27fbc9cd5d2070aabcc1d4dfb99917c3633e772f97545a6b6",
+      "model.onnx": "ca456c06b3a9505ddfd9131408916dd79290368331e7d76bb621f1cba6bc8665",
+      "sentencepiece.bpe.model": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+      "special_tokens_map.json": "d05497f1da52c5e09554c0cd874037a083e1dc1b9cfd48034d1c717f1afc07a7",
+      "tokenizer.json": "0b44a9d7b51c3c62626640cda0e2c2f70fdacdc25bbbd68038369d14ebdf4c39",
+      "tokenizer_config.json": "a1d6bc8734a6f635dc158508bef000f8e2e5a759c7d92f984b2c86e5ff53425b"
+    },
+    "model": "intfloat/multilingual-e5-small",
+    "prefix_contract": "query/passage",
+    "provider": "fastembed",
+    "revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+    "version": "0.7.4"
+  },
+  "inventory_by_type": {
+    "adr": 88,
+    "code": 241,
+    "configuration": 43,
+    "document": 154,
+    "experiment": 42
+  },
+  "inventory_by_module": {
+    "acchess": 35,
+    "acmotion": 33,
+    "acvision": 38,
+    "firmware": 3,
+    "hardware": 8,
+    "integration": 12,
+    "mujoco": 191,
+    "project": 248
+  },
+  "evaluation": {
+    "lexical": {
+      "questions": 16,
+      "answerable": 12,
+      "unanswerable": 4,
+      "k": 5,
+      "mode": "lexical",
+      "recall_at_k": 0.9166666666666666,
+      "labeled_precision_at_k": 0.25,
+      "evidence_quote_recall_at_k": 0.8333333333333334,
+      "mrr": 0.7083333333333334,
+      "citation_correctness": 1,
+      "extractive_quote_fidelity": 1,
+      "unanswerable_abstention_rate": 1,
+      "insufficient_evidence_rate": 0.25,
+      "unsupported_fact_rate": 0,
+      "numeric_lookup_correctness": 1,
+      "limitations": "Small development set; relevance labels are not exhaustive. Precision is a labeled-source lower bound. Quote fidelity is mechanical, not semantic answer entailment. No LLM synthesis score is inferred."
+    },
+    "semantic": {
+      "questions": 16,
+      "answerable": 12,
+      "unanswerable": 4,
+      "k": 5,
+      "mode": "semantic",
+      "recall_at_k": 0.5,
+      "labeled_precision_at_k": 0.1,
+      "evidence_quote_recall_at_k": 0.5,
+      "mrr": 0.2986111111111111,
+      "citation_correctness": 1,
+      "extractive_quote_fidelity": 1,
+      "unanswerable_abstention_rate": 1,
+      "insufficient_evidence_rate": 0.5625,
+      "unsupported_fact_rate": 0,
+      "numeric_lookup_correctness": 1,
+      "limitations": "Small development set; relevance labels are not exhaustive. Precision is a labeled-source lower bound. Quote fidelity is mechanical, not semantic answer entailment. No LLM synthesis score is inferred."
+    },
+    "hybrid": {
+      "questions": 16,
+      "answerable": 12,
+      "unanswerable": 4,
+      "k": 5,
+      "mode": "hybrid",
+      "recall_at_k": 0.9166666666666666,
+      "labeled_precision_at_k": 0.25,
+      "evidence_quote_recall_at_k": 0.9166666666666666,
+      "mrr": 0.8194444444444444,
+      "citation_correctness": 1,
+      "extractive_quote_fidelity": 1,
+      "unanswerable_abstention_rate": 1,
+      "insufficient_evidence_rate": 0.25,
+      "unsupported_fact_rate": 0,
+      "numeric_lookup_correctness": 1,
+      "limitations": "Small development set; relevance labels are not exhaustive. Precision is a labeled-source lower bound. Quote fidelity is mechanical, not semantic answer entailment. No LLM synthesis score is inferred."
+    },
+    "hybrid_k10": {
+      "questions": 16,
+      "answerable": 12,
+      "unanswerable": 4,
+      "k": 10,
+      "mode": "hybrid",
+      "recall_at_k": 1.0,
+      "labeled_precision_at_k": 0.18333333333333335,
+      "evidence_quote_recall_at_k": 1.0,
+      "mrr": 0.8333333333333334,
+      "citation_correctness": 1,
+      "extractive_quote_fidelity": 1,
+      "unanswerable_abstention_rate": 1,
+      "insufficient_evidence_rate": 0.25,
+      "unsupported_fact_rate": 0,
+      "numeric_lookup_correctness": 1,
+      "limitations": "Small development set; relevance labels are not exhaustive. Precision is a labeled-source lower bound. Quote fidelity is mechanical, not semantic answer entailment. No LLM synthesis score is inferred."
+    }
+  },
+  "evaluation_directory": ".atom-knowledge/evaluations/current-checkout-20261110",
+  "incremental_update": {
+    "updated": 0,
+    "unchanged": 564,
+    "removed": []
+  },
+  "skipped_sources": [
+    {
+      "reason": "file size limit exceeded",
+      "source_path": "simulation/mujoco/docs/reorganization-audit-2026-11-06/inventory.json"
+    }
+  ],
+  "real_ollama_model_evaluated": false,
+  "external_documents_indexed": 0,
+  "tests": {
+    "passed": 17,
+    "failed": 0,
+    "command": "python -m pytest tools/knowledge-assistant/tests -q --tb=short",
+    "duration_seconds": 2.53
+  },
+  "real_http_smoke": {
+    "passed": true,
+    "read_only": true,
+    "actual_model": "intfloat/multilingual-e5-small",
+    "checks": [
+      "health",
+      "P014 cited answer",
+      "numeric experiment query",
+      "nonexistent movement route rejected"
+    ]
+  },
+  "numeric_comparison_checks": [
+    {
+      "experiment": "canonical-v6-warm-start",
+      "success_rate": 0.0,
+      "evaluation_seeds": [
+        910000,
+        910001
+      ],
+      "training_seed": 7,
+      "checkpoint_sha256": "713f3b9ce49e83066dc88a6243443a60c081d119e8e49793c25e050319a14846",
+      "config_sha256": "51cdadca6ba70efed503776ab6a641bf8eabe9953943aa58c3035ff9242dd98a",
+      "source_path": "simulation/mujoco/reports/training-diagnostics/canonical/canonical-clean-warm-01/report.json.gz",
+      "source_hash": "8cad94b2a8fa57b0b24653d301dd785c0c96c97b31d4fa002166d57418b44f35",
+      "locator": "gzip:json:/evaluation/success_rate"
+    },
+    {
+      "experiment": "canonical-v6-heldout-eval",
+      "success_rate": 0.0,
+      "evaluation_seeds": [
+        920000,
+        920001
+      ],
+      "training_seed": 7,
+      "checkpoint_sha256": "b75e986af40d30e4060664fba8876473889f75a20bcffcba9ac47eef5a2db55d",
+      "config_sha256": "51cdadca6ba70efed503776ab6a641bf8eabe9953943aa58c3035ff9242dd98a",
+      "source_path": "simulation/mujoco/reports/training-diagnostics/canonical/canonical-clean-eval-02/report.json.gz",
+      "source_hash": "79ffee7d80329c5ca872600aa5fcb45a70c5915e50ecfc527d3c0d0ca667021b",
+      "locator": "gzip:json:/evaluation/success_rate"
+    },
+    {
+      "experiment": "canonical-v6-training",
+      "success_rate": 0.0,
+      "evaluation_seeds": [
+        910000,
+        910001
+      ],
+      "training_seed": 7,
+      "checkpoint_sha256": "b71d11b557c3306f77d57ac6bb8e358477ad1407dbe944ce8a33b210cbdbf49e",
+      "config_sha256": "51cdadca6ba70efed503776ab6a641bf8eabe9953943aa58c3035ff9242dd98a",
+      "source_path": "simulation/mujoco/reports/training-diagnostics/canonical/training/report.json.gz",
+      "source_hash": "1600715b412f9ada5e4a742e75c5fb574a20a6f77923f3bf31b9116ef214b45d",
+      "locator": "gzip:json:/evaluation/success_rate"
+    }
+  ],
+  "implementation_sha256": {
+    "api.py": "c3dc71a611778b69be2bf6c3852837d3d555201d494f71162816fddad802c949",
+    "cli.py": "c514e84baa69d87b1c88100e8b95c48716b0246bc525f5296ef39d84986d38a9",
+    "config.py": "2c81e85031226617d664b100fd461d4f13e391f7f0154a029a07cd7e9346b867",
+    "evaluation.py": "9c26b8eb22d73241dc24d6b8bd59a42e8d6a39ce15c1abc69385ae3c951ee370",
+    "generation.py": "ea601afca05edcfefa6cce65074cacd6e9571d8079216abdcc4a5f21d2c3d972",
+    "ingestion.py": "fcf1045b65073e608b034db0668dd5e4000055efbe20f12aef4aaeeab47cbe4a",
+    "providers.py": "272d639bfdc60455edb0a3ae1dc10b488afb3def9c1726277d22c6c9d41c0e40",
+    "retrieval.py": "f1c30c5c8eca12b61ce46c9e4d9cfe1a52bdab762a724f7d1f5b2b855880f435",
+    "storage.py": "adf5fcc88eb498e1e9a58e6e1f962d4b5dda15647a9275efa46207797cd7bcfc",
+    "__init__.py": "cabb62323d16e6180de71cf85c576c03d360879ea0794e9e44be7b9d8f6d474a",
+    "__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d"
+  },
+  "latest_refresh": {
+    "updated": 7,
+    "unchanged": 561,
+    "removed": [],
+    "created_at": "2026-11-11T00:58:11.596854+00:00"
+  },
+  "latest_index_check": {
+    "ok": true,
+    "errors": [],
+    "documents": 569,
+    "chunks": 4480,
+    "numeric_observations": 4781,
+    "stale_sources": [],
+    "manifest_run_id": "e69c86bbb66d4ea884c12240ad0cc892",
+    "created_at": "2026-11-11T01:00:12.038602+00:00"
+  },
+  "dependency_check": {
+    "packages": 38,
+    "compatible": true
+  }
+}

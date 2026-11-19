@@ -1,0 +1,20 @@
+{
+  "experiments": [
+    {
+      "id": "canonical-v6-training",
+      "path": "simulation/mujoco/reports/training-diagnostics/canonical/training",
+      "files": ["run.json.gz", "report.json.gz", "baseline.json.gz", "ppo_updates.csv.gz"]
+    },
+    {
+      "id": "canonical-v6-heldout-eval",
+      "path": "simulation/mujoco/reports/training-diagnostics/canonical/canonical-clean-eval-02",
+      "files": ["run.json.gz", "report.json.gz"]
+    },
+    {
+      "id": "canonical-v6-warm-start",
+      "path": "simulation/mujoco/reports/training-diagnostics/canonical/canonical-clean-warm-01",
+      "files": ["run.json.gz", "report.json.gz", "ppo_updates.csv.gz"]
+    }
+  ],
+  "external": []
+}

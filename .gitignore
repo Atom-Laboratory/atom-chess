@@ -84,3 +84,11 @@ simulation/mujoco/examples/**/runs/
 simulation/mujoco/playground/sessions/
 simulation/mujoco/training/**/runs/
 simulation/mujoco/assets/bundles/
+
+# Engineering knowledge: derived stores, model cache and isolated environment
+.atom-knowledge/
+tools/knowledge-assistant/.venv/
+tools/knowledge-assistant/.pytest_cache/
+tools/knowledge-assistant/**/__pycache__/
+tools/knowledge-assistant/src/*.egg-info/
+knowledge/sources/local/
