@@ -160,7 +160,7 @@ std::string MotionProtocol::encodeCancel(std::uint32_t sequence)
 }
 
 /**
- * @brief Parses ACK/DONE/ERR/ESTOP/LIMIT controller frames for ACM1.
+ * @brief Parses ACK/DONE/CANCELLED/ERR/ESTOP/LIMIT controller frames for ACM1.
  *
  * Unknown versions, malformed fields and invalid sequence identifiers are
  * rejected with std::nullopt.
@@ -186,6 +186,10 @@ std::optional<ControllerEvent> MotionProtocol::parseEvent(
 
     if (fields[2] == "DONE" && fields.size() == 3) {
         return ControllerEvent{ControllerEventType::Done, *sequence, 0};
+    }
+
+    if (fields[2] == "CANCELLED" && fields.size() == 3) {
+        return ControllerEvent{ControllerEventType::Cancelled, *sequence, 0};
     }
 
     if (fields[2] == "ESTOP" && fields.size() == 3) {
