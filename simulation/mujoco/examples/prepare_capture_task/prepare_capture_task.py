@@ -60,6 +60,7 @@ def prepare(
     captured_source,
     graveyard_slot,
     graveyard_position,
+    obstacles=(),
 ):
     bundle = Path(bundle)
     reference_scene = Path(reference_scene)
@@ -132,6 +133,17 @@ def prepare(
         raise ValueError("Expected marker scene from validate_board_reference.py")
 
     retained_names = {attacker_piece, captured_piece}
+    occupied = {attacker_source, captured_source}
+    neighbors = []
+    for spec in obstacles:
+        name, separator, square = spec.partition("@")
+        if (not separator or name not in pieces_by_name
+                or name in retained_names or square in occupied):
+            raise ValueError(f"Invalid or duplicate obstacle: {spec}")
+        square_xy(square, center, pitch)
+        retained_names.add(name)
+        occupied.add(square)
+        neighbors.append((name, square, "neighbor"))
     found_bodies = {}
     for body in list(world.findall("body")):
         if body.find("freejoint") is not None:
@@ -149,6 +161,9 @@ def prepare(
 
     set_body_square(found_bodies[attacker_piece], attacker_source, center, pitch)
     set_body_square(found_bodies[captured_piece], captured_source, center, pitch)
+
+    for name, square, _ in neighbors:
+        set_body_square(found_bodies[name], square, center, pitch)
 
     # Create output only after input validation. Existing experiments are never overwritten.
     output.mkdir(parents=True, exist_ok=False)
@@ -177,11 +192,12 @@ def prepare(
     model_path = output / "model.xml"
     tree.write(model_path, encoding="utf-8", xml_declaration=True)
 
-    # Keep only the two physical identities in the derived fixture manifest.
+    # Preserve every retained piece and its fixture role.
     selected_manifest_pieces = []
     for name, initial_square, role in (
         (attacker_piece, attacker_source, "attacker"),
         (captured_piece, captured_source, "captured"),
+        *neighbors,
     ):
         item = dict(pieces_by_name[name])
         item["initial_square"] = initial_square
@@ -287,6 +303,7 @@ def main():
         help="Optional check against the existing slot position, in world metres",
     )
 
+    parser.add_argument("--obstacle", action="append", default=[], help="Physical piece@initial_square, repeatable")
     args = parser.parse_args()
     prepare(
         args.bundle,
@@ -300,6 +317,7 @@ def main():
         captured_source=args.captured_source,
         graveyard_slot=args.graveyard_slot,
         graveyard_position=args.graveyard_position,
+        obstacles=args.obstacle,
     )
 
 

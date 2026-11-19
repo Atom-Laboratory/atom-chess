@@ -40,3 +40,17 @@ RGB only. Static support geometry supplies height. Placement acceptance
 combines a region transition with the expected pawn appearance at the destination
 after retreat. Two opposing ±2 mm offset configurations passed the complete
 capture. This does not qualify tracking during motion or physical deployment.
+
+## Bystanders and wrist-enabled fixtures
+
+Allow the fixture generator to retain explicitly named bystanders at
+distinct board squares. Use their nominal fixture geometry in the swept
+preflight and compare their camera regions against the initial frame after
+each transfer. Reject a scene with excessive change before attempting the
+next transfer. For a wrist-enabled model, accept bounded pick and place
+orientations for each transfer.
+
+Estimating all bystander poses online would require a separately qualified
+perception step. The fixed-fixture preflight assumes nominal bystander
+positions. The RGB check detects changes after retreat and provides
+evidence of scene consistency at those observation points.

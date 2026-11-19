@@ -176,3 +176,12 @@ The override and the marker scene should match the experiment.
 
 The centered e4-to-d5 fixture completed both RGB-gated transfers with the
 H-file camera. This verification uses the five-actuator model.
+
+Crowded capture fixtures accept repeated --obstacle piece_name@square options.
+The camera executor checks neighbor images after victim removal and attacker
+placement. On wrist-enabled bundles, --wrist-deg accepts four angles in
+remove-pick, remove-place, attack-pick and attack-place order. Each transfer
+still runs swept collision preflight using nominal bystander poses. Inspect
+neighbor_change in report.json after each completed observation gate. A
+checked fixture with eight bystanders and wrist angles of 180 degrees was
+rejected at the descent preflight before either transfer.

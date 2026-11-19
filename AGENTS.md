@@ -16,3 +16,12 @@ configuration and model identities. Preserve earlier results and CAD assets.
 
 Review changes and run relevant tests before committing. Separate independent
 modules and architectural increments into coherent commits.
+
+Before creating or updating a PR, inspect all open PRs and their base/head
+branches. Stack dependent changes on the nearest prerequisite PR; keep independent
+changes as siblings. Record parent/child links and merge order in PR descriptions.
+Synchronize parents before children, resolve conflicts locally, run relevant
+checks, and verify remote mergeability after pushing. Prefer ordinary merge
+commits over rewriting published history. After a parent is merged, retarget
+and synchronize its children before merging them. Never equate mergeability
+with passing CI, and never merge a PR solely to organize the stack.
