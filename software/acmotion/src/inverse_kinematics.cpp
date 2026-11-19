@@ -88,6 +88,10 @@ std::optional<JointTarget> InverseKinematics::solve(const Pose& pose) const
         geometry_.preferredElbow == ElbowConfiguration::Up
             ? baseTheta2
             : -baseTheta2;
+    // Remove sin(pi) roundoff without changing the folded-origin convention.
+    const double sinTheta2 = cosTheta2 == -1.0 && radiusSquared > 0.0
+        ? std::copysign(0.0, theta2)
+        : std::sin(theta2);
 
     // At a non-origin folded boundary sin(pi) leaves a rounding residual that
     // can reject an exactly inclusive shoulder limit. Preserve origin policy.
