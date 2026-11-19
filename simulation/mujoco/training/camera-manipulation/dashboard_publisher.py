@@ -11,7 +11,7 @@ import torch
 from torch import nn
 
 
-def policy_graph(policy):
+def policy_graph(policy, *, action_description='residual controls'):
     """Describe the actual P038 MultiInputPolicy, with activations grouped by layer."""
     graph, hooks = [], {}
 
@@ -26,6 +26,10 @@ def policy_graph(policy):
     def sequence(prefix, layers, column, parent):
         layers = list(layers)
         for index, layer in enumerate(layers):
+            if isinstance(layer, nn.LayerNorm):
+                parent = node(f'{prefix}-{index}', 'Visual LayerNorm', column, [parent],
+                              f'Normalize {layer.normalized_shape} features', layer, layer)
+                continue
             if not isinstance(layer, (nn.Conv2d, nn.Linear)):
                 continue
             following = layers[index+1] if index+1 < len(layers) else None
@@ -44,12 +48,16 @@ def policy_graph(policy):
 
     extractor = policy.pi_features_extractor
     image_encoder = extractor.extractors['image']
-    image = node('image', 'RGB image', 0, detail=' × '.join(map(str, policy.observation_space['image'].shape)))
+    channels = policy.observation_space['image'].shape[0]
+    image = node('image', 'RGB history' if channels > 3 else 'RGB image', 0,
+                 detail=' × '.join(map(str, policy.observation_space['image'].shape)))
     encoded = sequence('CNN', image_encoder.cnn, 1, image)
     encoded = sequence('Projection', image_encoder.linear, 1, encoded)
     names = {'task': 'Source / target', 'commanded_joints': 'Commanded joints',
              'previous_action': 'Previous action', 'phase': 'Motion phase',
-             'perception_valid': 'Perception valid'}
+             'perception_valid': 'Perception valid', 'command_history': 'Command history',
+             'goal': 'Task objective', 'object_category': 'Object category',
+             'visual_target': 'Visual target'}
     inputs = [encoded]
     for name, encoder in extractor.extractors.items():
         if name != 'image':
@@ -60,7 +68,7 @@ def policy_graph(policy):
                     f'{extractor.features_dim} features', hook=extractor)
     actor = sequence('Actor', policy.mlp_extractor.policy_net, 3, features)
     critic = sequence('Critic', policy.mlp_extractor.value_net, 3, features)
-    node('action', 'Action mean μ', 4, [actor], f'{policy.action_net.out_features} residual controls',
+    node('action', 'Action mean μ', 4, [actor], f'{policy.action_net.out_features} {action_description}',
          policy.action_net, policy.action_net)
     node('value', 'State value V', 4, [critic], 'Predicted discounted return',
          policy.value_net, policy.value_net)
@@ -82,8 +90,8 @@ class DashboardPublisher:
             self.stream.close()
             raise
 
-    def attach(self, policy):
-        graph, layers = policy_graph(policy)
+    def attach(self, policy, *, action_description='residual controls'):
+        graph, layers = policy_graph(policy, action_description=action_description)
         for name, layer in layers.items():
             self.hooks.append(layer.register_forward_hook(self.record_activation(name)))
         self.write(graph=graph,
@@ -122,7 +130,11 @@ class DashboardPublisher:
         self.write(step=step, reward=reward if math.isfinite(reward) else None,
                    info={key: info.get(key) for key in (
                        'phase', 'target', 'reward_components', 'episode_reward_components',
-                       'failure', 'contact_steps', 'topple_event', 'episode_steps')},
+                       'failure', 'contact_steps', 'topple_event', 'episode_steps',
+                       'objective', 'target_piece', 'object_kind', 'episode_return',
+                       'validation', 'success', 'bilateral_contact', 'lifted', 'rise_m',
+                       'pad_distance_m', 'best_pad_distance_m', 'reach_threshold_m',
+                       'neighbor_displacements_mm', 'timings_s')},
                    activation=activation)
 
     def close(self):

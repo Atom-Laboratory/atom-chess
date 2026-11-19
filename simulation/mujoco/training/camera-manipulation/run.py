@@ -158,14 +158,30 @@ def same_environment(previous, current):
     # These launcher revisions differ only in instrumentation for exact resume.
     launcher = str(Path(__file__).resolve())
     old_hash = previous['files'].get(launcher)
-    if old_hash not in {
+    compatible_launchers = {
         '6542e9045cc4b58096426d8b242fe86c6e4aa2e53452a044997e828e969aaad8',
         '4b1170a294838d7346e520099d50ab3b39fafe2900f73f272fb0301a1cdb30e8',
         '59da3952d5bd0a2040c88db30ecad6c765ea9deddd5a433f0078c9d67a478455',
         '609af6ed96eaf48b06b3daa68a83474086d6af59dd9c097cb480bb84b9e14644',
-    }:
+        'a6aefb34171234f1b282fb0650c53fef9d4f6e87b9cb1a584593247b2df8e41f',
+    }
+    if old_hash != current['files'].get(launcher) and old_hash not in compatible_launchers:
         return False
     candidate = dict(current, files=dict(current['files'], **{launcher: old_hash}))
+    package = Path(__file__).resolve().parents[2]/'src/atom_mujoco'
+    # These exact revisions add opt-in behavior for the autonomous environment.
+    compatible_sources = {
+        'native_motion.py': (
+            'cce234776371281aaa59dd4272e6e37be6c8a5eddf750a748ec58420d158ffd8',
+            '64e282e0afbb65ff6babeac18a5a9676976a31da6cb81fb3e23a6351fb2d5cf9'),
+        'collision.py': (
+            '56daf811da802676548e948e0648a54f377965bab9634e92d39e0c4689291042',
+            '73e905e1d55f61cd27ffdfa6604ce442dea14f38dc347f30a6b85c39c9f3c8ee'),
+    }
+    for name, (prior_hash, new_hash) in compatible_sources.items():
+        path = str((package/name).resolve())
+        if previous['files'].get(path) == prior_hash and current['files'].get(path) == new_hash:
+            candidate['files'][path] = prior_hash
     candidate.pop('signature')
     return hashlib.sha256(json.dumps(candidate, sort_keys=True).encode()).hexdigest() == previous['signature']
 

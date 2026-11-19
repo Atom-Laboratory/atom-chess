@@ -1,7 +1,13 @@
 # Training experiments
 
+See the [proposed planner/local-policy architecture](../../../docs/camera-rl/hybrid-motion-learning.md)
+and [paper reading guide](../../../docs/camera-rl/mopa-rl-reading-guide.md)
+for the recommended evolution and its qualification gates.
+
 - [Grasp and lift](grasp-lift/README.md) describes the legacy local manipulation policy.
 - [Camera manipulation](camera-manipulation/README.md) describes the P038 residual policy.
+- [Autonomous manipulation](autonomous-manipulation/README.md) describes the
+  experimental continuous temporal policy with independent collision supervision.
 
 Each execution owns a complete runs/<unique-id>/ directory, containing its
 configuration, checkpoints, optimizer state, episode logs, reports and lineage.

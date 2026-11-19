@@ -4,6 +4,22 @@ Run commands in Windows PowerShell from the repository root. This README is the
 current operational entry point. Historical v3–v6 notes are available in Git
 history and the linked profile documents.
 
+Use the [training contribution guide](TRAINING_CONTRIBUTION_GUIDE.md) for a
+clean install, portable PPO experiment, held-out evaluation and report export.
+See the [training diagnosis](reports/training-diagnostics/README.md) for
+measured results and unresolved integration gates.
+
+The current hybrid implementation is tracked in the
+[M2 approach qualification](../../docs/camera-rl/hybrid-m2-qualification.md) and
+[M3 planner/policy contract](../../docs/camera-rl/hybrid-m3-contract.md).
+The [native approach example](examples/qualify_hybrid_approach/README.md)
+opens Watch by default. Its validated approach/retreat is distinct from RL
+training; the M3 local contract was introduced independently of actuation/PPO.
+The subsequent [M4 status](../../docs/camera-rl/hybrid-m4-supervision.md) documents
+the simulation execution adapter and still-failing lift baseline. The separately
+authorized [background PPO experiment](training/autonomous-manipulation/README.md)
+uses the existing autonomous comparison runner; it is not qualified hybrid control.
+
 ## Choose the example you want to understand
 
 | Goal | Entry point | What it does |
@@ -16,10 +32,11 @@ history and the linked profile documents.
 | Trace image acquisition and weights | [Pipeline walkthrough](../../docs/camera-rl/P038-pipeline-walkthrough.md) | Source-by-source explanation |
 | Run perception-only examples | [Examples README](examples/README.md) | Homography, reference and camera-to-policy checks |
 
-The current prototype has J1, Z, J2 and two coupled finger slides. The physical
-360-degree wrist rotation is a newly confirmed missing axis. Existing P038
-checkpoints describe the five-actuator prototype and need an explicit migration
-after that axis is modeled.
+Joint contracts depend on the selected bundle and entry point. Historical
+five-actuator P038 profiles have J1, Z, J2 and two coupled finger slides. The
+new native hybrid qualification uses six actuator commands, including the
+bounded one-revolution wrist. Checkpoint and action/observation schemas must
+match; old profiles cannot be silently resumed as the new hybrid controller.
 
 The current P038 pipeline is MuJoCo RGB -> native acvision -> validated policy
 features -> PPO residual -> C++ acmotion IK and collision supervision -> physics.
@@ -67,11 +84,12 @@ The demo mode prints numerical control results in the terminal.
 ## 3. Build native modules for camera RL
 
 Prerequisites are CMake, a C++ compiler and OpenCV 4.12 with ArUco support.
-This machine uses Visual Studio 18 2026 and OpenCV at D:/opencv. Adjust the
-generator and OpenCV_DIR to your installation.
+The tested generator is Visual Studio 18 2026. Point OpenCV_DIR to the
+directory containing OpenCVConfig.cmake.
 
 ~~~powershell
-cmake -S . -B build/p038-core -G 'Visual Studio 18 2026' -A x64 -DOpenCV_DIR=D:/opencv/build/x64/vc16/lib -DBUILD_TESTING=OFF -DACCHESS_BUILD_VIEWER=OFF -DACVISION_NATIVE_RUNTIME=ON -DACMOTION_NATIVE_RUNTIME=ON
+$opencv = Read-Host 'Directory containing OpenCVConfig.cmake'
+cmake -S . -B build/p038-core -G 'Visual Studio 18 2026' -A x64 "-DOpenCV_DIR=$opencv" -DBUILD_TESTING=OFF -DACCHESS_BUILD_VIEWER=OFF -DACVISION_NATIVE_RUNTIME=ON -DACMOTION_NATIVE_RUNTIME=ON
 cmake --build build/p038-core --config Release --target motion_runtime acvision_runtime perception_image
 ~~~
 

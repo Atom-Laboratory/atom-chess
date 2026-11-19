@@ -57,40 +57,58 @@ class SweptChecker:
                     self.coefficients[geom,index] = (1. if model.jnt_type[joint] == mujoco.mjtJoint.mjJNT_SLIDE
                                                      else 2*radius)
 
-    def interval(self, start, end, *, allowed=(), configure=None, extra_coefficients=None):
+    def interval(self, start, end, *, allowed=(), configure=None, extra_coefficients=None,
+                 prune_spheres=False):
         allowed = {frozenset(pair) for pair in allowed}
         pairs = [p for p in self.pairs if frozenset(p) not in allowed]
         coefficients = self.coefficients if extra_coefficients is None else extra_coefficients
+        if prune_spheres:
+            indices = np.asarray(pairs, dtype=int).reshape(-1, 2)
+            radii = self.model.geom_rbound[indices].sum(axis=1)
+            unbounded = np.isin(self.model.geom_type[indices], [
+                mujoco.mjtGeom.mjGEOM_PLANE, mujoco.mjtGeom.mjGEOM_HFIELD]).any(axis=1)
+        update_geometry = mujoco.mj_kinematics if prune_spheres else mujoco.mj_forward
 
-        def check(a, b, depth):
+        def check(a, b, depth, remaining):
             if self.samples >= 4096:
                 return dict(status='unresolved', reason='preflight sample budget exceeded')
             self.data.qpos[:] = self.initial
             self.data.qpos[self.addresses] = (a+b)/2
-            mujoco.mj_forward(self.model, self.data)
+            update_geometry(self.model, self.data)
             if configure:
                 configure(self.data)
-                mujoco.mj_forward(self.model, self.data)
+                update_geometry(self.model, self.data)
             self.samples += 1
             travel = coefficients @ (np.abs(b-a)/2)
-            uncertain = None
-            for first, second in pairs:
+            uncertain = []
+            if prune_spheres:
+                active = indices[remaining]
+                centers = self.data.geom_xpos[active]
+                distance = np.linalg.norm(centers[:, 0]-centers[:, 1], axis=1)
+                bound = radii[remaining]+travel[active].sum(axis=1)+self.clearance
+                relevant = unbounded[remaining] | ~np.isfinite(distance) | (distance <= bound+1e-9)
+                remaining = remaining[relevant]
+            for index in remaining:
+                first, second = pairs[index]
                 limit = float(travel[first]+travel[second]+self.clearance)
                 distance = float(mujoco.mj_geomDistance(self.model, self.data, first, second, limit+1e-6, None))
                 if not math.isfinite(distance) or distance <= self.clearance:
                     return dict(status='collision', geoms=[self.model.geom(first).name, self.model.geom(second).name],
                                 distance_m=distance, joint_position=((a+b)/2).tolist())
                 if distance <= limit:
-                    uncertain = (first, second)
-            if uncertain is None:
+                    uncertain.append(index)
+            if not uncertain:
                 return None
             if depth >= self.max_depth:
-                return dict(status='unresolved', geoms=[self.model.geom(g).name for g in uncertain],
+                return dict(status='unresolved', geoms=[self.model.geom(g).name for g in pairs[uncertain[-1]]],
                             joint_position=((a+b)/2).tolist())
             middle = (a+b)/2
-            return check(a, middle, depth+1) or check(middle, b, depth+1)
+            # A parent's clearance certificate applies to every subinterval.
+            children = np.asarray(uncertain) if prune_spheres else remaining
+            return check(a, middle, depth+1, children) or check(middle, b, depth+1, children)
 
-        return check(np.asarray(start), np.asarray(end), 0)
+        remaining = np.arange(len(pairs)) if prune_spheres else range(len(pairs))
+        return check(np.asarray(start), np.asarray(end), 0, remaining)
 
 
 class SceneCollision:

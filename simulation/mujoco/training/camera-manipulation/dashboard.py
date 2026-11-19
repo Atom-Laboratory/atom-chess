@@ -50,6 +50,8 @@ class TrainingDashboard:
         self.activation = {}
         self.selected = None
         self.metrics = {}
+        self.experiment = {}
+        self.hardware = {}
         self.last_update = None
         self.update_step = None
         self.loss_history = {key: deque(maxlen=240) for key, *_ in LOSSES}
@@ -65,6 +67,7 @@ class TrainingDashboard:
         self.network = self.make_tab('Policy network')
         self.network.bind('<Button-1>', self.select_layer)
         self.reward = self.make_tab('Reward')
+        self.execution = self.make_tab('Experiment')
         self.signed_log = tk.BooleanVar(value=True)
         ttk.Checkbutton(self.loss, text='Signed-log axes', variable=self.signed_log,
                         command=self.draw).place(relx=1., x=-17, y=10, anchor='ne')
@@ -96,9 +99,13 @@ class TrainingDashboard:
     def ingest(self, data):
         if 'status' in data:
             self.status = data['status']
+        if 'experiment' in data:
+            self.experiment = data['experiment']
+        if 'hardware' in data:
+            self.hardware = data['hardware']
         if 'progress' in data:
             self.progress = data['progress']
-            if self.progress['unit'] == 'steps':
+            if self.progress['unit'] in ('steps', 'decisions'):
                 self.training_progress = self.progress
         if 'graph' in data:
             self.graph = data['graph']
@@ -143,6 +150,8 @@ class TrainingDashboard:
             self.draw_losses(width, height)
         elif canvas is self.network:
             self.draw_network(width, height)
+        elif canvas is self.execution:
+            self.draw_execution(width, height)
         else:
             self.draw_reward(width, height)
 
@@ -152,7 +161,7 @@ class TrainingDashboard:
             return
         self.header.configure(text=f'ATOM / PPO    ·    {progress_text(self.progress)}')
         detail = self.progress['detail']
-        if self.progress['unit'] != 'steps' and self.training_progress is not None:
+        if self.progress['unit'] not in ('steps', 'decisions') and self.training_progress is not None:
             training = progress_text(self.training_progress)
             detail = f'{training}    ·    {detail}' if detail else training
         if detail:
@@ -320,6 +329,39 @@ class TrainingDashboard:
             for row, (name, value) in enumerate(sorted(components.items(), key=lambda item: -abs(item[1]))):
                 self.label(canvas, x, top+25+row*18, f'{name.replace("_", " ")}   {value:+.5g}',
                            ACCENT if value >= 0 else '#ff9d98', size=9)
+
+    def draw_execution(self, width, height):
+        canvas, info = self.execution, self.info
+        self.label(canvas, 16, 12, 'Experiment and physical feedback', size=14, weight='bold')
+        self.label(canvas, 16, 40, 'Distances and contacts below are simulator evaluation measurements.', MUTED)
+        metadata = self.experiment
+        rows = [
+            ('Run', metadata.get('run')),
+            ('Object / objective', f'{info.get("target_piece") or metadata.get("piece", "—")} / {info.get("objective") or metadata.get("objective", "—")}'),
+            ('Algorithm / device', f'{metadata.get("algorithm", "PPO")} / {metadata.get("device", "—")}'),
+            ('Status', self.status),
+            ('Validation', (info.get('validation') or {}).get('status')),
+            ('Episode return', info.get('episode_return')),
+            ('Pad distance / best / threshold (mm)', ' / '.join(
+                number(info[key]*1000) if info.get(key) is not None else '—'
+                for key in ('pad_distance_m', 'best_pad_distance_m', 'reach_threshold_m'))),
+            ('Bilateral contact / lift / task success', ' / '.join(
+                str(info.get(key, '—')) for key in ('bilateral_contact', 'lifted', 'success'))),
+            ('Piece rise (mm)', info['rise_m']*1000 if info.get('rise_m') is not None else None),
+            ('Largest neighbor displacement (mm)', max((info.get('neighbor_displacements_mm') or {}).values(), default=0.)),
+            ('Latest checkpoint', metadata.get('checkpoint')),
+            ('Failure', info.get('failure')),
+        ]
+        for index, (label, value) in enumerate(rows):
+            self.label(canvas, 16, 78+index*28, label, MUTED)
+            self.label(canvas, 335, 78+index*28, '—' if value is None else str(value), width=width-355)
+        top = 78+len(rows)*28
+        self.label(canvas, 16, top, 'Last decision timings (seconds)', size=12, weight='bold')
+        self.label(canvas, 16, top+28, '   ·   '.join(
+            f'{key} {value:.4f}' for key, value in (info.get('timings_s') or {}).items()), MUTED, width=width-32)
+        self.label(canvas, 16, top+66, 'Hardware measurements', size=12, weight='bold')
+        self.label(canvas, 16, top+94, '   ·   '.join(
+            f'{key} {value}' for key, value in self.hardware.items()), MUTED, width=width-32)
 
     def close(self):
         self.window.after_cancel(self.poll_timer)

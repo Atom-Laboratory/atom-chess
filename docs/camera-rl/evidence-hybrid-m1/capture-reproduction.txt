@@ -1,0 +1,38 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________________ test_physical_capture_removes_before_attacker ________________
+
+scene = <atom_mujoco.playground.Playground object at 0x0000029155842360>
+
+    def test_physical_capture_removes_before_attacker(scene):
+        # Explicit physical initial position; no pose edits after initialization.
+        sim = scene.sim
+        body = sim.model.body('black_pawn_d7').id
+        address = sim.model.jnt_qposadr[sim.model.body_jntadr[body]]
+        target = scene.feedback.endpoint_position('e3')
+        sim.data.qpos[address:address+3] = [*target[:2], .019]
+        mujoco.mj_forward(sim.model, sim.data)
+        for _ in range(100):
+            sim.advance(sim.target)
+        scene.physical = PhysicalBoardState(scene.feedback.snapshot(0),
+                                           position_tolerance_m=.003, angle_tolerance_rad=.15)
+        result = scene.execute_request(plan(('e3','graveyard:slot_0'), ('e2','e3')))
+>       assert result['status'] == 'COMPLETED_SIMULATION_ORACLE', result['error_code']
+E       AssertionError: GRIP_LOST_DURING_TRANSPORTING
+E       assert 'FAILED' == 'COMPLETED_SIMULATION_ORACLE'
+E
+E         - COMPLETED_SIMULATION_ORACLE
+E         + FAILED
+
+_          = 99
+address    = np.int32(194)
+body       = 36
+result     = {'schema': 2, 'status': 'FAILED', 'completed_transfers': 0, 'results': [{'schema': 1, 'task_id': '4e20334c54d94b1eb02e07ad9409192c', 'operation': 'TRANSFER', 'piece_id': 'black_pawn_d7', ...}], ...}
+scene      = <atom_mujoco.playground.Playground object at 0x0000029155842360>
+sim        = <atom_mujoco.backend.Simulation object at 0x000002916B967680>
+target     = array([0.3  , 0.04 , 0.021])
+
+simulation\mujoco\tests\test_task_plan.py:88: AssertionError
+=========================== short test summary info ===========================
+FAILED simulation\mujoco\tests\test_task_plan.py::test_physical_capture_removes_before_attacker
+1 failed in 5.12s

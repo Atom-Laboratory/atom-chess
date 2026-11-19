@@ -11,7 +11,8 @@ dependencies = ["mujoco==3.17.0", "numpy>=2,<3"]
 
 [project.optional-dependencies]
 test = ["pytest>=9,<10"]
-rl = ["gymnasium==1.4.0", "stable-baselines3==2.9.2", "torch>=2.8,<3", "pillow>=11,<13"]
+rl = ["gymnasium==1.4.0", "stable-baselines3==2.9.2", "torch>=2.8,<3", "pillow>=11,<13", "psutil>=6,<8"]
+diagnostics = ["matplotlib>=3.9,<4"]
 
 [project.scripts]
 atom-mujoco = "atom_mujoco.cli:main"

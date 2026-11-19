@@ -1,0 +1,240 @@
+[
+  {
+    "run": "training",
+    "status": "completed",
+    "environment_version": 6,
+    "policy_version": 2,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 128,
+    "episodes": 2,
+    "validation": {
+      "ACCEPTED": 128
+    },
+    "accepted_fraction": 1.0,
+    "projected_accepted": 0,
+    "terminations": {
+      "TIME_LIMIT": 2
+    },
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -1.280000000000001,
+      "motion": -0.05658710561052429,
+      "proximity": -1.2390696593960138,
+      "timeout": 0.0
+    },
+    "reward_nonzero_steps": {
+      "time": 128,
+      "motion": 128,
+      "proximity": 128,
+      "timeout": 0
+    },
+    "action_mean": [
+      -0.02433247225053492,
+      -0.049635592542472295,
+      0.060473772224440836
+    ],
+    "action_std": [
+      0.36302009359730064,
+      0.37520175772437553,
+      0.40350213748996866
+    ],
+    "action_saturation": [
+      0.0,
+      0.0,
+      0.0078125
+    ],
+    "summed_step_timing_s": {
+      "validation": 2.510738199998741,
+      "physics": 0.2884393999997883,
+      "perception": 14.096164099999442,
+      "feedback": 0.04122730000062802,
+      "total": 16.936599199998
+    },
+    "device": "cpu",
+    "gpu": null,
+    "hardware_samples": 1,
+    "hardware_medians": {
+      "cpu_percent": 57.9
+    },
+    "weights_changed": true,
+    "training_wall_s": 18.576549200000045,
+    "optimizer_wall_s": 0.09088320000000749,
+    "evaluation": {
+      "episodes": 2,
+      "seeds": [
+        910000,
+        910001
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.030610409700819484
+    },
+    "initial_evaluation": {
+      "episodes": 2,
+      "seeds": [
+        910000,
+        910001
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.03191355943991942
+    },
+    "checkpoints": {
+      "checkpoint-128.zip": {
+        "sha256": "7e83b0333cb2f5735c8b02ff031ff42226d6352d5ff457ba35db3e8eab63f1f3",
+        "verified": true
+      },
+      "checkpoint-64.zip": {
+        "sha256": "da8238565f6e79465015682c75f1ac3df8ed05d72f2751857282b028501f90ba",
+        "verified": true
+      },
+      "policy.zip": {
+        "sha256": "b71d11b557c3306f77d57ac6bb8e358477ad1407dbe944ce8a33b210cbdbf49e",
+        "verified": true
+      }
+    }
+  },
+  {
+    "run": "canonical-clean-eval-02",
+    "status": "completed",
+    "environment_version": 6,
+    "policy_version": 2,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 0,
+    "episodes": 0,
+    "validation": {},
+    "accepted_fraction": null,
+    "projected_accepted": 0,
+    "terminations": {},
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {},
+    "reward_nonzero_steps": {},
+    "action_mean": null,
+    "action_std": null,
+    "action_saturation": null,
+    "summed_step_timing_s": {
+      "validation": 0,
+      "physics": 0,
+      "perception": 0,
+      "feedback": 0,
+      "total": 0
+    },
+    "device": "cpu",
+    "gpu": null,
+    "hardware_samples": 0,
+    "hardware_medians": {},
+    "weights_changed": false,
+    "training_wall_s": 0.0,
+    "optimizer_wall_s": 0.0,
+    "evaluation": {
+      "episodes": 2,
+      "seeds": [
+        920000,
+        920001
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.029845507457942073
+    },
+    "initial_evaluation": null,
+    "checkpoints": {
+      "policy.zip": {
+        "sha256": "b75e986af40d30e4060664fba8876473889f75a20bcffcba9ac47eef5a2db55d",
+        "verified": true
+      }
+    }
+  },
+  {
+    "run": "canonical-clean-warm-01",
+    "status": "completed",
+    "environment_version": 6,
+    "policy_version": 2,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 128,
+    "episodes": 2,
+    "validation": {
+      "ACCEPTED": 128
+    },
+    "accepted_fraction": 1.0,
+    "projected_accepted": 0,
+    "terminations": {
+      "TIME_LIMIT": 2
+    },
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -1.280000000000001,
+      "motion": -0.05658710561052429,
+      "proximity": -1.2390696593960138,
+      "timeout": 0.0
+    },
+    "reward_nonzero_steps": {
+      "time": 128,
+      "motion": 128,
+      "proximity": 128,
+      "timeout": 0
+    },
+    "action_mean": [
+      -0.02433247225053492,
+      -0.049635592542472295,
+      0.060473772224440836
+    ],
+    "action_std": [
+      0.36302009359730064,
+      0.37520175772437553,
+      0.40350213748996866
+    ],
+    "action_saturation": [
+      0.0,
+      0.0,
+      0.0078125
+    ],
+    "summed_step_timing_s": {
+      "validation": 1.994521100001748,
+      "physics": 0.2239532000012332,
+      "perception": 10.439151799997035,
+      "feedback": 0.031106699998417753,
+      "total": 12.688755500002571
+    },
+    "device": "cpu",
+    "gpu": null,
+    "hardware_samples": 1,
+    "hardware_medians": {
+      "cpu_percent": 43.1
+    },
+    "weights_changed": true,
+    "training_wall_s": 13.57619459999978,
+    "optimizer_wall_s": 0.030181199999788078,
+    "evaluation": {
+      "episodes": 2,
+      "seeds": [
+        910000,
+        910001
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.03061044168813542
+    },
+    "initial_evaluation": null,
+    "checkpoints": {
+      "policy.zip": {
+        "sha256": "713f3b9ce49e83066dc88a6243443a60c081d119e8e49793c25e050319a14846",
+        "verified": true
+      }
+    }
+  }
+]

@@ -61,3 +61,29 @@ def test_progress_shares_stage_and_count_with_terminal_and_dashboard(capsys):
     assert events[1] == dict(stage='Training PPO', completed=200, total=2048,
                              unit='steps', detail='APPROACH')
     assert events[2]['completed'] == 0 and events[2]['unit'] == 'episodes'
+
+
+def test_autonomous_visual_fusion_is_normalized_and_has_finite_gradients():
+    import numpy as np
+    import torch
+    from gymnasium import spaces
+    from stable_baselines3.common.policies import MultiInputActorCriticPolicy
+    from atom_mujoco.autonomous_policy import AutonomousFeatures
+    observation_space = spaces.Dict(image=spaces.Box(0, 255, (6, 96, 96), dtype=np.uint8),
+                                    visual_target=spaces.Box(-1., 1., (5,), dtype=np.float32))
+    policy = MultiInputActorCriticPolicy(observation_space, spaces.Box(-1., 1., (7,)),
+        lambda _: .0003, features_extractor_class=AutonomousFeatures)
+    batch = {'image': torch.randint(0, 256, (4, 6, 96, 96)),
+             'visual_target': torch.tensor([[.2, .1, .3, 1, 0], [-.2, -.1, .4, 1, 0],
+                                            [.1, -.3, .2, 1, 0], [-.1, .3, .5, 1, 0]])}
+    encoder = policy.features_extractor.extractors['image']
+    features = encoder(batch['image'].float()/255)
+    torch.testing.assert_close(features.mean(dim=1), torch.zeros(4), atol=1e-5, rtol=0)
+    assert torch.all((features.square().mean(dim=1) > .99) & (features.square().mean(dim=1) < 1.01))
+    _, values, probabilities = policy(batch)
+    (values.square().mean()-.01*probabilities.mean()).backward()
+    gradients = [p.grad for p in policy.parameters() if p.grad is not None]
+    assert all(torch.isfinite(gradient).all() for gradient in gradients)
+    assert values.std() > 1e-6
+    graph, _ = load_module('dashboard_publisher').policy_graph(policy, action_description='continuous temporal controls')
+    assert any(node['label'] == 'Visual LayerNorm' for node in graph)

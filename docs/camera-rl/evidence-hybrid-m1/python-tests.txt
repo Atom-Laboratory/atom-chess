@@ -1,0 +1,38 @@
+..................................................F.......ss.......      [100%]
+================================== FAILURES ===================================
+________________ test_physical_capture_removes_before_attacker ________________
+
+scene = <atom_mujoco.playground.Playground object at 0x0000029885E8BC80>
+
+    def test_physical_capture_removes_before_attacker(scene):
+        # Explicit physical initial position; no pose edits after initialization.
+        sim = scene.sim
+        body = sim.model.body('black_pawn_d7').id
+        address = sim.model.jnt_qposadr[sim.model.body_jntadr[body]]
+        target = scene.feedback.endpoint_position('e3')
+        sim.data.qpos[address:address+3] = [*target[:2], .019]
+        mujoco.mj_forward(sim.model, sim.data)
+        for _ in range(100):
+            sim.advance(sim.target)
+        scene.physical = PhysicalBoardState(scene.feedback.snapshot(0),
+                                           position_tolerance_m=.003, angle_tolerance_rad=.15)
+        result = scene.execute_request(plan(('e3','graveyard:slot_0'), ('e2','e3')))
+>       assert result['status'] == 'COMPLETED_SIMULATION_ORACLE', result['error_code']
+E       AssertionError: GRIP_LOST_DURING_TRANSPORTING
+E       assert 'FAILED' == 'COMPLETED_SIMULATION_ORACLE'
+E
+E         - COMPLETED_SIMULATION_ORACLE
+E         + FAILED
+
+simulation\mujoco\tests\test_task_plan.py:88: AssertionError
+============================= slowest 5 durations =============================
+23.48s call     tests/test_autonomous_manipulation.py::test_hidden_physics_isolation_and_rejected_action_never_moves_scene
+10.53s call     tests/test_collision.py::test_crowded_e2_e4_uses_preshape_and_verified_feedback
+5.47s call     tests/test_chess_commands.py::test_real_core_validates_and_decomposes_capture
+4.17s call     tests/test_task_plan.py::test_physical_capture_removes_before_attacker
+3.54s call     tests/test_autonomous_manipulation.py::test_randomized_starts_are_safe_varied_and_reproducible
+=========================== short test summary info ===========================
+SKIPPED [1] simulation\mujoco\tests\test_camera_only.py:35: Requires an explicit generated camera fixture and native libraries
+SKIPPED [1] simulation\mujoco\tests\test_camera_only.py:60: Requires the generated camera fixture
+FAILED simulation\mujoco\tests\test_task_plan.py::test_physical_capture_removes_before_attacker
+1 failed, 64 passed, 2 skipped in 59.64s

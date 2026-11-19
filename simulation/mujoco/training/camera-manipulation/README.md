@@ -3,6 +3,32 @@
 To study the full pipeline and rebuild it independently, start with the
 [P038 camera PPO reconstruction guide](../../../docs/learning/camera-ppo/README.md).
 
+## Screen distinct pickup approaches
+
+The offline sweep uses the existing RGB-localized full-board E2/E1 wrist
+fixture. Prepare that fixture using the board-state workflow below. The tool
+requires the native AC:Vision and AC:Motion libraries, the RL Python extra,
+and an OpenGL-capable MuJoCo installation. It runs endpoint screening first
+and executes a pickup only after the conservative sweep passes. It records
+physical and visual evidence separately and does not start PPO.
+
+~~~powershell
+$py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+$root = 'simulation/mujoco/training/camera-manipulation'
+$config = "$root/runs/pawn-e2-e4-vision-fen-v1/environment.json"
+$output = "$root/runs/approach-$([guid]::NewGuid().ToString('N'))"
+& $py -u -B "$root/approach_sweep.py" --config $config --output $output --seed 100007 --max-screen 2600 --max-sweep 6 --max-execute 4
+& $py -B -m pytest simulation/mujoco/tests/test_approach_sweep.py -q
+~~~
+
+Inspect protocol.json and report.json for configuration, sample budget,
+candidate waypoints, collision pair and measured clearance. RGB images are
+saved for executed paths. The initial search uses fixed pickup Z and a
+finite parameter grid. Its endpoint distance is sampled against the king.
+Sweep acceptance covers a nominal joint-linear path with an approximate
+held-pawn model. Execution evidence applies to the simulated fixture.
+See the [research protocol](../../../../docs/camera-rl/approach-strategy-study.md).
+
 Requires a prepared one-piece environment.json and native vision/motion libraries.
 
 Install the environment using the [module guide](../../README.md). Run these

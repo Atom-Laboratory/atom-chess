@@ -1,0 +1,21 @@
+{
+  "canonical_sha256": "efb09310a8db43b5252afb24028c319c4aff8c2265d5ece54c61edad32905f6b",
+  "model_sha256": "49e6d7eda155d8eb7f1a280038e884f931f350435622fdde4f42546311023528",
+  "training": {
+    "objective": "reach",
+    "steps": 128,
+    "rollout_steps": 128,
+    "batch_size": 64,
+    "epochs": 5,
+    "learning_rate": 0.0003,
+    "ent_coef": 0.005,
+    "target_kl": 0.03,
+    "horizon": 64,
+    "seed": 7,
+    "evaluation_seed": 910000,
+    "episodes": 2,
+    "checkpoint_every": 64,
+    "torch_threads": 2,
+    "device": "cpu"
+  }
+}

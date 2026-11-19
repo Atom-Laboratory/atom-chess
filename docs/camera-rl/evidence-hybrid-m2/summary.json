@@ -1,0 +1,39 @@
+{
+  "status": "COMPLETED_SIMULATED_APPROACH",
+  "approach_complete": true,
+  "retreat_complete": true,
+  "training_eligible": false,
+  "local_manipulation_workspace_qualified": false,
+  "speed_fraction": 0.25,
+  "elapsed_sim_s": 8.800000000000008,
+  "arrival": {
+    "position": [
+      0.2637664330830754,
+      0.08293967345016962,
+      -1.0870859013431462,
+      1.6448385011474408e-08,
+      -1.8579858798705508e-08,
+      5.470768421852969e-06
+    ],
+    "tcp_m": [
+      0.26284876527829903,
+      -0.08680230901149963,
+      0.09993967345016962
+    ],
+    "tcp_error_m": 2.618744330666527e-06,
+    "wrist_rad": 5.470768421852969e-06
+  },
+  "run": "simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\e24d597ad03d457fa05e98ff5dae3c79",
+  "regression": {
+    "passed": 45,
+    "skipped": 9,
+    "elapsed_s": 19.17
+  },
+  "known_capture_regression": {
+    "passed": 3,
+    "failed": 1,
+    "error": "GRIP_LOST_DURING_TRANSPORTING",
+    "elapsed_s": 8.06
+  },
+  "max_final_piece_displacement_mm": 0.0006605560547076821
+}

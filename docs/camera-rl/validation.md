@@ -36,3 +36,20 @@ made from progress.json. No prior experiment or checkpoint was modified.
 
 Only `docs/camera-rl/` and P031 belong to this increment. Pre-existing tracked
 changes and untracked CAD/monitor/learning work remain excluded. No push.
+
+## Validation increment on 2026-11-07
+
+The autonomous curriculum, dashboard and conservative sweep changes were
+checked with the MuJoCo virtual environment. The targeted autonomous,
+dashboard, approach-sweep and collision regression batch passed 21 tests,
+including both native full-board integrations enabled through
+`ATOM_AUTONOMOUS_CONFIG`. Four additional sphere-pruning cases passed after
+their addition, covering clear, colliding, unresolved and unbounded-plane
+geometry. The standalone normalization/gradient tests and CUDA diagnostic
+also passed. Historical qualification statements above retain their original
+scope.
+
+The watched unnormalized pilot and interrupted normalized attempt are
+documented in [the reach results](autonomous-reach-results.md). No final
+grasp/lift qualification or planner/local-policy integration was established
+by these checks. See [the proposed next architecture](hybrid-motion-learning.md).

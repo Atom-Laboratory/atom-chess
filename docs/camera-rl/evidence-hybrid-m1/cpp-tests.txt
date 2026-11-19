@@ -1,0 +1,601 @@
+Start testing: Nov 07 09:22 -03
+----------------------------------------------------------
+1/16 Testing: test_piece_detector
+1/16 Test: test_piece_detector
+Command: "<repo>/build/headless/bin/test_piece_detector"
+Directory: <repo>/build/headless/software/acvision
+"test_piece_detector" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 3 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 2 tests from PieceDetectorTest
+[ RUN      ] PieceDetectorTest.ProcessaTodasAsCelulas
+[       OK ] PieceDetectorTest.ProcessaTodasAsCelulas (18 ms)
+[ RUN      ] PieceDetectorTest.DetectaCores
+[       OK ] PieceDetectorTest.DetectaCores (5 ms)
+[----------] 2 tests from PieceDetectorTest (24 ms total)
+
+[----------] 1 test from PieceDetectorCalibrationTest
+[ RUN      ] PieceDetectorCalibrationTest.PersistedConfigCanBeLoadedAtRuntime
+[       OK ] PieceDetectorCalibrationTest.PersistedConfigCanBeLoadedAtRuntime (19 ms)
+[----------] 1 test from PieceDetectorCalibrationTest (19 ms total)
+
+[----------] Global test environment tear-down
+[==========] 3 tests from 2 test suites ran. (43 ms total)
+[  PASSED  ] 3 tests.
+<end of output>
+Test time =   0.77 sec
+----------------------------------------------------------
+Test Passed.
+"test_piece_detector" end time: Nov 07 09:22 -03
+"test_piece_detector" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/16 Testing: test_board_geometry
+2/16 Test: test_board_geometry
+Command: "<repo>/build/headless/bin/test_board_geometry"
+Directory: <repo>/build/headless/software/acvision
+"test_board_geometry" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BoardVisionTest
+[ RUN      ] BoardVisionTest.TestRealBoardDetectionAndGeometry
+[       OK ] BoardVisionTest.TestRealBoardDetectionAndGeometry (80 ms)
+[----------] 1 test from BoardVisionTest (80 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (80 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.31 sec
+----------------------------------------------------------
+Test Passed.
+"test_board_geometry" end time: Nov 07 09:22 -03
+"test_board_geometry" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/16 Testing: test_camera_min_max
+3/16 Test: test_camera_min_max
+Command: "<repo>/build/headless/bin/test_camera_min_max"
+Directory: <repo>/build/headless/software/acvision
+"test_camera_min_max" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 5 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 5 tests from MinMaxIntensityTest
+[ RUN      ] MinMaxIntensityTest.EmptyFrameReturnsZero
+[       OK ] MinMaxIntensityTest.EmptyFrameReturnsZero (0 ms)
+[ RUN      ] MinMaxIntensityTest.SingleChannelGrayReturnsCorrectValues
+[       OK ] MinMaxIntensityTest.SingleChannelGrayReturnsCorrectValues (0 ms)
+[ RUN      ] MinMaxIntensityTest.ThreeChannelBGRDoesNotCrash
+[       OK ] MinMaxIntensityTest.ThreeChannelBGRDoesNotCrash (0 ms)
+[ RUN      ] MinMaxIntensityTest.FourChannelBGRADoesNotCrash
+[       OK ] MinMaxIntensityTest.FourChannelBGRADoesNotCrash (0 ms)
+[ RUN      ] MinMaxIntensityTest.NullOutputPointersDoNotCrash
+[       OK ] MinMaxIntensityTest.NullOutputPointersDoNotCrash (0 ms)
+[----------] 5 tests from MinMaxIntensityTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 5 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 5 tests.
+<end of output>
+Test time =   0.31 sec
+----------------------------------------------------------
+Test Passed.
+"test_camera_min_max" end time: Nov 07 09:22 -03
+"test_camera_min_max" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/16 Testing: test_board
+4/16 Test: test_board
+Command: "<repo>/build/headless/bin/test_board"
+Directory: <repo>/build/headless/software/acchess
+"test_board" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 10 tests from 5 test suites.
+[----------] Global test environment set-up.
+[----------] 6 tests from BoardTest
+[ RUN      ] BoardTest.StartsInInitialPositionAndCanBeCleared
+[       OK ] BoardTest.StartsInInitialPositionAndCanBeCleared (0 ms)
+[ RUN      ] BoardTest.ResetRestoresInitialPosition
+[       OK ] BoardTest.ResetRestoresInitialPosition (0 ms)
+[ RUN      ] BoardTest.InsertsReplacesAndRemovesOnlyTheSelectedPiece
+[       OK ] BoardTest.InsertsReplacesAndRemovesOnlyTheSelectedPiece (0 ms)
+[ RUN      ] BoardTest.RejectsInvalidPieceEncodingsWithoutChangingTheBoard
+[       OK ] BoardTest.RejectsInvalidPieceEncodingsWithoutChangingTheBoard (0 ms)
+[ RUN      ] BoardTest.ComparesEqualAndDifferentBoards
+[       OK ] BoardTest.ComparesEqualAndDifferentBoards (0 ms)
+[ RUN      ] BoardTest.RejectsSquaresOutsideTheBoard
+[       OK ] BoardTest.RejectsSquaresOutsideTheBoard (0 ms)
+[----------] 6 tests from BoardTest (0 ms total)
+
+[----------] 1 test from PieceTest
+[ RUN      ] PieceTest.ValidatesTypeAndColorAsOneInvariant
+[       OK ] PieceTest.ValidatesTypeAndColorAsOneInvariant (0 ms)
+[----------] 1 test from PieceTest (0 ms total)
+
+[----------] 1 test from SquareTest
+[ RUN      ] SquareTest.DefaultsToAnInvalidSentinel
+[       OK ] SquareTest.DefaultsToAnInvalidSentinel (0 ms)
+[----------] 1 test from SquareTest (0 ms total)
+
+[----------] 1 test from MoveTest
+[ RUN      ] MoveTest.DefaultsToInvalidSourceAndDestinationSquares
+[       OK ] MoveTest.DefaultsToInvalidSourceAndDestinationSquares (0 ms)
+[----------] 1 test from MoveTest (0 ms total)
+
+[----------] 1 test from BoardIntegrationTest
+[ RUN      ] BoardIntegrationTest.GeneratesFenFromBoard
+[       OK ] BoardIntegrationTest.GeneratesFenFromBoard (0 ms)
+[----------] 1 test from BoardIntegrationTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 10 tests from 5 test suites ran. (0 ms total)
+[  PASSED  ] 10 tests.
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Passed.
+"test_board" end time: Nov 07 09:22 -03
+"test_board" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/16 Testing: test_board_comparator
+5/16 Test: test_board_comparator
+Command: "<repo>/build/headless/bin/test_board_comparator"
+Directory: <repo>/build/headless/software/acchess
+"test_board_comparator" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 8 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 8 tests from BoardComparatorTest
+[ RUN      ] BoardComparatorTest.ReturnsNoChangesForEqualBoards
+[       OK ] BoardComparatorTest.ReturnsNoChangesForEqualBoards (0 ms)
+[ RUN      ] BoardComparatorTest.ReportsSimpleMoveInRowMajorOrder
+[       OK ] BoardComparatorTest.ReportsSimpleMoveInRowMajorOrder (0 ms)
+[ RUN      ] BoardComparatorTest.ReportsCapture
+[       OK ] BoardComparatorTest.ReportsCapture (0 ms)
+[ RUN      ] BoardComparatorTest.ReportsPromotion
+[       OK ] BoardComparatorTest.ReportsPromotion (0 ms)
+[ RUN      ] BoardComparatorTest.ReportsKingSideCastling
+[       OK ] BoardComparatorTest.ReportsKingSideCastling (0 ms)
+[ RUN      ] BoardComparatorTest.ReportsQueenSideCastling
+[       OK ] BoardComparatorTest.ReportsQueenSideCastling (0 ms)
+[ RUN      ] BoardComparatorTest.ReportsEnPassant
+[       OK ] BoardComparatorTest.ReportsEnPassant (0 ms)
+[ RUN      ] BoardComparatorTest.ReportsAll64ChangesWithoutInterpretingThem
+[       OK ] BoardComparatorTest.ReportsAll64ChangesWithoutInterpretingThem (0 ms)
+[----------] 8 tests from BoardComparatorTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 8 tests.
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Passed.
+"test_board_comparator" end time: Nov 07 09:22 -03
+"test_board_comparator" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/16 Testing: test_move_applier
+6/16 Test: test_move_applier
+Command: "<repo>/build/headless/bin/test_move_applier"
+Directory: <repo>/build/headless/software/acchess
+"test_move_applier" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 11 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 6 tests from MoveApplierTest
+[ RUN      ] MoveApplierTest.AppliesNormalMoveWithoutChangingOtherSquares
+[       OK ] MoveApplierTest.AppliesNormalMoveWithoutChangingOtherSquares (0 ms)
+[ RUN      ] MoveApplierTest.AppliesCaptureByReplacingTheTargetPiece
+[       OK ] MoveApplierTest.AppliesCaptureByReplacingTheTargetPiece (0 ms)
+[ RUN      ] MoveApplierTest.AppliesPromotionAndPreservesPieceColor
+[       OK ] MoveApplierTest.AppliesPromotionAndPreservesPieceColor (0 ms)
+[ RUN      ] MoveApplierTest.AppliesKingSideCastling
+[       OK ] MoveApplierTest.AppliesKingSideCastling (0 ms)
+[ RUN      ] MoveApplierTest.AppliesQueenSideCastling
+[       OK ] MoveApplierTest.AppliesQueenSideCastling (0 ms)
+[ RUN      ] MoveApplierTest.AppliesEnPassantCapture
+[       OK ] MoveApplierTest.AppliesEnPassantCapture (0 ms)
+[----------] 6 tests from MoveApplierTest (0 ms total)
+
+[----------] 5 tests from MoveApplierMetadataTest
+[ RUN      ] MoveApplierMetadataTest.WhiteDoublePawnPushUpdatesMetadata
+[       OK ] MoveApplierMetadataTest.WhiteDoublePawnPushUpdatesMetadata (0 ms)
+[ RUN      ] MoveApplierMetadataTest.BlackMoveAdvancesFullmoveAndClearsEnPassant
+[       OK ] MoveApplierMetadataTest.BlackMoveAdvancesFullmoveAndClearsEnPassant (0 ms)
+[ RUN      ] MoveApplierMetadataTest.KingMoveRevokesBothCastlingRights
+[       OK ] MoveApplierMetadataTest.KingMoveRevokesBothCastlingRights (0 ms)
+[ RUN      ] MoveApplierMetadataTest.RookCaptureRevokesCapturedSideRight
+[       OK ] MoveApplierMetadataTest.RookCaptureRevokesCapturedSideRight (0 ms)
+[ RUN      ] MoveApplierMetadataTest.QuietNonPawnMoveIncrementsHalfmoveClock
+[       OK ] MoveApplierMetadataTest.QuietNonPawnMoveIncrementsHalfmoveClock (0 ms)
+[----------] 5 tests from MoveApplierMetadataTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 11 tests from 2 test suites ran. (0 ms total)
+[  PASSED  ] 11 tests.
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"test_move_applier" end time: Nov 07 09:22 -03
+"test_move_applier" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/16 Testing: test_fen_generator
+7/16 Test: test_fen_generator
+Command: "<repo>/build/headless/bin/test_fen_generator"
+Directory: <repo>/build/headless/software/acchess
+"test_fen_generator" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 4 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 4 tests from FenGeneratorTest
+[ RUN      ] FenGeneratorTest.GeneratesArbitraryPositionWithPieceTypesAndColors
+[       OK ] FenGeneratorTest.GeneratesArbitraryPositionWithPieceTypesAndColors (0 ms)
+[ RUN      ] FenGeneratorTest.GeneratesInitialPositionWithAllPieceTypesAndColors
+[       OK ] FenGeneratorTest.GeneratesInitialPositionWithAllPieceTypesAndColors (0 ms)
+[ RUN      ] FenGeneratorTest.CompressesEmptySquares
+[       OK ] FenGeneratorTest.CompressesEmptySquares (0 ms)
+[ RUN      ] FenGeneratorTest.SerializesDynamicMetadata
+[       OK ] FenGeneratorTest.SerializesDynamicMetadata (0 ms)
+[----------] 4 tests from FenGeneratorTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 4 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 4 tests.
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"test_fen_generator" end time: Nov 07 09:22 -03
+"test_fen_generator" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/16 Testing: test_motion_planner
+8/16 Test: test_motion_planner
+Command: "<repo>/build/headless/software/acmotion/test_motion_planner"
+Directory: <repo>/build/headless/software/acmotion
+"test_motion_planner" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 7 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 7 tests from MotionPlannerTest
+[ RUN      ] MotionPlannerTest.ReturnsPredefinedPoses
+[       OK ] MotionPlannerTest.ReturnsPredefinedPoses (0 ms)
+[ RUN      ] MotionPlannerTest.PlansSafeEightPoseTransfer
+[       OK ] MotionPlannerTest.PlansSafeEightPoseTransfer (0 ms)
+[ RUN      ] MotionPlannerTest.PlansBoardMoveFromCoordinateMapper
+[       OK ] MotionPlannerTest.PlansBoardMoveFromCoordinateMapper (0 ms)
+[ RUN      ] MotionPlannerTest.RejectsUnsafeHeightConfiguration
+[       OK ] MotionPlannerTest.RejectsUnsafeHeightConfiguration (0 ms)
+[ RUN      ] MotionPlannerTest.RejectsNonFinitePhysicalPoint
+[       OK ] MotionPlannerTest.RejectsNonFinitePhysicalPoint (0 ms)
+[ RUN      ] MotionPlannerTest.ExpandsPhysicalTaskIntoTrajectory
+[       OK ] MotionPlannerTest.ExpandsPhysicalTaskIntoTrajectory (0 ms)
+[ RUN      ] MotionPlannerTest.RejectsPromotionTaskWithoutPhysicalStrategy
+[       OK ] MotionPlannerTest.RejectsPromotionTaskWithoutPhysicalStrategy (0 ms)
+[----------] 7 tests from MotionPlannerTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 7 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 7 tests.
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"test_motion_planner" end time: Nov 07 09:22 -03
+"test_motion_planner" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/16 Testing: test_coordinate_mapper
+9/16 Test: test_coordinate_mapper
+Command: "<repo>/build/headless/software/acmotion/test_coordinate_mapper"
+Directory: <repo>/build/headless/software/acmotion
+"test_coordinate_mapper" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 5 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 5 tests from CoordinateMapperTest
+[ RUN      ] CoordinateMapperTest.MapsBoardSquaresWithoutLookupTable
+[       OK ] CoordinateMapperTest.MapsBoardSquaresWithoutLookupTable (0 ms)
+[ RUN      ] CoordinateMapperTest.SupportsClockwiseRankAxis
+[       OK ] CoordinateMapperTest.SupportsClockwiseRankAxis (0 ms)
+[ RUN      ] CoordinateMapperTest.RejectsInvalidSquare
+[       OK ] CoordinateMapperTest.RejectsInvalidSquare (0 ms)
+[ RUN      ] CoordinateMapperTest.MapsGraveyardGridInRobotFrame
+[       OK ] CoordinateMapperTest.MapsGraveyardGridInRobotFrame (0 ms)
+[ RUN      ] CoordinateMapperTest.PersistsBoardCalibration
+[       OK ] CoordinateMapperTest.PersistsBoardCalibration (23 ms)
+[----------] 5 tests from CoordinateMapperTest (23 ms total)
+
+[----------] Global test environment tear-down
+[==========] 5 tests from 1 test suite ran. (24 ms total)
+[  PASSED  ] 5 tests.
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"test_coordinate_mapper" end time: Nov 07 09:22 -03
+"test_coordinate_mapper" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/16 Testing: test_graveyard_allocator
+10/16 Test: test_graveyard_allocator
+Command: "<repo>/build/headless/software/acmotion/test_graveyard_allocator"
+Directory: <repo>/build/headless/software/acmotion
+"test_graveyard_allocator" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from GraveyardAllocatorTest
+[ RUN      ] GraveyardAllocatorTest.AllocatesByTypeColorAndCapacity
+[       OK ] GraveyardAllocatorTest.AllocatesByTypeColorAndCapacity (0 ms)
+[----------] 1 test from GraveyardAllocatorTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (1 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.09 sec
+----------------------------------------------------------
+Test Passed.
+"test_graveyard_allocator" end time: Nov 07 09:22 -03
+"test_graveyard_allocator" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/16 Testing: test_task_planner
+11/16 Test: test_task_planner
+Command: "<repo>/build/headless/software/acmotion/test_task_planner"
+Directory: <repo>/build/headless/software/acmotion
+"test_task_planner" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 7 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 7 tests from TaskPlannerTest
+[ RUN      ] TaskPlannerTest.PlansNormalMoveAsSingleBoardTransfer
+[       OK ] TaskPlannerTest.PlansNormalMoveAsSingleBoardTransfer (0 ms)
+[ RUN      ] TaskPlannerTest.RemovesCapturedPieceBeforeMovingAttacker
+[       OK ] TaskPlannerTest.RemovesCapturedPieceBeforeMovingAttacker (0 ms)
+[ RUN      ] TaskPlannerTest.RemovesCorrectPawnForEnPassant
+[       OK ] TaskPlannerTest.RemovesCorrectPawnForEnPassant (0 ms)
+[ RUN      ] TaskPlannerTest.CastlingMovesKingThenRook
+[       OK ] TaskPlannerTest.CastlingMovesKingThenRook (0 ms)
+[ RUN      ] TaskPlannerTest.PromotionIsExplicitInsteadOfAssumedPhysicalReplacement
+[       OK ] TaskPlannerTest.PromotionIsExplicitInsteadOfAssumedPhysicalReplacement (0 ms)
+[ RUN      ] TaskPlannerTest.RejectsMoveFromEmptySource
+[       OK ] TaskPlannerTest.RejectsMoveFromEmptySource (0 ms)
+[ RUN      ] TaskPlannerTest.FailedPlanningDoesNotConsumeGraveyardSlot
+[       OK ] TaskPlannerTest.FailedPlanningDoesNotConsumeGraveyardSlot (0 ms)
+[----------] 7 tests from TaskPlannerTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 7 tests from 1 test suite ran. (1 ms total)
+[  PASSED  ] 7 tests.
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"test_task_planner" end time: Nov 07 09:22 -03
+"test_task_planner" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/16 Testing: test_motion_protocol
+12/16 Test: test_motion_protocol
+Command: "<repo>/build/headless/software/acmotion/test_motion_protocol"
+Directory: <repo>/build/headless/software/acmotion
+"test_motion_protocol" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 5 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 5 tests from MotionProtocolTest
+[ RUN      ] MotionProtocolTest.EncodesVersionedJointSegment
+[       OK ] MotionProtocolTest.EncodesVersionedJointSegment (0 ms)
+[ RUN      ] MotionProtocolTest.EncodesCancelFrame
+[       OK ] MotionProtocolTest.EncodesCancelFrame (0 ms)
+[ RUN      ] MotionProtocolTest.ParsesControllerEvents
+[       OK ] MotionProtocolTest.ParsesControllerEvents (0 ms)
+[ RUN      ] MotionProtocolTest.RejectsMalformedOrUnsupportedFrames
+[       OK ] MotionProtocolTest.RejectsMalformedOrUnsupportedFrames (0 ms)
+[ RUN      ] MotionProtocolTest.RejectsInvalidSegment
+[       OK ] MotionProtocolTest.RejectsInvalidSegment (0 ms)
+[----------] 5 tests from MotionProtocolTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 5 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 5 tests.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"test_motion_protocol" end time: Nov 07 09:22 -03
+"test_motion_protocol" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/16 Testing: test_motion_execution
+13/16 Test: test_motion_execution
+Command: "<repo>/build/headless/software/acmotion/test_motion_execution"
+Directory: <repo>/build/headless/software/acmotion
+"test_motion_execution" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 9 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 9 tests from MotionExecutionTest
+[ RUN      ] MotionExecutionTest.ExecutesSegmentsSequentially
+[       OK ] MotionExecutionTest.ExecutesSegmentsSequentially (0 ms)
+[ RUN      ] MotionExecutionTest.TimesOutWhenControllerDoesNotRespond
+[       OK ] MotionExecutionTest.TimesOutWhenControllerDoesNotRespond (0 ms)
+[ RUN      ] MotionExecutionTest.ReportsTransportFailure
+[       OK ] MotionExecutionTest.ReportsTransportFailure (0 ms)
+[ RUN      ] MotionExecutionTest.EntersSafeStopOnEmergencyStop
+[       OK ] MotionExecutionTest.EntersSafeStopOnEmergencyStop (0 ms)
+[ RUN      ] MotionExecutionTest.EntersSafeStopOnLimitSwitch
+[       OK ] MotionExecutionTest.EntersSafeStopOnLimitSwitch (0 ms)
+[ RUN      ] MotionExecutionTest.RejectsWrongSequenceResponse
+[       OK ] MotionExecutionTest.RejectsWrongSequenceResponse (0 ms)
+[ RUN      ] MotionExecutionTest.PropagatesControllerError
+[       OK ] MotionExecutionTest.PropagatesControllerError (0 ms)
+[ RUN      ] MotionExecutionTest.CancelSendsVersionedCancelFrame
+[       OK ] MotionExecutionTest.CancelSendsVersionedCancelFrame (0 ms)
+[ RUN      ] MotionExecutionTest.RejectsInvalidTrajectoryOrdering
+[       OK ] MotionExecutionTest.RejectsInvalidTrajectoryOrdering (0 ms)
+[----------] 9 tests from MotionExecutionTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 9 tests from 1 test suite ran. (1 ms total)
+[  PASSED  ] 9 tests.
+<end of output>
+Test time =   0.09 sec
+----------------------------------------------------------
+Test Passed.
+"test_motion_execution" end time: Nov 07 09:22 -03
+"test_motion_execution" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/16 Testing: test_inverse_kinematics
+14/16 Test: test_inverse_kinematics
+Command: "<repo>/build/headless/software/acmotion/test_inverse_kinematics"
+Directory: <repo>/build/headless/software/acmotion
+"test_inverse_kinematics" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 11 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 11 tests from InverseKinematicsTest
+[ RUN      ] InverseKinematicsTest.SolvesFullyExtendedXAxis
+[       OK ] InverseKinematicsTest.SolvesFullyExtendedXAxis (0 ms)
+[ RUN      ] InverseKinematicsTest.SolvesKnownElbowUpConfiguration
+[       OK ] InverseKinematicsTest.SolvesKnownElbowUpConfiguration (0 ms)
+[ RUN      ] InverseKinematicsTest.SolvesDeterministicElbowDownConfiguration
+[       OK ] InverseKinematicsTest.SolvesDeterministicElbowDownConfiguration (0 ms)
+[ RUN      ] InverseKinematicsTest.RejectsPointOutsideRadialWorkspace
+[       OK ] InverseKinematicsTest.RejectsPointOutsideRadialWorkspace (0 ms)
+[ RUN      ] InverseKinematicsTest.RejectsZOutsideMechanicalLimits
+[       OK ] InverseKinematicsTest.RejectsZOutsideMechanicalLimits (0 ms)
+[ RUN      ] InverseKinematicsTest.RejectsSolutionOutsideJointLimits
+[       OK ] InverseKinematicsTest.RejectsSolutionOutsideJointLimits (0 ms)
+[ RUN      ] InverseKinematicsTest.RejectsInvalidGeometry
+[       OK ] InverseKinematicsTest.RejectsInvalidGeometry (0 ms)
+[ RUN      ] InverseKinematicsTest.RejectsInvalidGripperValue
+[       OK ] InverseKinematicsTest.RejectsInvalidGripperValue (0 ms)
+[ RUN      ] InverseKinematicsTest.MaintainsRequestedPlanarToolYawWithJoint3
+[       OK ] InverseKinematicsTest.MaintainsRequestedPlanarToolYawWithJoint3 (0 ms)
+[ RUN      ] InverseKinematicsTest.AppliesJoint3ZeroOffset
+[       OK ] InverseKinematicsTest.AppliesJoint3ZeroOffset (0 ms)
+[ RUN      ] InverseKinematicsTest.RejectsJoint3OutsideMechanicalLimits
+[       OK ] InverseKinematicsTest.RejectsJoint3OutsideMechanicalLimits (0 ms)
+[----------] 11 tests from InverseKinematicsTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 11 tests from 1 test suite ran. (1 ms total)
+[  PASSED  ] 11 tests.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"test_inverse_kinematics" end time: Nov 07 09:22 -03
+"test_inverse_kinematics" time elapsed: 00:00:00
+----------------------------------------------------------
+
+15/16 Testing: test_observation_interpreter
+15/16 Test: test_observation_interpreter
+Command: "<repo>/build/headless/software/integration/tests/test_observation_interpreter"
+Directory: <repo>/build/headless/software/integration/tests
+"test_observation_interpreter" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 7 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 7 tests from ObservationInterpreterTest
+[ RUN      ] ObservationInterpreterTest.DetectsNoChangeWhenObservationsAreEqual
+[       OK ] ObservationInterpreterTest.DetectsNoChangeWhenObservationsAreEqual (0 ms)
+[ RUN      ] ObservationInterpreterTest.ValidatesAndAppliesQuietMove
+[       OK ] ObservationInterpreterTest.ValidatesAndAppliesQuietMove (0 ms)
+[ RUN      ] ObservationInterpreterTest.RejectsIllegalMoveWithoutMutatingBoard
+[       OK ] ObservationInterpreterTest.RejectsIllegalMoveWithoutMutatingBoard (0 ms)
+[ RUN      ] ObservationInterpreterTest.RejectsAmbiguousObservationWithMultipleChanges
+[       OK ] ObservationInterpreterTest.RejectsAmbiguousObservationWithMultipleChanges (0 ms)
+[ RUN      ] ObservationInterpreterTest.ValidatesAndAppliesCaptureMove
+[       OK ] ObservationInterpreterTest.ValidatesAndAppliesCaptureMove (0 ms)
+[ RUN      ] ObservationInterpreterTest.ValidatesAndAppliesKingsideCastling
+[       OK ] ObservationInterpreterTest.ValidatesAndAppliesKingsideCastling (0 ms)
+[ RUN      ] ObservationInterpreterTest.ValidatesAndAppliesEnPassantCapture
+[       OK ] ObservationInterpreterTest.ValidatesAndAppliesEnPassantCapture (0 ms)
+[----------] 7 tests from ObservationInterpreterTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 7 tests from 1 test suite ran. (1 ms total)
+[  PASSED  ] 7 tests.
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"test_observation_interpreter" end time: Nov 07 09:22 -03
+"test_observation_interpreter" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/16 Testing: test_board_move_adapter
+16/16 Test: test_board_move_adapter
+Command: "<repo>/build/headless/software/integration/tests/test_board_move_adapter"
+Directory: <repo>/build/headless/software/integration/tests
+"test_board_move_adapter" start time: Nov 07 09:22 -03
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 4 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 4 tests from BoardMoveAdapter
+[ RUN      ] BoardMoveAdapter.AdaptsRealTaskPlannerOutputFromChessCore
+[       OK ] BoardMoveAdapter.AdaptsRealTaskPlannerOutputFromChessCore (0 ms)
+[ RUN      ] BoardMoveAdapter.RejectsWholeCapturePlanAndUnsupportedSingletons
+[       OK ] BoardMoveAdapter.RejectsWholeCapturePlanAndUnsupportedSingletons (0 ms)
+[ RUN      ] BoardMoveAdapter.RejectsInvalidBoardEndpoints
+[       OK ] BoardMoveAdapter.RejectsInvalidBoardEndpoints (0 ms)
+[ RUN      ] BoardMoveAdapter.SerializesOrderedCaptureAndRejectsPromotion
+[       OK ] BoardMoveAdapter.SerializesOrderedCaptureAndRejectsPromotion (0 ms)
+[----------] 4 tests from BoardMoveAdapter (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 4 tests from 1 test suite ran. (1 ms total)
+[  PASSED  ] 4 tests.
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"test_board_move_adapter" end time: Nov 07 09:22 -03
+"test_board_move_adapter" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 07 09:22 -03

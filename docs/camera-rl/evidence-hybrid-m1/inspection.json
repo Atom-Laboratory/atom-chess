@@ -1,0 +1,219 @@
+{
+  "schema": 1,
+  "collected_at": "2026-11-07T09:24:40.016011-03:00",
+  "source_head": "1997dd60bdb1738afb3cccba973d64087b7117ef",
+  "python": "3.12.14",
+  "torch": "2.14.1+cu130",
+  "cuda_runtime": "13.0",
+  "cuda_available": true,
+  "gpu": "NVIDIA GeForce RTX 5070 Ti",
+  "sb3": "2.9.2",
+  "mujoco": "3.17.0",
+  "native_motion_abi": 1,
+  "config": "simulation\\mujoco\\training\\camera-manipulation\\runs\\pawn-e2-e4-vision-fen-v1\\environment.json",
+  "config_sha256": "e77d8429b52ec225df1707b042ccf5b583891659b284bea6f6f0c6bf7c77f6e9",
+  "bundle_model_sha256": "c17e0be227af4bff949f0ba1fc9d1e1bb100aa31f723185307b8c439bc5a2a01",
+  "profile": {
+    "name": "interactive-wrist-v1",
+    "mass_kg_per_moving_body": 0.1,
+    "diagonal_inertia_kg_m2": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "joint_damping": 0.2,
+    "joint_armature": 0.01,
+    "actuator_kp": 500.0,
+    "actuator_kv": 30.0,
+    "timestep_s": 0.002,
+    "control_substeps": 10,
+    "gravity": [
+      0,
+      0,
+      -9.81
+    ],
+    "contacts": true,
+    "physical_calibration": false,
+    "collision_model": "robot convex hulls vs static environment; no self collision",
+    "gripper_model": "mesh-aligned coupled slides; servo linkage not reconstructed",
+    "gripper_geometry": {
+      "rail_axis_in_arm2": [
+        -0.6060929273752994,
+        0.0,
+        0.7953938416819935
+      ],
+      "inner_face_gap_at_zero_m": 0.04809556,
+      "finger_range_m": [
+        -0.021,
+        0.0
+      ]
+    }
+  },
+  "scene": {
+    "square_size_m": 0.035,
+    "piece_visual_geometry": "official meshes, 0.3 mm vertex-clustered visual LOD",
+    "piece_collision_geometry": "legacy experimental primitives",
+    "gripper_collision_geometry": "experimental decomposed full gripper plus fingertip pads",
+    "gripper_collision_hulls": 66,
+    "gripper_calibrated": false,
+    "self_collision": false
+  },
+  "camera": {
+    "lookat": [
+      0.245,
+      0.0,
+      0.012
+    ],
+    "distance": 1.05,
+    "azimuth": 180.0,
+    "elevation": -75.0,
+    "width": 1920,
+    "height": 1440
+  },
+  "actuated_joint_order": [
+    "joint_base_to_link1",
+    "joint_z_axis_arm1",
+    "joint_arm1_link_arm2_link",
+    "finger_1",
+    "finger_2",
+    "wrist_joint"
+  ],
+  "joints": [
+    {
+      "name": "joint_base_to_link1",
+      "kind": "revolute",
+      "lower": -2.0,
+      "upper": 2.0,
+      "velocity": 3.14
+    },
+    {
+      "name": "joint_z_axis_arm1",
+      "kind": "prismatic",
+      "lower": -0.1,
+      "upper": 0.2,
+      "velocity": 0.5
+    },
+    {
+      "name": "joint_arm1_link_arm2_link",
+      "kind": "revolute",
+      "lower": -2.0,
+      "upper": 4.0,
+      "velocity": 3.14
+    },
+    {
+      "name": "finger_1",
+      "kind": "prismatic",
+      "lower": -0.021,
+      "upper": 0.0,
+      "velocity": 0.025
+    },
+    {
+      "name": "finger_2",
+      "kind": "prismatic",
+      "lower": -0.021,
+      "upper": 0.0,
+      "velocity": 0.025
+    },
+    {
+      "name": "wrist_joint",
+      "kind": "revolute",
+      "lower": 0.0,
+      "upper": 6.283185307179586,
+      "velocity": 3.141592653589793
+    }
+  ],
+  "native_geometry_vector": [
+    220.00000000000006,
+    144.53919242563666,
+    -2.0,
+    2.0,
+    -2.675062980040568,
+    3.324937019959432,
+    -100.0,
+    200.0,
+    -0.675062980040568,
+    40.00000000000001,
+    0.0,
+    17.0,
+    -0.021,
+    0.0
+  ],
+  "piece_count": 32,
+  "piece_geometry": {
+    "pawn": {
+      "example": "white_pawn_e2",
+      "proxy_height_mm": 32.0,
+      "visual_source_size_mm": [
+        18.0498,
+        18.0498,
+        34.6348
+      ],
+      "simulation_mass_kg": 0.02
+    },
+    "rook": {
+      "example": "white_rook_a1",
+      "proxy_height_mm": 36.00000000000001,
+      "visual_source_size_mm": [
+        23.2114,
+        23.2116,
+        43.0898
+      ],
+      "simulation_mass_kg": 0.02
+    },
+    "knight": {
+      "example": "white_knight_b1",
+      "proxy_height_mm": 46.18373236911247,
+      "visual_source_size_mm": [
+        32.7474,
+        25.9174,
+        54.4412
+      ],
+      "simulation_mass_kg": 0.02
+    },
+    "bishop": {
+      "example": "white_bishop_c1",
+      "proxy_height_mm": 44.0,
+      "visual_source_size_mm": [
+        25.8596,
+        25.8596,
+        56.8397
+      ],
+      "simulation_mass_kg": 0.02
+    },
+    "queen": {
+      "example": "white_queen_d1",
+      "proxy_height_mm": 48.0,
+      "visual_source_size_mm": [
+        25.8984,
+        25.8986,
+        62.7168
+      ],
+      "simulation_mass_kg": 0.02
+    },
+    "king": {
+      "example": "white_king_e1",
+      "proxy_height_mm": 56.0,
+      "visual_source_size_mm": [
+        25.9175,
+        25.9176,
+        71.2265
+      ],
+      "simulation_mass_kg": 0.02
+    }
+  },
+  "static_sources_sha256": {
+    "Software/acmotion/src/motion_planner.cpp": "e3090cda3ae8519acf4ba203b009c9df379ef41fc9bcaed475782c50a7f9d3e2",
+    "Software/acmotion/src/inverse_kinematics.cpp": "f6bd67ab4e0874ca33bab89f72386cedc25dbda0efef14502347619bde0e0fa9",
+    "Software/acmotion/runtime/motion_runtime.cpp": "e35baceea3f778091f4943d5765de25a9878ebf8adb47db69ea4de68cfce5fa7",
+    "Software/acvision/runtime/native_runtime.cpp": "bfa9bb9102419413aba08622309952a05dbc8c98d7df5dacbd1a62aaf282eddb",
+    "simulation/mujoco/src/atom_mujoco/playground.py": "b1cd4d448ebf2f987520d34fd76f56590d0fbad1b35e72314088696c8d6aeb97",
+    "simulation/mujoco/src/atom_mujoco/native_motion.py": "64e282e0afbb65ff6babeac18a5a9676976a31da6cb81fb3e23a6351fb2d5cf9",
+    "simulation/mujoco/src/atom_mujoco/autonomous_env.py": "6194f4c200fe576e0099b114d20b25ffe0b2a9e01652721e602e946a97ad87e3",
+    "simulation/mujoco/src/atom_mujoco/collision.py": "73e905e1d55f61cd27ffdfa6604ce442dea14f38dc347f30a6b85c39c9f3c8ee"
+  },
+  "libraries_sha256": {
+    "motion_library": "7ed8a82e7d023430b20fbc7c813cc80b64d8aeda3348e0e5169bcc2eacd9f578",
+    "vision_library": "a9e40e4666c285a259b71368d59cfdb9014687ce8f89c29b6fad1ee8ae8fa49a"
+  },
+  "scope": "Static/native interface inspection. No new approach execution, training or hardware motion."
+}

@@ -1,0 +1,1509 @@
+[
+  {
+    "run": "302c79a87cc84ae09b034ebfe20c8c7f",
+    "status": "completed",
+    "environment_version": 2,
+    "policy_version": null,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 128,
+    "episodes": 4,
+    "validation": {
+      "ACCEPTED": 106,
+      "SWEEP_REJECTED": 4,
+      "IK_OR_LIMIT_REJECTED": 18
+    },
+    "accepted_fraction": 0.828125,
+    "projected_accepted": 85,
+    "terminations": {
+      "TIME_LIMIT": 4
+    },
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -1.280000000000001,
+      "motion": -0.12754196786880492,
+      "proximity": -3.383855094876642,
+      "rejected_action": -22.013286232023102,
+      "timeout": -20.0
+    },
+    "reward_nonzero_steps": {
+      "time": 128,
+      "motion": 128,
+      "proximity": 106,
+      "rejected_action": 22,
+      "timeout": 4
+    },
+    "action_mean": [
+      -0.011533742828760296,
+      0.016396161343436688,
+      -0.027163282979017822,
+      0.03946022049058229,
+      -0.028281752104703628,
+      0.008249470985902008,
+      0.023284459530259483
+    ],
+    "action_std": [
+      0.37661655252588183,
+      0.38228926041965844,
+      0.3850469226149742,
+      0.36944492587492195,
+      0.3613562102211599,
+      0.37149630265580297,
+      0.3885757599840734
+    ],
+    "action_saturation": [
+      0.015625,
+      0.0078125,
+      0.0078125,
+      0.0,
+      0.0,
+      0.015625,
+      0.0078125
+    ],
+    "summed_step_timing_s": {
+      "validation": 0.0,
+      "physics": 0.0,
+      "perception": 0.0,
+      "feedback": 0.0,
+      "total": 0.0
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 0,
+    "hardware_medians": {},
+    "weights_changed": true,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": {
+      "episodes": 3,
+      "seeds": [
+        910000,
+        910001,
+        910002
+      ],
+      "stochastic": false,
+      "success_rate": 0.0
+    },
+    "initial_evaluation": null,
+    "checkpoints": {}
+  },
+  {
+    "run": "39d9240af5124aa2a0eee42fa0aeeb47",
+    "status": "no_final_report",
+    "environment_version": 6,
+    "policy_version": 2,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 0,
+    "episodes": 0,
+    "validation": {},
+    "accepted_fraction": null,
+    "projected_accepted": 0,
+    "terminations": {},
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {},
+    "reward_nonzero_steps": {},
+    "action_mean": null,
+    "action_std": null,
+    "action_saturation": null,
+    "summed_step_timing_s": {
+      "validation": 0,
+      "physics": 0,
+      "perception": 0,
+      "feedback": 0,
+      "total": 0
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 0,
+    "hardware_medians": {},
+    "weights_changed": null,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": null,
+    "initial_evaluation": null,
+    "checkpoints": {}
+  },
+  {
+    "run": "4969538bba834b929b9d9c0295513bf8",
+    "status": "error_recorded",
+    "environment_version": 2,
+    "policy_version": null,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 92,
+    "episodes": 2,
+    "validation": {
+      "ACCEPTED": 74,
+      "SWEEP_REJECTED": 2,
+      "IK_OR_LIMIT_REJECTED": 16
+    },
+    "accepted_fraction": 0.8043478260869565,
+    "projected_accepted": 59,
+    "terminations": {
+      "TIME_LIMIT": 2
+    },
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -0.9200000000000006,
+      "motion": -0.09454783853888514,
+      "proximity": -0.46066217882300897,
+      "rejected_action": -18.005433798290653,
+      "timeout": -10.0
+    },
+    "reward_nonzero_steps": {
+      "time": 92,
+      "motion": 92,
+      "proximity": 74,
+      "rejected_action": 18,
+      "timeout": 2
+    },
+    "action_mean": [
+      -0.004450697664414411,
+      0.06160729819827754,
+      -0.03482411889379601,
+      0.026942193103225334,
+      0.006893647815677864,
+      0.05958537549873733,
+      0.01459696290143968
+    ],
+    "action_std": [
+      0.37643535809522904,
+      0.3915898291167057,
+      0.38199253771435243,
+      0.3784730264942558,
+      0.3714695151602597,
+      0.3668248989352668,
+      0.4017120946618257
+    ],
+    "action_saturation": [
+      0.010869565217391304,
+      0.010869565217391304,
+      0.0,
+      0.0,
+      0.0,
+      0.010869565217391304,
+      0.0
+    ],
+    "summed_step_timing_s": {
+      "validation": 0.0,
+      "physics": 0.0,
+      "perception": 0.0,
+      "feedback": 0.0,
+      "total": 0.0
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 0,
+    "hardware_medians": {},
+    "weights_changed": null,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": null,
+    "initial_evaluation": null,
+    "checkpoints": {}
+  },
+  {
+    "run": "8fd65591d4b841c2af8f92b4a299cba0",
+    "status": "completed",
+    "environment_version": 5,
+    "policy_version": 2,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 2048,
+    "episodes": 32,
+    "validation": {
+      "ACCEPTED": 1961,
+      "SWEEP_REJECTED": 87
+    },
+    "accepted_fraction": 0.95751953125,
+    "projected_accepted": 0,
+    "terminations": {
+      "TIME_LIMIT": 31,
+      "success": 1
+    },
+    "success_episodes": 1,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -20.480000000000402,
+      "motion": -1.0326630896067959,
+      "proximity": 5.343789688491716,
+      "timeout": 0.0,
+      "rejected_action": -87.0,
+      "success": 10.0
+    },
+    "reward_nonzero_steps": {
+      "time": 2048,
+      "motion": 2048,
+      "proximity": 1961,
+      "timeout": 0,
+      "rejected_action": 87,
+      "success": 1
+    },
+    "action_mean": [
+      0.10660255692164355,
+      0.08260038561297733,
+      -0.09554664751271957
+    ],
+    "action_std": [
+      0.40763545477053625,
+      0.38860104200736817,
+      0.39967048869627325
+    ],
+    "action_saturation": [
+      0.02197265625,
+      0.01611328125,
+      0.02294921875
+    ],
+    "summed_step_timing_s": {
+      "validation": 33.786652199999935,
+      "physics": 3.7701631999968868,
+      "perception": 187.65586589999793,
+      "feedback": 0.5732144999969933,
+      "total": 225.78634839999472
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 16,
+    "hardware_medians": {
+      "cpu_percent": 43.7,
+      "gpu_utilization_percent": 15.5,
+      "gpu_memory_mib": 2280.0,
+      "torch_reserved_bytes": 167772160.0
+    },
+    "weights_changed": true,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": {
+      "episodes": 8,
+      "seeds": [
+        910000,
+        910001,
+        910002,
+        910003,
+        910004,
+        910005,
+        910006,
+        910007
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.033108194998658164
+    },
+    "initial_evaluation": {
+      "episodes": 8,
+      "seeds": [
+        910000,
+        910001,
+        910002,
+        910003,
+        910004,
+        910005,
+        910006,
+        910007
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.033133317392555164
+    },
+    "checkpoints": {
+      "checkpoint-1024.zip": {
+        "sha256": "1b10ec77781686549ccb4f33f50f93055d830981ea4050adfadd49e38da9be46",
+        "verified": true
+      },
+      "checkpoint-1280.zip": {
+        "sha256": "a522717a5dd0964c0bc6807a69ef8f459eca3c818958113463302e5e91a6d40b",
+        "verified": true
+      },
+      "checkpoint-1536.zip": {
+        "sha256": "f023afdf686dd8d027c095d8596b2929626e3bf8ec662fbf2bca429cdd283ec0",
+        "verified": true
+      },
+      "checkpoint-1792.zip": {
+        "sha256": "f5e6be3a5e6815154fc4327b99646c5b18a8b99c3f17951c273d39ddafed4505",
+        "verified": true
+      },
+      "checkpoint-2048.zip": {
+        "sha256": "337679b924f2649b8aadda736a7747faccf9c26ff11251fbacbe6997f94cb11c",
+        "verified": true
+      },
+      "checkpoint-256.zip": {
+        "sha256": "0d36262f30dd4f596d65acff2439c403c9ab2f538f6cd1f3098673414434e981",
+        "verified": true
+      },
+      "checkpoint-512.zip": {
+        "sha256": "4a953020532d20a5d5f6fc371c27cf1f7d9a2684540f99ab3a9beb862d27432d",
+        "verified": true
+      },
+      "checkpoint-768.zip": {
+        "sha256": "c43694bf8cf04a7e8d0cd5d4eccb80197c769a68beb6c4a65be1eca856ad9b21",
+        "verified": true
+      },
+      "policy.zip": {
+        "sha256": "2aee7eb84c62a96b2fbbcf566c26f5d796e08463ed0331f69a2e3dc282c055e8",
+        "verified": true
+      }
+    }
+  },
+  {
+    "run": "9a418ad05a3c4ab285a9a7fd9cabee91",
+    "status": "completed",
+    "environment_version": 4,
+    "policy_version": 2,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 1024,
+    "episodes": 16,
+    "validation": {
+      "ACCEPTED": 1007,
+      "SWEEP_REJECTED": 17
+    },
+    "accepted_fraction": 0.9833984375,
+    "projected_accepted": 0,
+    "terminations": {
+      "TIME_LIMIT": 16
+    },
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -10.239999999999826,
+      "motion": -0.4821226584329272,
+      "proximity": 0.7848681112185582,
+      "timeout": -80.0,
+      "rejected_action": -17.0
+    },
+    "reward_nonzero_steps": {
+      "time": 1024,
+      "motion": 1024,
+      "proximity": 1007,
+      "timeout": 16,
+      "rejected_action": 17
+    },
+    "action_mean": [
+      -0.03005675161148247,
+      0.030612725537253027,
+      -0.04697837158528273
+    ],
+    "action_std": [
+      0.40825277317368763,
+      0.3798881217445713,
+      0.3947025240481394
+    ],
+    "action_saturation": [
+      0.0166015625,
+      0.0126953125,
+      0.0146484375
+    ],
+    "summed_step_timing_s": {
+      "validation": 16.18654970000034,
+      "physics": 1.8749969999976202,
+      "perception": 87.20751679999807,
+      "feedback": 0.26694420000421815,
+      "total": 105.5362240000004
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 8,
+    "hardware_medians": {
+      "cpu_percent": 40.0,
+      "gpu_utilization_percent": 12.0,
+      "gpu_memory_mib": 2107.0,
+      "torch_reserved_bytes": 167772160.0
+    },
+    "weights_changed": true,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": {
+      "episodes": 8,
+      "seeds": [
+        910000,
+        910001,
+        910002,
+        910003,
+        910004,
+        910005,
+        910006,
+        910007
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.03133935690830669
+    },
+    "initial_evaluation": {
+      "episodes": 8,
+      "seeds": [
+        910000,
+        910001,
+        910002,
+        910003,
+        910004,
+        910005,
+        910006,
+        910007
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.03313331713045779
+    },
+    "checkpoints": {
+      "checkpoint-1024.zip": {
+        "sha256": "e85a5273f986c0fe856c56b21b49a9a343518c11107b1f16e1c01cb6c07c5e98",
+        "verified": true
+      },
+      "checkpoint-256.zip": {
+        "sha256": "1f479f84c2645cfd3f9a4ab22247cd9950a5f73da95a39fcacf265c1cd8ec966",
+        "verified": true
+      },
+      "checkpoint-512.zip": {
+        "sha256": "3744b731346215f96231de3e472b9c5547f0d3ac5dab6f95edb7ed369843ac42",
+        "verified": true
+      },
+      "checkpoint-768.zip": {
+        "sha256": "94efb482235bf68e3a748fb483f99eb222ebf71c00a3a2b7a81309a3028547f3",
+        "verified": true
+      },
+      "policy.zip": {
+        "sha256": "7667b8169dc1a18cf866505a0778b0afa08db34a5c96b0a324d7664fd4617644",
+        "verified": true
+      }
+    }
+  },
+  {
+    "run": "a2ae9e0730a24df08bd3799dc999360c",
+    "status": "error_recorded",
+    "environment_version": 2,
+    "policy_version": null,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 19,
+    "episodes": 0,
+    "validation": {
+      "ACCEPTED": 18,
+      "IK_OR_LIMIT_REJECTED": 1
+    },
+    "accepted_fraction": 0.9473684210526315,
+    "projected_accepted": 14,
+    "terminations": {},
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -0.19000000000000003,
+      "motion": -0.021908218383789063,
+      "proximity": -2.06651833674575,
+      "rejected_action": -1.0
+    },
+    "reward_nonzero_steps": {
+      "time": 19,
+      "motion": 19,
+      "proximity": 18,
+      "rejected_action": 1
+    },
+    "action_mean": [
+      -0.04170277244166324,
+      -0.14932744773594955,
+      -0.009786267225679598,
+      0.16251453120065362,
+      0.029595865083760338,
+      -0.01648449574254061,
+      0.1765279346880944
+    ],
+    "action_std": [
+      0.4514579007069425,
+      0.3995672736662074,
+      0.4100406073914065,
+      0.3886998854291423,
+      0.3665977707402708,
+      0.37143923094309644,
+      0.339351783427437
+    ],
+    "action_saturation": [
+      0.10526315789473684,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.05263157894736842,
+      0.0
+    ],
+    "summed_step_timing_s": {
+      "validation": 0.0,
+      "physics": 0.0,
+      "perception": 0.0,
+      "feedback": 0.0,
+      "total": 0.0
+    },
+    "device": null,
+    "gpu": null,
+    "hardware_samples": 0,
+    "hardware_medians": {},
+    "weights_changed": null,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": null,
+    "initial_evaluation": null,
+    "checkpoints": {}
+  },
+  {
+    "run": "b3ca67424f08493d8696a2aa55e278bf",
+    "status": "completed",
+    "environment_version": 3,
+    "policy_version": 2,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 0,
+    "episodes": 0,
+    "validation": {},
+    "accepted_fraction": null,
+    "projected_accepted": 0,
+    "terminations": {},
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {},
+    "reward_nonzero_steps": {},
+    "action_mean": null,
+    "action_std": null,
+    "action_saturation": null,
+    "summed_step_timing_s": {
+      "validation": 0,
+      "physics": 0,
+      "perception": 0,
+      "feedback": 0,
+      "total": 0
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 0,
+    "hardware_medians": {},
+    "weights_changed": false,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": {
+      "episodes": 5,
+      "seeds": [
+        910000,
+        910001,
+        910002,
+        910003,
+        910004
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.03600035244363527
+    },
+    "initial_evaluation": null,
+    "checkpoints": {
+      "policy.zip": {
+        "sha256": "9a51ec5c9fdde7ef060f32cc29917f6b044b1f0a2e7f0426c8fe748dd7ec5e10",
+        "verified": true
+      }
+    }
+  },
+  {
+    "run": "cb3eddf4d4ff4893bc1a3a1e3365352c",
+    "status": "completed",
+    "environment_version": 3,
+    "policy_version": 2,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 128,
+    "episodes": 2,
+    "validation": {
+      "ACCEPTED": 109,
+      "SWEEP_REJECTED": 10,
+      "VELOCITY_REJECTED": 9
+    },
+    "accepted_fraction": 0.8515625,
+    "projected_accepted": 0,
+    "terminations": {
+      "TIME_LIMIT": 2
+    },
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -1.280000000000001,
+      "motion": -0.12758060541749003,
+      "proximity": -6.20186409450595,
+      "rejected_action": -19.14231709019672,
+      "timeout": -10.0
+    },
+    "reward_nonzero_steps": {
+      "time": 128,
+      "motion": 128,
+      "proximity": 109,
+      "rejected_action": 19,
+      "timeout": 2
+    },
+    "action_mean": [
+      -0.013166690565412864,
+      0.02097333956407965,
+      -0.011345338094542967,
+      0.04986867080151569,
+      0.00830045019120007,
+      0.03023453911737306,
+      -0.01858003100642236
+    ],
+    "action_std": [
+      0.37669430347450683,
+      0.38247084904327877,
+      0.38566946491700477,
+      0.3696991318092896,
+      0.3593171836320507,
+      0.372166174162171,
+      0.3885215153101889
+    ],
+    "action_saturation": [
+      0.015625,
+      0.0078125,
+      0.0078125,
+      0.0,
+      0.0,
+      0.015625,
+      0.0078125
+    ],
+    "summed_step_timing_s": {
+      "validation": 6.17979259994172,
+      "physics": 1.0185424000956118,
+      "perception": 11.633211799955461,
+      "feedback": 0.032330699905287474,
+      "total": 18.86390439987008
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 2,
+    "hardware_medians": {
+      "gpu_utilization_percent": 17.0,
+      "gpu_memory_mib": 2427.0,
+      "torch_reserved_bytes": 167772160.0
+    },
+    "weights_changed": true,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": {
+      "episodes": 2,
+      "seeds": [
+        910000,
+        910001
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.025723038322970307
+    },
+    "initial_evaluation": null,
+    "checkpoints": {
+      "checkpoint-128.zip": {
+        "sha256": "f34018e5ffb73aef2045b157825c1eea8a53df5cf34af0666cf337e53df2cd4c",
+        "verified": true
+      },
+      "checkpoint-64.zip": {
+        "sha256": "fe91ba271e41f07adad3c8d4348ab6927160c953db2055c25f7fd1dda3a837db",
+        "verified": true
+      },
+      "policy.zip": {
+        "sha256": "16757afd3b0a9c99f03bf46083486641323464b1ec9c31b0e01659335f1d7f74",
+        "verified": true
+      }
+    }
+  },
+  {
+    "run": "e455937e846a40858d71092802810d00",
+    "status": "completed",
+    "environment_version": 2,
+    "policy_version": null,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 128,
+    "episodes": 4,
+    "validation": {
+      "ACCEPTED": 106,
+      "SWEEP_REJECTED": 4,
+      "IK_OR_LIMIT_REJECTED": 18
+    },
+    "accepted_fraction": 0.828125,
+    "projected_accepted": 85,
+    "terminations": {
+      "TIME_LIMIT": 4
+    },
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -1.280000000000001,
+      "motion": -0.12754215356707568,
+      "proximity": -3.383535059546565,
+      "rejected_action": -22.0132863458308,
+      "timeout": -20.0
+    },
+    "reward_nonzero_steps": {
+      "time": 128,
+      "motion": 128,
+      "proximity": 106,
+      "rejected_action": 22,
+      "timeout": 4
+    },
+    "action_mean": [
+      -0.011531512933288468,
+      0.016394084123021457,
+      -0.027163908296643058,
+      0.039465092195314355,
+      -0.028286669502449513,
+      0.008252690953668207,
+      0.02328715569456108
+    ],
+    "action_std": [
+      0.37661666679573075,
+      0.38228947051628714,
+      0.3850474273768145,
+      0.36944507668775806,
+      0.36135701756179256,
+      0.37149558147322576,
+      0.3885756444749746
+    ],
+    "action_saturation": [
+      0.015625,
+      0.0078125,
+      0.0078125,
+      0.0,
+      0.0,
+      0.015625,
+      0.0078125
+    ],
+    "summed_step_timing_s": {
+      "validation": 0.0,
+      "physics": 0.0,
+      "perception": 0.0,
+      "feedback": 0.0,
+      "total": 0.0
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 0,
+    "hardware_medians": {},
+    "weights_changed": true,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": {
+      "episodes": 3,
+      "seeds": [
+        910000,
+        910001,
+        910002
+      ],
+      "stochastic": false,
+      "success_rate": 0.0
+    },
+    "initial_evaluation": null,
+    "checkpoints": {}
+  },
+  {
+    "run": "interface-pilot-70d2b27ad12d4412a44724ebc1547f00",
+    "status": "error_recorded",
+    "environment_version": 1,
+    "policy_version": null,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 7,
+    "episodes": 0,
+    "validation": {
+      "IK_OR_LIMIT_REJECTED": 7
+    },
+    "accepted_fraction": 0.0,
+    "projected_accepted": 0,
+    "terminations": {},
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -0.07,
+      "motion": -0.021352829813957214,
+      "proximity": 0.0,
+      "rejected_action": -7.0
+    },
+    "reward_nonzero_steps": {
+      "time": 7,
+      "motion": 7,
+      "proximity": 0,
+      "rejected_action": 7
+    },
+    "action_mean": [
+      -0.0767753619168486,
+      -0.4184225755078452,
+      0.10958568592156682,
+      0.4015158414840698,
+      0.19882397992270334,
+      -0.2771625215453761,
+      0.6684138258653027
+    ],
+    "action_std": [
+      0.6342393524254504,
+      0.6347145392950417,
+      0.6025674741261016,
+      0.3948694749293067,
+      0.6976357474453657,
+      0.4359987952394821,
+      0.3635369441698988
+    ],
+    "action_saturation": [
+      0.2857142857142857,
+      0.2857142857142857,
+      0.2857142857142857,
+      0.14285714285714285,
+      0.14285714285714285,
+      0.14285714285714285,
+      0.42857142857142855
+    ],
+    "summed_step_timing_s": {
+      "validation": 0.0,
+      "physics": 0.0,
+      "perception": 0.0,
+      "feedback": 0.0,
+      "total": 0.0
+    },
+    "device": null,
+    "gpu": null,
+    "hardware_samples": 0,
+    "hardware_medians": {},
+    "weights_changed": null,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": null,
+    "initial_evaluation": null,
+    "checkpoints": {}
+  },
+  {
+    "run": "interface-pilot-8328e48033b842f799e243fc07507516",
+    "status": "completed",
+    "environment_version": 1,
+    "policy_version": null,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 32,
+    "episodes": 4,
+    "validation": {
+      "IK_OR_LIMIT_REJECTED": 28,
+      "VELOCITY_REJECTED": 4
+    },
+    "accepted_fraction": 0.0,
+    "projected_accepted": 0,
+    "terminations": {
+      "TIME_LIMIT": 4
+    },
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -0.3200000000000001,
+      "motion": -0.10601756489276888,
+      "proximity": 0.0,
+      "rejected_action": -32.0,
+      "timeout": -20.0
+    },
+    "reward_nonzero_steps": {
+      "time": 32,
+      "motion": 32,
+      "proximity": 0,
+      "rejected_action": 32,
+      "timeout": 4
+    },
+    "action_mean": [
+      -0.0011888581793755293,
+      -0.16888471483252943,
+      -0.13065348973032087,
+      0.0803613574244082,
+      0.01734474112163298,
+      -0.09562257817015052,
+      0.2176217209198512
+    ],
+    "action_std": [
+      0.7115663847090057,
+      0.680799821603927,
+      0.669161730244249,
+      0.6989998643587966,
+      0.640132298833367,
+      0.6607465380396687,
+      0.6720451617805168
+    ],
+    "action_saturation": [
+      0.28125,
+      0.28125,
+      0.3125,
+      0.28125,
+      0.15625,
+      0.28125,
+      0.3125
+    ],
+    "summed_step_timing_s": {
+      "validation": 0.0,
+      "physics": 0.0,
+      "perception": 0.0,
+      "feedback": 0.0,
+      "total": 0.0
+    },
+    "device": null,
+    "gpu": null,
+    "hardware_samples": 0,
+    "hardware_medians": {},
+    "weights_changed": true,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": {
+      "episodes": 2,
+      "seeds": [
+        910000,
+        910001
+      ],
+      "stochastic": false,
+      "success_rate": 0.0
+    },
+    "initial_evaluation": null,
+    "checkpoints": {}
+  },
+  {
+    "run": "interface-pilot-b24c8f26f4454dd793fa4872345d9646",
+    "status": "error_recorded",
+    "environment_version": 1,
+    "policy_version": null,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 0,
+    "episodes": 0,
+    "validation": {},
+    "accepted_fraction": null,
+    "projected_accepted": 0,
+    "terminations": {},
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {},
+    "reward_nonzero_steps": {},
+    "action_mean": null,
+    "action_std": null,
+    "action_saturation": null,
+    "summed_step_timing_s": {
+      "validation": 0,
+      "physics": 0,
+      "perception": 0,
+      "feedback": 0,
+      "total": 0
+    },
+    "device": null,
+    "gpu": null,
+    "hardware_samples": 0,
+    "hardware_medians": {},
+    "weights_changed": null,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": null,
+    "initial_evaluation": null,
+    "checkpoints": {}
+  },
+  {
+    "run": "reach-normalized-1794052561762",
+    "status": "error_recorded",
+    "environment_version": 3,
+    "policy_version": 2,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 227,
+    "episodes": 6,
+    "validation": {
+      "ACCEPTED": 185,
+      "VELOCITY_REJECTED": 26,
+      "SWEEP_REJECTED": 16
+    },
+    "accepted_fraction": 0.8149779735682819,
+    "projected_accepted": 0,
+    "terminations": {
+      "TIME_LIMIT": 4,
+      "success": 2
+    },
+    "success_episodes": 2,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -2.2699999999999956,
+      "motion": -0.23432874609529974,
+      "proximity": -6.880922339473907,
+      "rejected_action": -42.13983646115247,
+      "timeout": -20.0,
+      "success": 20.0
+    },
+    "reward_nonzero_steps": {
+      "time": 227,
+      "motion": 227,
+      "proximity": 185,
+      "rejected_action": 42,
+      "timeout": 4,
+      "success": 2
+    },
+    "action_mean": [
+      -0.003305057051390541,
+      -0.018913582199158778,
+      -0.02230368330172111,
+      0.02361058055665262,
+      -0.014803328552890552,
+      -0.022387536957250737,
+      0.009344628460229362
+    ],
+    "action_std": [
+      0.38522585455826297,
+      0.39067655630882264,
+      0.3894575723777051,
+      0.366962647645872,
+      0.36970548481667953,
+      0.39202796898575715,
+      0.39028196523652253
+    ],
+    "action_saturation": [
+      0.01762114537444934,
+      0.022026431718061675,
+      0.01762114537444934,
+      0.004405286343612335,
+      0.00881057268722467,
+      0.00881057268722467,
+      0.013215859030837005
+    ],
+    "summed_step_timing_s": {
+      "validation": 11.133340700031113,
+      "physics": 1.7917108999718039,
+      "perception": 20.878868999996484,
+      "feedback": 0.05966240002089762,
+      "total": 33.863638499988156
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 1,
+    "hardware_medians": {
+      "gpu_utilization_percent": 17.0,
+      "gpu_memory_mib": 2625.0,
+      "torch_reserved_bytes": 167772160.0
+    },
+    "weights_changed": null,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": null,
+    "initial_evaluation": {
+      "episodes": 8,
+      "seeds": [
+        910100,
+        910101,
+        910102,
+        910103,
+        910104,
+        910105,
+        910106,
+        910107
+      ],
+      "stochastic": false,
+      "success_rate": 0.0,
+      "median_best_distance_m": 0.06090662043066211
+    },
+    "checkpoints": {
+      "interrupted-policy.zip": {
+        "sha256": "a7680e8725502f0ad81aa434962eb52102c3607227ae38aef6c68a36a1fffa22",
+        "verified": true
+      }
+    }
+  },
+  {
+    "run": "reach-v3-pilot-1794051783015",
+    "status": "no_final_report",
+    "environment_version": 3,
+    "policy_version": null,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 700,
+    "episodes": 17,
+    "validation": {
+      "ACCEPTED": 577,
+      "VELOCITY_REJECTED": 81,
+      "SWEEP_REJECTED": 32,
+      "IK_OR_LIMIT_REJECTED": 10
+    },
+    "accepted_fraction": 0.8242857142857143,
+    "projected_accepted": 22,
+    "terminations": {
+      "TIME_LIMIT": 13,
+      "success": 4
+    },
+    "success_episodes": 4,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -6.999999999999895,
+      "motion": -0.7400871700346472,
+      "proximity": -18.292213192091168,
+      "rejected_action": -123.29863091701527,
+      "timeout": -65.0,
+      "success": 40.0
+    },
+    "reward_nonzero_steps": {
+      "time": 700,
+      "motion": 700,
+      "proximity": 577,
+      "rejected_action": 123,
+      "timeout": 13,
+      "success": 4
+    },
+    "action_mean": [
+      0.03765751777216792,
+      -0.05360511791792565,
+      -0.007512254528701305,
+      0.02559685945045203,
+      0.014174570164842797,
+      0.010791388881126684,
+      -0.03784444124970053
+    ],
+    "action_std": [
+      0.409405015054407,
+      0.3877363699764861,
+      0.39329020558139133,
+      0.37973918065083195,
+      0.37117534652876183,
+      0.3794465597088525,
+      0.3897855332164741
+    ],
+    "action_saturation": [
+      0.022857142857142857,
+      0.018571428571428572,
+      0.015714285714285715,
+      0.005714285714285714,
+      0.014285714285714285,
+      0.01,
+      0.011428571428571429
+    ],
+    "summed_step_timing_s": {
+      "validation": 34.57598429996506,
+      "physics": 4.717042800082709,
+      "perception": 59.5568626999484,
+      "feedback": 0.163472800017189,
+      "total": 99.01349439998376
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 5,
+    "hardware_medians": {
+      "gpu_utilization_percent": 8.0,
+      "gpu_memory_mib": 1313.0,
+      "torch_reserved_bytes": 167772160.0
+    },
+    "weights_changed": null,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": null,
+    "initial_evaluation": null,
+    "checkpoints": {
+      "checkpoint-256.zip": {
+        "sha256": "d5b2e81b766d41df8e10fbfa694ded622304b29a16660cad7b21b7db98b31831",
+        "verified": true
+      },
+      "checkpoint-512.zip": {
+        "sha256": "b4d41f8d912257525d681bac1d86a203e5e8822e968e133db597447693351443",
+        "verified": true
+      }
+    }
+  },
+  {
+    "run": "reach-v3-watch-1794051936807",
+    "status": "completed",
+    "environment_version": 3,
+    "policy_version": null,
+    "algorithm": "PPO",
+    "seed": 7,
+    "steps": 1024,
+    "episodes": 24,
+    "validation": {
+      "ACCEPTED": 842,
+      "VELOCITY_REJECTED": 103,
+      "SWEEP_REJECTED": 35,
+      "IK_OR_LIMIT_REJECTED": 44
+    },
+    "accepted_fraction": 0.822265625,
+    "projected_accepted": 64,
+    "terminations": {
+      "success": 5,
+      "TIME_LIMIT": 19
+    },
+    "success_episodes": 5,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -10.239999999999826,
+      "motion": -1.1163807886764407,
+      "proximity": -42.71686879780545,
+      "rejected_action": -182.70783787169108,
+      "success": 50.0,
+      "timeout": -95.0
+    },
+    "reward_nonzero_steps": {
+      "time": 1024,
+      "motion": 1024,
+      "proximity": 842,
+      "rejected_action": 182,
+      "success": 5,
+      "timeout": 19
+    },
+    "action_mean": [
+      0.10299720366310794,
+      -0.1660256410104921,
+      0.020222729189754318,
+      -0.05433371993058245,
+      0.03492771566970987,
+      0.04673639587554135,
+      -0.052085904494560964
+    ],
+    "action_std": [
+      0.4030707031467384,
+      0.37951115779180494,
+      0.3996692676999951,
+      0.381532764616362,
+      0.3738906164481777,
+      0.37398961804909786,
+      0.38872158900902715
+    ],
+    "action_saturation": [
+      0.021484375,
+      0.0234375,
+      0.015625,
+      0.0068359375,
+      0.01171875,
+      0.009765625,
+      0.0126953125
+    ],
+    "summed_step_timing_s": {
+      "validation": 62.202626100042835,
+      "physics": 8.5503032999477,
+      "perception": 119.86292960002538,
+      "feedback": 0.36961879996670177,
+      "total": 190.98579520006024
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti",
+    "hardware_samples": 8,
+    "hardware_medians": {
+      "gpu_utilization_percent": 16.5,
+      "gpu_memory_mib": 1671.0,
+      "torch_reserved_bytes": 169869312.0
+    },
+    "weights_changed": true,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": {
+      "episodes": 4,
+      "seeds": [
+        910000,
+        910001,
+        910002,
+        910003
+      ],
+      "stochastic": false,
+      "success_rate": 0.5,
+      "median_best_distance_m": 0.0436543669265196
+    },
+    "initial_evaluation": {
+      "episodes": 4,
+      "seeds": [
+        910000,
+        910001,
+        910002,
+        910003
+      ],
+      "stochastic": false,
+      "success_rate": 0.25,
+      "median_best_distance_m": 0.04445610127523115
+    },
+    "checkpoints": {
+      "checkpoint-1024.zip": {
+        "sha256": "4eb2fb4d9e56651e5ec80e5e9217c8e1ee02451c88e05ea76b392a8f1be9e788",
+        "verified": true
+      },
+      "checkpoint-256.zip": {
+        "sha256": "93d395caafd4ab43cd13400708d8534a34bbe39437e87ee7bf1e577cf2da6e0f",
+        "verified": true
+      },
+      "checkpoint-512.zip": {
+        "sha256": "cfd1557d24157d727fdb3e812563c63d1992c012917cf735e4cd12c7a7f6c38e",
+        "verified": true
+      },
+      "checkpoint-768.zip": {
+        "sha256": "bdf0c8c85ad41b011f5c15bf77b6c37e9a25039f4f8a931ba655071e7a255245",
+        "verified": true
+      },
+      "policy.zip": {
+        "sha256": "845b314f0aba4b431caabb80fe791346b04fd9d673eb279baa11f84d9c54e5b8",
+        "verified": true
+      }
+    }
+  },
+  {
+    "run": "watch-pilot-617784c13d56411fb8cce1e4c4ccdfbf",
+    "status": "completed",
+    "environment_version": 1,
+    "policy_version": null,
+    "algorithm": "PPO",
+    "seed": 11,
+    "steps": 32,
+    "episodes": 4,
+    "validation": {
+      "IK_OR_LIMIT_REJECTED": 28,
+      "VELOCITY_REJECTED": 4
+    },
+    "accepted_fraction": 0.0,
+    "projected_accepted": 0,
+    "terminations": {
+      "TIME_LIMIT": 4
+    },
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {
+      "time": -0.3200000000000001,
+      "motion": -0.10601226341724394,
+      "proximity": 0.0,
+      "rejected_action": -32.0,
+      "timeout": -20.0
+    },
+    "reward_nonzero_steps": {
+      "time": 32,
+      "motion": 32,
+      "proximity": 0,
+      "rejected_action": 32,
+      "timeout": 4
+    },
+    "action_mean": [
+      -0.014931536396034062,
+      -0.15415517520159483,
+      -0.1345457150018774,
+      0.0763501281326171,
+      0.007445371360518038,
+      -0.10274251329246908,
+      0.2130308925989084
+    ],
+    "action_std": [
+      0.7085909914892088,
+      0.6859018659338844,
+      0.6695024098703595,
+      0.6997040103377054,
+      0.6404407284703454,
+      0.6605089869121906,
+      0.6724230615723986
+    ],
+    "action_saturation": [
+      0.3125,
+      0.28125,
+      0.3125,
+      0.28125,
+      0.15625,
+      0.28125,
+      0.3125
+    ],
+    "summed_step_timing_s": {
+      "validation": 0.0,
+      "physics": 0.0,
+      "perception": 0.0,
+      "feedback": 0.0,
+      "total": 0.0
+    },
+    "device": null,
+    "gpu": null,
+    "hardware_samples": 0,
+    "hardware_medians": {},
+    "weights_changed": true,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": {
+      "episodes": 2,
+      "seeds": [
+        910000,
+        910001
+      ],
+      "stochastic": false,
+      "success_rate": 0.0
+    },
+    "initial_evaluation": null,
+    "checkpoints": {}
+  },
+  {
+    "run": "watch-pilot-dcc7f2c4966a4724ab5bd208a51fbe92",
+    "status": "error_recorded",
+    "environment_version": 1,
+    "policy_version": null,
+    "algorithm": "PPO",
+    "seed": 11,
+    "steps": 0,
+    "episodes": 0,
+    "validation": {},
+    "accepted_fraction": null,
+    "projected_accepted": 0,
+    "terminations": {},
+    "success_episodes": 0,
+    "grasp_episodes": 0,
+    "lift_episodes": 0,
+    "unexpected_contact_steps": 0,
+    "contact_steps": 0,
+    "reward_totals": {},
+    "reward_nonzero_steps": {},
+    "action_mean": null,
+    "action_std": null,
+    "action_saturation": null,
+    "summed_step_timing_s": {
+      "validation": 0,
+      "physics": 0,
+      "perception": 0,
+      "feedback": 0,
+      "total": 0
+    },
+    "device": null,
+    "gpu": null,
+    "hardware_samples": 0,
+    "hardware_medians": {},
+    "weights_changed": null,
+    "training_wall_s": null,
+    "optimizer_wall_s": null,
+    "evaluation": null,
+    "initial_evaluation": null,
+    "checkpoints": {}
+  }
+]
