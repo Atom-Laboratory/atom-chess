@@ -281,14 +281,19 @@ def main():
         (output/'run.json').write_text(json.dumps(run, indent=2), encoding='utf-8')
         if env.native_approach and not env.native_reach:
             raise ValueError('Native approach is gated for M1. Use qualify_handoff.py to evaluate resets.')
+        if args.watch_native:
+            from watch import NativeWatch
+            watch = NativeWatch(env, show_colliders=args.show_colliders)
+            env.approach_observer = lambda phase, detail: watch.update(
+                dict(phase=phase, validation=dict(status=f'PLANNER: {phase} | {detail}')))
         env.reset(seed=args.seed)
-        if args.watch or args.watch_native:
+        if args.watch and watch is None:
             from watch import NativeWatch, Watch
-            watch = (NativeWatch(env, show_colliders=args.show_colliders) if args.watch_native
-                     else Watch(env, output, show_colliders=args.show_colliders))
+            watch = Watch(env, output, show_colliders=args.show_colliders)
+        if watch is not None:
             env.observer = lambda info: watch.update(info, force=env.finished)
             env.approach_observer = lambda phase, detail: watch.update(
-                dict(phase=phase, validation=dict(status='PLANNER: '+phase)))
+                dict(phase=phase, validation=dict(status=f'PLANNER: {phase} | {detail}')))
             watch.total = ((args.steps+args.rollout_steps-1)//args.rollout_steps)*args.rollout_steps
             watch.update(env.last_info, force=True)
         model = TimedPPO('MultiInputPolicy', env, n_steps=args.rollout_steps, batch_size=args.batch_size, n_epochs=args.epochs,
