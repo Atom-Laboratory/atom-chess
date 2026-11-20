@@ -63,6 +63,20 @@ def test_progress_shares_stage_and_count_with_terminal_and_dashboard(capsys):
     assert events[2]['completed'] == 0 and events[2]['unit'] == 'episodes'
 
 
+def test_dashboard_graph_supports_vector_only_visual_geometry_actor():
+    from gymnasium import spaces
+    from stable_baselines3.common.policies import MultiInputActorCriticPolicy
+    policy = MultiInputActorCriticPolicy(
+        spaces.Dict(commanded_joints=spaces.Box(-1., 1., (6,)),
+                    visual_target=spaces.Box(-1., 1., (5,))),
+        spaces.Box(-1., 1., (3,)), lambda _: .001)
+    graph, hooks = load_module('dashboard_publisher').policy_graph(policy)
+    by_id = {node['id']: node for node in graph}
+    assert by_id['features']['parents'] == ['commanded_joints', 'visual_target']
+    assert not any('CNN' in node['id'] or node['id'] == 'image' for node in graph)
+    assert hooks['action'] is policy.action_net
+
+
 def test_autonomous_visual_fusion_is_normalized_and_has_finite_gradients():
     import numpy as np
     import torch
