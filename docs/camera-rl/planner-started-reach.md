@@ -60,7 +60,7 @@ The proposal radius around visual XY/static piece-top height is experimental.
 It is not a proof that the entire region is clear; each action is checked again.
 The preview template never becomes the actor's actual camera frame.
 
-## Reproduce from the repository root (PowerShell)
+## Reproduce from the repository root (PowerShell 7)
 
 Prerequisites: the MuJoCo Python environment including RL/diagnostics dependencies,
 native motion and vision DLLs, and a prepared canonical version-6 fixture. Follow
@@ -130,3 +130,8 @@ never turn the observation-only manipulation flags on to bypass it.
 See ADRs [S039](../../simulation/docs/adrs/S039-shared-rigid-motion-sweep-bounds.md),
 [S040](../../simulation/docs/adrs/S040-planner-started-contact-free-reach.md) and
 [S041](../../simulation/docs/adrs/S041-estimated-scene-visibility-template.md).
+
+The [2026-11-20 results](../../simulation/mujoco/reports/training-diagnostics/planner-reach-20261120/README.md)
+include the actual 512-decision pilot, paired and independent evaluations, failed
+full-board continuation and the remaining gate. Current isolated reach results
+must not supersede that failed populated-board test.
