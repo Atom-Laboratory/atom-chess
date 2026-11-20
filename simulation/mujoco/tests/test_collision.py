@@ -4,7 +4,7 @@ import mujoco
 import numpy as np
 import pytest
 
-from atom_mujoco.collision import SweptChecker, SceneCollision
+from atom_mujoco.collision import SweptChecker, SceneCollision, pregrasp_opening
 
 
 def checker(obstacle_y):
@@ -86,6 +86,28 @@ def test_custom_geometry_retains_absolute_motion_bound(custom):
     options = ({'configure': lambda data: None} if custom == 'callback'
                else {'extra_coefficients': value.coefficients.copy()})
     assert value.interval([-np.pi, 1.], [np.pi, 1.], **options)['status'] == 'unresolved'
+
+
+def test_aperture_geometry_does_not_consume_hidden_piece_or_joint_state(tmp_path):
+    import json
+    from pathlib import Path
+    from atom_mujoco.model import build_bundle
+    from atom_mujoco.backend import Simulation
+    module = Path(__file__).resolve().parents[1]
+    parameters = json.loads((module/'playground/configs/playground-reachable-board.json').read_text())
+    parameters['official_piece_visuals'] = False
+    build_bundle(module.parent/'src/urdf/atom.urdf.xacro', tmp_path/'bundle',
+                 interactive=True, parameters=parameters)
+    sim = Simulation(tmp_path/'bundle')
+    original = sim.data.qpos.copy()
+    try:
+        expected = pregrasp_opening(sim, 'white_pawn_e2')
+        sim.data.qpos[:] += .1
+        altered = sim.data.qpos.copy()
+        assert pregrasp_opening(sim, 'white_pawn_e2') == pytest.approx(expected)
+        np.testing.assert_array_equal(sim.data.qpos, altered)
+    finally:
+        sim.data.qpos[:] = original
 
 
 def test_preflight_does_not_mutate_live_scene(tmp_path):

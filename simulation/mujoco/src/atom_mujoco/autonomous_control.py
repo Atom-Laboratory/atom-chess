@@ -25,6 +25,17 @@ class MotionChoice:
     duration_s: float
 
 
+def control_rates(base):
+    """Static model-derived rates shared by action decoding and reach planning."""
+    sim = base.sim
+    lengths = base.motion.geometry[:2]/1000
+    planar = lengths.sum()*sim.speed[0]+lengths[1]*sim.speed[2]
+    rates = np.array([planar, planar, sim.speed[1], sim.speed[-1], sim.speed[3]])
+    pitch = sim.manifest['scene']['square_size_m']
+    rates[:3] = np.minimum(rates[:3], pitch/(base.dwell*sim.dt))
+    return rates
+
+
 class AutonomousControl:
     def __init__(self, base):
         self.base = base
@@ -32,14 +43,10 @@ class AutonomousControl:
         self.model = model = sim.model
         self.scratch = mujoco.MjData(model)
         self.site = model.site('grasp_center').id
-        lengths = base.motion.geometry[:2]/1000
-        planar = lengths.sum()*sim.speed[0]+lengths[1]*sim.speed[2]
-        self.rates = np.array([planar, planar, sim.speed[1], sim.speed[-1], sim.speed[3]])
+        self.rates = control_rates(base)
         self.max_intervals = base.dwell
         # Maximum Cartesian exploration spans one square per longest action.
         # Joint velocity limits and the independent sweep still apply.
-        pitch = sim.manifest['scene']['square_size_m']
-        self.rates[:3] = np.minimum(self.rates[:3], pitch/(self.max_intervals*sim.dt))
         selected = model.body(base.config['piece']).id
         self.selected = selected
         geoms = [g for g in base.collision.environment if model.geom_bodyid[g] == selected]

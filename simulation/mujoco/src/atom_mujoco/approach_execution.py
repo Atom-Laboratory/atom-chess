@@ -6,7 +6,7 @@ import numpy as np
 
 from .approach_planner import model_identity, physical_identity, plan_identity
 from .autonomous_control import interpolate_command
-from .board_piece_localization import square_offsets
+from .board_piece_localization import scene_square_offsets, board_reference_shift, registration_identity
 from .collision import SweptChecker
 from .scene_feedback import SceneFeedback
 
@@ -15,16 +15,6 @@ def smooth_fraction(index, intervals):
     """Quintic progress with zero velocity and acceleration at both ends."""
     fraction = min(index/intervals, 1.)
     return fraction**3*(10.-15.*fraction+6.*fraction**2)
-
-
-def board_reference_shift(frame, planned_homography, pitch):
-    """Maximum rectified board-corner displacement in metres."""
-    height, width = frame.rectified_rgb.shape[:2]
-    corners = np.array([[0., width, width, 0.], [0., 0., height, height], [1., 1., 1., 1.]])
-    mapped = frame.homography@np.linalg.solve(planned_homography, corners)
-    with np.errstate(divide='ignore', invalid='ignore'):
-        delta = (mapped[:2]/mapped[2]-corners[:2])*np.array([8*pitch/width, 8*pitch/height])[:, None]
-    return float(np.linalg.norm(delta, axis=0).max()) if np.isfinite(delta).all() else float('inf')
 
 
 def execute_approach(scene, plan, *, observer=None, retreat=True, settle_timeout_s=2., speed_fraction=.25):
@@ -76,6 +66,8 @@ def execute_approach(scene, plan, *, observer=None, retreat=True, settle_timeout
             raise ValueError('ACCEPTED_PLAN_REQUIRED')
         if plan.get('signature') != plan_identity(plan):
             raise ValueError('PLAN_CONTENT_CHANGED')
+        if plan.get('registration_identity') != registration_identity(scene):
+            raise ValueError('REGISTRATION_ANCHOR_CHANGED')
         if model_identity(sim) != plan['model_identity']:
             raise ValueError('MODEL_CHANGED_SINCE_PLANNING')
         if physical_identity(sim) != plan['initial_physical_identity']:
@@ -90,8 +82,7 @@ def execute_approach(scene, plan, *, observer=None, retreat=True, settle_timeout
                 or frame.reference_sha256 != plan['reference_sha256']
                 or not 0 <= time.monotonic()-frame.captured_at_s <= scene.config['max_perception_age_s']):
             raise ValueError('FRESH_MATCHING_CAMERA_REFERENCE_REQUIRED')
-        offsets = square_offsets(scene.empty_reference, scene.centered_reference, frame,
-                                 scene.occupied, scene.pitch)
+        offsets = scene_square_offsets(scene, frame, scene.occupied)
         if set(offsets) != set(plan['offsets_m']):
             raise ValueError('OCCUPIED_PIECES_NOT_VISUALLY_LOCALIZED')
         if any(np.linalg.norm(np.array(offsets[square])-plan['offsets_m'][square]) > checker.clearance

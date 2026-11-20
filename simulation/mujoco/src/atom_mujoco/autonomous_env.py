@@ -12,7 +12,7 @@ from .autonomous_control import AutonomousControl, interpolate_command
 from .autonomous_feedback import ManipulationFeedback
 from .autonomous_observation import VisualHistory
 from .autonomous_scene import AutonomousScene
-from .board_piece_localization import square_offsets
+from .board_piece_localization import scene_square_offsets
 
 
 class AutonomousManipulationEnv(gym.Env):
@@ -124,8 +124,7 @@ class AutonomousManipulationEnv(gym.Env):
         age = time.monotonic()-frame.captured_at_s
         if age > self.base.config.get('max_perception_age_s', 1.):
             raise RuntimeError(f'CAMERA_FRAME_STALE: {age:.3f}s')
-        offsets = square_offsets(self.base.empty_reference, self.base.centered_reference, frame,
-                                 [self.base.config['source']], self.base.pitch)
+        offsets = scene_square_offsets(self.base, frame, [self.base.config['source']])
         visible = self.base.config['source'] in offsets
         if visible:
             self.source_xy = self.base.square_source[:2]+offsets[self.base.config['source']]

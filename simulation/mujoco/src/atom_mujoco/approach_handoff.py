@@ -5,7 +5,7 @@ import numpy as np
 
 from .approach_execution import board_reference_shift, execute_approach
 from .approach_planner import ApproachPlanner
-from .board_piece_localization import square_offsets
+from .board_piece_localization import scene_square_offsets
 
 
 def approach_handoff(scene, report, *, observer=None):
@@ -17,6 +17,15 @@ def approach_handoff(scene, report, *, observer=None):
         options['entry_offsets_squares'] = cfg['approach_entry_offsets_squares']
     if cfg.get('approach_max_candidates') is not None:
         options['max_candidates'] = cfg['approach_max_candidates']
+    if cfg.get('approach_preshape') is not None:
+        options['preshape'] = cfg['approach_preshape']
+    if cfg.get('require_reach_corridor'):
+        if cfg.get('start_mode') != 'native_reach':
+            raise ValueError('Reach corridor screening requires native_reach mode')
+        options['reach_corridor'] = dict(horizon=report['horizon'],
+            **{key: cfg[key] for key in ('workspace_radius_squares', 'reach_distance_squares', 'xyz_action_scale')})
+    if observer is not None:
+        options['observer'] = observer
     plan = ApproachPlanner(scene).plan(**options)
     report['plan'] = plan
     if plan['status'] != 'PLANNED':
@@ -66,7 +75,7 @@ def approach_handoff(scene, report, *, observer=None):
     if board_shift > clearance:
         raise RuntimeError('ARRIVAL_BOARD_REFERENCE_CHANGED')
     source = scene.config['source']
-    offsets = square_offsets(scene.empty_reference, scene.centered_reference, frame, [source], scene.pitch)
+    offsets = scene_square_offsets(scene, frame, [source])
     if source not in offsets:
         raise RuntimeError('ARRIVAL_TARGET_NOT_VISUALLY_LOCALIZED')
     target_xy = scene.square_source[:2]+offsets[source]
@@ -76,4 +85,8 @@ def approach_handoff(scene, report, *, observer=None):
     perception.update(source_localized=True, source_xy_m=target_xy.tolist(), shift_m=shift)
     if shift > clearance:
         raise RuntimeError('ARRIVAL_TARGET_ESTIMATE_CHANGED')
+    if cfg.get('reuse_approach_preference'):
+        selected = plan['candidates'][plan['selected_candidate']]
+        scene.approach_preference = {key: selected[key] for key in (
+            'height_index', 'entry_offset_squares', 'wrist_rad', 'elbow_down')}
     return frame, target_xy

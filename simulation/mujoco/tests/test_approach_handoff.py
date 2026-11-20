@@ -35,7 +35,7 @@ def inputs(monkeypatch):
     offsets = Mock(return_value={'e2': [0., 0.]})
     monkeypatch.setattr(handoff, 'ApproachPlanner', planner)
     monkeypatch.setattr(handoff, 'execute_approach', executor)
-    monkeypatch.setattr(handoff, 'square_offsets', offsets)
+    monkeypatch.setattr(handoff, 'scene_square_offsets', offsets)
     return scene, frame, plan, execution, executor, offsets
 
 

@@ -1,5 +1,48 @@
 """Register visible pieces in marker-rectified board coordinates."""
+import hashlib
+import json
 import numpy as np
+
+
+def board_reference_shift(frame, planned_homography, pitch):
+    """Maximum rectified board-corner displacement in metres."""
+    height, width = frame.rectified_rgb.shape[:2]
+    corners = np.array([[0., width, width, 0.], [0., 0., height, height], [1., 1., 1., 1.]])
+    mapped = frame.homography@np.linalg.solve(planned_homography, corners)
+    with np.errstate(divide='ignore', invalid='ignore'):
+        delta = (mapped[:2]/mapped[2]-corners[:2])*np.array([8*pitch/width, 8*pitch/height])[:, None]
+    return float(np.linalg.norm(delta, axis=0).max()) if np.isfinite(delta).all() else float('inf')
+
+
+def registration_identity(scene):
+    anchor = getattr(scene, 'registration', None)
+    if anchor is None:
+        return None
+    frame = anchor['frame']
+    digest = hashlib.sha256(frame.rectified_rgb.tobytes())
+    digest.update(json.dumps(dict(offsets=anchor['offsets'], tolerance_m=anchor['tolerance_m'],
+        homography=frame.homography.tolist(), camera_id=frame.camera_id,
+        reference_sha256=frame.reference_sha256), sort_keys=True, allow_nan=False).encode())
+    return digest.hexdigest()
+
+
+def scene_square_offsets(scene, observed, occupied):
+    """Camera-only scene estimates, optionally relative to an anchored real image."""
+    anchor = getattr(scene, 'registration', None)
+    if anchor is None:
+        return square_offsets(scene.empty_reference, scene.centered_reference, observed, occupied, scene.pitch)
+    reference = anchor['frame']
+    if not _compatible(reference, observed):
+        return {}
+    try:
+        shift = board_reference_shift(observed, reference.homography, scene.pitch)
+    except (ValueError, TypeError, np.linalg.LinAlgError):
+        return {}
+    if shift > anchor['tolerance_m']:
+        return {}
+    offsets = square_offsets(scene.empty_reference, reference, observed, occupied, scene.pitch)
+    return {square: (np.asarray(anchor['offsets'][square])+delta).tolist()
+            for square, delta in offsets.items() if square in anchor['offsets']}
 
 
 def _compatible(reference, observed):
