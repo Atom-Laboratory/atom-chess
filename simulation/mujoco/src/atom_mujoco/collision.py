@@ -62,8 +62,16 @@ class SweptChecker:
         allowed = {frozenset(pair) for pair in allowed}
         pairs = [p for p in self.pairs if frozenset(p) not in allowed]
         coefficients = self.coefficients if extra_coefficients is None else extra_coefficients
+        indices = np.asarray(pairs, dtype=int).reshape(-1, 2)
+        pair_coefficients = coefficients[indices].sum(axis=1)
+        if configure is None and extra_coefficients is None:
+            # Changing a common ancestor joint rigidly moves both shapes.
+            # Pair distance is invariant to that motion, even while relative
+            # descendant joints move. Custom carried-object transforms do not
+            # establish this ancestry contract and retain the original bound.
+            shared = (coefficients[indices[:, 0]] > 0) & (coefficients[indices[:, 1]] > 0)
+            pair_coefficients[shared] = 0.
         if prune_spheres:
-            indices = np.asarray(pairs, dtype=int).reshape(-1, 2)
             radii = self.model.geom_rbound[indices].sum(axis=1)
             unbounded = np.isin(self.model.geom_type[indices], [
                 mujoco.mjtGeom.mjGEOM_PLANE, mujoco.mjtGeom.mjGEOM_HFIELD]).any(axis=1)
@@ -79,18 +87,18 @@ class SweptChecker:
                 configure(self.data)
                 update_geometry(self.model, self.data)
             self.samples += 1
-            travel = coefficients @ (np.abs(b-a)/2)
+            pair_travel = pair_coefficients @ (np.abs(b-a)/2)
             uncertain = []
             if prune_spheres:
                 active = indices[remaining]
                 centers = self.data.geom_xpos[active]
                 distance = np.linalg.norm(centers[:, 0]-centers[:, 1], axis=1)
-                bound = radii[remaining]+travel[active].sum(axis=1)+self.clearance
+                bound = radii[remaining]+pair_travel[remaining]+self.clearance
                 relevant = unbounded[remaining] | ~np.isfinite(distance) | (distance <= bound+1e-9)
                 remaining = remaining[relevant]
             for index in remaining:
                 first, second = pairs[index]
-                limit = float(travel[first]+travel[second]+self.clearance)
+                limit = float(pair_travel[index]+self.clearance)
                 distance = float(mujoco.mj_geomDistance(self.model, self.data, first, second, limit+1e-6, None))
                 if not math.isfinite(distance) or distance <= self.clearance:
                     return dict(status='collision', geoms=[self.model.geom(first).name, self.model.geom(second).name],
