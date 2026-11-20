@@ -41,7 +41,8 @@ def main():
                 _, _, done, truncated, info = env.step(reference_action(env))
                 if done or truncated:
                     break
-            records.append(dict(seed=seed, **info))
+            records.append(dict(seed=seed, **info,
+                                approach_handoff=env.last_handoff))
             print(f'[REFERENCE / NO RL] seed {seed} success {info["success"]} '
                   f'gap {1000*info["pad_distance_m"]:.2f} mm', flush=True)
         report = dict(schema=1, type='deterministic_local_reference_not_learning',
@@ -49,12 +50,18 @@ def main():
             model_sha256=env.sim.manifest['model_sha256'],
             config_sha256=hashlib.sha256(args.config.read_bytes()).hexdigest(),
             source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-            scope='isolated local reach only; no executed global planner approach, grasp or lift')
+            scope=('planner-started contact-free reach only; no grasp or lift' if env.native_reach
+                   else 'isolated local reach only; no executed global planner approach, grasp or lift'))
         (output/'report.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
         print(output/'report.json', flush=True)
+        return 0 if all(record['success'] for record in records) else 1
+    except Exception as error:
+        (output/'failure.json').write_text(json.dumps(dict(error=repr(error), records=records,
+            approach_handoff=env.last_handoff), indent=2), encoding='utf-8')
+        raise
     finally:
         env.close()
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())

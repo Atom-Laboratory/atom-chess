@@ -71,6 +71,17 @@ def test_handoff_requests_visual_screen_only_when_configured(inputs):
     planner.plan.assert_called_with(require_visible_target=True)
 
 
+def test_handoff_forwards_lateral_candidates_without_changing_piece_xy(inputs):
+    scene, _, _, _, _, _ = inputs
+    offsets = [[1., 0.], [-1., 0.]]
+    scene.config['autonomous'] = dict(require_visible_target=True,
+                                    approach_entry_offsets_squares=offsets)
+    _, xy = handoff.approach_handoff(scene, {})
+    handoff.ApproachPlanner.return_value.plan.assert_called_once_with(
+        require_visible_target=True, entry_offsets_squares=offsets)
+    np.testing.assert_array_equal(xy, [.25, .1])
+
+
 def test_live_preflight_rejection_prevents_initial_observation(inputs):
     scene, _, _, execution, _, _ = inputs
     execution.update(status='REJECTED', approach_complete=False, motion_applied=False,

@@ -52,6 +52,42 @@ def test_sphere_pruning_keeps_unbounded_planes():
     assert value.interval([.05], [-.05], prune_spheres=True)['status'] == 'collision'
 
 
+def shared_joint_checker(*, max_depth=0):
+    model = mujoco.MjModel.from_xml_string('''<mujoco><worldbody>
+      <body><joint name="common" type="hinge" axis="0 0 1"/>
+        <geom name="fixed_child" type="sphere" size=".01" pos=".1 0 0" mass="1"/>
+        <body><joint name="relative" type="hinge" axis="0 0 1"/>
+          <geom name="moving_child" type="sphere" size=".01" pos=".1 0 0" mass="1"/>
+        </body>
+      </body></worldbody></mujoco>''')
+    return SweptChecker(model, np.zeros(2), [0, 1], [(0, 1)], max_depth=max_depth)
+
+
+@pytest.mark.parametrize('prune', [False, True])
+def test_common_rigid_rotation_certifies_without_subdivision(prune):
+    value = shared_joint_checker()
+    # The two spheres stay a fixed distance apart while the common joint rotates.
+    assert value.interval([-np.pi, 1.], [np.pi, 1.], prune_spheres=prune) is None
+    assert value.samples == 1
+
+
+@pytest.mark.parametrize('prune', [False, True])
+def test_relative_motion_still_detects_collision_between_clear_endpoints(prune):
+    value = shared_joint_checker(max_depth=16)
+    assert value.interval([-np.pi, -.5], [np.pi, .5], prune_spheres=prune)['status'] == 'collision'
+    for relative in (-.5, .5):
+        value.samples = 0
+        assert value.interval([0., relative], [0., relative], prune_spheres=prune) is None
+
+
+@pytest.mark.parametrize('custom', ['callback', 'coefficients'])
+def test_custom_geometry_retains_absolute_motion_bound(custom):
+    value = shared_joint_checker()
+    options = ({'configure': lambda data: None} if custom == 'callback'
+               else {'extra_coefficients': value.coefficients.copy()})
+    assert value.interval([-np.pi, 1.], [np.pi, 1.], **options)['status'] == 'unresolved'
+
+
 def test_preflight_does_not_mutate_live_scene(tmp_path):
     from pathlib import Path
     from atom_mujoco.model import build_bundle

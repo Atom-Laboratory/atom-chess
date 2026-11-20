@@ -47,18 +47,19 @@ def policy_graph(policy, *, action_description='residual controls'):
         return parent
 
     extractor = policy.pi_features_extractor
-    image_encoder = extractor.extractors['image']
-    channels = policy.observation_space['image'].shape[0]
-    image = node('image', 'RGB history' if channels > 3 else 'RGB image', 0,
-                 detail=' × '.join(map(str, policy.observation_space['image'].shape)))
-    encoded = sequence('CNN', image_encoder.cnn, 1, image)
-    encoded = sequence('Projection', image_encoder.linear, 1, encoded)
+    inputs = []
+    if 'image' in extractor.extractors:
+        image_encoder = extractor.extractors['image']
+        channels = policy.observation_space['image'].shape[0]
+        image = node('image', 'RGB history' if channels > 3 else 'RGB image', 0,
+                     detail=' × '.join(map(str, policy.observation_space['image'].shape)))
+        encoded = sequence('CNN', image_encoder.cnn, 1, image)
+        inputs.append(sequence('Projection', image_encoder.linear, 1, encoded))
     names = {'task': 'Source / target', 'commanded_joints': 'Commanded joints',
              'previous_action': 'Previous action', 'phase': 'Motion phase',
              'perception_valid': 'Perception valid', 'command_history': 'Command history',
              'goal': 'Task objective', 'object_category': 'Object category',
              'visual_target': 'Visual target'}
-    inputs = [encoded]
     for name, encoder in extractor.extractors.items():
         if name != 'image':
             inputs.append(node(name, names.get(name, name), 0,

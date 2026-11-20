@@ -11,8 +11,13 @@ from .board_piece_localization import square_offsets
 def approach_handoff(scene, report, *, observer=None):
     """Advance the existing scene. Return the actor-facing frame and visual XY."""
     report['stage'] = 'PLANNING'
-    plan = ApproachPlanner(scene).plan(
-        require_visible_target=scene.config.get('autonomous', {}).get('require_visible_target', False))
+    cfg = scene.config.get('autonomous', {})
+    options = dict(require_visible_target=cfg.get('require_visible_target', False))
+    if cfg.get('approach_entry_offsets_squares') is not None:
+        options['entry_offsets_squares'] = cfg['approach_entry_offsets_squares']
+    if cfg.get('approach_max_candidates') is not None:
+        options['max_candidates'] = cfg['approach_max_candidates']
+    plan = ApproachPlanner(scene).plan(**options)
     report['plan'] = plan
     if plan['status'] != 'PLANNED':
         raise RuntimeError(plan['reason'])

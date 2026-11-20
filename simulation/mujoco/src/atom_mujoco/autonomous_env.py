@@ -34,14 +34,15 @@ class AutonomousManipulationEnv(gym.Env):
             sim = self.base.sim
             cfg = self.base.config.get('autonomous', {})
             start_mode = cfg.get('start_mode', 'legacy')
-            if start_mode not in ('legacy', 'native_approach'):
+            if start_mode not in ('legacy', 'native_approach', 'native_reach'):
                 raise ValueError('Unknown autonomous start mode')
-            self.native_approach = start_mode == 'native_approach'
+            self.native_reach = start_mode == 'native_reach'
+            self.native_approach = start_mode in ('native_approach', 'native_reach')
             mode = cfg.get('action_mode', 'temporal')
             if mode not in ('temporal', 'reach_xyz'):
                 raise ValueError('Unknown autonomous action profile')
             self.xyz_only = mode == 'reach_xyz'
-            if self.native_approach:
+            if self.native_approach and not self.native_reach:
                 if self.xyz_only or cfg.get('start_radius_squares') is not None:
                     raise ValueError('native_approach requires temporal controls and no randomized robot start')
                 self.VERSION = 7
@@ -79,6 +80,16 @@ class AutonomousManipulationEnv(gym.Env):
                         or not sim.lower[-1] <= self.fixed_wrist <= sim.upper[-1]
                         or type(self.fixed_elbow) is not bool):
                     raise ValueError('Invalid reach_xyz curriculum parameters')
+            if self.native_reach:
+                if (not self.xyz_only or not self.vision_features_only or objective != 'reach'
+                        or cfg.get('start_radius_squares') is not None
+                        or cfg.get('require_visible_target') is not True):
+                    raise ValueError('native_reach requires visual reach_xyz, visible approach and no randomized start')
+                self.VERSION = 8
+                # This experiment stops short of contact: retain support only.
+                pads = set(self.control.pad_ids)
+                self.control.allowed = [pair for pair in self.control.allowed if not pads.intersection(pair)]
+                self.control.allowed_pairs = {frozenset(pair) for pair in self.control.allowed}
             self.action_space = spaces.Box(-1., 1., (len(self.action_axes),), dtype=np.float32)
             self.observation_space = spaces.Dict(
                 image=spaces.Box(0, 255, (6, 96, 96), dtype=np.uint8),
@@ -181,6 +192,13 @@ class AutonomousManipulationEnv(gym.Env):
         self.previous_action = np.zeros(self.action_space.shape, dtype=np.float32)
         self.history.clear()
         self.feedback.reset()
+        if getattr(self, 'native_reach', False):
+            center = np.array([*self.source_xy, self.base.surface_z+self.base.piece_height])
+            if (np.linalg.norm(self.control.commanded_tcp(self.command)-center)
+                    > self.workspace_squares*self.base.pitch):
+                raise RuntimeError('APPROACH_OUTSIDE_REACH_PROPOSAL_BOUND')
+            if self.feedback.initial_distance <= self.feedback.reach_threshold:
+                raise RuntimeError('APPROACH_ALREADY_REACHED')
         self.steps, self.episode_return = 0, 0.
         self.totals = {}
         observation = self._observation(self.base.last_camera_frame)
@@ -199,6 +217,10 @@ class AutonomousManipulationEnv(gym.Env):
             self.last_handoff.update(status='INITIALIZED', stage='COMPLETE',
                 manipulation_initialized=True, reconciliation_required=False,
                 actor_observation_keys=sorted(observation))
+            if getattr(self, 'native_reach', False):
+                self.last_handoff.update(manipulation_initialized=False,
+                    reach_only_initialized=True,
+                    reach_control_scope='simulation_only_contact_free_proposals_with_per_action_sweeps')
             self.last_info['handoff_status'] = self.last_handoff['status']
         self.finished = False
         return observation, self.last_info.copy()
@@ -271,7 +293,10 @@ class AutonomousManipulationEnv(gym.Env):
 
     def _validate_choice(self, choice):
         if self.xyz_only:
-            center = np.array([*self.source_xy, self.base.surface_z])
+            z = self.base.surface_z
+            if getattr(self, 'native_reach', False):
+                z += self.base.piece_height
+            center = np.array([*self.source_xy, z])
             distance = float(np.linalg.norm(np.asarray(choice.xyz_m)-center))
             radius = self.workspace_squares*self.base.pitch
             if distance > radius:
@@ -282,7 +307,7 @@ class AutonomousManipulationEnv(gym.Env):
         started = time.perf_counter()
         if self.finished:
             raise RuntimeError('Reset required')
-        if self.native_approach:
+        if self.native_approach and not getattr(self, 'native_reach', False):
             raise RuntimeError('LOCAL_WORKSPACE_NOT_QUALIFIED: native handoff is observation-only')
         choice = self._decode_action(action)
         self.pending_action = dict(action=np.asarray(action).tolist(), choice=asdict(choice),
@@ -368,6 +393,14 @@ class AutonomousManipulationEnv(gym.Env):
                                              perception=perceived-executed, feedback=time.perf_counter()-perceived,
                                              total=time.perf_counter()-started),
                               recovery='preflight_retry_available' if end is None and not failure else None)
+        if getattr(self, 'native_reach', False):
+            self.last_info['native_approach'] = dict(
+                plan_signature=self.last_handoff['plan']['signature'],
+                approach_complete=self.last_handoff['execution']['approach_complete'],
+                approach_elapsed_sim_s=self.last_handoff['execution']['elapsed_sim_s'],
+                issued_endpoint=self.last_handoff['endpoint']['issued_command'],
+                fresh_arrival_sequence=self.last_handoff['arrival_perception']['sequence'],
+                training_scope='contact_free_reach_only')
         if self.observer is not None:
             self.observer(self.last_info)
         return observation, float(reward), bool(failure or physical['success']), bool(truncated), self.last_info.copy()

@@ -8,6 +8,14 @@ from atom_mujoco.approach_execution import execute_approach, smooth_fraction
 from atom_mujoco.approach_planner import geometry_bounds, model_identity, physical_identity, plan_identity
 
 
+@pytest.mark.parametrize('offsets', [[], [1., 0.], [[float('nan'), 0.]], [[0., 0.]] * 10])
+def test_invalid_lateral_search_rejected_before_observation(offsets):
+    from atom_mujoco.approach_planner import ApproachPlanner
+    planner = ApproachPlanner.__new__(ApproachPlanner)
+    with pytest.raises(ValueError, match='entry offsets'):
+        planner.plan(entry_offsets_squares=offsets)
+
+
 def test_rotated_off_center_geometry_bounds():
     rotation = np.array([[0., -1., 0.], [1., 0., 0.], [0., 0., 1.]])
     model = SimpleNamespace(geom_aabb=np.array([[.1, .2, .3, .4, .5, .6]]))

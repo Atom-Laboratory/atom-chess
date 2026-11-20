@@ -68,3 +68,40 @@ def test_reference_uses_camera_xy_and_commanded_fk_only():
     env.control.commanded_tcp.return_value = np.array([.24, -.04, .06])
     action = reference.reference_action(env)
     np.testing.assert_array_equal(action, [1., -1., -1.])
+
+
+def test_planner_reach_bounds_are_centered_on_static_piece_top():
+    env = profile()
+    env.native_reach = True
+    env.base.piece_height = .04
+    env.control.validate.return_value = (env.command, {'status': 'ACCEPTED'})
+    # This endpoint is inside the top-centered bound but outside a board-centered one.
+    endpoint = MotionChoice((.25, -.05, .12), 0., 0., True, 1, .02)
+    assert env._validate_choice(endpoint)[1]['status'] == 'ACCEPTED'
+    assert env.control.validate.call_args.kwargs['project'] is False
+
+
+@pytest.mark.parametrize('success,expected_exit', [(True, 0), (False, 1)])
+def test_reference_cli_does_not_qualify_failed_episodes(tmp_path, monkeypatch, success, expected_exit):
+    import importlib.util
+    import json
+    import sys
+    from pathlib import Path
+    path = Path(__file__).resolve().parents[1]/'training/autonomous-manipulation/reference_reach.py'
+    spec = importlib.util.spec_from_file_location('reference_cli', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    scene = SimpleNamespace(horizon=1, native_reach=False, last_handoff=None,
+        reset=Mock(), close=Mock(), sim=SimpleNamespace(manifest={'model_sha256': 'model'}),
+        step=Mock(return_value=({}, 0., success, not success,
+                                dict(success=success, pad_distance_m=.01))))
+    monkeypatch.setattr(module, 'AutonomousManipulationEnv', lambda *args, **kwargs: scene)
+    monkeypatch.setattr(module, 'reference_action', lambda env: np.zeros(3))
+    config = tmp_path/'environment.json'
+    config.write_text('{}')
+    output = tmp_path/'result'
+    monkeypatch.setattr(sys, 'argv', ['reference_reach.py', '--config', str(config),
+                                   '--output', str(output), '--episodes', '1'])
+    assert module.main() == expected_exit
+    assert json.loads((output/'report.json').read_text())['success_rate'] == float(success)
+    scene.close.assert_called_once()
