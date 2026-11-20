@@ -1,5 +1,14 @@
 # Autonomous visual manipulation experiment
 
+## Planner-started contact-free reach (experimental v8)
+
+Use the [planner-started reach guide](../../../../docs/camera-rl/planner-started-reach.md)
+for the native motion/vision integration, fixed-camera candidate screening,
+version-6 weight transfer, watched PPO pilot, artifacts and tests. This opt-in
+`native_reach` profile executes the actual planner approach on each reset before
+local XYZ control. It is not the version-7 observation-only manipulation mode
+below and does not qualify grasp/lift or a complete chess move.
+
 ## M1 native approach handoff
 
 The opt-in environment version 7 runs the existing native approach in MuJoCo

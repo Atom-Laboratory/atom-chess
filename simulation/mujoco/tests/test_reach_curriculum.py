@@ -68,3 +68,14 @@ def test_reference_uses_camera_xy_and_commanded_fk_only():
     env.control.commanded_tcp.return_value = np.array([.24, -.04, .06])
     action = reference.reference_action(env)
     np.testing.assert_array_equal(action, [1., -1., -1.])
+
+
+def test_planner_reach_bounds_are_centered_on_static_piece_top():
+    env = profile()
+    env.native_reach = True
+    env.base.piece_height = .04
+    env.control.validate.return_value = (env.command, {'status': 'ACCEPTED'})
+    # This endpoint is inside the top-centered bound but outside a board-centered one.
+    endpoint = MotionChoice((.25, -.05, .12), 0., 0., True, 1, .02)
+    assert env._validate_choice(endpoint)[1]['status'] == 'ACCEPTED'
+    assert env.control.validate.call_args.kwargs['project'] is False
