@@ -1,0 +1,817 @@
+{
+  "source_commit": "11c280f80c7cf12f8a71d407fb7eef3ffa32aa9e",
+  "documents": [
+    {
+      "path": "Software/acvision/docs/adrs/V001-tests.md",
+      "title": "V001 \u2014 Separar valida\u00e7\u00e3o sint\u00e9tica de captura f\u00edsica",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "2161940f86da8660944246ac04b5f635d1324971db649c12587a4a7dff0390ad"
+    },
+    {
+      "path": "Software/docs/adrs/ADR-006-ik-contract-validation.md",
+      "title": "ADR-006: Validate the configured-branch IK contract",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "cf2c73e0fee1f785c99de1bdf5b5c9e955f19f659a90cbda3fef0e6962761e5e"
+    },
+    {
+      "path": "docs/adrs/P001-branch.md",
+      "title": "P001 \u2014 Auditar e evoluir a branch efetiva",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "b12515c01fd5fbe8b1d0fc1076feec6f2660537e0ba57034c653108f43351bf2"
+    },
+    {
+      "path": "docs/adrs/P002-engineering-audit-baselines.md",
+      "title": "P002 \u2014 Auditoria de engenharia por evid\u00eancia e revis\u00e3o",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "d5860fb0fbd1a40b897823b5f7f90009bad5003b41c66581e1d30b79adf9afc1"
+    },
+    {
+      "path": "docs/adrs/P003-main-integration.md",
+      "title": "P003 \u2014 Integrate main while preserving simulation",
+      "status": "accepted. Complements P001/P002.",
+      "referenced_experiments": [],
+      "sha256": "17655d1641053607f3eab8c116b195c79103cba957f2db56e4dd28606a4b2aac"
+    },
+    {
+      "path": "docs/adrs/P004-hybrid-control-program.md",
+      "title": "P004 \u2014 Evidence-gated hybrid manipulation development",
+      "status": "accepted architecture proposal; implementation staged.",
+      "referenced_experiments": [],
+      "sha256": "0de0fdba81b324d71a54bb658d4ed935ee287e03b5c86b6693e76a3ea6ee5a4c"
+    },
+    {
+      "path": "docs/adrs/P005-feedback-gated-execution.md",
+      "title": "P005 \u2014 Persistent task identity and evidence-gated execution",
+      "status": "accepted incremental implementation.",
+      "referenced_experiments": [],
+      "sha256": "cc56bf8bd992c2734f9c12bb8c544e888788eb74761e1fdba6374e83a8326d02"
+    },
+    {
+      "path": "docs/adrs/P006-chess-motion-square-boundary.md",
+      "title": "P006 \u2014 Square-only transfer boundary for Chess Core",
+      "status": "accepted for the first increment. Date: 2026-11-05.",
+      "referenced_experiments": [],
+      "sha256": "5c0e115515fc239b9b6d0bad3854e71a8a8e49615715b51099c6666f789d2a97"
+    },
+    {
+      "path": "docs/adrs/P007-confirmed-physical-board-state.md",
+      "title": "P007 \u2014 Confirmed physical snapshots and transfer transactions",
+      "status": "accepted for the state-contract increment.",
+      "referenced_experiments": [],
+      "sha256": "dca4ecf3f248994da2bd271b4eee5f64e54711e720e1093e44a9836cee5f870a"
+    },
+    {
+      "path": "docs/adrs/P008-live-playground-state-and-request-transport.md",
+      "title": "P008 \u2014 Live Playground snapshots and square-only request transport",
+      "status": "implementation in progress.",
+      "referenced_experiments": [],
+      "sha256": "46c5901fbfd8af3371588d64afbe9ff9e961b28c2a36d8d200a47d8d52894e00"
+    },
+    {
+      "path": "docs/adrs/P009-graveyard-and-composite-physical-plans.md",
+      "title": "P009 \u2014 Graveyard endpoints and ordered composite execution",
+      "status": "implementation in progress.",
+      "referenced_experiments": [],
+      "sha256": "339a0ea088536205c3e6fa42a5aae27c13a5b1fce0b7e0be90e7d7025e7f74f9"
+    },
+    {
+      "path": "docs/adrs/P010-conservative-swept-preflight.md",
+      "title": "P010 \u2014 Conservative swept-path preflight and collision diagnostics",
+      "status": "implementation in progress.",
+      "referenced_experiments": [],
+      "sha256": "2ef197c9e4f4638a11d466898e217a9e4e7d2a1b4548b457fe18d5dfa00f8d57"
+    },
+    {
+      "path": "docs/adrs/P011-manual-control-ownership.md",
+      "title": "P011 \u2014 Manual control ownership",
+      "status": "incremental implementation. Roadmap phase: P010 teleoperation.",
+      "referenced_experiments": [],
+      "sha256": "c61449d8efdcd44b75cc9aea072e6140102cdd57f9bf78fcdb5e2a60808a18e7"
+    },
+    {
+      "path": "docs/adrs/P012-playground-endpoint-grid.md",
+      "title": "P012 \u2014 Playground endpoint grid",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "9c97c8be491899e05d27ce7e80c47b1a348647cd2544bd184dec5ded8170e9fa"
+    },
+    {
+      "path": "docs/adrs/P013-official-piece-mesh-provenance.md",
+      "title": "P013 \u2014 Official piece mesh provenance",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "eef60f60a284b71195cbad00cce9dad0b6096f91475d955d89fb281032be6b79"
+    },
+    {
+      "path": "docs/adrs/P014-validate-engine-moves-before-planning.md",
+      "title": "P014 \u2014 Validate engine moves before physical planning",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "b8c999f7c987d3e2b7ba9bc854ce4b6279dd2445e4a99b26e0e54753dd0a7824"
+    },
+    {
+      "path": "docs/adrs/P015-motionplanner-mujoco-contract.md",
+      "title": "P015 \u2014 MotionPlanner to MuJoCo Playground execution contract",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "60391507db3b39708a54bd0aac9ba0cc795dc78fd5199b879bf247a542912255"
+    },
+    {
+      "path": "docs/adrs/P016-official-visuals-playback.md",
+      "title": "P016 \u2014 Official piece visuals and visible playback",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "19397528992887688e73b75da17628f4e8aa6010cb9e56f05f5e7621b3a6a67e"
+    },
+    {
+      "path": "docs/adrs/P017-home-graveyard-slots.md",
+      "title": "P017 \u2014 Fixed home slots in two-row Graveyards",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "3bc3740f3b6709493f53f98fbcbdd3dc3565c995583b110b17a8f10006b6e247"
+    },
+    {
+      "path": "docs/adrs/P018-gripper-convex-decomposition.md",
+      "title": "P018 \u2014 Gripper convex decomposition",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "aae1a452f8fac3f969651e77aafcf04f0b0cf8a46be79d7bb2990b63e3b55f4e"
+    },
+    {
+      "path": "docs/adrs/P019-reachable-board-layout.md",
+      "title": "P019 \u2014 Board layout within the current gripper workspace",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "ea672ba28ef8014ea42b09cb1f4c2486301a3b0e9ea111476f5acfccbb914bb9"
+    },
+    {
+      "path": "docs/adrs/P020-click-chess-validation.md",
+      "title": "P020 \u2014 Click moves validated by Chess Core",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "a4b200b66f7f98f86666da432416b85136627978ab3caacaab96140390001d11"
+    },
+    {
+      "path": "docs/adrs/P021-virtual-rgb-camera.md",
+      "title": "P021 \u2014 Virtual RGB camera input",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "38cbbf3cb91e95f212a84b011d2bc1c15d8c14c9582e2b34364216452c9db50a"
+    },
+    {
+      "path": "docs/adrs/P022-live-module-monitor.md",
+      "title": "P022 \u2014 Module lifecycle trace",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "9d80910718c171f57047627613b5cac262ae28cc306fefa7fad92f88b1a474e8"
+    },
+    {
+      "path": "docs/adrs/P023-visual-grasp-rl.md",
+      "title": "P023 \u2014 Experimental visual grasp learning",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "dcdeebdd4692885e1da81d2d6fd127ce62a9af34d3faed8cd2cbf5afc6ac7196"
+    },
+    {
+      "path": "docs/adrs/P024-pregrasp-aperture.md",
+      "title": "P024 \u2014 Pre-shape fingertips above crowded squares",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "a97fa45c88b5662f03f3dea6766c831ad233dcbe73c31de17fdcc944c14b6ecb"
+    },
+    {
+      "path": "docs/adrs/P025-visible-rl-training.md",
+      "title": "P025 \u2014 Visible camera-policy training and grasp curriculum",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "eaef751bb829af8f80ea1deccd252a35fbdd30ffee5f2d6c01e294df74a31146"
+    },
+    {
+      "path": "docs/adrs/P027-curriculum-warm-start.md",
+      "title": "P027 \u2014 Curriculum weight transfer",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "ecb780a0a37f385a7854173cd0d2e880e32e7f5788ea6cd15dc1cf4a2bbecef8"
+    },
+    {
+      "path": "docs/adrs/P028-parallel-ppo.md",
+      "title": "P028 \u2014 Parallel PPO collection",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "eba058ab568100609ab3006b9452606d189f2f8b851f467baa41edafeab282cd"
+    },
+    {
+      "path": "docs/adrs/P029-arena-preview.md",
+      "title": "P029 \u2014 Shared 3D arena preview",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "9e44100755f514d229e117ac0953158ecbcad685342d3d3fd4e2b381a4f17147"
+    },
+    {
+      "path": "docs/adrs/P030-live-training-arena.md",
+      "title": "P030 \u2014 Live arena as an optional training display",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "4a850891f8e83ce4c19aee1db78264e024ef876072303e0409299243e6be245a"
+    },
+    {
+      "path": "docs/adrs/P031-camera-based-perception-and-sim-to-real-rl.md",
+      "title": "P031 \u2014 Camera-based perception and sim-to-real RL architecture",
+      "status": "Proposed; Phase A only, awaiting architecture review.",
+      "referenced_experiments": [],
+      "sha256": "1ced218e306ae0b2ba4f5d31046f12eb960c918a37a20c4dfa6c33f53bae7681"
+    },
+    {
+      "path": "docs/adrs/P032-offline-native-perception-bridge.md",
+      "title": "P032 \u2014 Offline native perception bridge",
+      "status": "accepted for Phase B1 after user approval of P031.",
+      "referenced_experiments": [],
+      "sha256": "c898a632841128fc2fd79bdc1cf54dace7bb06428913ba20af1b60fa7f278c30"
+    },
+    {
+      "path": "docs/adrs/P033-evidence-based-board-geometry.md",
+      "title": "P033 \u2014 Evidence-based board geometry",
+      "status": "accepted for the next perception increment.",
+      "referenced_experiments": [],
+      "sha256": "52e078d23d2d3c12f4ee76865e2ab792e108674591a5d7bd3aed67b7920d64c5"
+    },
+    {
+      "path": "docs/adrs/P034-explicit-board-visual-reference.md",
+      "title": "P034 \u2014 Explicit visual reference for the board",
+      "status": "implemented and evaluated in simulation.",
+      "referenced_experiments": [],
+      "sha256": "6051b57ffc9b5d7ac11bea9b14fc20dedf05867a6edf3a7e3d7d5ade31ff95ed"
+    },
+    {
+      "path": "docs/adrs/P035-image-evidence-for-piece-location.md",
+      "title": "P035 \u2014 Image evidence for current piece location",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "877685db28b5779484aa5b2e74b55dda4456ef97e35e5ab3b5547b1bae229d6a"
+    },
+    {
+      "path": "docs/adrs/P036-experimental-perception-qualification.md",
+      "title": "P036 \u2014 Experimental perception qualification",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "aa1fb61c76244448289c024171a5d4a4fc350bbfc2036fbb2a31a3198fc697e9"
+    },
+    {
+      "path": "docs/adrs/P037-native-camera-policy-boundary.md",
+      "title": "P037 \u2014 Persistent native camera and policy boundary",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "a91d9e22162092cac2a9cf4ac2862d762e9ebbc4aa27b335c1cfa298134b5ead"
+    },
+    {
+      "path": "docs/adrs/P038-camera-guided-residual-environment.md",
+      "title": "P038 \u2014 Camera-guided residual manipulation environment",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "935135faf1ac39d3893346d0b7b62ba39a4b347b674910e3381cb6e66ad0abe6"
+    },
+    {
+      "path": "docs/adrs/P039-two-piece-capture-fixture.md",
+      "title": "Two-piece capture fixture",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "6badb493715c6c68a321d74d430f15270a7a25763c0de8382f8e1214d9e5fab8"
+    },
+    {
+      "path": "docs/adrs/P040-camera-capture-evidence.md",
+      "title": "P040 \u2014 Camera evidence for capture",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "571c01698290e989a8cb635aa878766f80d0fcb82665f9f18624d6e575a270f3"
+    },
+    {
+      "path": "docs/mechanics/adrs/M001-cad.md",
+      "title": "M001 \u2014 CAD oficial e par\u00e2metros desconhecidos",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "55b7153f0579524fcd7f53370768ee8353565a4034fd7c4cce8fdf727d1099b7"
+    },
+    {
+      "path": "docs/mechanics/adrs/M002-gripper-limits.md",
+      "title": "M002 \u2014 Incorporar limites CAD sem presumir correspond\u00eancia de juntas",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "2b4bc643d7ef7ffdcc5e190f10f2593fb93117658c151d350d37f16a208fd3e3"
+    },
+    {
+      "path": "simulation/docs/adrs/S001-backend.md",
+      "title": "S001 \u2014 Base cinem\u00e1tica ROS; f\u00edsica condicionada ao modelo",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "7f3990c7226eafe2b8b3e2ad3dea77dbcbfba31860b2dc1187c7f13dac03361c"
+    },
+    {
+      "path": "simulation/docs/adrs/S002-control.md",
+      "title": "S002 \u2014 Interface m\u00ednima de controle convencional",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "2d75782b5d856528c9b1ff5a7055c1c711da96ff49b94a11fc6ba2eacf4a62da"
+    },
+    {
+      "path": "simulation/docs/adrs/S003-mujoco.md",
+      "title": "S003 \u2014 MuJoCo como backend principal para estudar controle e preparar RL",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "a29391221e6a78ce710237e15e4f254d2416bdf7abc03ec9a5b3806994f5e3dc"
+    },
+    {
+      "path": "simulation/docs/adrs/S004-upright-chess-scene.md",
+      "title": "S004 \u2014 Montagem vertical, tabuleiro e garra visual no MuJoCo",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "b856a5c6af1089eb2294d58010035fbf3faff1c09955ddc67258c3bf74edf905"
+    },
+    {
+      "path": "simulation/docs/adrs/S005-experiment-boundaries.md",
+      "title": "S005 \u2014 Direct MuJoCo experiments with explicit task decisions",
+      "status": "accepted. Complements S003/S004 and L001.",
+      "referenced_experiments": [],
+      "sha256": "540f7d042f833e5e437464c5cbbed5d4a1cfacfd0bdf5bf813836d6461bb8b6b"
+    },
+    {
+      "path": "simulation/docs/adrs/S006-interactive-physics.md",
+      "title": "S006 \u2014 Interactive control and experimental contact profile",
+      "status": "accepted. Supersedes the default interactive entry point",
+      "referenced_experiments": [],
+      "sha256": "b0f35181717589098e66445cfe3b85b18fe1387e345e59f7253ac3038c022883"
+    },
+    {
+      "path": "simulation/docs/adrs/S007-clean-control-view.md",
+      "title": "S007 \u2014 Keep robot controls from enabling native debug graphics",
+      "status": "accepted.",
+      "referenced_experiments": [],
+      "sha256": "be27007ff6961a9a53cee3d9cb20a2c3c288dec7e4801422c91600e267f2088b"
+    },
+    {
+      "path": "simulation/docs/adrs/S008-dynamic-pieces-coupled-gripper.md",
+      "title": "S008 \u2014 Dynamic chess pieces and coupled gripper contacts",
+      "status": "accepted. Supersedes v4 static-piece/independent-finger",
+      "referenced_experiments": [],
+      "sha256": "0f6caf835bb0fd644aefbcd3916b8b38293f1057c7712f03ad1258424328f54e"
+    },
+    {
+      "path": "simulation/docs/adrs/S009-mesh-aligned-gripper.md",
+      "title": "S009 \u2014 Align finger travel with exported gripper geometry",
+      "status": "accepted. Replaces v5 global-Z finger travel.",
+      "referenced_experiments": [],
+      "sha256": "c5f169b16b7f6cc0113ff5239e6270db2ebb5a5c0d598398a9ded884651b00fb"
+    },
+    {
+      "path": "simulation/docs/adrs/S010-bounded-wrist-rotation.md",
+      "title": "S010 \u2014 Bounded MuJoCo wrist rotation",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "820f86384461cfd067d4cb8da3fe31e47354f407ee38a9155a6ed9711cf987e7"
+    },
+    {
+      "path": "simulation/docs/adrs/S010-playground-preflight.md",
+      "title": "S010 \u2014 Shared-physics playground with truthful acceptance gates",
+      "status": "accepted incremental implementation.",
+      "referenced_experiments": [],
+      "sha256": "64fab6edb5b9c96e27de799ca31a338d4da017eceaabe797304e4d2d500df317"
+    },
+    {
+      "path": "simulation/docs/adrs/S011-playground-board-layout.md",
+      "title": "S011 \u2014 Explicit experimental board placement for the Playground",
+      "status": "accepted for simulation.",
+      "referenced_experiments": [],
+      "sha256": "6b997c4747e2ee0dbd0b1e4b1c3888283d016b4af04deac66342c49afeca0172"
+    },
+    {
+      "path": "simulation/docs/adrs/S011-wrist-example-migration.md",
+      "title": "S011 \u2014 Migrate examples to the wrist model and colocate run artifacts",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "3e749326ad242940604aa4a70562b97e0be459371d526fa4494d074f0644e460"
+    },
+    {
+      "path": "simulation/docs/adrs/S012-h-file-marker-visibility.md",
+      "title": "S012 \u2014 H-file camera references clear of the moving arm",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "1e481a4164a8c334de963888f95d952e7dffb84632e1459f138e5d31fc47da10"
+    },
+    {
+      "path": "simulation/docs/adrs/S013-camera-only-reward.md",
+      "title": "S013 \u2014 Experimental camera-only reward mode",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "804f0e3e0e19a430f736dab0c38c37e1e3bbd9134a6e7f9406cb569dd7dd1d9a"
+    },
+    {
+      "path": "simulation/docs/adrs/S014-camera-destination-curriculum.md",
+      "title": "S014 \u2014 Camera-only destination curriculum and explicit policy transfer",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "08d3969d18e4efb13a7d0811e5d2369fcc83be12f0228fae350478c795671ae4"
+    },
+    {
+      "path": "simulation/docs/adrs/S015-wrist-collision-curriculum.md",
+      "title": "S015 \u2014 Wrist residual actions and progressive gripper collision training",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "b1c12e678f481d2bd6421c019b91ae8e38b7ea69efef83e0c50546dfc642b14b"
+    },
+    {
+      "path": "simulation/docs/adrs/S016-elevated-wrist-qualification.md",
+      "title": "S016 \u2014 Elevated wrist alignment and fixed camera-only qualification",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "53de6610b9ebdcdab0e14a8f6d2021604f0324808357e91ddafd486823bfcbc7"
+    },
+    {
+      "path": "simulation/docs/adrs/S017-non-target-contact-penalty.md",
+      "title": "S017 \u2014 Penalize every simulated contact with a non-target piece",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "b7f8f1a8e1bd7ca4c87c893fe82f645c124db21c9e9995ccf5735a2e65996582"
+    },
+    {
+      "path": "simulation/docs/adrs/S018-board-state-camera-localization.md",
+      "title": "S018 \u2014 Localize pieces from camera and logical board state",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "68886517ebd05494f5585a989b62ca735ccccdcc6f2f5864ac00bb0d41d50c20"
+    },
+    {
+      "path": "simulation/docs/adrs/S019-intermediate-policy-transfer.md",
+      "title": "S019 \u2014 Transfer saved intermediate PPO policies",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "62695c9ff5e6a1bef7c2822801dfedbeb7eeafcbec0dc00c2e74e81ccc19cd51"
+    },
+    {
+      "path": "simulation/docs/adrs/S020-ppo-dashboard-telemetry.md",
+      "title": "S020 \u2014 Separate PPO updates from live rollout samples",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "e7d30f55cc089a57b57b1bc46ca9eac01b1ebcf874e21d3339255f2507bc2ea6"
+    },
+    {
+      "path": "simulation/docs/adrs/S021-approach-feasibility-gate.md",
+      "title": "S021 \u2014 Gate approach strategy learning on physical feasibility",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "9f9db7c88d536778c8f811736ce244a3eb6d1fbc3c52196e96d871844f8067c3"
+    },
+    {
+      "path": "simulation/docs/adrs/S022-autonomous-temporal-actions.md",
+      "title": "S022 \u2014 Learn continuous motion decisions with an independent supervisor",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "87ec8c2320e4e6dff81ad0e9d0cdced1e969c2fe54b7ba0363c538245c546d2f"
+    },
+    {
+      "path": "simulation/docs/adrs/S023-shared-object-conditioned-learning.md",
+      "title": "S023 \u2014 A shared object-conditioned autonomous policy",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "c97f88c839804ae73415897e7aeaaf9defa88ff51aa4644cb411eca6f193c33e"
+    },
+    {
+      "path": "simulation/docs/adrs/S024-autonomous-training-telemetry.md",
+      "title": "S024 \u2014 Observe autonomous policy learning and preserve recovery evidence",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "3a2c3b0e15f44eae03cebe01ae72ae603f0a2de775bd61969ca7ed6d44eabbd3"
+    },
+    {
+      "path": "simulation/docs/adrs/S025-autonomous-reach-curriculum.md",
+      "title": "S025 \u2014 Qualify autonomous learning from safe randomized starts",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "1d0a59ce60620a0954d9ba28f1e18d1f875beb4204c5f4e10f4797cb43969d47"
+    },
+    {
+      "path": "simulation/docs/adrs/S026-normalize-autonomous-visual-features.md",
+      "title": "S026 \u2014 Normalize visual features before actor and critic fusion",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "77eedee9ec80d6fa54c4e8bf26e8ea257388413dc7cdc75276e66ae5cb809824"
+    },
+    {
+      "path": "simulation/docs/adrs/S027-planned-motion-local-learning.md",
+      "title": "S027 \u2014 Plan travel and learn local manipulation",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "f928560848050589437f2739897e6eda758c4dd5e0674df728509c080d5d2392"
+    },
+    {
+      "path": "simulation/docs/adrs/S028-conservative-sweep-pruning.md",
+      "title": "S028 \u2014 Prune collision pairs with conservative interval certificates",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "a42608815d41b24aa9a84f57865d77dd99c2931e824ca302132349e221496875"
+    },
+    {
+      "path": "simulation/docs/adrs/S029-native-approach-qualification.md",
+      "title": "S029 \u2014 Qualify a native wrist-aware approach before local learning",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "69e03a3a1108b338224976eda1ef151d7cbf7c7f6607799164cebb915bc46f11"
+    },
+    {
+      "path": "simulation/docs/adrs/S030-planner-local-policy-contract.md",
+      "title": "S030 \u2014 Explicit planner-to-local-policy contract",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "6eb3573e4d845dbbe4fb9f4997d958402e7488380fdb0b1fec84a2a2cb005064"
+    },
+    {
+      "path": "simulation/docs/adrs/S031-local-proposal-supervision.md",
+      "title": "S031 \u2014 Supervise native local proposals before execution",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "4fca97764fc1c414f0b49896e206149ebb2523159d71dac0ece4897ba36133c6"
+    },
+    {
+      "path": "simulation/docs/adrs/S032-experimental-camera-actor-ppo.md",
+      "title": "S032 \u2014 Explicitly authorized experimental camera-actor PPO run",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "297a6bea7606740bed3f7872a3ca9e06aa07a0dfc7388d74ca3b94baa104019d"
+    },
+    {
+      "path": "simulation/docs/adrs/S033-reach-first-curriculum.md",
+      "title": "S033 \u2014 Restart with bounded XYZ-only reach before grasp acquisition",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "55648d6038b715857ae152ed0e18c6dfc5b20b329b9290c68b2b1170b2e680c3"
+    },
+    {
+      "path": "simulation/docs/adrs/S034-portable-training-diagnosis.md",
+      "title": "S034 \u2014 Portable training diagnosis",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "9515f59759b8f9dc430c9d3f652511525990cc72007a65262be40df49591b343"
+    },
+    {
+      "path": "simulation/docs/adrs/S035-native-approach-episode-start.md",
+      "title": "S035 \u2014 Native approach as an episode start",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "af7221081453b803eadff3d9f06bbac7a8463e00de05ca809a9edf4a0380cdb7"
+    },
+    {
+      "path": "simulation/docs/adrs/S036-visual-approach-screen.md",
+      "title": "S036 \u2014 Screen approach endpoints for target visibility",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "ff2428894c9b52bff79aef69c2ce39cfc902a447e16d8a2454afe39b714fe1e8"
+    },
+    {
+      "path": "simulation/docs/adrs/S039-shared-rigid-motion-sweep-bounds.md",
+      "title": "S039 \u2014 Cancel shared rigid motion in nominal distance bounds",
+      "status": "accepted for the nominal compiled-model preflight. Date: 2026-11-20.",
+      "referenced_experiments": [],
+      "sha256": "dda28f1a964560bfdbf711723511dfda8bb26d1a0b9e674610d295d50b0369e5"
+    },
+    {
+      "path": "simulation/docs/adrs/S040-planner-started-contact-free-reach.md",
+      "title": "S040 \u2014 Planner-started contact-free reach experiments",
+      "status": "experimental. Date: 2026-11-20.",
+      "referenced_experiments": [],
+      "sha256": "593c214534fc640276d79b2b9d41e58a3cc98f78a29763d935f3836146dea3b1"
+    },
+    {
+      "path": "simulation/docs/adrs/S041-estimated-scene-visibility-template.md",
+      "title": "S041 \u2014 Compare synthetic visibility against its own estimated-scene template",
+      "status": "experimental fixed-camera qualification. Date: 2026-11-20.",
+      "referenced_experiments": [],
+      "sha256": "fc8a1fcfb6d547ab54db394b078ed519f108e1da1b3f02bd06bada2c058212d7"
+    },
+    {
+      "path": "simulation/docs/adrs/S042-reachable-local-continuation-at-approach.md",
+      "title": "S042 \u2014 Screen local reach continuation before selecting an approach",
+      "status": "experimental. Date: 2026-11-20.",
+      "referenced_experiments": [],
+      "sha256": "ad0f547b15f7ca00d3369b8abcb8126ac4a1111a231ecb16a0391ade8c5594ac"
+    },
+    {
+      "path": "simulation/docs/adrs/S043-live-rgb-registration-anchor.md",
+      "title": "S043 \u2014 Anchor local tracking to a validated real RGB observation",
+      "status": "experimental. Date: 2026-11-20.",
+      "referenced_experiments": [],
+      "sha256": "9dae43ee5e9fa75f884040238e73cc4bc0fc0f1eff321bd6974181ff58e38615"
+    },
+    {
+      "path": "simulation/docs/adrs/S044-model-derived-entry-aperture.md",
+      "title": "S044 \u2014 Prepare the aperture before local reach in crowded positions",
+      "status": "experimental. Date: 2026-11-20.",
+      "referenced_experiments": [],
+      "sha256": "d23f7eee129b66fe28f80fa67585813783569486553470d51d17ba9a332e2a09"
+    },
+    {
+      "path": "simulation/docs/adrs/S045-revalidate-preferred-entry-first.md",
+      "title": "S045 \u2014 Revalidate the last verified entry before repeating the full search",
+      "status": "experimental performance optimization. Date: 2026-11-20.",
+      "referenced_experiments": [],
+      "sha256": "8181ea6a0b57fa5d47dfc0997a42a405c3dfda4e6ba26020097dd67f35de8918"
+    },
+    {
+      "path": "simulation/docs/adrs/S046-lateral-entry-grasp-diagnostic-envelope.md",
+      "title": "S046 \u2014 Include the verified lateral entry in the deterministic diagnostic",
+      "status": "experimental; no policy admission. Date: 2026-11-21.",
+      "referenced_experiments": [],
+      "sha256": "62b235c62adfc69482e7ef2ade5756650c647d871c9bedbe193ebfacbace3da6"
+    },
+    {
+      "path": "simulation/docs/adrs/S047-upper-sphere-pad-edge-grasp-diagnostic.md",
+      "title": "S047 \u2014 Test upper-sphere contact at the lower pad edge",
+      "status": "experimental diagnostic; no policy admission. Date: 2026-11-21.",
+      "referenced_experiments": [],
+      "sha256": "bfe412fe090adc6a67768bd0f3d0e96594c6ce93c8846013f6f7ffc2bcfec8c5"
+    },
+    {
+      "path": "simulation/docs/adrs/S048-settled-grasp-hold-before-lift.md",
+      "title": "S048 \u2014 Require a settled grasp window before a diagnostic lift",
+      "status": "experimental simulation diagnostic. Date: 2026-11-21.",
+      "referenced_experiments": [],
+      "sha256": "c8465e71567d3cfa325a6e6945314e78f962d6b2c7750bf149a1d1bbb7138b35"
+    },
+    {
+      "path": "simulation/docs/adrs/S049-selected-finger-near-contact-clearance.md",
+      "title": "S049 \u2014 Separate near-contact margin from forbidden penetration",
+      "status": "opt-in simulation diagnostic; default behavior unchanged. Date: 2026-11-21.",
+      "referenced_experiments": [],
+      "sha256": "c00a9c2d5bcabdbc3edaaf7df144d0c1e8eee02d9474459a4e89f976b2b831c2"
+    },
+    {
+      "path": "simulation/docs/adrs/S050-controlled-grasp-contact-solver-comparison.md",
+      "title": "S050 \u2014 Compare contact solvers in fresh grasp fixtures",
+      "status": "experimental comparison; no default physics change. Date: 2026-11-21.",
+      "referenced_experiments": [],
+      "sha256": "57b695c684dbc6489f38ef928467ebfb887dce6b81d992d12f8c4966e4cc2f6d"
+    },
+    {
+      "path": "simulation/docs/adrs/S051-partial-contact-during-coupled-finger-closure.md",
+      "title": "S051 \u2014 Allow loaded partial contact while closing coupled fingers",
+      "status": "simulation local supervision. Date: 2026-11-21.",
+      "referenced_experiments": [],
+      "sha256": "6cf7289e739ed2a768c2ef2867b8db023c15546924eb427f8b040e45d73b61fa"
+    },
+    {
+      "path": "simulation/docs/adrs/S052-diagnostic-lift-travel-margin.md",
+      "title": "S052 \u2014 Declare diagnostic lift travel independently of the success threshold",
+      "status": "experimental deterministic diagnostic. Date: 2026-11-21.",
+      "referenced_experiments": [],
+      "sha256": "400ad4a9d6ed2dd6779219959a20b1efc2eb9625590366a80a3240920658d0f0"
+    },
+    {
+      "path": "simulation/docs/adrs/S053-isolated-native-mjwarp-research-backend.md",
+      "title": "S053 \u2014 Isolated native MJWarp research backend",
+      "status": "Accepted (design; acceleration and physics parity unverified)",
+      "referenced_experiments": [
+        "EXP-0001",
+        "EXP-0002"
+      ],
+      "sha256": "b413ae4a23c4d94b29fed4ebe7ad18d593ad6e5b750e95ca39e97514e86b99ba"
+    },
+    {
+      "path": "simulation/docs/adrs/S054-complete-state-cpu-gpu-parity-boundary.md",
+      "title": "S054 \u2014 Complete-state CPU/GPU parity boundary",
+      "status": "Accepted (design; robot parity pending)",
+      "referenced_experiments": [
+        "EXP-0001",
+        "EXP-0002",
+        "EXP-0003"
+      ],
+      "sha256": "3112e5d6a87e462482e2a2526aafb39103ecc82fd3e6bbf2f88c752905dfeabe"
+    },
+    {
+      "path": "simulation/docs/adrs/S055-command-derived-gravity-feedforward.md",
+      "title": "S055 \u2014 Derive gravity feedforward from issued commands",
+      "status": "Accepted (simulation command boundary; hardware calibration unqualified)",
+      "referenced_experiments": [
+        "EXP-0004"
+      ],
+      "sha256": "07574adfffd16e1b550ce511a3dc0619f78d8f7ae2966f93dc620cbbb06b803c"
+    },
+    {
+      "path": "simulation/docs/adrs/S056-matched-robot-physics-benchmark.md",
+      "title": "S056 \u2014 Matched, bounded robot contact physics benchmarks",
+      "status": "Accepted (protocol; operating batch size not yet selected)",
+      "referenced_experiments": [
+        "EXP-0003",
+        "EXP-0005"
+      ],
+      "sha256": "202d8b0ce237433c3473d6d6317979594803fc25e677eb0cca944df38daa9b53"
+    },
+    {
+      "path": "simulation/docs/adrs/S057-recorded-physics-and-sustained-lift.md",
+      "title": "S057 \u2014 Record complete physics transitions and verify a sustained lifted hold",
+      "status": "Accepted (experimental diagnostic and replay data)",
+      "referenced_experiments": [
+        "EXP-0004"
+      ],
+      "sha256": "e4a5c0fd61d1bdc3ddfaf5fce7ca249eb54897795ecb39ed2966dde30349f255"
+    },
+    {
+      "path": "simulation/docs/adrs/S058-bounded-isolated-cem-grasp-pilot.md",
+      "title": "S058 \u2014 Bounded isolated CEM for closure and lift commands",
+      "status": "Accepted (experimental Stage A pilot; no RL admission)",
+      "referenced_experiments": [
+        "EXP-0004",
+        "EXP-0005",
+        "EXP-0006"
+      ],
+      "sha256": "6e1eb497815c6726e88dcdcbf8a710a4a45fb044449c15c7f04554639ea7dac0"
+    },
+    {
+      "path": "simulation/docs/adrs/S059-shared-model-grasp-geometry.md",
+      "title": "S059 \u2014 Share grasp geometry without a rendering dependency",
+      "status": "Accepted",
+      "referenced_experiments": [
+        "EXP-0006"
+      ],
+      "sha256": "70443f92934d421654fe7372c4db321133f2014025181e846e5be87c2b9fa28e"
+    },
+    {
+      "path": "simulation/docs/adrs/S060-camera-command-demonstration-boundary.md",
+      "title": "S060 \u2014 Camera/command demonstrations from independently verified physics",
+      "status": "Accepted (isolated research dataset; no manipulation-policy admission)",
+      "referenced_experiments": [
+        "EXP-0006",
+        "EXP-0007"
+      ],
+      "sha256": "23f2487b434d12b5a840eb2aaf953fb2fc1402a1e084f412b159d5ea102779ad"
+    },
+    {
+      "path": "simulation/docs/adrs/S061-shared-parameter-policy-stage-a.md",
+      "title": "S061 \u2014 Shared PPO parameter policy for the isolated Stage A planner",
+      "status": "Accepted (bounded research pilot; not production policy admission)",
+      "referenced_experiments": [
+        "EXP-0006",
+        "EXP-0007",
+        "EXP-0008"
+      ],
+      "sha256": "b605a8280927849a09dc2e5484ed573a4c2bfd2d9584bd3bc162dcf285658ddd"
+    },
+    {
+      "path": "simulation/docs/learning/adrs/L001-scope.md",
+      "title": "L001 \u2014 RL desenvolvido pelo respons\u00e1vel",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "4a4fc9009e6228018b4c727ea271c37705ccc91ec386e5c5837eca7673b3b10c"
+    },
+    {
+      "path": "simulation/docs/learning/adrs/L002-first-exercise.md",
+      "title": "L002 \u2014 Come\u00e7ar RL pela inspe\u00e7\u00e3o convencional das juntas",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "66f194511f7e0048f9d4d09c3662bbc85d4c4325ec455b02bdf9ac96c60e4815"
+    },
+    {
+      "path": "simulation/docs/learning/adrs/L003-policy-motion-and-full-simulation.md",
+      "title": "L003 \u2014 Pol\u00edtica, acmotion e valida\u00e7\u00e3o completa no Gazebo",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "11ddb7cb87dd8af20645e5242d87cedf7bb063bf1f03d6ab33795f354c667f23"
+    },
+    {
+      "path": "software/docs/adrs/ADR-001-cmake-ctest-integration.md",
+      "title": "ADR-001: CMake and CTest integration",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "b74426b098b77eff83db551802769a5883faaec17017255c95187bf3e2434582"
+    },
+    {
+      "path": "software/docs/adrs/ADR-002-acmotion-sbc-esp32-boundary.md",
+      "title": "ADR-002: acmotion boundaries and SBC/ESP32 responsibility split",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "7b6a870255b09f0e82c97855c679e7912e602a10662e287a99679bf88365b0be"
+    },
+    {
+      "path": "software/docs/adrs/ADR-003-task-planner-physical-task-boundary.md",
+      "title": "ADR-003: TaskPlanner and PhysicalTask as the chess-to-motion boundary",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "ca140be3829b3bac526e092ba2f121b34badf1887e6b8c40656b78a505afc2dc"
+    },
+    {
+      "path": "software/docs/adrs/ADR-004-inverse-kinematics-on-sbc.md",
+      "title": "ADR-004: Inverse kinematics runs on the Linux SBC",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "b92ce4c9649e27c10c21619c45e7720322f50b6f7d3b22b7d5652191f46822b0"
+    },
+    {
+      "path": "software/docs/adrs/ADR-005-acm1-motion-protocol.md",
+      "title": "ADR-005: Versioned ACM1 protocol and transport abstraction",
+      "status": "Not explicitly declared; see original",
+      "referenced_experiments": [],
+      "sha256": "51bd1879bc41b9f030282ac416fde17a2c5235d20e98e0eb17210fe81f322da9"
+    }
+  ],
+  "hash_scope": "Git blob bytes at source_commit; local checkout newline conversion excluded"
+}

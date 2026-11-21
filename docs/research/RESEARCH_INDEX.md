@@ -44,8 +44,9 @@ full filenames and preserve their history. New decisions continue after S052.
 | [S060](../../simulation/docs/adrs/S060-camera-command-demonstration-boundary.md) | Causal camera/command demonstrations and separate Watch | Accepted; two isolated CPU re-executions exported | EXP-0007 | Demonstrations and observation boundary |
 | [S061](../../simulation/docs/adrs/S061-shared-parameter-policy-stage-a.md) | Shared BC/PPO macro parameter policy | Accepted; bounded isolated pilot and frozen-entry checks | EXP-0008 | Learning methodology and limitations |
 
-The legacy architecture/report catalog is being consolidated without rewriting
-historical conclusions; original documents remain authoritative for their scope.
+The [complete tracked ADR catalog](ADR_CATALOG.md) and
+[historical evidence review](HISTORICAL_EVIDENCE_REVIEW.md) preserve original
+conclusions and distinguish inventory coverage from independently checked results.
 
 ## C. Experiment catalog
 

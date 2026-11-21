@@ -4,7 +4,8 @@ Updated: 2026-11-21. This file is the continuation entry point.
 
 ## Current phase
 
-Phase 0 captured the historical inventory; catalog consolidation remains open.
+Phase 0 captured the historical inventory, tracked ADR catalog and selected
+raw-metric corrections. Exhaustive raw-log review is not claimed.
 Phase 1 native GPU smoke passed.
 Phase 2 forward/step screen and recorded canonical grasp/hold replay passed in
 their limited scopes. Phase 3 physics-only benchmarks ran through 1024 worlds.
@@ -56,7 +57,8 @@ held-lift replay passed in the scopes recorded in EXP-0003/0004.
 
 ## Next actions and gates
 
-1. Finish historical artifact inventory and research catalog coverage.
+1. Historical inventory scope, tracked ADR catalog and selected raw-metric
+   corrections are recorded; broader independent historical reproduction remains open.
 2. Preserve the passed native smoke: one and sixteen worlds, 500 steps each,
    no overflow flags, final primitive qpos error 5.344e-9.
 3. Fixed-control benchmarks completed; full pipeline throughput is unmeasured.

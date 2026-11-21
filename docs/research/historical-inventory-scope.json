@@ -1,0 +1,13 @@
+{
+  "started_utc": "2026-11-21T16:23:51.438491+00:00",
+  "finished_utc": "2026-11-21T16:25:26.046990+00:00",
+  "source_commit": "3c9448847f1ac55341aa7f8e2970563c65a0f41c",
+  "inventory_files": 1629,
+  "markdown_documents": 93,
+  "simulation_adrs": 55,
+  "parsed_json_files": 703,
+  "checkpoint_archives": 436,
+  "changed_during_read": [],
+  "parse_errors": [],
+  "scope": "Read all inventoried Markdown bytes for section/claim extraction and all parsed metadata structurally. This does not mean all raw log lines or binary tensors were manually reviewed. Raw logs/CSVs were hashed, not exhaustively read. Checkpoint data JSON only; no pickle/tensor execution."
+}
