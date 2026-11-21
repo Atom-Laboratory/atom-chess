@@ -84,6 +84,10 @@ matching identities and fresh output. Bound updates, population, optimizer epoch
 simulation count, stagnation, wall time and device memory. No policy selection
 or early stopping may use held-out outcomes.
 
+Pin LF checkout endings for the hashed research Python/lock sources and binary
+handling for the tracked small PT checkpoint. Windows autocrlf must not invalidate
+an otherwise unchanged source identity or alter a verified checkpoint's bytes.
+
 ### 7. Consequences
 
 Two references are a small integration fixture, not a reliability dataset.

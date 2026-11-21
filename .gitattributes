@@ -2,6 +2,12 @@
 * text=auto
 simulation/src/scripts/*.py text eol=lf
 
+# Research checkpoints bind executed source bytes. Preserve those identities on
+# Windows checkouts and when transferring the small verified policy artifact.
+simulation/mujoco/accelerated/*.py text eol=lf
+simulation/mujoco/accelerated/*.lock text eol=lf
+simulation/mujoco/accelerated/reports/**/*.pt -text
+
 # Preserve the exact source-mesh bytes recorded in the hardware manifest.
 hardware/Project/chess_pieces/exports/*.stl -text
 hardware/Project/chess_pieces/exports/knight.obj -text -diff
