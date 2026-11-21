@@ -1,0 +1,18 @@
+{
+  "source": "derived from preserved GPU trajectory; no physics rerun",
+  "outcomes": [
+    {
+      "world": 0,
+      "hold_duration_sim_s": 1.02,
+      "maximum_rise_m": 0.04495643824338913,
+      "minimum_held_rise_m": 0.04468809813261032,
+      "maximum_hold_slip_m": 0.0002683401107788086,
+      "bilateral_hold": true,
+      "maximum_hold_linear_speed_m_s": 0.00430961512029171,
+      "maximum_hold_angular_speed_rad_s": 8.27715775812976e-05,
+      "maximum_upright_angle_rad": 0.003126526717096567,
+      "forbidden_contact": false,
+      "success": true
+    }
+  ]
+}

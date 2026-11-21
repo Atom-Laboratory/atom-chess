@@ -5,9 +5,10 @@ Updated: 2026-11-21. This file is the continuation entry point.
 ## Current phase
 
 Phase 0 historical evidence consolidation and Phase 1 native GPU smoke passed.
-Phase 2 robot forward/single-step comparison passed at two defined states.
-Full trajectory parity and matched throughput benchmarks remain pending; no
-training acceleration or reliable GPU grasp is established.
+Phase 2 forward/step screen and recorded canonical grasp/hold replay passed in
+their limited scopes. Phase 3 physics-only benchmarks ran through 1024 worlds.
+Phase 4 bounded CEM pilot is next. No learned grasp policy, independent GPU
+generalization or end-to-end RL acceleration is established.
 
 ## Last measured result
 
@@ -24,6 +25,12 @@ training acceleration or reliable GPU grasp is established.
   XY; contact/position truth is used for simulation verification/safety.
 - Best verified policy remains contact-free planner-started reach; the successful
   grasp is deterministic, not learned.
+- New controller seed 970200: lift plus 1.02 s held interval, final rise 44.687 mm,
+  sampled hold drop .270 mm. Full CPU tape replay is exact; 1/16 GPU replay worlds
+  passed physical checks. Identical tapes are not independent trials (EXP-0004).
+- Fixed-control benchmark at 1024: GPU median 1,424,059 world-steps/s; six-thread
+  CPU 124,632 (11.43×). Excludes camera, planning, policy, resets and rendering;
+  this is not a measured RL speedup (EXP-0005).
 
 ## Failures retained
 
@@ -45,14 +52,13 @@ kernel and primitive contact smoke passed; robot parity is still pending.
 1. Finish historical artifact inventory and research catalog coverage.
 2. Preserve the passed native smoke: one and sixteen worlds, 500 steps each,
    no overflow flags, final primitive qpos error 5.344e-9.
-3. Implement matched, repeated throughput benchmarks; smoke timings are not a
-   complete pipeline benchmark.
-4. Forward/step screen passed at two states (EXP-0003). Record complete canonical
-   grasp/hold dynamics and compare GPU replay before CEM.
-5. Add explicit lifted-hold verification and camera-only command audit. The
-   current low-level bias feedforward reads live simulation qfrc_bias; audit and
-   replace that privileged command dependency before camera-only control claims.
-6. Implement bounded CEM only on a qualified backend and preserve CPU replay.
+3. Fixed-control benchmarks completed; full pipeline throughput is unmeasured.
+4. Canonical recording and 1/16-world replay passed; new candidate paths still
+   require their own geometric/physical checks.
+5. Static command-derived gravity and lifted-hold checks are implemented.
+   Camera-only outcome verification remains unqualified.
+6. Implement bounded isolated CEM, replay winners independently on CPU, then
+   assess randomized states and occupied-board geometry.
 7. Demonstrations, shared-policy training and curriculum follow measured gates.
 
 Native audit is read-only. Its generic scenario tool changed solver/integrator

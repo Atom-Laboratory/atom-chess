@@ -103,3 +103,28 @@ The three input variables are completed EXP-0005 run directories, each containin
 `report.json` and `samples.csv`. The output must not already exist. It contains
 combined unsmoothed CSV, figure-source hashes and FIG-0003 in SVG/PDF/PNG. The
 figure identifies different durations/repeat counts and min–max variability.
+
+## Recorded canonical grasp replay
+
+```powershell
+# Record a native diagnostic using --lift-hold-s 1 --record-physics first.
+$transitions = Join-Path $canonicalRun 'physics-transitions.npz'
+& $gpuPy -u -B simulation/mujoco/accelerated/replay.py --config $config `
+  --transitions $transitions --worlds 1 --max-wall-s 600
+& $gpuPy -u -B simulation/mujoco/accelerated/replay.py --config $config `
+  --transitions $transitions --worlds 16 --max-wall-s 300
+$env:ATOM_TEST_CUDA = '1'
+& $gpuPy -B -m pytest simulation/mujoco/accelerated/tests -q
+```
+
+Recording must match the verified model/hash and complete state signature.
+Independent CPU steps and continuous CPU tape replay are checked before GPU
+rollout. GPU metrics accumulate overflow/convergence flags at every step and
+record states, pad contacts and forbidden engine contacts. Reports preserve
+dimensional limits, hold/slip/settling/upright metrics and experiment scope.
+The parent bounds wall time and snapshots executed source.
+
+The GPU follows recorded canonical controls; this is not autonomous camera
+perception or policy inference. Identical worlds are not independent trials.
+Robot self pairs checked by the planner remain separate from engine masks.
+Fresh outputs include GPU trajectory NPZ, reports, source copies and failure logs.
