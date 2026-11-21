@@ -399,6 +399,27 @@ def test_contact_closure_requires_correct_direction_and_force_limit(supervisor):
     assert not supervisor._tracking_ok(target)
 
 
+def test_unilateral_loaded_closure_is_not_a_lift_grasp(supervisor):
+    sim = supervisor.sim
+    target = supervisor.scene.command.copy(); target[3:5] = -.005
+    sim.data.qpos[sim.qadr[3:5]] = -.004
+    sim.data.qvel[sim.vadr[3:5]] = 0.
+    sim.data.actuator_force[3:5] = -.15
+    supervisor.feedback.pad_contacts = Mock(return_value=(False, True))
+    supervisor.feedback.grip_contacts = Mock(return_value=False)
+    assert supervisor._tracking_ok(target, phase='GRASPING')
+    assert not supervisor._tracking_ok(target, phase='LIFTING')
+    assert not supervisor._tracking_ok(target)
+    supervisor.feedback.pad_contacts.return_value = (False, False)
+    assert not supervisor._tracking_ok(target, phase='GRASPING')
+    supervisor.feedback.pad_contacts.return_value = (True, False)
+    sim.data.actuator_force[3:5] = 9.
+    assert not supervisor._tracking_ok(target, phase='GRASPING')
+    sim.data.actuator_force[3:5] = -.15
+    sim.data.qpos[sim.qadr[0]] += .1
+    assert not supervisor._tracking_ok(target, phase='GRASPING')
+
+
 def test_lift_without_bilateral_grip_stops_before_motion(supervisor):
     authorize_test_session(supervisor)
     before = supervisor.sim.data.time

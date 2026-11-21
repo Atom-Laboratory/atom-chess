@@ -186,6 +186,13 @@ budget of twice that window. `initial_bilateral_contact` is separate from
 These are simulation-only outcome checks, not actor inputs or hardware grasp
 verification. See [S048](../../../docs/adrs/S048-settled-grasp-hold-before-lift.md).
 
+While closing in `GRASPING`, the mechanically coupled fingers may encounter the
+selected piece one pad first. The supervisor accepts that loaded tracking only
+with correct direction, bounded velocity and compiled force limits; arm/wrist
+tracking and all forbidden-contact checks remain active. Partial contact never
+counts as grasp success and is not allowed for lifting. See
+[S051](../../../docs/adrs/S051-partial-contact-during-coupled-finger-closure.md).
+
 `--target-finger-clearance-m 0` is a separate experimental near-contact margin
 for the selected piece versus moving finger hulls. Every other pair retains the
 default 1 mm margin. It still rejects hull touching/penetration and checks the
