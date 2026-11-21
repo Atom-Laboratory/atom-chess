@@ -195,6 +195,37 @@ supervisor. Report the chosen margin when comparing outcomes; a zero-margin
 diagnostic does not qualify the original 1 mm experiment or a hardware margin.
 See [S049](../../../docs/adrs/S049-selected-finger-near-contact-clearance.md).
 
+## Controlled contact-solver comparison
+
+`prepare_solver.py` copies a verified prepared fixture and changes only its
+friction cone and `impratio` in a fresh bundle. The source files, camera,
+geometry, masses, friction coefficients, actuators and collision masks are
+preserved. NoSlip must already be disabled. This is an experimental physics
+comparison, not a new default or an RL launcher.
+
+```powershell
+# $config is an existing prepared environment.json; $py is defined above.
+$case = Join-Path 'simulation/mujoco/examples/qualify_hybrid_approach/runs' ('solver-' + [guid]::NewGuid().ToString('N'))
+& $py -B simulation/mujoco/examples/qualify_hybrid_approach/prepare_solver.py `
+  --config $config --output $case --cone elliptic --impratio 10
+$solverConfig = Join-Path $case 'environment.json'
+& $py -u -B simulation/mujoco/examples/qualify_hybrid_approach/run.py `
+  --config $solverConfig --configured-approach --local-diagnostic --grasp-part head `
+  --closing-load-factor 2.5 --target-finger-clearance-m 0 --lift-speed-fraction .25 `
+  --max-local-decisions 2000 --seed 970000
+& $py -B -m pytest simulation/mujoco/tests/test_solver_fixture.py `
+  simulation/mujoco/tests/test_collision.py simulation/mujoco/tests/test_local_supervisor.py -q
+```
+
+`solver-provenance.json` records input/output hashes and actual compiled solver
+settings. The diagnostic creates its own fresh run with reports, traces and
+camera images. Compare pyramidal/1, elliptic/1 and elliptic/10 with identical
+remaining arguments and seeds. A completed process, bilateral contact or a
+changed solver is not lift success: inspect `lift_success`, measured rise,
+retained contacts and all failure fields. See
+[S050](../../../docs/adrs/S050-controlled-grasp-contact-solver-comparison.md) and
+[MuJoCo's slip guidance](https://mujoco.readthedocs.io/en/3.15.0/modeling.html#preventing-slip).
+
 To use the exact approach configuration of a prepared planner-started reach
 fixture (entry offsets, preshape, live registration and corridor screen), pass
 `--configured-approach`. This calls the existing native handoff and saves
