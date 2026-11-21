@@ -132,6 +132,8 @@ See ADRs [S039](../../simulation/docs/adrs/S039-shared-rigid-motion-sweep-bounds
 [S041](../../simulation/docs/adrs/S041-estimated-scene-visibility-template.md).
 
 The [2026-11-20 results](../../simulation/mujoco/reports/training-diagnostics/planner-reach-20261120/README.md)
-include the actual 512-decision pilot, paired and independent evaluations, failed
-full-board continuation and the remaining gate. Current isolated reach results
-must not supersede that failed populated-board test.
+preserve the isolated pilot and the initial failed full-board continuation.
+The [2026-11-21 follow-up](../../simulation/mujoco/reports/training-diagnostics/crowded-reach-20261121/README.md)
+records the later full-board reach update, 16 additional successful reach tests,
+checkpoint recovery and the separate failed grasp/lift diagnostics. The later
+reach result does not turn those manipulation failures into successes.

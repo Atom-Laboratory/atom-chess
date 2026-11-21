@@ -1,0 +1,465 @@
+{
+  "schema": 1,
+  "scope": "experimental planner-started full-board e2 reach; not grasp or transfer",
+  "inputs": {
+    "config": {
+      "path": "simulation/mujoco/training/autonomous-manipulation/runs/fullboard-corridor-57b5473743134743b102268df3f8f31a-rgb-anchor-preshape-preferred/environment.json",
+      "sha256": "a2a8b8250dd0f4f0073b4eda16fcce0340009926f74f9eb4afe83b1ffd4944ea"
+    },
+    "training": {
+      "path": "simulation/mujoco/training/autonomous-manipulation/runs/fullboard-corridor-57b5473743134743b102268df3f8f31a-rgb-anchor-preshape-preferred/continue-from-1024-669f9f302a404f92876b884b18e39847/report.json",
+      "sha256": "63ede2dfb9683b7ae5dae03ba975ff789227257f692026e811f1c5de466b3114"
+    },
+    "independent": {
+      "path": "simulation/mujoco/training/autonomous-manipulation/runs/fullboard-corridor-57b5473743134743b102268df3f8f31a-rgb-anchor-preshape-preferred/independent-eval-68dfdaef3a274f2bb9c8f9bf7e8a90ed/report.json",
+      "sha256": "99a1630a726edcdacdc66e3766e5c2eb6aec4d33d076f6fc507cad84f977dddc"
+    }
+  },
+  "resumed_from_checkpoint": {
+    "path": "simulation/mujoco/training/autonomous-manipulation/runs/fullboard-corridor-57b5473743134743b102268df3f8f31a-rgb-anchor-preshape-preferred/ppo-fullboard-2048/checkpoint-1024.zip",
+    "sha256": "baf29ca59599658b1d3846523c7b4a3cac816e797e00b4aed0e73f1f1ff5db82",
+    "semantics": "verified weights, fresh optimizer; not exact interrupted-process continuation"
+  },
+  "training": {
+    "decisions": 1024,
+    "wall_s": 514.1565114999976,
+    "optimizer_wall_s": 1.5893626000033692,
+    "completed_episodes": 44,
+    "successes": 44,
+    "topples": 0,
+    "validation_counts": {
+      "ACCEPTED": 1024
+    },
+    "checkpoint_sha256": "405f21a7880f76a0c13d215f4bad49bf86d281ee8e38d2fc7f10a3a4468d9d78",
+    "weights_before": "2c78466620885c5dd68e87a786cd21cd7945131c870e2a6e768f443f19281e27",
+    "weights_after": "2e8cc9174085f30c3a539e29900e0d457de60b08fe0537198dd3b79738d421fa"
+  },
+  "evaluation": {
+    "before": {
+      "episodes": 8,
+      "success_rate": 1.0,
+      "median_best_gap_mm": 17.254261934940672
+    },
+    "after": {
+      "episodes": 8,
+      "success_rate": 1.0,
+      "median_best_gap_mm": 16.836868130159033
+    },
+    "independent": {
+      "episodes": 16,
+      "success_rate": 1.0,
+      "median_best_gap_mm": 16.834602273575484
+    }
+  },
+  "diagnostics": [
+    {
+      "label": "full-board upper head",
+      "report": {
+        "path": "simulation/mujoco/examples/qualify_hybrid_approach/runs/fullboard-upper-head-3dd72d96e7174b7f927b9d2ce8b179e6/local-report.json",
+        "sha256": "205d256e34e67636d372d05a33a986a849cf0a0bdd0e76d5ddb21dcd02f69e57"
+      },
+      "status": "BASELINE_PATH_REJECTED",
+      "grasp_success": false,
+      "lift_success": false,
+      "rise_mm": 8.462317331939251e-05,
+      "training_eligible": false,
+      "failure": {
+        "status": "REJECTED",
+        "category": "SWEEP_REJECTED",
+        "detail": {
+          "status": "SWEEP_REJECTED",
+          "failure": {
+            "status": "collision",
+            "geoms": [
+              "collision_gripper_hand1_1_collision_hull",
+              "white_pawn_d2_head"
+            ],
+            "distance_m": 0.0007534301628835446,
+            "joint_position": [
+              0.25922726669891943,
+              0.03797787061868586,
+              -1.084747543435649,
+              -0.01111799507469478,
+              -0.011121160329085939,
+              1.1401561095138669e-07
+            ]
+          },
+          "samples": 5
+        },
+        "motion_applied": false,
+        "execution_authorized": false,
+        "scope": "diagnostic only; no timing approval"
+      }
+    },
+    {
+      "label": "isolated factor 1.5",
+      "report": {
+        "path": "simulation/mujoco/examples/qualify_hybrid_approach/runs/isolated-head-control-8b2bc14814044ed0a56e9f7033f22aa8/local-report.json",
+        "sha256": "005ec139d0ca0a2ad18b698f9008ac16e6e5329f68acbc3f4f2a9e45bf50a132"
+      },
+      "status": "BASELINE_PATH_REJECTED",
+      "grasp_success": false,
+      "lift_success": false,
+      "rise_mm": 0.00011966371623803318,
+      "training_eligible": false,
+      "failure": {
+        "status": "REJECTED",
+        "category": "SWEEP_REJECTED",
+        "detail": {
+          "status": "SWEEP_REJECTED",
+          "failure": {
+            "status": "collision",
+            "geoms": [
+              "collision_gripper_hand2_2_collision_hull",
+              "white_pawn_e2_head"
+            ],
+            "distance_m": 0.0009968734446541873,
+            "joint_position": [
+              0.25892899817765336,
+              0.025,
+              -1.0841472078607302,
+              -0.013850221045641719,
+              -0.013850221045641719,
+              1.2566370614359172
+            ]
+          },
+          "samples": 15
+        },
+        "motion_applied": false,
+        "execution_authorized": false,
+        "scope": "diagnostic only; no timing approval"
+      }
+    },
+    {
+      "label": "isolated factor 1.4",
+      "report": {
+        "path": "simulation/mujoco/examples/qualify_hybrid_approach/runs/isolated-head-load14-5934318b8e604f3fa04f7bd0ca4af214/local-report.json",
+        "sha256": "20a6d70e562278432b4ee077fe3494729ff9ca8e78338e442095e1f56f309fd0"
+      },
+      "status": "BASELINE_EXECUTION_REJECTED_OR_FAILED",
+      "grasp_success": true,
+      "lift_success": false,
+      "rise_mm": 0.019960664119082067,
+      "training_eligible": false,
+      "failure": {
+        "status": "STOPPED",
+        "category": "GRIP_LOST_DURING_LIFT",
+        "detail": {
+          "category": "GRIP_LOST_DURING_LIFT"
+        },
+        "reconciliation_required": true,
+        "motion_applied": true,
+        "training_eligible": false,
+        "trace": [
+          {
+            "time_s": 15.510000000001849,
+            "position": [
+              0.2589283619821457,
+              0.033523584169760784,
+              -1.084147315294162,
+              -0.01347421725655029,
+              -0.013474799381208987,
+              1.256637061781897
+            ],
+            "command": [
+              0.2589289981776533,
+              0.033983333333332325,
+              -1.0841472078607302,
+              -0.013810780000000012,
+              -0.013810780000000012,
+              1.2566370614359172
+            ],
+            "actuator_force": [
+              0.00530280187794574,
+              3.3767558295917013,
+              0.0008567812133151165,
+              -0.03848225006855355,
+              -0.036991697386280276,
+              -1.529329708205296e-06
+            ],
+            "tcp_m": [
+              0.262849928620428,
+              -0.08785014287021584,
+              0.050523584169760785
+            ]
+          }
+        ],
+        "camera_captures": 289,
+        "camera_reuses": 286
+      }
+    },
+    {
+      "label": "isolated factor 1.45, slow lift",
+      "report": {
+        "path": "simulation/mujoco/examples/qualify_hybrid_approach/runs/isolated-head-slow-f136e7b754f9422d9d809d969c45648d/local-report.json",
+        "sha256": "539a6602099bc0654d64710fe2ca4306b8bf1b5c80e3f129ad3248291c13b62a"
+      },
+      "status": "BASELINE_EXECUTION_REJECTED_OR_FAILED",
+      "grasp_success": true,
+      "lift_success": false,
+      "rise_mm": 0.0033203754356836424,
+      "training_eligible": false,
+      "failure": {
+        "status": "STOPPED",
+        "category": "GRIP_LOST_DURING_LIFT",
+        "detail": {
+          "category": "GRIP_LOST_DURING_LIFT"
+        },
+        "reconciliation_required": true,
+        "motion_applied": true,
+        "training_eligible": false,
+        "trace": [
+          {
+            "time_s": 21.965999999998704,
+            "position": [
+              0.25892893354903074,
+              0.03424421263442256,
+              -1.0841472109469605,
+              -0.013766137558627949,
+              -0.013766329395577787,
+              1.2566370570172347
+            ],
+            "command": [
+              0.2589289981776533,
+              0.034333333333327845,
+              -1.0841472078607302,
+              -0.013838030000000012,
+              -0.013838030000000012,
+              1.2566370614359172
+            ],
+            "actuator_force": [
+              0.0014623315691721928,
+              3.344520336729186,
+              0.00024135115984336153,
+              -0.008070835219482486,
+              -0.007726030423873986,
+              -1.7041877953261064e-07
+            ],
+            "tcp_m": [
+              0.2628499938774024,
+              -0.0878500144339177,
+              0.05124421263442261
+            ]
+          }
+        ],
+        "camera_captures": 612,
+        "camera_reuses": 609
+      }
+    },
+    {
+      "label": "isolated factor 1.45, settled hold",
+      "report": {
+        "path": "simulation/mujoco/examples/qualify_hybrid_approach/runs/isolated-head-hold-24d3685964d34419b88792cc6167e464/local-report.json",
+        "sha256": "56c991029af08e8547acca598238196c9526613c7397d81e39ef563bebd1c845"
+      },
+      "status": "BASELINE_EXECUTION_REJECTED_OR_FAILED",
+      "grasp_success": true,
+      "lift_success": false,
+      "rise_mm": 0.00664257907270413,
+      "training_eligible": false,
+      "failure": {
+        "status": "STOPPED",
+        "category": "GRIP_LOST_DURING_LIFT",
+        "detail": {
+          "category": "GRIP_LOST_DURING_LIFT"
+        },
+        "reconciliation_required": true,
+        "motion_applied": true,
+        "training_eligible": false,
+        "trace": [
+          {
+            "time_s": 18.138000000000826,
+            "position": [
+              0.2589288230614989,
+              0.034086165190044565,
+              -1.0841472668466015,
+              -0.01369489925202615,
+              -0.013695245937295875,
+              1.2566370557793682
+            ],
+            "command": [
+              0.2589289981776533,
+              0.03423999999999458,
+              -1.0841472078607302,
+              -0.013838030000000012,
+              -0.013838030000000012,
+              1.2566370614359172
+            ],
+            "actuator_force": [
+              0.0026216155984286615,
+              3.3430383472624676,
+              0.00042804179236100026,
+              -0.016002765381219586,
+              -0.01539717544608843,
+              1.4771118372891578e-07
+            ],
+            "tcp_m": [
+              0.2628499761114602,
+              -0.08785003962532953,
+              0.051086165190044566
+            ]
+          }
+        ],
+        "camera_captures": 420,
+        "camera_reuses": 417
+      }
+    }
+  ],
+  "upper_head_geometry_screen": {
+    "report": {
+      "path": "simulation/mujoco/training/autonomous-manipulation/runs/fullboard-corridor-57b5473743134743b102268df3f8f31a-rgb-anchor-preshape-preferred/upper-head-screen-17bde8f0cf66436d9654b2fcf9a9f087/report.json",
+      "sha256": "405d000136f68efe73b7a6713932bf3424b45d2c23909440ee830cd54d437522"
+    },
+    "candidates": 2425,
+    "viable_endpoint_pairs": 0,
+    "scope": "RGB-estimated nominal aperture/closure endpoints; no execution or grasp qualification"
+  },
+  "solver_trials": [
+    {
+      "label": "pyramidal1, factor2.5",
+      "report": {
+        "path": "simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\isolated-head-preload25-322a595921e54ea1ab94ef30561d8425\\local-report.json",
+        "sha256": "81a1b20929735eba42c21a97fc9afa8711bde164fc1918306c12c33ce735a8a3"
+      },
+      "status": "BASELINE_EXECUTION_REJECTED_OR_FAILED",
+      "grasp_success": true,
+      "lift_success": false,
+      "rise_mm": 0.011133595138334423,
+      "target_finger_clearance_m": 0.0,
+      "lift_rise_heights": null,
+      "failure": "GRIP_LOST_DURING_LIFT",
+      "training_eligible": false
+    },
+    {
+      "label": "elliptic1 before closure fix",
+      "report": {
+        "path": "simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\solver-comparison-daeb5509116a43e5a1f770f39e44367d\\elliptic1-diagnostic\\local-report.json",
+        "sha256": "e0e0c350e3158c1c08527a34593b75a397be1b19b99295c6db699ace6483d2e3"
+      },
+      "status": "BASELINE_EXECUTION_REJECTED_OR_FAILED",
+      "grasp_success": true,
+      "lift_success": false,
+      "rise_mm": 5.8449234568029205,
+      "target_finger_clearance_m": 0.0,
+      "lift_rise_heights": null,
+      "failure": "GRIP_LOST_DURING_LIFT",
+      "training_eligible": false
+    },
+    {
+      "label": "elliptic10 before closure fix",
+      "report": {
+        "path": "simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\solver-comparison-daeb5509116a43e5a1f770f39e44367d\\elliptic10-diagnostic\\local-report.json",
+        "sha256": "65a438b093d63b1d9cf9c6b8d9f6d279784461eee00a7525ac4a4b0304378825"
+      },
+      "status": "BASELINE_EXECUTION_REJECTED_OR_FAILED",
+      "grasp_success": false,
+      "lift_success": false,
+      "rise_mm": -0.0007097858455012984,
+      "target_finger_clearance_m": 0.0,
+      "lift_rise_heights": null,
+      "failure": "SETTLING_TIMEOUT",
+      "training_eligible": false
+    },
+    {
+      "label": "elliptic1 after closure fix",
+      "report": {
+        "path": "simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\solver-comparison-daeb5509116a43e5a1f770f39e44367d\\elliptic1-closure-fix-816d765ba2534d3eafd869f9650bb90b\\local-report.json",
+        "sha256": "b753fe17dd730f6229bf4ed75bfc6be0ab32eb33058a30ceb4206a23d199e999"
+      },
+      "status": "BASELINE_EXECUTION_REJECTED_OR_FAILED",
+      "grasp_success": true,
+      "lift_success": false,
+      "rise_mm": 5.84575716404754,
+      "target_finger_clearance_m": 0.0,
+      "lift_rise_heights": null,
+      "failure": "GRIP_LOST_DURING_LIFT",
+      "training_eligible": false
+    },
+    {
+      "label": "elliptic10 after closure fix",
+      "report": {
+        "path": "simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\solver-comparison-daeb5509116a43e5a1f770f39e44367d\\elliptic10-closure-fix-b9da719f11964ea286d70cb3169dcdd2\\local-report.json",
+        "sha256": "4a2eecc11a8ce63e9fe18ceee9e845b17a262aaf871c43ec635e26e70dd56c82"
+      },
+      "status": "LIFT_NOT_CONFIRMED",
+      "grasp_success": true,
+      "lift_success": false,
+      "rise_mm": 31.419098074561973,
+      "target_finger_clearance_m": 0.0,
+      "lift_rise_heights": null,
+      "failure": null,
+      "training_eligible": false
+    },
+    {
+      "label": "elliptic10, explicit 1.5-height travel",
+      "report": {
+        "path": "simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\solver-comparison-daeb5509116a43e5a1f770f39e44367d\\elliptic10-lift-margin-9a547d23476f414a96d56af1724191d8\\local-report.json",
+        "sha256": "fa0226e6a4da1b0687c4321c2fc02f8692fc508b0772e4f35b0be2dce60beff4"
+      },
+      "status": "SIMULATED_LIFT_DIAGNOSTIC",
+      "grasp_success": true,
+      "lift_success": true,
+      "rise_mm": 44.76361968123695,
+      "target_finger_clearance_m": 0.0,
+      "lift_rise_heights": 1.5,
+      "failure": null,
+      "training_eligible": false
+    }
+  ],
+  "isolated_lift_qualification": {
+    "source_commit": "3a32045",
+    "test_source": {
+      "path": "simulation\\mujoco\\tests\\test_native_grasp.py",
+      "sha256": "4122476f873c4a6352e4f65210b8dd48ec86149424b0ce65b8675f5b31a4eb6f"
+    },
+    "episodes": [
+      {
+        "seed": 970000,
+        "scope": "watched development",
+        "grasp": true,
+        "lift": true,
+        "rise_mm": 44.76361968123695
+      },
+      {
+        "seed": 970100,
+        "scope": "additional physical regression",
+        "grasp": true,
+        "lift": true,
+        "rise_mm": 44.77889410841265
+      },
+      {
+        "seed": 970101,
+        "scope": "additional physical regression",
+        "grasp": true,
+        "lift": true,
+        "rise_mm": 44.79301156805275
+      },
+      {
+        "seed": 970102,
+        "scope": "additional physical regression",
+        "grasp": true,
+        "lift": true,
+        "rise_mm": 44.786043451802136
+      }
+    ],
+    "required_rise_mm": 32.0,
+    "extended_lift_hold_qualified": false,
+    "learned_policy": false,
+    "crowded_qualified": false,
+    "watched_report": {
+      "path": "simulation\\mujoco\\reports\\training-diagnostics\\crowded-reach-20261121\\canonical-grasp\\local-report.json",
+      "sha256": "fa0226e6a4da1b0687c4321c2fc02f8692fc508b0772e4f35b0be2dce60beff4"
+    },
+    "provenance": {
+      "path": "simulation\\mujoco\\reports\\training-diagnostics\\crowded-reach-20261121\\canonical-grasp\\provenance.json",
+      "sha256": "eb24636301f81f73e3f6aad2afdb72326822be8ad66cb6a9b50de5c47c4cae1b"
+    }
+  },
+  "read_only_asset_audit": {
+    "report": {
+      "path": "simulation\\mujoco\\reports\\training-diagnostics\\crowded-reach-20261121\\model-audit\\canonical-probe.json",
+      "sha256": "518c5dc22f9cf1fe24beb67c511360724a764acf6ac89e00bc1afea3c4762090"
+    },
+    "scope": "static and parked checks; generic dynamic tool failed"
+  }
+}
