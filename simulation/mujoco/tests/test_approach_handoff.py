@@ -35,7 +35,7 @@ def inputs(monkeypatch):
     offsets = Mock(return_value={'e2': [0., 0.]})
     monkeypatch.setattr(handoff, 'ApproachPlanner', planner)
     monkeypatch.setattr(handoff, 'execute_approach', executor)
-    monkeypatch.setattr(handoff, 'square_offsets', offsets)
+    monkeypatch.setattr(handoff, 'scene_square_offsets', offsets)
     return scene, frame, plan, execution, executor, offsets
 
 
@@ -69,6 +69,17 @@ def test_handoff_requests_visual_screen_only_when_configured(inputs):
     scene.config['autonomous'] = {'require_visible_target': True}
     handoff.approach_handoff(scene, {})
     planner.plan.assert_called_with(require_visible_target=True)
+
+
+def test_handoff_forwards_lateral_candidates_without_changing_piece_xy(inputs):
+    scene, _, _, _, _, _ = inputs
+    offsets = [[1., 0.], [-1., 0.]]
+    scene.config['autonomous'] = dict(require_visible_target=True,
+                                    approach_entry_offsets_squares=offsets)
+    _, xy = handoff.approach_handoff(scene, {})
+    handoff.ApproachPlanner.return_value.plan.assert_called_once_with(
+        require_visible_target=True, entry_offsets_squares=offsets)
+    np.testing.assert_array_equal(xy, [.25, .1])
 
 
 def test_live_preflight_rejection_prevents_initial_observation(inputs):

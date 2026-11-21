@@ -25,21 +25,28 @@ class MotionChoice:
     duration_s: float
 
 
+def control_rates(base):
+    """Static model-derived rates shared by action decoding and reach planning."""
+    sim = base.sim
+    lengths = base.motion.geometry[:2]/1000
+    planar = lengths.sum()*sim.speed[0]+lengths[1]*sim.speed[2]
+    rates = np.array([planar, planar, sim.speed[1], sim.speed[-1], sim.speed[3]])
+    pitch = sim.manifest['scene']['square_size_m']
+    rates[:3] = np.minimum(rates[:3], pitch/(base.dwell*sim.dt))
+    return rates
+
+
 class AutonomousControl:
-    def __init__(self, base):
+    def __init__(self, base, *, target_finger_clearance_m=None):
         self.base = base
         self.sim = sim = base.sim
         self.model = model = sim.model
         self.scratch = mujoco.MjData(model)
         self.site = model.site('grasp_center').id
-        lengths = base.motion.geometry[:2]/1000
-        planar = lengths.sum()*sim.speed[0]+lengths[1]*sim.speed[2]
-        self.rates = np.array([planar, planar, sim.speed[1], sim.speed[-1], sim.speed[3]])
+        self.rates = control_rates(base)
         self.max_intervals = base.dwell
         # Maximum Cartesian exploration spans one square per longest action.
         # Joint velocity limits and the independent sweep still apply.
-        pitch = sim.manifest['scene']['square_size_m']
-        self.rates[:3] = np.minimum(self.rates[:3], pitch/(self.max_intervals*sim.dt))
         selected = model.body(base.config['piece']).id
         self.selected = selected
         geoms = [g for g in base.collision.environment if model.geom_bodyid[g] == selected]
@@ -53,6 +60,17 @@ class AutonomousControl:
         self.allowed_pairs = {frozenset(pair) for pair in self.allowed}
         self.pad_ids = pads
         self.checker = SweptChecker(model, sim.data.qpos, sim.joint_ids, self.pairs)
+        self.pair_clearances = {}
+        if target_finger_clearance_m is not None:
+            if not np.isfinite(target_finger_clearance_m) or not 0 <= target_finger_clearance_m <= self.checker.clearance:
+                raise ValueError('Target finger margin must be between zero and the default clearance')
+            finger_bodies = set(model.geom_bodyid[pads])
+            finger_hulls = [g for g in base.collision.robot if model.geom_bodyid[g] in finger_bodies
+                            and (model.geom(g).name or '').endswith('_collision_hull')]
+            if not finger_hulls:
+                raise ValueError('Selected finger margin requires full moving-finger hulls')
+            self.pair_clearances = {frozenset((hull, geom)): float(target_finger_clearance_m)
+                                    for hull in finger_hulls for geom in geoms}
 
     def commanded_tcp(self, command):
         self.scratch.qpos[:] = self.model.qpos0
@@ -136,7 +154,7 @@ class AutonomousControl:
         start = sim.data.qpos[sim.qadr].copy()
         failure = checker.interval(start, end, allowed=self.allowed,
                                    configure=configure, extra_coefficients=coefficients,
-                                   prune_spheres=True)
+                                   prune_spheres=True, pair_clearances=self.pair_clearances)
         if failure:
             return None, dict(status='SWEEP_REJECTED', failure=failure, samples=checker.samples)
         return end, dict(status='ACCEPTED', samples=checker.samples, command_scale=scale,

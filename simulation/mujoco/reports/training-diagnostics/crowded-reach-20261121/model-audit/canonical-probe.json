@@ -1,0 +1,857 @@
+{
+  "schema": 1,
+  "scope": "read-only static/compiled geometry probe; not GPU parity, CAD calibration or grasp qualification",
+  "source_config": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\solver-comparison-daeb5509116a43e5a1f770f39e44367d\\elliptic10\\environment.json",
+  "source_config_sha256": "f5edacce9aab33feaee038c013d3d5125dbb6dba4c329c8cfadf6d8d987a813b",
+  "source_model": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\solver-comparison-daeb5509116a43e5a1f770f39e44367d\\elliptic10\\bundle\\model.xml",
+  "source_model_sha256": "a88b0cdb6c2ac529d443f2bc695d4b94cf8306c2debd81838d06eda6f0790da7",
+  "mujoco_version": "3.17.0",
+  "settings": {
+    "timestep_s": 0.002,
+    "cone": 1,
+    "impratio": 10.0,
+    "integrator": 3,
+    "noslip_iterations": 0,
+    "gravity": [
+      0.0,
+      0.0,
+      -9.81
+    ]
+  },
+  "counts": {
+    "bodies": 11,
+    "joints": 7,
+    "geoms": 185,
+    "collision_geoms": 109,
+    "gripper_hulls": 66,
+    "meshes": 83,
+    "robot_checked_pairs": 3365
+  },
+  "pawn": {
+    "mass_kg": 0.02,
+    "inertia_kg_m2": [
+      4e-06,
+      4e-06,
+      2e-06
+    ],
+    "body_inertial_position_m": [
+      0.0,
+      0.0,
+      0.015
+    ]
+  },
+  "bad_inertia_body_names": [],
+  "joints": [
+    {
+      "name": "joint_base_to_link1",
+      "type": 3,
+      "range": [
+        -2.0,
+        2.0
+      ],
+      "limited": true
+    },
+    {
+      "name": "joint_z_axis_arm1",
+      "type": 2,
+      "range": [
+        -0.1,
+        0.2
+      ],
+      "limited": true
+    },
+    {
+      "name": "joint_arm1_link_arm2_link",
+      "type": 3,
+      "range": [
+        -2.0,
+        4.0
+      ],
+      "limited": true
+    },
+    {
+      "name": "wrist_joint",
+      "type": 3,
+      "range": [
+        0.0,
+        6.283185307179586
+      ],
+      "limited": true
+    },
+    {
+      "name": "finger_1",
+      "type": 2,
+      "range": [
+        -0.021,
+        0.0
+      ],
+      "limited": true
+    },
+    {
+      "name": "finger_2",
+      "type": 2,
+      "range": [
+        -0.021,
+        0.0
+      ],
+      "limited": true
+    },
+    {
+      "name": "white_pawn_e2_free",
+      "type": 0,
+      "range": [
+        0.0,
+        0.0
+      ],
+      "limited": false
+    }
+  ],
+  "equalities": [
+    {
+      "type": 2,
+      "objects": [
+        4,
+        5
+      ],
+      "data": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ]
+    }
+  ],
+  "pads": [
+    {
+      "name": "finger_1_pad",
+      "size_half_m": [
+        0.012,
+        0.006,
+        0.0015
+      ],
+      "world_center_m": [
+        -0.08421429988691803,
+        -0.12940456548352036,
+        0.13700000000000004
+      ],
+      "world_rotation": [
+        [
+          -0.7336690004555866,
+          0.0,
+          -0.6795070255490379
+        ],
+        [
+          -0.6795070255490379,
+          0.0,
+          0.7336690004555866
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "friction": [
+        1.2,
+        0.01,
+        0.001
+      ],
+      "condim": 4,
+      "position_gain": 150.0,
+      "force_range_N": [
+        -8.0,
+        8.0
+      ]
+    },
+    {
+      "name": "finger_2_pad",
+      "size_half_m": [
+        0.012,
+        0.006,
+        0.0015
+      ],
+      "world_center_m": [
+        -0.05357155004584986,
+        -0.16248977991370528,
+        0.13700000000000004
+      ],
+      "world_rotation": [
+        [
+          -0.7336690004555866,
+          0.0,
+          -0.6795070255490379
+        ],
+        [
+          -0.6795070255490379,
+          0.0,
+          0.7336690004555866
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "friction": [
+        1.2,
+        0.01,
+        0.001
+      ],
+      "condim": 4,
+      "position_gain": 150.0,
+      "force_range_N": [
+        -8.0,
+        8.0
+      ]
+    }
+  ],
+  "gripper_colliders": [
+    {
+      "name": "collision_gripper_back_0_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 89,
+      "compiled_vertices": 89,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_1_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 98,
+      "compiled_vertices": 98,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_2_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 225,
+      "compiled_vertices": 225,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_3_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 94,
+      "compiled_vertices": 94,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_4_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 55,
+      "compiled_vertices": 55,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_5_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 599,
+      "compiled_vertices": 599,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_6_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 44,
+      "compiled_vertices": 44,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_7_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 57,
+      "compiled_vertices": 57,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_8_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 49,
+      "compiled_vertices": 49,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_9_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 399,
+      "compiled_vertices": 399,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_10_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 142,
+      "compiled_vertices": 142,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_11_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 399,
+      "compiled_vertices": 399,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_12_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 99,
+      "compiled_vertices": 99,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_13_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 91,
+      "compiled_vertices": 91,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_14_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 435,
+      "compiled_vertices": 435,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_15_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 143,
+      "compiled_vertices": 143,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_16_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 80,
+      "compiled_vertices": 80,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_17_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 71,
+      "compiled_vertices": 71,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_18_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 203,
+      "compiled_vertices": 203,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_19_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 62,
+      "compiled_vertices": 62,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_20_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 181,
+      "compiled_vertices": 181,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_21_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 52,
+      "compiled_vertices": 52,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_22_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 81,
+      "compiled_vertices": 81,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_back_23_collision_hull",
+      "body": "gripper_wrist",
+      "raw_vertices": 105,
+      "compiled_vertices": 105,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_0_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 58,
+      "compiled_vertices": 58,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_1_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 125,
+      "compiled_vertices": 125,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_2_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 90,
+      "compiled_vertices": 90,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_3_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 29,
+      "compiled_vertices": 29,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_4_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 68,
+      "compiled_vertices": 68,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_5_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 68,
+      "compiled_vertices": 68,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_6_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 59,
+      "compiled_vertices": 59,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_7_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 95,
+      "compiled_vertices": 95,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_8_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 104,
+      "compiled_vertices": 104,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_9_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 113,
+      "compiled_vertices": 113,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_10_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 19,
+      "compiled_vertices": 19,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_11_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 73,
+      "compiled_vertices": 73,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_12_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 68,
+      "compiled_vertices": 68,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_13_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 143,
+      "compiled_vertices": 143,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_14_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 52,
+      "compiled_vertices": 52,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_15_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 77,
+      "compiled_vertices": 77,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_16_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 49,
+      "compiled_vertices": 49,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_17_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 115,
+      "compiled_vertices": 115,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_18_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 105,
+      "compiled_vertices": 105,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_19_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 21,
+      "compiled_vertices": 21,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand1_20_collision_hull",
+      "body": "gripper_hand1_moving",
+      "raw_vertices": 81,
+      "compiled_vertices": 81,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_0_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 52,
+      "compiled_vertices": 52,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_1_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 122,
+      "compiled_vertices": 122,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_2_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 130,
+      "compiled_vertices": 130,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_3_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 77,
+      "compiled_vertices": 77,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_4_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 119,
+      "compiled_vertices": 119,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_5_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 87,
+      "compiled_vertices": 87,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_6_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 78,
+      "compiled_vertices": 78,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_7_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 56,
+      "compiled_vertices": 56,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_8_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 100,
+      "compiled_vertices": 100,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_9_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 140,
+      "compiled_vertices": 140,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_10_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 51,
+      "compiled_vertices": 51,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_11_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 68,
+      "compiled_vertices": 68,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_12_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 97,
+      "compiled_vertices": 97,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_13_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 112,
+      "compiled_vertices": 112,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_14_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 107,
+      "compiled_vertices": 107,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_15_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 57,
+      "compiled_vertices": 57,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_16_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 16,
+      "compiled_vertices": 16,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_17_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 42,
+      "compiled_vertices": 42,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_18_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 40,
+      "compiled_vertices": 40,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_19_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 46,
+      "compiled_vertices": 46,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    },
+    {
+      "name": "collision_gripper_hand2_20_collision_hull",
+      "body": "gripper_hand2_moving",
+      "raw_vertices": 28,
+      "compiled_vertices": 28,
+      "maxhullvert": null,
+      "geom_group": 3,
+      "alpha": 0.0
+    }
+  ],
+  "park_contacts": [],
+  "park_prohibited_penetrations": [],
+  "physical_self_contact_filter_note": "robot contype=1, conaffinity=6 excludes robot-robot dynamics; task planner independently checks selected self pairs",
+  "render_group_note": "for inspection only, visual masks are mapped to group2 and collision masks to group3; source compiled group/rgba values are recorded above",
+  "best_state": {
+    "path": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\solver-comparison-daeb5509116a43e5a1f770f39e44367d\\elliptic10-lift-margin-9a547d23476f414a96d56af1724191d8\\state-final.json",
+    "sha256": "cf060ec6ccc9a60850dbc3d7cd4271c3eb1ee0ea3a4eeda2547e755da0e0a83e",
+    "note": "reloaded qpos/qvel/ctrl for geometry/render only; absent warmstart means no force-parity claim",
+    "pawn_base_z_m": 0.06270177825618468,
+    "grasp_center_m": [
+      0.2628499999997398,
+      -0.08785000000052029,
+      0.08937468908542992
+    ],
+    "pad_contacts": [
+      true,
+      true
+    ]
+  },
+  "pad_inner_gap_sweep_m": [
+    {
+      "opening_command_m": 0.0,
+      "inner_gap_m": 0.042095560000000004
+    },
+    {
+      "opening_command_m": -0.021,
+      "inner_gap_m": 9.555999999999888e-05
+    }
+  ],
+  "hull_vertex_summary": {
+    "raw_min": 16,
+    "raw_max": 599,
+    "compiled_min": 16,
+    "compiled_max": 599,
+    "raw_above_64": 44,
+    "explicit_maxhullvert_count": 0
+  },
+  "source_hashes": {
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\solver-comparison-daeb5509116a43e5a1f770f39e44367d\\elliptic10\\bundle\\manifest.json": "876951dd996b046fd980017f443f5dd48e62ebf52240015ef733007d68a126de",
+    "C:\\Users\\maria\\.codex\\artifacts\\atom-mjwarp-20261121\\model-audit\\scratch\\canonical_probe.py": "40e45533cf5de0e64bc7b274bd1cfc30cfabbe3aac09083108d1858f4a6c04f5",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\src\\atom_mujoco\\backend.py": "4a6d1108c6952b472426f5e11f432a72884a8ee8c20275ddaf67b4efc1afb98c",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\src\\atom_mujoco\\collision.py": "13350c2843accf50fdf8236dc04992365fc92a699d749ff00f1b322c9a6cb033"
+  },
+  "collected_source_commit": "3a320454f53f4ca652646331dc466ca9688d7ff1",
+  "source_model_unchanged": true
+}

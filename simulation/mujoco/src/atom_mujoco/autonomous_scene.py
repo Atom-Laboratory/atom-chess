@@ -90,6 +90,7 @@ class AutonomousScene:
                 raise ValueError('Contact and displacement penalties must be finite and nonnegative')
             self.localize_source_rgb = self.supervise = True
             self.centered_reference = None
+            self.registration = None
             self.task_target = self.targets[0]
             self.np_random = np.random.default_rng()
             self.park = self.sim.validate(cfg['initial_command']).copy()
@@ -137,6 +138,7 @@ class AutonomousScene:
             raise RuntimeError('CENTERED_CAMERA_CALIBRATION_FAILED')
 
     def reset(self, *, seed=None, options=None):
+        self.registration = None
         if seed is not None:
             self.np_random = np.random.default_rng(seed)
         if options and (set(options) != {'target'} or options['target'] not in self.targets):
@@ -156,10 +158,20 @@ class AutonomousScene:
         for _ in range(60):
             self.controller.step(self.command)
         self.last_camera_frame = self.observe()
+        anchor_enabled = self.config.get('autonomous', {}).get('use_live_registration', False)
+        required = self.occupied if anchor_enabled else [self.config['source']]
         offsets = square_offsets(self.empty_reference, self.centered_reference, self.last_camera_frame,
-                                 [self.config['source']], self.pitch)
+                                 required, self.pitch)
         if self.config['source'] not in offsets:
             raise RuntimeError('SOURCE_POSITION_UNVERIFIED_BY_CAMERA')
+        if anchor_enabled:
+            if set(offsets) != set(self.occupied):
+                raise RuntimeError('LIVE_BOARD_ANCHOR_INCOMPLETE')
+            tolerance = float(self.config.get('registration_board_shift_m', .001))
+            if not np.isfinite(tolerance) or tolerance <= 0:
+                raise ValueError('Positive finite registration board tolerance required')
+            self.registration = dict(frame=self.last_camera_frame,
+                offsets={square: list(value) for square, value in offsets.items()}, tolerance_m=tolerance)
         self.source = self.square_source.copy()
         self.source[:2] += offsets[self.config['source']]
         self.observed_offsets = offsets

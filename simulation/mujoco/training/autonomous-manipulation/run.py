@@ -208,6 +208,8 @@ def main():
                         help='Checkpoint with run.json and SHA-256 sidecar; fresh optimizer')
     parser.add_argument('--allow-config-transfer', action='store_true',
                         help='Explicitly transfer compatible weights to a different environment configuration')
+    parser.add_argument('--allow-reach-handoff-transfer', action='store_true',
+                        help='Explicitly initialize v8 planner-started reach from v6 reach weights; fresh optimizer')
     viewer = parser.add_mutually_exclusive_group()
     viewer.add_argument('--watch', action='store_true', help='Three-panel camera diagnostics')
     viewer.add_argument('--watch-native', action='store_true', help='Interactive MuJoCo 3D window')
@@ -235,6 +237,9 @@ def main():
         parser.error('Learning rate must be positive and entropy coefficient nonnegative')
     if args.warm_start and args.warm_start_checkpoint:
         parser.error('Choose a completed run or an intermediate checkpoint')
+    if args.allow_reach_handoff_transfer and (not args.allow_config_transfer
+            or not (args.warm_start or args.warm_start_checkpoint)):
+        parser.error('--allow-reach-handoff-transfer requires source weights and --allow-config-transfer')
     if args.evaluate_only and not (args.warm_start or args.warm_start_checkpoint):
         parser.error('--evaluate-only requires verified source weights')
     if args.seed in range(args.evaluation_seed, args.evaluation_seed+args.episodes):
@@ -274,14 +279,21 @@ def main():
                    reward_source='simulation_supervised_camera_actor',
                    initial_weights='fresh; previous residual checkpoint semantics differ')
         (output/'run.json').write_text(json.dumps(run, indent=2), encoding='utf-8')
-        if env.native_approach:
+        if env.native_approach and not env.native_reach:
             raise ValueError('Native approach is gated for M1. Use qualify_handoff.py to evaluate resets.')
+        if args.watch_native:
+            from watch import NativeWatch
+            watch = NativeWatch(env, show_colliders=args.show_colliders)
+            env.approach_observer = lambda phase, detail: watch.update(
+                dict(phase=phase, validation=dict(status=f'PLANNER: {phase} | {detail}')))
         env.reset(seed=args.seed)
-        if args.watch or args.watch_native:
+        if args.watch and watch is None:
             from watch import NativeWatch, Watch
-            watch = (NativeWatch(env, show_colliders=args.show_colliders) if args.watch_native
-                     else Watch(env, output, show_colliders=args.show_colliders))
+            watch = Watch(env, output, show_colliders=args.show_colliders)
+        if watch is not None:
             env.observer = lambda info: watch.update(info, force=env.finished)
+            env.approach_observer = lambda phase, detail: watch.update(
+                dict(phase=phase, validation=dict(status=f'PLANNER: {phase} | {detail}')))
             watch.total = ((args.steps+args.rollout_steps-1)//args.rollout_steps)*args.rollout_steps
             watch.update(env.last_info, force=True)
         model = TimedPPO('MultiInputPolicy', env, n_steps=args.rollout_steps, batch_size=args.batch_size, n_epochs=args.epochs,
@@ -296,7 +308,9 @@ def main():
             expected = (archive.with_suffix('.sha256').read_text(encoding='ascii').strip()
                         if args.warm_start_checkpoint else
                         json.loads((args.warm_start/'report.json').read_text(encoding='utf-8'))['checkpoint_sha256'])
-            if source_run['environment_version'] != env.VERSION:
+            reach_transfer = (args.allow_reach_handoff_transfer and source_run['environment_version'] == 6
+                              and env.VERSION == 8 and env.native_reach)
+            if source_run['environment_version'] != env.VERSION and not reach_transfer:
                 raise ValueError('Warm-start action semantics differ')
             if source_run.get('policy_version', 1) != POLICY_VERSION:
                 raise ValueError('Warm-start policy architecture differs. Use its original runner or train a fresh policy.')
@@ -312,6 +326,7 @@ def main():
             run['initial_weights'] = dict(source=str(archive.resolve()),
                                           config_transfer=config_transfer,
                                           source_config_sha256=source_run.get('config_sha256'),
+                                          reach_handoff_transfer=reach_transfer,
                                           sha256=sha(archive), weights_sha256=weights_sha(source),
                                           scope='autonomous policy weights; fresh optimizer')
             (output/'run.json').write_text(json.dumps(run, indent=2), encoding='utf-8')

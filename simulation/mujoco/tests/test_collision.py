@@ -4,7 +4,7 @@ import mujoco
 import numpy as np
 import pytest
 
-from atom_mujoco.collision import SweptChecker, SceneCollision
+from atom_mujoco.collision import SweptChecker, SceneCollision, pregrasp_opening
 
 
 def checker(obstacle_y):
@@ -32,6 +32,33 @@ def test_unresolved_intervals_fail_closed():
     assert value.interval([-.1], [.1])['status'] == 'unresolved'
 
 
+@pytest.mark.parametrize('prune', [False, True])
+def test_pair_margin_allows_near_contact_but_retains_penetration_and_swept_checks(prune):
+    near = checker(.0205)
+    assert near.interval([0.], [0.], prune_spheres=prune)['status'] == 'collision'
+    assert near.interval([0.], [0.], pair_clearances={frozenset((0, 1)):0.}, prune_spheres=prune) is None
+    touching = checker(.0195)
+    assert touching.interval([0.], [0.], pair_clearances={frozenset((0, 1)):0.}, prune_spheres=prune)['status'] == 'collision'
+    crossed = checker(0.)
+    assert crossed.interval([-.1], [.1], pair_clearances={frozenset((0, 1)):0.}, prune_spheres=prune)['status'] == 'collision'
+
+
+def test_pair_margin_leaves_unlisted_pairs_at_default_clearance():
+    model = mujoco.MjModel.from_xml_string('''<mujoco><worldbody>
+      <geom name="first" type="sphere" size=".01" pos="0 .0205 0"/>
+      <geom name="second" type="sphere" size=".01" pos="0 -.0205 0"/>
+      <body><joint type="slide" axis="1 0 0"/><geom type="sphere" size=".01" mass="1"/></body>
+      </worldbody></mujoco>''')
+    value = SweptChecker(model, np.zeros(1), [0], [(0, 2), (1, 2)])
+    first = {frozenset((0, 2)):0.}
+    result = value.interval([0.], [0.], pair_clearances=first, prune_spheres=True)
+    assert result['geoms'][0] == 'second' and result['clearance_m'] == .001
+    assert value.interval([0.], [0.], pair_clearances={**first, frozenset((1, 2)):0.}) is None
+    for bad in ({frozenset((0, 1)):0.}, {frozenset((0, 2)):-.001}, {frozenset((0, 2)):float('nan')}):
+        with pytest.raises(ValueError, match='known pairs'):
+            value.interval([0.], [0.], pair_clearances=bad)
+
+
 @pytest.mark.parametrize('offset,depth', [(0., 16), (.04, 16), (.04, 0)])
 def test_sphere_pruning_preserves_clear_blocked_and_unresolved_outcomes(offset, depth):
     plain, optimized = checker(offset), checker(offset)
@@ -50,6 +77,64 @@ def test_sphere_pruning_keeps_unbounded_planes():
       </body></worldbody></mujoco>''')
     value = SweptChecker(model, np.zeros(1), [0], [(0, 1)])
     assert value.interval([.05], [-.05], prune_spheres=True)['status'] == 'collision'
+
+
+def shared_joint_checker(*, max_depth=0):
+    model = mujoco.MjModel.from_xml_string('''<mujoco><worldbody>
+      <body><joint name="common" type="hinge" axis="0 0 1"/>
+        <geom name="fixed_child" type="sphere" size=".01" pos=".1 0 0" mass="1"/>
+        <body><joint name="relative" type="hinge" axis="0 0 1"/>
+          <geom name="moving_child" type="sphere" size=".01" pos=".1 0 0" mass="1"/>
+        </body>
+      </body></worldbody></mujoco>''')
+    return SweptChecker(model, np.zeros(2), [0, 1], [(0, 1)], max_depth=max_depth)
+
+
+@pytest.mark.parametrize('prune', [False, True])
+def test_common_rigid_rotation_certifies_without_subdivision(prune):
+    value = shared_joint_checker()
+    # The two spheres stay a fixed distance apart while the common joint rotates.
+    assert value.interval([-np.pi, 1.], [np.pi, 1.], prune_spheres=prune) is None
+    assert value.samples == 1
+
+
+@pytest.mark.parametrize('prune', [False, True])
+def test_relative_motion_still_detects_collision_between_clear_endpoints(prune):
+    value = shared_joint_checker(max_depth=16)
+    assert value.interval([-np.pi, -.5], [np.pi, .5], prune_spheres=prune)['status'] == 'collision'
+    for relative in (-.5, .5):
+        value.samples = 0
+        assert value.interval([0., relative], [0., relative], prune_spheres=prune) is None
+
+
+@pytest.mark.parametrize('custom', ['callback', 'coefficients'])
+def test_custom_geometry_retains_absolute_motion_bound(custom):
+    value = shared_joint_checker()
+    options = ({'configure': lambda data: None} if custom == 'callback'
+               else {'extra_coefficients': value.coefficients.copy()})
+    assert value.interval([-np.pi, 1.], [np.pi, 1.], **options)['status'] == 'unresolved'
+
+
+def test_aperture_geometry_does_not_consume_hidden_piece_or_joint_state(tmp_path):
+    import json
+    from pathlib import Path
+    from atom_mujoco.model import build_bundle
+    from atom_mujoco.backend import Simulation
+    module = Path(__file__).resolve().parents[1]
+    parameters = json.loads((module/'playground/configs/playground-reachable-board.json').read_text())
+    parameters['official_piece_visuals'] = False
+    build_bundle(module.parent/'src/urdf/atom.urdf.xacro', tmp_path/'bundle',
+                 interactive=True, parameters=parameters)
+    sim = Simulation(tmp_path/'bundle')
+    original = sim.data.qpos.copy()
+    try:
+        expected = pregrasp_opening(sim, 'white_pawn_e2')
+        sim.data.qpos[:] += .1
+        altered = sim.data.qpos.copy()
+        assert pregrasp_opening(sim, 'white_pawn_e2') == pytest.approx(expected)
+        np.testing.assert_array_equal(sim.data.qpos, altered)
+    finally:
+        sim.data.qpos[:] = original
 
 
 def test_preflight_does_not_mutate_live_scene(tmp_path):

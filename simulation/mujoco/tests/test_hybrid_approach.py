@@ -8,6 +8,34 @@ from atom_mujoco.approach_execution import execute_approach, smooth_fraction
 from atom_mujoco.approach_planner import geometry_bounds, model_identity, physical_identity, plan_identity
 
 
+@pytest.mark.parametrize('offsets', [[], [1., 0.], [[float('nan'), 0.]], [[0., 0.]] * 10])
+def test_invalid_lateral_search_rejected_before_observation(offsets):
+    from atom_mujoco.approach_planner import ApproachPlanner
+    planner = ApproachPlanner.__new__(ApproachPlanner)
+    with pytest.raises(ValueError, match='entry offsets'):
+        planner.plan(entry_offsets_squares=offsets)
+
+
+@pytest.mark.parametrize('spec', [dict(horizon=0, workspace_radius_squares=2.5,
+    reach_distance_squares=.5, xyz_action_scale=.25), dict(horizon=64),
+    dict(horizon=64, workspace_radius_squares=float('nan'), reach_distance_squares=.5, xyz_action_scale=.25)])
+def test_invalid_reach_corridor_rejected_before_camera_or_motion(spec):
+    from atom_mujoco.approach_planner import ApproachPlanner
+    with pytest.raises(ValueError, match='reach corridor'):
+        ApproachPlanner.__new__(ApproachPlanner).plan(reach_corridor=spec)
+
+
+def test_preferred_entry_reorders_without_adding_or_losing_candidates():
+    from atom_mujoco.approach_planner import ordered_entries
+    offsets = np.array([[0., 0.], [1., -1.]])
+    original = ordered_entries([.1, .2], offsets, [0., 1.])
+    preferred = dict(height_index=1, entry_offset_squares=[1., -1.], wrist_rad=1., elbow_down=False)
+    actual = ordered_entries([.1, .2], offsets, [0., 1.], preferred)
+    assert actual[0] == (1, 1, 1., False)
+    assert set(actual) == set(original) and len(actual) == len(original)
+    assert ordered_entries([.1, .2], offsets, [0., 1.], {'height_index': 99}) == original
+
+
 def test_rotated_off_center_geometry_bounds():
     rotation = np.array([[0., -1., 0.], [1., 0., 0.], [0., 0., 1.]])
     model = SimpleNamespace(geom_aabb=np.array([[.1, .2, .3, .4, .5, .6]]))
@@ -53,6 +81,18 @@ def signed_start(scene):
                 joint_names=sim.names, initial_command=scene.command.tolist())
     plan['signature'] = plan_identity(plan)
     return plan
+
+
+def test_changed_registration_anchor_rejected_before_actuation(execution_scene):
+    scene = execution_scene
+    plan = signed_start(scene)
+    scene.registration = dict(frame=SimpleNamespace(
+        rectified_rgb=np.zeros((80, 80, 3), dtype=np.uint8), homography=np.eye(3),
+        camera_id='camera', reference_sha256='reference'), offsets={'e2': [0., 0.]}, tolerance_m=.001)
+    result = execute_approach(scene, plan)
+    assert result['error'] == 'REGISTRATION_ANCHOR_CHANGED'
+    assert not result['motion_applied']
+    scene.controller.step.assert_not_called()
 
 
 @pytest.mark.parametrize('change,reason', [
@@ -102,7 +142,7 @@ def test_fresh_camera_and_continuous_route_required_before_motion(execution_scen
     scene.occupied = {'e2': 'P'}
     scene.pitch = .035
     scene.config = {'max_perception_age_s': 10.}
-    monkeypatch.setattr(module, 'square_offsets', lambda *args: {'e2': [0., 0.]})
+    monkeypatch.setattr(module, 'scene_square_offsets', lambda *args: {'e2': [0., 0.]})
     plan = signed_start(scene)
     plan.update(camera_id='camera', reference_sha256='reference', offsets_m={'e2': [0., 0.]},
                 homography=np.eye(3).tolist(), approach=[], retreat=[])

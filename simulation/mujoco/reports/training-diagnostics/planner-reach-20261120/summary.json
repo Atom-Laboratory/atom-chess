@@ -1,0 +1,1957 @@
+{
+  "schema": 1,
+  "date": "2026-11-20",
+  "scope": "simulation-only reach, not grasp/lift/transfer or hardware qualification",
+  "paired": {
+    "bc-eval": {
+      "episodes": 16,
+      "seeds": [
+        940000,
+        940001,
+        940002,
+        940003,
+        940004,
+        940005,
+        940006,
+        940007,
+        940008,
+        940009,
+        940010,
+        940011,
+        940012,
+        940013,
+        940014,
+        940015
+      ],
+      "success_rate": 0.75,
+      "median_best_distance_m": 0.017300421748300467,
+      "mean_return": -1.2085763669113971,
+      "mean_decisions": 33.0,
+      "weights_sha256": "ccc0e8712d42bfe605a61dafea64bc7fca77038c9f5fc19c3e31f063f65d5436",
+      "records": [
+        {
+          "seed": 940000,
+          "success": true,
+          "failure": null,
+          "episode_steps": 28,
+          "episode_return": 15.43748827452757,
+          "initial_pad_distance_m": 0.03546618465935568,
+          "best_pad_distance_m": 0.01705535629265334,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940001,
+          "success": false,
+          "failure": "TIME_LIMIT",
+          "episode_steps": 64,
+          "episode_return": -57.62977710839307,
+          "initial_pad_distance_m": 0.02727810164162541,
+          "best_pad_distance_m": 0.023469049948541824,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940002,
+          "success": true,
+          "failure": null,
+          "episode_steps": 22,
+          "episode_return": 13.992131811392987,
+          "initial_pad_distance_m": 0.0306565163469323,
+          "best_pad_distance_m": 0.017070315463789558,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940003,
+          "success": true,
+          "failure": null,
+          "episode_steps": 13,
+          "episode_return": 12.095019647155492,
+          "initial_pad_distance_m": 0.02437143409231738,
+          "best_pad_distance_m": 0.01717599943148755,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940004,
+          "success": true,
+          "failure": null,
+          "episode_steps": 34,
+          "episode_return": 18.85914658685318,
+          "initial_pad_distance_m": 0.047024489779280094,
+          "best_pad_distance_m": 0.01736794316114302,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940005,
+          "success": true,
+          "failure": null,
+          "episode_steps": 9,
+          "episode_return": 11.462314784912058,
+          "initial_pad_distance_m": 0.022395684054068374,
+          "best_pad_distance_m": 0.017365120009790583,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940006,
+          "success": true,
+          "failure": null,
+          "episode_steps": 27,
+          "episode_return": 15.082562921756681,
+          "initial_pad_distance_m": 0.03439566787341038,
+          "best_pad_distance_m": 0.01709083320164544,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940007,
+          "success": true,
+          "failure": null,
+          "episode_steps": 29,
+          "episode_return": 18.082023148886385,
+          "initial_pad_distance_m": 0.04432915574325486,
+          "best_pad_distance_m": 0.017336309054437445,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940008,
+          "success": true,
+          "failure": null,
+          "episode_steps": 16,
+          "episode_return": 14.346287862442384,
+          "initial_pad_distance_m": 0.03187560872486368,
+          "best_pad_distance_m": 0.01732212578831465,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940009,
+          "success": false,
+          "failure": "TIME_LIMIT",
+          "episode_steps": 64,
+          "episode_return": -30.717699543992044,
+          "initial_pad_distance_m": 0.0434670550109635,
+          "best_pad_distance_m": 0.02083268870592811,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940010,
+          "success": true,
+          "failure": null,
+          "episode_steps": 8,
+          "episode_return": 11.129686462627667,
+          "initial_pad_distance_m": 0.02117921593168777,
+          "best_pad_distance_m": 0.0172641541244787,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940011,
+          "success": false,
+          "failure": "TIME_LIMIT",
+          "episode_steps": 64,
+          "episode_return": -61.29095549547092,
+          "initial_pad_distance_m": 0.03530480564570385,
+          "best_pad_distance_m": 0.03363923734009769,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940012,
+          "success": false,
+          "failure": "TIME_LIMIT",
+          "episode_steps": 64,
+          "episode_return": -47.538360615892586,
+          "initial_pad_distance_m": 0.03466786003315328,
+          "best_pad_distance_m": 0.024272369880169287,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940013,
+          "success": true,
+          "failure": null,
+          "episode_steps": 31,
+          "episode_return": 15.321382692492417,
+          "initial_pad_distance_m": 0.03535121590273473,
+          "best_pad_distance_m": 0.01720698731680355,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940014,
+          "success": true,
+          "failure": null,
+          "episode_steps": 40,
+          "episode_return": 18.283003213952558,
+          "initial_pad_distance_m": 0.0453542611628716,
+          "best_pad_distance_m": 0.01727871770828628,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940015,
+          "success": true,
+          "failure": null,
+          "episode_steps": 15,
+          "episode_return": 13.748523486166887,
+          "initial_pad_distance_m": 0.029566667680780773,
+          "best_pad_distance_m": 0.016995414240973856,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        }
+      ]
+    },
+    "ppo-eval": {
+      "episodes": 16,
+      "seeds": [
+        940000,
+        940001,
+        940002,
+        940003,
+        940004,
+        940005,
+        940006,
+        940007,
+        940008,
+        940009,
+        940010,
+        940011,
+        940012,
+        940013,
+        940014,
+        940015
+      ],
+      "success_rate": 0.75,
+      "median_best_distance_m": 0.01735253751168407,
+      "mean_return": -1.1394819887839933,
+      "mean_decisions": 33.1875,
+      "weights_sha256": "b87a4957846c03744359662d2da2d575b7e74b1423d565e13d6eae5db511dae7",
+      "records": [
+        {
+          "seed": 940000,
+          "success": true,
+          "failure": null,
+          "episode_steps": 28,
+          "episode_return": 15.392602554454957,
+          "initial_pad_distance_m": 0.03546618465935568,
+          "best_pad_distance_m": 0.017203417269630455,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940001,
+          "success": false,
+          "failure": "TIME_LIMIT",
+          "episode_steps": 64,
+          "episode_return": -57.62796277751837,
+          "initial_pad_distance_m": 0.02727810164162541,
+          "best_pad_distance_m": 0.02342701999306335,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940002,
+          "success": true,
+          "failure": null,
+          "episode_steps": 22,
+          "episode_return": 13.99059867782524,
+          "initial_pad_distance_m": 0.0306565163469323,
+          "best_pad_distance_m": 0.017072334049571217,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940003,
+          "success": true,
+          "failure": null,
+          "episode_steps": 13,
+          "episode_return": 12.075606646399809,
+          "initial_pad_distance_m": 0.02437143409231738,
+          "best_pad_distance_m": 0.0172368467060554,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940004,
+          "success": true,
+          "failure": null,
+          "episode_steps": 34,
+          "episode_return": 18.838405776178803,
+          "initial_pad_distance_m": 0.047024489779280094,
+          "best_pad_distance_m": 0.017431989602163807,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940005,
+          "success": true,
+          "failure": null,
+          "episode_steps": 9,
+          "episode_return": 11.449140439802846,
+          "initial_pad_distance_m": 0.022395684054068374,
+          "best_pad_distance_m": 0.017403827638146713,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940006,
+          "success": true,
+          "failure": null,
+          "episode_steps": 27,
+          "episode_return": 15.029350474199218,
+          "initial_pad_distance_m": 0.03439566787341038,
+          "best_pad_distance_m": 0.017247403729019756,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940007,
+          "success": true,
+          "failure": null,
+          "episode_steps": 30,
+          "episode_return": 18.096622673833455,
+          "initial_pad_distance_m": 0.04432915574325486,
+          "best_pad_distance_m": 0.01724186512409107,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940008,
+          "success": true,
+          "failure": null,
+          "episode_steps": 16,
+          "episode_return": 14.317826943807601,
+          "initial_pad_distance_m": 0.03187560872486368,
+          "best_pad_distance_m": 0.017411971206766762,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940009,
+          "success": false,
+          "failure": "TIME_LIMIT",
+          "episode_steps": 64,
+          "episode_return": -30.719223841413502,
+          "initial_pad_distance_m": 0.0434670550109635,
+          "best_pad_distance_m": 0.02083134224007118,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940010,
+          "success": true,
+          "failure": null,
+          "episode_steps": 8,
+          "episode_return": 11.095770470897882,
+          "initial_pad_distance_m": 0.02117921593168777,
+          "best_pad_distance_m": 0.01737443215470346,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940011,
+          "success": false,
+          "failure": "TIME_LIMIT",
+          "episode_steps": 64,
+          "episode_return": -60.00901717654946,
+          "initial_pad_distance_m": 0.03530480564570385,
+          "best_pad_distance_m": 0.03281076714829027,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940012,
+          "success": false,
+          "failure": "TIME_LIMIT",
+          "episode_steps": 64,
+          "episode_return": -47.53694633171634,
+          "initial_pad_distance_m": 0.03466786003315328,
+          "best_pad_distance_m": 0.02429890773548725,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940013,
+          "success": true,
+          "failure": null,
+          "episode_steps": 32,
+          "episode_return": 15.339653948070325,
+          "initial_pad_distance_m": 0.03535121590273473,
+          "best_pad_distance_m": 0.017095140112323992,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940014,
+          "success": true,
+          "failure": null,
+          "episode_steps": 40,
+          "episode_return": 18.265105381925792,
+          "initial_pad_distance_m": 0.0453542611628716,
+          "best_pad_distance_m": 0.01733064286866468,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        },
+        {
+          "seed": 940015,
+          "success": true,
+          "failure": null,
+          "episode_steps": 16,
+          "episode_return": 13.77075431925785,
+          "initial_pad_distance_m": 0.029566667680780773,
+          "best_pad_distance_m": 0.016884042727106092,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null
+        }
+      ]
+    }
+  },
+  "native_pilot": {
+    "steps": 512,
+    "checkpoint_sha256": "e203ba321b7be4506b935db20824889777056ec271499bcddbee336ec5908340",
+    "weights_before": "b87a4957846c03744359662d2da2d575b7e74b1423d565e13d6eae5db511dae7",
+    "weights_after": "4f89d9c178a69ca233b5bc8772f30b01ca610c87feb60ddc9736b451567026cf",
+    "checkpoint_reload_verified": true,
+    "validation_counts": {
+      "ACCEPTED": 512
+    },
+    "training_wall_s": 107.46865609999804,
+    "optimizer_wall_s": 0.8719203999935417,
+    "training_episodes": 20,
+    "training_successes": 20,
+    "baseline": {
+      "episodes": 8,
+      "seeds": [
+        950000,
+        950001,
+        950002,
+        950003,
+        950004,
+        950005,
+        950006,
+        950007
+      ],
+      "success_rate": 1.0,
+      "median_best_distance_m": 0.017175813125498925,
+      "mean_return": 15.057731459981724,
+      "mean_decisions": 23.0,
+      "records": [
+        {
+          "seed": 950000,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.05899118375616,
+          "initial_pad_distance_m": 0.03417033797661118,
+          "best_pad_distance_m": 0.017050742638176422,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "14bf8cc442e7edde33af2ba068b217e1549920aa224dd46135001e42dffcd1b9",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.379999999999606,
+            "issued_endpoint": [
+              0.2515458305003129,
+              0.058939631616153475,
+              -1.3251667547549681,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 38,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950001,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.062081619026667,
+          "initial_pad_distance_m": 0.03430608885566476,
+          "best_pad_distance_m": 0.017176441615972045,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "81ff60a8517f3b0bbc64a71647fed3346619ac41cd6f1008083ff49d45c93157",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.359999999999609,
+            "issued_endpoint": [
+              0.24669416957453255,
+              0.058939631616153475,
+              -1.3197046883512957,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 79,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950002,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.057256416333736,
+          "initial_pad_distance_m": 0.03431150408745594,
+          "best_pad_distance_m": 0.01719745918957214,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "0d6a5ecb6cb45b737cb2a3c62c374ebaf92acee9857bebc051755354a8b1cc6c",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.379999999999606,
+            "issued_endpoint": [
+              0.25059544875306,
+              0.058939631616153475,
+              -1.3319679374612798,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 120,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950003,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.04583503576917,
+          "initial_pad_distance_m": 0.03416185077714383,
+          "best_pad_distance_m": 0.017084300282097765,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "cce02e5b5a7ec4025a596309ee7a015945582513adc5c084da1f902e46fe711f",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.359999999999609,
+            "issued_endpoint": [
+              0.24919340890055192,
+              0.058939631616153475,
+              -1.328639395506395,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 161,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950004,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.07259023397409,
+          "initial_pad_distance_m": 0.03433829774935874,
+          "best_pad_distance_m": 0.017175184635025806,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "181a4aebce385240ed4dc702c1efa5b1e68eb9fa9a8ed8fcf4bb7d91fc0d2cfb",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.379999999999606,
+            "issued_endpoint": [
+              0.25059544875306,
+              0.058939631616153475,
+              -1.3319679374612798,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 202,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950005,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.071819253164746,
+          "initial_pad_distance_m": 0.03437804786194578,
+          "best_pad_distance_m": 0.017217402297427114,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "15d0c8266ab3d04220077f35d9005cc084fcf106e96a1225bebb8df97d5c7ced",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.379999999999606,
+            "issued_endpoint": [
+              0.25091703058138276,
+              0.058939631616153475,
+              -1.3297027445565468,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 243,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950006,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.046448465043895,
+          "initial_pad_distance_m": 0.034267966046576476,
+          "best_pad_distance_m": 0.017188615964005474,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "57c727d715f449c00e474954863ec577f8b6c945d2febda459e04af22f12849a",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.379999999999606,
+            "issued_endpoint": [
+              0.25559798948657525,
+              0.058939631616153475,
+              -1.322729970315631,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 284,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950007,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.046829472785337,
+          "initial_pad_distance_m": 0.034196487259361225,
+          "best_pad_distance_m": 0.017115918195776764,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "f44087cd7dffc9020a7922f50658188fe4c90cd412e58dd4498398260597811e",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.379999999999606,
+            "issued_endpoint": [
+              0.2552975033425728,
+              0.058939631616153475,
+              -1.3250048434570516,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 325,
+            "training_scope": "contact_free_reach_only"
+          }
+        }
+      ]
+    },
+    "evaluation": {
+      "episodes": 8,
+      "seeds": [
+        950000,
+        950001,
+        950002,
+        950003,
+        950004,
+        950005,
+        950006,
+        950007
+      ],
+      "success_rate": 1.0,
+      "median_best_distance_m": 0.017267118904181603,
+      "mean_return": 15.028089516138538,
+      "mean_decisions": 23.0,
+      "records": [
+        {
+          "seed": 950000,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.029717494980178,
+          "initial_pad_distance_m": 0.03417033797661118,
+          "best_pad_distance_m": 0.017142891997252246,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "2c0d79a288edabd9b66bb7ed3938684cf3721771272f527c9f6619afec96a946",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.379999999999606,
+            "issued_endpoint": [
+              0.2515458305003129,
+              0.058939631616153475,
+              -1.3251667547549681,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 1274,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950001,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.033107603930093,
+          "initial_pad_distance_m": 0.03430608885566476,
+          "best_pad_distance_m": 0.017267625818101894,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "31467ed590fe36c9ec3011be9615a2685b29dadabaf75e0c0b00b708b5188c5c",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.359999999999609,
+            "issued_endpoint": [
+              0.24669416957453255,
+              0.058939631616153475,
+              -1.3197046883512957,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 1315,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950002,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.027833350103771,
+          "initial_pad_distance_m": 0.03431150408745594,
+          "best_pad_distance_m": 0.017290091407651215,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "8e98d1552e7d2488127a6ed7db115780f07d4968413a1c6831e81dd39c894a68",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.379999999999606,
+            "issued_endpoint": [
+              0.25059544875306,
+              0.058939631616153475,
+              -1.3319679374612798,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 1356,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950003,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.016103968358454,
+          "initial_pad_distance_m": 0.03416185077714383,
+          "best_pad_distance_m": 0.017177914964840862,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "6ca12a7fb5e0a9f3f303dc2fdff98c905d371f3f4f1b7aef3eee7b65f521bfdd",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.359999999999609,
+            "issued_endpoint": [
+              0.24919340890055192,
+              0.058939631616153475,
+              -1.328639395506395,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 1397,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950004,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.04354368738274,
+          "initial_pad_distance_m": 0.03433829774935874,
+          "best_pad_distance_m": 0.01726661199026131,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "8be66e0ff8cf38cfec022711c4ef2435ed11b75fbb6f85cea2e1d96565244e17",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.379999999999606,
+            "issued_endpoint": [
+              0.25059544875306,
+              0.058939631616153475,
+              -1.3319679374612798,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 1438,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950005,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.04109908576174,
+          "initial_pad_distance_m": 0.03437804786194578,
+          "best_pad_distance_m": 0.01731418362259122,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "76e2259b57ea09d64d3ee99b7aa9652f0c2ec556754f9084571d43751838fe31",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.379999999999606,
+            "issued_endpoint": [
+              0.25091703058138276,
+              0.058939631616153475,
+              -1.3297027445565468,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 1479,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950006,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.016650236512636,
+          "initial_pad_distance_m": 0.034267966046576476,
+          "best_pad_distance_m": 0.017282443600435505,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "a05926f43e92b87ecad5af521d9df4f892d7b29d186ffa641a95e3a5525bfc1a",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.379999999999606,
+            "issued_endpoint": [
+              0.25559798948657525,
+              0.058939631616153475,
+              -1.322729970315631,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 1520,
+            "training_scope": "contact_free_reach_only"
+          }
+        },
+        {
+          "seed": 950007,
+          "success": true,
+          "failure": null,
+          "episode_steps": 23,
+          "episode_return": 15.016660702078692,
+          "initial_pad_distance_m": 0.034196487259361225,
+          "best_pad_distance_m": 0.017210933196425235,
+          "reach_threshold_m": 0.0175,
+          "bilateral_contact": false,
+          "lifted": false,
+          "topple_event": null,
+          "unexpected_contact": null,
+          "native_approach": {
+            "plan_signature": "5e205f828d345c2a72901f64db2a00fe501cdeeed3c5d9bc850620831f51f1df",
+            "approach_complete": true,
+            "approach_elapsed_sim_s": 4.379999999999606,
+            "issued_endpoint": [
+              0.2552975033425728,
+              0.058939631616153475,
+              -1.3250048434570516,
+              0.0,
+              0.0,
+              1.2566370614359172
+            ],
+            "fresh_arrival_sequence": 1561,
+            "training_scope": "contact_free_reach_only"
+          }
+        }
+      ]
+    }
+  },
+  "isolated_reference": {
+    "episodes": 4,
+    "successes": 4,
+    "records": [
+      {
+        "seed": 960000,
+        "success": true,
+        "failure": null,
+        "episode_steps": 21,
+        "episode_return": 15.1303028221993,
+        "initial_pad_distance_m": 0.03425684108214519,
+        "best_pad_distance_m": 0.017033472051107428,
+        "reach_threshold_m": 0.0175,
+        "bilateral_contact": false,
+        "lifted": false,
+        "topple_event": null,
+        "unexpected_contact": null,
+        "native_approach": {
+          "plan_signature": "af5a2446fbeb87edc38eda9731bb17f6dae2e6237ac81c866e4de44ded90bd50",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.379999999999606,
+          "issued_endpoint": [
+            0.25559798948657525,
+            0.058939631616153475,
+            -1.322729970315631,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 20,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 960001,
+        "success": true,
+        "failure": null,
+        "episode_steps": 21,
+        "episode_return": 15.115763773141774,
+        "initial_pad_distance_m": 0.03416397361332795,
+        "best_pad_distance_m": 0.016987129539274268,
+        "reach_threshold_m": 0.0175,
+        "bilateral_contact": false,
+        "lifted": false,
+        "topple_event": null,
+        "unexpected_contact": null,
+        "native_approach": {
+          "plan_signature": "0dfbea0de8d2fe288ff4441cd77e03640b320ff5133530f6d90229666670b73e",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.379999999999606,
+          "issued_endpoint": [
+            0.25499226149412496,
+            0.058939631616153475,
+            -1.3272778466965285,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 59,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 960002,
+        "success": true,
+        "failure": null,
+        "episode_steps": 21,
+        "episode_return": 15.11715027651604,
+        "initial_pad_distance_m": 0.03417792321967307,
+        "best_pad_distance_m": 0.01699664233482174,
+        "reach_threshold_m": 0.0175,
+        "bilateral_contact": false,
+        "lifted": false,
+        "topple_event": null,
+        "unexpected_contact": null,
+        "native_approach": {
+          "plan_signature": "780ce5b3509170ddb8deea8baa0d39d151cabe003cceab5bf88a29b9490266cf",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.359999999999609,
+          "issued_endpoint": [
+            0.24699961087708183,
+            0.058939631616153475,
+            -1.3174352697953804,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 98,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 960003,
+        "success": true,
+        "failure": null,
+        "episode_steps": 21,
+        "episode_return": 15.14643048104627,
+        "initial_pad_distance_m": 0.034324055390599226,
+        "best_pad_distance_m": 0.01704907785125116,
+        "reach_threshold_m": 0.0175,
+        "bilateral_contact": false,
+        "lifted": false,
+        "topple_event": null,
+        "unexpected_contact": null,
+        "native_approach": {
+          "plan_signature": "db168d90f78b2e235bd7bec45b42babf7a2a1437aa78f7bbd30e14adaa6aba2c",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.359999999999609,
+          "issued_endpoint": [
+            0.24542485041154144,
+            0.058939631616153475,
+            -1.3287633804725578,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 137,
+          "training_scope": "contact_free_reach_only"
+        }
+      }
+    ]
+  },
+  "full_board_reference": {
+    "episodes": 2,
+    "successes": 0,
+    "records": [
+      {
+        "seed": 970000,
+        "success": false,
+        "failure": "TIME_LIMIT",
+        "episode_steps": 64,
+        "episode_return": -57.50645997692411,
+        "initial_pad_distance_m": 0.03477733190678248,
+        "best_pad_distance_m": 0.03074040383293957,
+        "reach_threshold_m": 0.0175,
+        "bilateral_contact": false,
+        "lifted": false,
+        "topple_event": null,
+        "unexpected_contact": null,
+        "native_approach": {
+          "plan_signature": "b038e9efe0a5aacd318b8a66c4dd9d41d9e85405b72da165852778a4a1c331d7",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 10.160000000000462,
+          "issued_endpoint": [
+            -1.1250181006794349,
+            0.0589396316161535,
+            2.671961919707808,
+            0.0,
+            0.0,
+            1.5707963267948966
+          ],
+          "fresh_arrival_sequence": 25,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 970001,
+        "success": false,
+        "failure": "TIME_LIMIT",
+        "episode_steps": 64,
+        "episode_return": -57.50672142491995,
+        "initial_pad_distance_m": 0.03464152951259855,
+        "best_pad_distance_m": 0.030605438072342336,
+        "reach_threshold_m": 0.0175,
+        "bilateral_contact": false,
+        "lifted": false,
+        "topple_event": null,
+        "unexpected_contact": null,
+        "native_approach": {
+          "plan_signature": "8fb84e9b9f275420f516ecf7ff9c67f6f85ce59d9ebe57b5281ae2a7255f7fdf",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 10.160000000000462,
+          "issued_endpoint": [
+            -1.1263539284440218,
+            0.0589396316161535,
+            2.6708981656825284,
+            0.0,
+            0.0,
+            1.5707963267948966
+          ],
+          "fresh_arrival_sequence": 112,
+          "training_scope": "contact_free_reach_only"
+        }
+      }
+    ],
+    "last_validation_failures": [
+      {
+        "status": "SWEEP_REJECTED",
+        "failure": {
+          "status": "collision",
+          "geoms": [
+            "collision_gripper_hand2_2_collision_hull",
+            "white_queen_d1_head"
+          ],
+          "distance_m": 0.0008833168883889443,
+          "joint_position": [
+            -1.1064035152050298,
+            0.053176290830279624,
+            2.634201909619555,
+            -3.767925429968101e-06,
+            4.273286950413992e-08,
+            1.5707965288917907
+          ]
+        },
+        "samples": 103
+      },
+      {
+        "status": "SWEEP_REJECTED",
+        "failure": {
+          "status": "collision",
+          "geoms": [
+            "collision_gripper_hand2_2_collision_hull",
+            "white_queen_d1_head"
+          ],
+          "distance_m": 0.0009503044900649928,
+          "joint_position": [
+            -1.108817407045237,
+            0.053537950044405216,
+            2.6354255808956717,
+            -7.553013565742047e-06,
+            8.718726278383947e-08,
+            1.5707967295193892
+          ]
+        },
+        "samples": 45
+      }
+    ]
+  },
+  "earlier_failures": [
+    "Centered native endpoint outside the declared reach bound (saved failed-reset.json).",
+    "Lateral preview exhausted 48 and then 256 candidates for seed 960002 before S041.",
+    "Initial watched pilot stopped before learning due to vector-only dashboard KeyError(image); fixed and regression-tested."
+  ],
+  "local_artifact_roots": {
+    "paired": "simulation/mujoco/training/autonomous-manipulation/runs/paired-bc-ppo-84fa90f1d67f4563bc1803c1b2df05b5",
+    "native": "simulation/mujoco/training/autonomous-manipulation/runs/planner-reach-4d807f0d42984af0a4e0779cca448dd2-lateral-grid",
+    "full_board": "simulation/mujoco/training/autonomous-manipulation/runs/planner-reach-4d807f0d42984af0a4e0779cca448dd2-lateral-grid-fullboard"
+  },
+  "input_report_sha256": {
+    "simulation/mujoco/training/autonomous-manipulation/runs/paired-bc-ppo-84fa90f1d67f4563bc1803c1b2df05b5/bc-eval/report.json": "d18d5b28a4edfc4502bc11ec2b0081c9042e8a2fcc2d52d77060247c01aacabf",
+    "simulation/mujoco/training/autonomous-manipulation/runs/paired-bc-ppo-84fa90f1d67f4563bc1803c1b2df05b5/ppo-eval/report.json": "7e579e15c102e7877bdbf2e3d35d9c8a8202ac4e0d38cc4964195647af4fdbab",
+    "simulation/mujoco/training/autonomous-manipulation/runs/planner-reach-4d807f0d42984af0a4e0779cca448dd2-lateral-grid/ppo-native-pilot-02/report.json": "639b97855ead688d5925fb9114a8d4c0488f7142a26b38a6a5085f07f06cc5bd",
+    "simulation/mujoco/training/autonomous-manipulation/runs/planner-reach-4d807f0d42984af0a4e0779cca448dd2-lateral-grid/reference-template-fixed/report.json": "57bd2de72f8dda4be1f7c78d6e7467c49c9020c35eaf7ee18f0bd7e5b0bba81c",
+    "simulation/mujoco/training/autonomous-manipulation/runs/planner-reach-4d807f0d42984af0a4e0779cca448dd2-lateral-grid-fullboard/reference/report.json": "a15ebb10deb30569fb9d321fd19ba853a5712834dcb3ffa2e5fd3dce5751f913",
+    "simulation/mujoco/training/autonomous-manipulation/runs/planner-reach-4d807f0d42984af0a4e0779cca448dd2-lateral-grid/independent-16/report.json": "26414cd26d02addaeed5256eb6a3558c29ba507c434d963ac09027990d23d9f4"
+  },
+  "independent_native": {
+    "episodes": 16,
+    "seeds": [
+      950100,
+      950101,
+      950102,
+      950103,
+      950104,
+      950105,
+      950106,
+      950107,
+      950108,
+      950109,
+      950110,
+      950111,
+      950112,
+      950113,
+      950114,
+      950115
+    ],
+    "success_rate": 1.0,
+    "median_best_distance_m": 0.017254494962698413,
+    "weights_sha256": "4f89d9c178a69ca233b5bc8772f30b01ca610c87feb60ddc9736b451567026cf",
+    "same_pilot_weights": true,
+    "mean_return": 15.020600389731179,
+    "mean_decisions": 23.0,
+    "records": [
+      {
+        "seed": 950100,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.015622016928447,
+        "best_pad_distance_m": 0.017285109723862838,
+        "native_approach": {
+          "plan_signature": "bd99eedd06e1c20c6adfda4968268894c40080a80d31d46602ec00e72dedea72",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.359999999999609,
+          "issued_endpoint": [
+            0.24747084608893122,
+            0.058939631616153475,
+            -1.327572326972846,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 38,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950101,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.036718369559154,
+        "best_pad_distance_m": 0.017212683898962914,
+        "native_approach": {
+          "plan_signature": "d59216e773868e9fc02ac7d845c9f153c522578ca0333f2d5c85f1ff14d54a0c",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.379999999999606,
+          "issued_endpoint": [
+            0.25043589852615905,
+            0.058939631616153475,
+            -1.3195643099794054,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 79,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950102,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.01479004849495,
+        "best_pad_distance_m": 0.017256133436684237,
+        "native_approach": {
+          "plan_signature": "1fd2a1b38bd665712208b759931f4671f338029d5f1d7a18d11cf2b3c12a759c",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.359999999999609,
+          "issued_endpoint": [
+            0.24951118030934277,
+            0.058939631616153475,
+            -1.3263734479944023,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 120,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950103,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.022265673894495,
+        "best_pad_distance_m": 0.017226035026661812,
+        "native_approach": {
+          "plan_signature": "e2c9b9010048f3b4af0614c50efbb549787a05d01a996dfeaa2d22fe0ce334e6",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.359999999999609,
+          "issued_endpoint": [
+            0.24951118030934277,
+            0.058939631616153475,
+            -1.3263734479944023,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 161,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950104,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.037541884305472,
+        "best_pad_distance_m": 0.01731849996566176,
+        "native_approach": {
+          "plan_signature": "63cd7eee6aba62b8078a42ebd517298a6065dab19f53397263131725bf40c1a9",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.379999999999606,
+          "issued_endpoint": [
+            0.25091703058138276,
+            0.058939631616153475,
+            -1.3297027445565468,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 202,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950105,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.032680375192456,
+        "best_pad_distance_m": 0.01728620965596904,
+        "native_approach": {
+          "plan_signature": "d3a723b9dd17cfa3d758d03267fbe0dc75adc47104fe40c022daa5d4d55d87f5",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.359999999999609,
+          "issued_endpoint": [
+            0.2463839868339638,
+            0.058939631616153475,
+            -1.3219722029136525,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 243,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950106,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.002027580911555,
+        "best_pad_distance_m": 0.01726985154787964,
+        "native_approach": {
+          "plan_signature": "e538b4d90615b92d23793da9b8cfcdfe0d538c3a9b33f0644a475833e916ea28",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.379999999999606,
+          "issued_endpoint": [
+            0.25559798948657525,
+            0.058939631616153475,
+            -1.322729970315631,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 284,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950107,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.023942251296438,
+        "best_pad_distance_m": 0.017315348766171905,
+        "native_approach": {
+          "plan_signature": "41868294d7891d3de5b3d112654155e13aab3f7bd895abc4fc8c418da5b433d3",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.359999999999609,
+          "issued_endpoint": [
+            0.2477895902511269,
+            0.058939631616153475,
+            -1.3253074911491178,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 325,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950108,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.033132133047816,
+        "best_pad_distance_m": 0.017248385067844325,
+        "native_approach": {
+          "plan_signature": "84819a325b89f05990d0bebe773bc01b78533fe977edbb5e387972532c03f5a8",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.359999999999609,
+          "issued_endpoint": [
+            0.2477895902511269,
+            0.058939631616153475,
+            -1.3253074911491178,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 366,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950109,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.019391350806528,
+        "best_pad_distance_m": 0.017211299506894324,
+        "native_approach": {
+          "plan_signature": "c272595235f8f700eb6974667c02651631167cf4056eddcb6616dbc900a4f2e6",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.379999999999606,
+          "issued_endpoint": [
+            0.25043589852615905,
+            0.058939631616153475,
+            -1.3195643099794054,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 407,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950110,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.007768780269583,
+        "best_pad_distance_m": 0.017233689312252276,
+        "native_approach": {
+          "plan_signature": "a9676f79588e9df43cef7d88e5b1c82345417d6a86749a40cdd57decc80c9552",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.379999999999606,
+          "issued_endpoint": [
+            0.2543674537090376,
+            0.058939631616153475,
+            -1.331818267023964,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 448,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950111,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.009195134584514,
+        "best_pad_distance_m": 0.01727793386871932,
+        "native_approach": {
+          "plan_signature": "afb665ab18715a683ab564d74713f3e46be22ea179cd3ab311ec57139cb981cb",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.379999999999606,
+          "issued_endpoint": [
+            0.2543674537090376,
+            0.058939631616153475,
+            -1.331818267023964,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 489,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950112,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.003259599299135,
+        "best_pad_distance_m": 0.01724934362115345,
+        "native_approach": {
+          "plan_signature": "1a78f2f38caa39c28b4bda1d0c0375c9d034ca9d34aa344c74b3df78fef1c828",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.379999999999606,
+          "issued_endpoint": [
+            0.2524533339409186,
+            0.058939631616153475,
+            -1.3183486727812492,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 530,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950113,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.042722347670658,
+        "best_pad_distance_m": 0.017263782801707032,
+        "native_approach": {
+          "plan_signature": "0c0a0668d5eeefa5c1b8b5a6f57c8c04c324d76e8be58e2953ea855a2ea21293",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.379999999999606,
+          "issued_endpoint": [
+            0.2540478590349751,
+            0.058939631616153475,
+            -1.3340856957877607,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 571,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950114,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.00961039044552,
+        "best_pad_distance_m": 0.017252856488712588,
+        "native_approach": {
+          "plan_signature": "9224e207008ddef2b8739384861c41e39e96f54f43f255e3a4bb4d3c53821608",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.379999999999606,
+          "issued_endpoint": [
+            0.2521555735584171,
+            0.058939631616153475,
+            -1.3206232542363403,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 612,
+          "training_scope": "contact_free_reach_only"
+        }
+      },
+      {
+        "seed": 950115,
+        "success": true,
+        "failure": null,
+        "episode_steps": 23,
+        "episode_return": 15.018938298992143,
+        "best_pad_distance_m": 0.017249142897343542,
+        "native_approach": {
+          "plan_signature": "9c773434c60ba281dcc1344c19de10ad6b719b76291904741f43d5927990220f",
+          "approach_complete": true,
+          "approach_elapsed_sim_s": 4.359999999999609,
+          "issued_endpoint": [
+            0.24810356201807043,
+            0.058939631616153475,
+            -1.3230407697600886,
+            0.0,
+            0.0,
+            1.2566370614359172
+          ],
+          "fresh_arrival_sequence": 653,
+          "training_scope": "contact_free_reach_only"
+        }
+      }
+    ]
+  },
+  "native_provenance": {
+    "environment_version": 8,
+    "policy_version": 2,
+    "config": {
+      "schema": 1,
+      "piece": "white_pawn_e2",
+      "source": "e2",
+      "target": "e4",
+      "obstacle_pieces": [],
+      "board_fen": "8/8/8/8/8/8/4P3/8 w - - 0 1",
+      "localize_source_rgb": true,
+      "initial_command": [
+        -1.5,
+        0.12,
+        -1.5,
+        0,
+        0,
+        1.2566370614359172
+      ],
+      "camera": {
+        "lookat": [
+          0.245,
+          0,
+          0.012
+        ],
+        "distance": 1.05,
+        "azimuth": 180,
+        "elevation": -75,
+        "width": 1920,
+        "height": 1440
+      },
+      "dwell_steps": 10,
+      "control_repeat": 5,
+      "max_perception_age_s": 1.0,
+      "placement_jitter_m": 0.001,
+      "non_target_contact_penalty": 20.0,
+      "neighbor_displacement_penalty_per_mm": 1.0,
+      "reward_weights": {
+        "grasp": 2.0,
+        "lift": 3.0,
+        "success": 10.0
+      },
+      "autonomous": {
+        "action_mode": "reach_xyz",
+        "reach_distance_squares": 0.5,
+        "workspace_radius_squares": 2.5,
+        "xyz_action_scale": 0.25,
+        "fixed_wrist_rad": 0.0,
+        "fixed_elbow_down": true,
+        "reward_profile": "dense_progress_v2",
+        "reach_progress_weight": 10.0,
+        "reach_timeout_penalty": 0.0,
+        "observation_profile": "vision_features_v1",
+        "start_mode": "native_reach",
+        "require_visible_target": true,
+        "approach_entry_offsets_squares": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            1.0
+          ],
+          [
+            1.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            1.0
+          ],
+          [
+            -1.0,
+            -1.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "approach_max_candidates": 256
+      },
+      "bundle": "simulation/mujoco/runs/canonical-v6-baseline/fixture",
+      "layout": "simulation/mujoco/runs/canonical-v6-baseline/fixture/reference-layout.json",
+      "vision_library": "build/rl-repro-native/bin/Release/acvision_runtime.dll",
+      "motion_library": "build/rl-repro-native/bin/Release/motion_runtime.dll"
+    },
+    "config_sha256": "c574a611ec53a5ad6461032ecc47b2dd74a08ebc30095aa3e7cb8278ff7d8a37",
+    "policy_device": "cpu",
+    "torch_version": "2.14.1+cu130",
+    "initial_weights": {
+      "source": "simulation/mujoco/runs/ppo-fine-tuned-v6/policy.zip",
+      "config_transfer": true,
+      "source_config_sha256": "fb37bb17575700e674e1002d7a3c173c40d8da6b43f53ae6af88e05d05d012ab",
+      "reach_handoff_transfer": true,
+      "sha256": "6382f03088748493b36ca834ece801224431ec4872d9ee7f5d345df0d9b70c5a",
+      "weights_sha256": "b87a4957846c03744359662d2da2d575b7e74b1423d565e13d6eae5db511dae7",
+      "scope": "autonomous policy weights; fresh optimizer"
+    },
+    "files_sha256": {
+      "simulation/mujoco/src/atom_mujoco/__init__.py": "35f5dbc27fadba709771fcd035ad128a5b1012ab0f19be5e277664cdd99cd2fe",
+      "simulation/mujoco/src/atom_mujoco/approach_execution.py": "b2d97eb8e1d0c853b9f9821300cb29972259e0b75bd300c3282dfca9f4aa66e9",
+      "simulation/mujoco/src/atom_mujoco/approach_handoff.py": "3a7b152641da23acd5cb2f04450efc241176b4cbaa75e26e1e777cad49848f0b",
+      "simulation/mujoco/src/atom_mujoco/approach_planner.py": "fa3665b4a61c9da8eabcd020a703d2446ef76d831621a7c7827c8dc9e1e0c3a1",
+      "simulation/mujoco/src/atom_mujoco/autonomous_control.py": "0fa0b6411a86edd9a6d8b87cfb628ab265c5772d2215c15dfa3deee9cadea02f",
+      "simulation/mujoco/src/atom_mujoco/autonomous_env.py": "c5ce3f00d659ec738c701df8eb28fbbfab28051406e6845560fe2981d3848bb0",
+      "simulation/mujoco/src/atom_mujoco/autonomous_feedback.py": "1cba6c95a10c6ffbb1d7dc74167b431fab2b345ee79fc64449860665a15de041",
+      "simulation/mujoco/src/atom_mujoco/autonomous_observation.py": "843f2d7990832899873e951de66d09454f19b7113c63a10fc2ec87aed8737736",
+      "simulation/mujoco/src/atom_mujoco/autonomous_policy.py": "0593037269b540eb77f51192d8604406ae0965ee5624bc9bc2343fb09f86d407",
+      "simulation/mujoco/src/atom_mujoco/autonomous_scene.py": "0d102b1026d3f82e1f6d86511ec41772f93221406845af41081a30d99135d34d",
+      "simulation/mujoco/src/atom_mujoco/backend.py": "4a6d1108c6952b472426f5e11f432a72884a8ee8c20275ddaf67b4efc1afb98c",
+      "simulation/mujoco/src/atom_mujoco/board_piece_localization.py": "ca51439caf704ac47ddbcb5f2e66b6183077c52e800fa90b0d0b27a797870fa9",
+      "simulation/mujoco/src/atom_mujoco/camera_manipulation_env.py": "af74b2dd365e782a8bb640395240c713daa4e1fd6d85d3dcd5529a4778069adb",
+      "simulation/mujoco/src/atom_mujoco/camera_only_env.py": "f0562c740061cac67b0bede2dc5c83ca9be941244cd6bd12c38419338fff99e3",
+      "simulation/mujoco/src/atom_mujoco/camera_policy.py": "9cb844cc9b66e885f6356ca3767e7218b0d4ec42713fdc404a1b3741c9eb512a",
+      "simulation/mujoco/src/atom_mujoco/camera_reward.py": "0a6b70dee46b2ace8e0bd12e68b89023fe84e7e36aa989bd1b1bd05d568f8394",
+      "simulation/mujoco/src/atom_mujoco/chess_commands.py": "40ad96bf41e68f4026d25611be36b14d04922a0ea47fb46bd99725b2d187b94e",
+      "simulation/mujoco/src/atom_mujoco/chess_scene.py": "0681ee7560077bd3cc1d150c54b4712f827dc8f54d351dc43cdd1ceb6126ac25",
+      "simulation/mujoco/src/atom_mujoco/cli.py": "5bc18ed1cb86f65b799293745bfb81c41727b10cad34ce4865c4f7f6b0bdea09",
+      "simulation/mujoco/src/atom_mujoco/collision.py": "b7001a2e4ac76783360bcee6d40d06b30df8ff4bb597161aaf30409dd4202a4d",
+      "simulation/mujoco/src/atom_mujoco/contact_supervision.py": "b4742004a802d7c3b02bfed10627922789bbfcceda7d79c52fc8a2214c0ab2dc",
+      "simulation/mujoco/src/atom_mujoco/controls.py": "f107672452d54b956144dc6f5237f8126845f57cd76d8bad9ff86ae577b0f30b",
+      "simulation/mujoco/src/atom_mujoco/experiment.py": "ce9c91f2fc6d6e9b2cbd1eb13ee5c2d5a0068db13b0b628b99f9882a419c727e",
+      "simulation/mujoco/src/atom_mujoco/graveyard_vision.py": "ee17a03c227273bc052e25f6d977d7bf96553579f5ca83408fc515b046720ab6",
+      "simulation/mujoco/src/atom_mujoco/gripper_colliders.py": "29b6c3e1c56ed3c4b12e890fb54e96c94527fecf4653972e8c3fbc02964e01b1",
+      "simulation/mujoco/src/atom_mujoco/hybrid_contract.py": "9fe5397f066afe9a81b2265e2a1c97201aebd8fa48731b0dfd32a239b675e0a6",
+      "simulation/mujoco/src/atom_mujoco/interactive_model.py": "09cc610cfc88502c27253762a1bb29cfbfaafbcb2e2279123ec5d23a8ac0879e",
+      "simulation/mujoco/src/atom_mujoco/local_supervisor.py": "58bb887990d07d1d64f7ffa54b29a4c532f39026b355e2d88eef462e13aaea0c",
+      "simulation/mujoco/src/atom_mujoco/model.py": "42a83bea0abe15760e7081dd8cde8d41b9baa97bd3dc0df69c371864a4e27e0f",
+      "simulation/mujoco/src/atom_mujoco/module_monitor.py": "156057ede1c89b53ec378f1faab2e15260faa8cf8fcbfaba9ff13b46cc9c474b",
+      "simulation/mujoco/src/atom_mujoco/motion_controller.py": "47ee4a78e20e7c0e15a18c2f773afffc7282acda5739a1521c54a5e14f028bc9",
+      "simulation/mujoco/src/atom_mujoco/native_motion.py": "7a2575e14d8ea14b17451bed4cc4ad0e2312162604292b8da59b3f29d15634a3",
+      "simulation/mujoco/src/atom_mujoco/native_vision.py": "de5fc5746427943f7c56f6f1e188eea6de8cd94609e1a57b8df6e4911a50a887",
+      "simulation/mujoco/src/atom_mujoco/neighbor_vision.py": "a2752ce208fec7eb0aeb6c3fee289596b32c33cd6cde4070a64308c149bca4af",
+      "simulation/mujoco/src/atom_mujoco/paths.py": "688ee9a9fbe316546732f475ba037be0a6b11a8f95627f7b3d9a2aaa54cb1fb8",
+      "simulation/mujoco/src/atom_mujoco/physical_state.py": "48f8ef3734744bd7ed1c0aae341ea3b3977e3ae51d85eb1efb54e2f52d18b113",
+      "simulation/mujoco/src/atom_mujoco/piece_vision.py": "487ac9baf4271e2d554e927ce1b5934b65396e001679a20587b96bb6cc81abe7",
+      "simulation/mujoco/src/atom_mujoco/playground.py": "b1cd4d448ebf2f987520d34fd76f56590d0fbad1b35e72314088696c8d6aeb97",
+      "simulation/mujoco/src/atom_mujoco/recording.py": "48d6d27686c883ae1ca22f5641777b302221f87efdd68519c3134f8e56f1c68d",
+      "simulation/mujoco/src/atom_mujoco/scene_feedback.py": "c38bb06463829832fabf82a8c78f496f7aae407b0679890d8a35723fd4cf0966",
+      "simulation/mujoco/src/atom_mujoco/supervision.py": "edaf808149906688df5f7eb8befcb65f4551e0163c7e27985b60384430e29f74",
+      "simulation/mujoco/src/atom_mujoco/task_plan.py": "a4848f83ad3215e12e395a43aba51b43698f590890d9eea29f3d42a201b006af",
+      "simulation/mujoco/src/atom_mujoco/teleoperation.py": "8f29a82c4193e6434adfd0a20973aa090207b0e969b9bce0b624118787c83493",
+      "simulation/mujoco/src/atom_mujoco/training_monitor.py": "a85ade5c8792155a9e2256853ca96ea5dfe9eebe2e233208fb4651b253df531b",
+      "simulation/mujoco/src/atom_mujoco/trajectory_execution.py": "9ed125dc80b6a72539ef61438312dd87bcd12436d315a6c2c6cacbffe6dc1d9f",
+      "simulation/mujoco/src/atom_mujoco/virtual_camera.py": "242baffba6b0a1123bbcee5403a8d36983ac1713d510daf918003fea19d45805",
+      "simulation/mujoco/src/atom_mujoco/visual_grasp_env.py": "af7b35224787f52e73f1594247059b19806bf82dbadc219eb6566a46d9ac994b",
+      "simulation/mujoco/src/atom_mujoco/visual_verification.py": "ccca11f359a26201558a1f4fa6fd6596fa38665017af4a2acea021cd62d0f27c",
+      "simulation/mujoco/training/autonomous-manipulation/canonical_reach.py": "502c54396237df9dc0cdb8b58292d61e8673a2e7c3e41fc13e40901fcac74dac",
+      "simulation/mujoco/training/autonomous-manipulation/diagnostics.py": "829fe6c3c22411c04b6799c210c944525461ecbe31a1f14b1e191fe7e6d7fdfb",
+      "simulation/mujoco/training/autonomous-manipulation/parallel_session.py": "6b84894ca68d8d49a727057c809bfa1555636232db8d4b4629df6e90e8d24bb5",
+      "simulation/mujoco/training/autonomous-manipulation/parallel_session_status.py": "cb1a79ab8c0b4716b30df2d82f469f5c3ea15b85cbdeeca1013249e6b95a48fc",
+      "simulation/mujoco/training/autonomous-manipulation/prepare.py": "7ed634aab7a517a5f860c90e2c19e50502805d072569126bcbd11125e6ae11b3",
+      "simulation/mujoco/training/autonomous-manipulation/qualify_handoff.py": "10eb8c2b5ede1b8dc9f4dd0aa62c708d6689a755fb5af19a7a3cdd866900df04",
+      "simulation/mujoco/training/autonomous-manipulation/reference_reach.py": "6c10e8c6e961c4866a18922b836d579b78760004771906a1163b0741fa6055ef",
+      "simulation/mujoco/training/autonomous-manipulation/report_training.py": "6dd96a7fe94191bcf4e9a2ebb72470b790f0456453856a027f2705a89db96ea1",
+      "simulation/mujoco/training/autonomous-manipulation/resources.py": "2199e0d6ab28c80ded384b2c147216cc0baa666562b5459ea9085d06392082e8",
+      "simulation/mujoco/training/autonomous-manipulation/run.py": "5d9e20c4419ae5da0900163a8c8d09dc31c106cfb09cde992d6b6737f2b63504",
+      "simulation/mujoco/training/autonomous-manipulation/watch.py": "cd52c4c6df3e0d79727fb40cb7e301dbc771052885eef14d80f8474b00e738ad",
+      "simulation/mujoco/training/camera-manipulation/telemetry.py": "d0a0cd05f6645f658898112f99d314d3e3a51e9e9e8a5a4c4e26cc9f788013ef",
+      "simulation/mujoco/training/camera-manipulation/run_progress.py": "900e8f2682a61e70b274aa90e271ae24874382d4f9708bfc4a01746b5bfec665",
+      "simulation/mujoco/training/camera-manipulation/dashboard.py": "23aeaa4724d153a56c2b1573dacb0ec7f04ad834ea06bb80fb9360ec3ff9c4d0",
+      "simulation/mujoco/training/camera-manipulation/dashboard_publisher.py": "166fde1a35a71dbeeeb277d2fe8e62e06c4c909def9698723c53df3cc45ab8f3",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/bishop_visual_lod.obj": "5290c994933b0df5749230ebbf61276fb90496b7b1b2aafb740cac3abdef1da9",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/environment.json": "465a0af2e67d2932050f6e1a7c9b0e617124aaca115d1c1831986dcb0365f9cc",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back.stl": "4f582b4950315ab9c77b12fc23022a9b3ba59bc6f7f6c9bb2d3a3c31738bf7a4",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_0.obj": "05d245eabf3bd55f36e1f2fff4beaa590b7620d2bb37fd148455c5393989d516",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_1.obj": "328bc763421454062708fccf7db8b93c693d51df180d3667eab12cd9df9f37fa",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_10.obj": "73ac4388c6627d914822b6834285c4fca5e4ac700e91722804926d1485bccbdf",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_11.obj": "7cb77bfea64b0385fecf9d0bef6fcfeaa41a8009d0277c64b3c3fad38f4df178",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_12.obj": "649d817f4340bf41845bbd71d717273a523cc9bef88ecfba613ffb23763acc75",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_13.obj": "2ebe526b68f512746653dd61dc41fb77e1aea99be3221257a2cfc133b387b1e4",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_14.obj": "819c4d1807d64db3be7cf19adc075bc10f7c93e976fcc21ebe062c7d938d58cf",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_15.obj": "82d184ceaec5c9349eacc2381a7bbf626fbe9fc107a76e890f6706784133bad6",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_16.obj": "60d2775fc2c459013ded798c0dee1088b181c21ae2a92bc062487e1175d64ec2",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_17.obj": "a52fc600bd4085b21e3d7fd614892b6c9d9f6a3e4489d096a66f58f26b66a0e1",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_18.obj": "2bc1c51996b3d9cab9d74ac0a773623be8e17a1e00f2a7b4866d6ed0a84fd114",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_19.obj": "2137b111e0429471f736e05f16bbd58aa51804544eabee149d151525aff6da11",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_2.obj": "1bb0259754f224814515249c7ed4c2c82fc91708730f7f8a6a69cfedb2c2ee69",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_20.obj": "5932f99fef0dee62b3d392a49242bef4cc47056bf95ab6d99f86c09e4cb19c0f",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_21.obj": "75a53175de1228bca3e1a5d592321e87f4d3d3196e5dcd811d752585fb7427f3",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_22.obj": "5f0cb2729a4dfaccdbb80be8f909e8bef04d69da7453cba6774cb8c6ffc9c9c1",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_23.obj": "d16e8e77ef9419fffd978d9a296379099d1cdd7a2dd2310b88ad06c37af73b37",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_3.obj": "3f7b8542f6ea9471ab7e98c69c08b1cbd9d57220346e9399aa62e4ca90f8961e",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_4.obj": "e335edd8f22e7cc8d1c359246dfe3b658a9dfef87758d22795bc449657c8046e",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_5.obj": "52fb5403c1ff8dc949a6810cccf7c0429b44fa3243c0deb47342889d0d811637",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_6.obj": "6c509c152c8966e1da875695317229208f363d7e49ae99a8ef46094e76ec82d7",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_7.obj": "7ba9c4f25b616be15900e9e4a4707799fce817da2667a247ec274972b65c68df",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_8.obj": "751b920b9dc88c1a694663407b47b951add32d458ab07895e5def6bbd374b2ab",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_back_9.obj": "c4718b21e096318d18493c8d349fd0105c4eb5519c02bbca02fbb40bece3db0d",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1.stl": "e60d1aeb67c59edb023a3bfcedad1afb7288a2022c884b918956137159063b5a",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_0.obj": "199ac41f8c4d09367d5059c726c576b7cc7cc515677773c9ddb1b3ec9d1d5b21",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_1.obj": "6d44d748203b9b93222049ba5dd584d988dbc1b00de3a93fdd8e15c186667949",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_10.obj": "ffe7026655d18c61159556a7463234427d9fca57a75897272a897662278394af",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_11.obj": "560efec854a4be797f2af8e510b438a222bca17d152c8ad469e7973616f138e0",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_12.obj": "9eb5dc94c50ae8f1f21853abcb58e2aad489a52530e82c0785462ccc3fcdc34f",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_13.obj": "ffe4648a592159be50aa79586f6ecb2c51e85df7cacf0a01bd997baba3ddc8a6",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_14.obj": "260d9b489e9f84df5a0da15ba0ad63c83f4f6ec9c389b006e099ce3ead6927fe",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_15.obj": "d7b927983c8dee27e7d24589d44b864ad27e30564c92508f751c543d3f4a29d8",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_16.obj": "903a88317d3e0b6b5706655fba78879ddad54bbf98f4f4e4c819374ad2feb855",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_17.obj": "ab5b3a8eb893a0598dc83dcd9ced6347d388db11ec7bda0168ebe38d1fe3fa06",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_18.obj": "81f35717d2806890ed3915746ccbf5864a5a3af4e5018aa8bc8ead222d9c3905",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_19.obj": "fe1b458a848978c03119c5db9106ff1dc7cf9b7f37bc8ceb6ec324e05d1cff79",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_2.obj": "8fda8c6828b37663d118bdafc79cb8c529cccf2b88280802b13278ba1daa242a",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_20.obj": "e7e43123f12896ddcaae07c3a548592186d3f73e46d683c30a7bada543527cd2",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_3.obj": "8f0fb9359c5ee199323fb9df6323c3d52a2a9b8afbb247b9d72e39db97f8ac46",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_4.obj": "9df5c080031a8888eb581ed13470161772b5e6cd1d21a7a8fa58f5531f64d1eb",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_5.obj": "35dfdae3dac0731104388368aa099d63c77d268d681a5b019f35a351f6579207",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_6.obj": "29ffb0de251636f27934e6bf6b4738f5629536959c57563a5ebe468393f19347",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_7.obj": "dc9c4e6eeec295ef7854693628ffe18cc85ceff76a22fc052780275d5c3145c3",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_8.obj": "0eacad3fe42948bd7082d012aefc3f61ec1679fd16b50f709b809eaef2540171",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand1_9.obj": "7cc9037784f19eeb3c87d04f63f64271e3667bbfc94e2e3e603accf03a726839",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2.stl": "ff9404c16c6e9fdd919a28ffbf61835c8aab4618bab61e461aac5b3a5fa0edc9",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_0.obj": "33e7cc4bbdf69987f102e2dd0008f56f4bb265b688e9b1f99c00be1386505dd3",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_1.obj": "7918cac860ac5953fbb35af9949b5237e7ed7d1261c816725ecbb3b8fe6d34ee",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_10.obj": "f639e7be3d21741b4e103291e6485ddd9ae755ef510c826af82f83c005a47312",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_11.obj": "fef819e37d68b9cba93ce2dadd9fccb1c3f97672d91cddb2a32dfb7337ce438e",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_12.obj": "335782a8cf53466304ea1b8ce80203f22360080559ae97aa31d1dc0bf486ce3d",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_13.obj": "b5a45991f43070330aad6554c72b501c6f511dd88c76e68bc7d5f267defc0dcb",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_14.obj": "13eef2f577cd94f77a25772e35eb7eeb5f1540f44cee52be7a9cb90fd69325ba",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_15.obj": "74a5211e1c3c70daae3db76d786d7c24d28b9c0d05362c78511add8754c8541e",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_16.obj": "e02ac2e13fddd4059347414acfe2d45ba3e25e30bebc6ec240763b355712aa5b",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_17.obj": "3c99bd2fa2b55cda261ff6ded077fbb37b2511522e58b4f6b5379188c6bbe63a",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_18.obj": "041e78ec2ad60045f77e6e60cc481cd747a300207f58a708e5a32349df8e3642",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_19.obj": "6270656f63d6c84359f5aaa39159112a7afc4853bf60a9c9d0d93dc1b7a72bc1",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_2.obj": "4a7358c7c137d3c91229983939d3d330d090cd8a21cec62f3cf04f578e596f93",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_20.obj": "590866b3ca0b243d31ca9eeeb9c5aec1fd606bd61e01363beeac2b36e1327dc7",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_3.obj": "e40e61f69d8ab636d5f84d72f26e3173a4a7d529bdc91c1b53bdddcc24af5050",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_4.obj": "47ff1311b68e36bae08a88bc6bf3ef64c7a8a4d4d844d109f7f0b04e7c4f812e",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_5.obj": "052132760876eabed301fad90b61a30da128a50f37cc2c87fe40f636df7f0339",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_6.obj": "3adbdaa8cade22830c266def689407d802fdeb1abefd69a891035b416d97a303",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_7.obj": "9bdfbed8a8eca4c9c9452ab21ffeee14f22700351015a0d9884ecc080937ea52",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_8.obj": "a70cbf5c3fb6aada0d96a6c3ca24fd760f02b0f87e4023f366b8c0fccf5ed580",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/gripper_hand2_9.obj": "b681c9ed435a632ef750368098fc49b4180fc2941f5eb214e7aa83345549832f",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/king_visual_lod.obj": "45359667806ef172b558c70dc23e1b0bb6eac7e46bfdfeff418e7adfb0af5349",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/knight_visual_lod.obj": "469333354e29639584840aaf6ac077a33fcf199d2de21ab89dfdf59290921f01",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/manifest.json": "7c4c9363d4325d5726ce662b9a1f88da5d7e0a4f5c2e1851efd15a71f1ff1758",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/marker-0.png": "5d207e3aba499e6cc21729755e00fecdf3ad8d25c870088488487fa40333e911",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/marker-1.png": "1ee29d5335b3ecc5014edb2a87e5e2742be515846f7d0a0c0b1454d2a07c6d24",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/marker-2.png": "9dc17bf61040b0ad642f10f697061da9bf5ab0ff713995e0f8f2733569d399f7",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/marker-3.png": "7b4575c7a35ed8495bcaa7912d7ab12c6b08d83e3afaef9ac566f49ba2ac3100",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/mesh_0.stl": "8c2ee6b9b9d26f0750106270a6ef3f7ce6ad18726cab4a9f6b64287377f199d2",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/mesh_1.stl": "f6fab8b6ca0b782020fdc266d1ea30b21e40ba1ff6a255e159e33dfc72e69728",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/mesh_2.stl": "5fa613e90968f957d2eae04a3644d65353e9941a90754c4c972949f7166cbd11",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/mesh_3.stl": "a9e87a8a7004474e7d09adcd1cdb30056f2cbb0627850fe8f8d36009dad3056d",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/model.xml": "49e6d7eda155d8eb7f1a280038e884f931f350435622fdde4f42546311023528",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/pawn_visual_lod.obj": "fde2c9b4b5e9237b86013fc01ac7ca11041330188de122f5b42f063e4e418b07",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/queen_visual_lod.obj": "c3b825b8eda82f25636409adc8c9b59d8af9ae64eb151b4a0f4bf24d1ecced1d",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/reference-layout.json": "06361676c4159b37b680d6296c1fa9aa27a1155ee316f3cd13ab29f91d0a22d2",
+      "simulation/mujoco/runs/canonical-v6-baseline/fixture/rook_visual_lod.obj": "ac4ab980cad4d4eeaa4f2e5154fedcde47b6ab11bf8305b68866f144e46e8931",
+      "build/rl-repro-native/bin/Release/acvision.dll": "9f078d36c4a27618835e560082fc8517c5b88c1df083053565f96745287211c9",
+      "build/rl-repro-native/bin/Release/acvision_runtime.dll": "7a618de3cb34cfb1537caf6dd367657f6d1bc17b153c4be69acdefeff5f0d56f",
+      "build/rl-repro-native/bin/Release/motion_runtime.dll": "d35706504d48addf0fb756e49f283268e487976882d1926c2b387961933b6f35",
+      "build/rl-repro-native/bin/Release/opencv_world4120.dll": "0455560c75bc456b5f758c94af653b6f0397ed8a28b9605cf52c62e7c8f18781"
+    },
+    "action_schema": [
+      "vx",
+      "vy",
+      "vz"
+    ],
+    "actor_inputs": [
+      "commanded_joints",
+      "goal",
+      "object_context",
+      "perception_valid",
+      "previous_action",
+      "task",
+      "visual_target"
+    ]
+  },
+  "saved_images": {
+    "camera-final.png": "36dbb524e901e2540c343dcffea952e4058244a3baacf60eec9f427ecc40e76c",
+    "board-final.png": "4413a1bb470823ccb5adc6af67d5efcd6062d67801e9b9564ef0d4f5ada1bbbb"
+  }
+}

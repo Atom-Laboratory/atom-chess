@@ -294,6 +294,81 @@ def test_grasp_diagnostic_reads_real_mujoco_geometry_types(supervisor):
         module.grasp_geometry(supervisor.sim, 'white_pawn_e2', surface, 'head', .5)
 
 
+@pytest.mark.parametrize('offset', [[0., 0.], [-.035, .035], [.035, -.035]])
+def test_diagnostic_bounds_include_verified_lateral_start_and_source_neighborhood(offset):
+    import importlib.util
+    path = Path(__file__).resolve().parents[1]/'examples/qualify_hybrid_approach/local_diagnostic.py'
+    spec = importlib.util.spec_from_file_location('lateral_diagnostic', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    source = np.array([.26, -.08])
+    entry = source+offset
+    travel = np.array([.0004, .0004])
+    lower, upper = module.diagnostic_xy_bounds(source, entry, .0175, travel)
+    assert np.all(lower <= entry-travel) and np.all(upper >= entry+travel)
+    assert np.all(lower <= source-.0175) and np.all(upper >= source+.0175)
+    if offset == [0., 0.]:
+        np.testing.assert_allclose(lower, source-.0175)
+        np.testing.assert_allclose(upper, source+.0175)
+
+
+def test_upper_head_edge_uses_command_geometry_and_tilted_contact_load(supervisor):
+    import importlib.util
+    path = Path(__file__).resolve().parents[1]/'examples/qualify_hybrid_approach/local_diagnostic.py'
+    spec = importlib.util.spec_from_file_location('upper_edge_diagnostic', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    command = supervisor.scene.command.copy()
+    center = module.grasp_geometry(supervisor.sim, 'white_pawn_e2', .018, 'head', 1.5)
+    edge = module.grasp_geometry(supervisor.sim, 'white_pawn_e2', .018, 'head', 1.5,
+                                head_edge_fraction=.5, command=command)
+    assert edge['tcp_z_m']-center['tcp_z_m'] == pytest.approx(.006+.5*.008)
+    assert edge['effective_radius_m'] == pytest.approx(.008*np.sqrt(.75))
+    load = edge['model_load_estimate']
+    capacity = load['friction_lower_bound']*np.sqrt(.75)-.5
+    assert load['estimated_normal_load_N'] == pytest.approx(1.5*load['weight_N']/(2*capacity))
+    horizontal = load['estimated_normal_load_N']*(np.sqrt(.75)+load['friction_lower_bound']*.5)
+    assert load['estimated_horizontal_load_N'] == pytest.approx(horizontal)
+    assert edge['closing_interference_m'] == pytest.approx(horizontal/load['finger_gain_N_per_m'])
+    # Live robot/object positions are not used to choose this target.
+    supervisor.sim.data.qpos[:] += .01
+    unchanged = module.grasp_geometry(supervisor.sim, 'white_pawn_e2', .018, 'head', 1.5,
+                                     head_edge_fraction=.5, command=command)
+    assert unchanged == edge
+    with pytest.raises(ValueError, match='cannot support weight'):
+        module.grasp_geometry(supervisor.sim, 'white_pawn_e2', .018, 'head', 1.5,
+                              head_edge_fraction=.9, command=command)
+    with pytest.raises(ValueError, match='Upper head edge requires'):
+        module.grasp_geometry(supervisor.sim, 'white_pawn_e2', .018, 'stem', 1.5,
+                              head_edge_fraction=.5, command=command)
+
+
+@pytest.mark.parametrize('contacts,confirmed,count', [
+    ([True, False, True, True, True], True, 5),
+    ([True, False, True, False, True, False], False, 6),
+])
+def test_grasp_hold_requires_consecutive_settled_contacts(contacts, confirmed, count):
+    import importlib.util
+    path = Path(__file__).resolve().parents[1]/'examples/qualify_hybrid_approach/local_diagnostic.py'
+    spec = importlib.util.spec_from_file_location('hold_diagnostic', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    supervisor = SimpleNamespace(qualification_step=Mock(return_value={'status':'EXECUTED_SIMULATION'}),
+        feedback=SimpleNamespace(grip_contacts=Mock(side_effect=contacts), settled=Mock(return_value=True)))
+    record = Mock()
+    result = module.hold_grasp(supervisor, 'white_pawn_e2', 3, record)
+    assert result['confirmed'] is confirmed
+    assert supervisor.qualification_step.call_count == count
+    assert record.call_count == count
+    for call in supervisor.qualification_step.call_args_list:
+        assert call.args == ([0.]*5,) and call.kwargs == {'phase':'GRASPING'}
+    supervisor.qualification_step.reset_mock()
+    supervisor.qualification_step.return_value = {'status':'STOPPED', 'category':'TEST_FAULT'}
+    result = module.hold_grasp(supervisor, 'white_pawn_e2', 3, record)
+    assert not result['confirmed'] and result['failure']['category'] == 'TEST_FAULT'
+    assert supervisor.qualification_step.call_count == 1
+
+
 def test_contact_closure_is_not_confused_with_arm_tracking_failure(supervisor):
     sim = supervisor.sim
     target = supervisor.scene.command.copy()
@@ -324,9 +399,45 @@ def test_contact_closure_requires_correct_direction_and_force_limit(supervisor):
     assert not supervisor._tracking_ok(target)
 
 
+def test_unilateral_loaded_closure_is_not_a_lift_grasp(supervisor):
+    sim = supervisor.sim
+    target = supervisor.scene.command.copy(); target[3:5] = -.005
+    sim.data.qpos[sim.qadr[3:5]] = -.004
+    sim.data.qvel[sim.vadr[3:5]] = 0.
+    sim.data.actuator_force[3:5] = -.15
+    supervisor.feedback.pad_contacts = Mock(return_value=(False, True))
+    supervisor.feedback.grip_contacts = Mock(return_value=False)
+    assert supervisor._tracking_ok(target, phase='GRASPING')
+    assert not supervisor._tracking_ok(target, phase='LIFTING')
+    assert not supervisor._tracking_ok(target)
+    supervisor.feedback.pad_contacts.return_value = (False, False)
+    assert not supervisor._tracking_ok(target, phase='GRASPING')
+    supervisor.feedback.pad_contacts.return_value = (True, False)
+    sim.data.actuator_force[3:5] = 9.
+    assert not supervisor._tracking_ok(target, phase='GRASPING')
+    sim.data.actuator_force[3:5] = -.15
+    sim.data.qpos[sim.qadr[0]] += .1
+    assert not supervisor._tracking_ok(target, phase='GRASPING')
+
+
 def test_lift_without_bilateral_grip_stops_before_motion(supervisor):
     authorize_test_session(supervisor)
     before = supervisor.sim.data.time
     result = supervisor.qualification_step([0.]*5, phase='LIFTING')
     assert result['category'] == 'GRIP_LOST_DURING_LIFT'
     assert not result['motion_applied'] and supervisor.sim.data.time == before
+
+
+def test_diagnostic_target_margin_is_scoped_to_selected_piece_and_moving_finger_hulls(supervisor):
+    control = AutonomousControl(supervisor.scene, target_finger_clearance_m=0.)
+    assert control.pair_clearances
+    selected = supervisor.sim.model.body('white_pawn_e2').id
+    finger_bodies = {supervisor.sim.model.geom(f'finger_{i}_pad').bodyid[0] for i in (1, 2)}
+    for pair, margin in control.pair_clearances.items():
+        geoms = [supervisor.sim.model.geom(g) for g in pair]
+        assert margin == 0.
+        assert any(g.bodyid[0] == selected for g in geoms)
+        assert any(g.bodyid[0] in finger_bodies and g.name.endswith('_collision_hull') for g in geoms)
+    with pytest.raises(ValueError, match='restricted to deterministic'):
+        LocalSupervisor(supervisor.scene, supervisor.task, supervisor.limits,
+                        handoff=object(), target_finger_clearance_m=0.)

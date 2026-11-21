@@ -1,0 +1,315 @@
+{
+  "schema": 1,
+  "status": "SIMULATED_LIFT_DIAGNOSTIC",
+  "owner": "DETERMINISTIC_QUALIFICATION",
+  "training_eligible": false,
+  "local_manipulation_workspace_qualified": false,
+  "visual_grasp_verified": false,
+  "grasp_success": true,
+  "lift_success": true,
+  "stages": [
+    {
+      "name": "DESCEND",
+      "target": [
+        0.26180000000000003,
+        -0.08820000000000001,
+        0.042,
+        1.2566370614359172,
+        -0.010047780000000008
+      ],
+      "screen": {
+        "status": "PATH_SCREENED",
+        "category": "ACCEPTED",
+        "detail": {
+          "status": "ACCEPTED",
+          "samples": 109,
+          "command_scale": 1.0,
+          "joint_target": [
+            0.25763567440960294,
+            0.025,
+            -1.0906384443470376,
+            -0.010047780000000006,
+            -0.010047780000000006,
+            1.2566370614359172
+          ],
+          "scope": "nominal joint-linear sweep with simulated scene and rigid held-object approximation"
+        },
+        "motion_applied": false,
+        "execution_authorized": false,
+        "scope": "diagnostic only; no timing approval"
+      }
+    },
+    {
+      "name": "CLOSE",
+      "target": [
+        0.26180000000000003,
+        -0.08820000000000001,
+        0.042,
+        1.2566370614359172,
+        -0.01441028000000001
+      ],
+      "screen": {
+        "status": "PATH_SCREENED",
+        "category": "ACCEPTED",
+        "detail": {
+          "status": "ACCEPTED",
+          "samples": 1,
+          "command_scale": 1.0,
+          "joint_target": [
+            0.25763567440960294,
+            0.025,
+            -1.0906384443470376,
+            -0.014410280000000011,
+            -0.014410280000000011,
+            1.2566370614359172
+          ],
+          "scope": "nominal joint-linear sweep with simulated scene and rigid held-object approximation"
+        },
+        "motion_applied": false,
+        "execution_authorized": false,
+        "scope": "diagnostic only; no timing approval"
+      }
+    },
+    {
+      "name": "LIFT",
+      "target": [
+        0.26180000000000003,
+        -0.08820000000000001,
+        0.09,
+        1.2566370614359172,
+        -0.01441028000000001
+      ],
+      "screen": {
+        "status": "PATH_SCREENED",
+        "category": "ACCEPTED",
+        "detail": {
+          "status": "ACCEPTED",
+          "samples": 125,
+          "command_scale": 1.0,
+          "joint_target": [
+            0.25763567440960294,
+            0.073,
+            -1.0906384443470376,
+            -0.014410280000000011,
+            -0.014410280000000011,
+            1.2566370614359172
+          ],
+          "scope": "nominal joint-linear sweep with simulated scene and rigid held-object approximation"
+        },
+        "motion_applied": false,
+        "execution_authorized": false,
+        "scope": "diagnostic only; no timing approval"
+      }
+    }
+  ],
+  "limits": {
+    "command_lower": [
+      -2.0,
+      -0.1,
+      -2.0,
+      -0.021,
+      -0.021,
+      0.0
+    ],
+    "command_upper": [
+      2.0,
+      0.2,
+      4.0,
+      0.0,
+      0.0,
+      6.283185307179586
+    ],
+    "local_lower": [
+      0.22633333333333336,
+      -0.10570000000000002,
+      0.0319396316161535,
+      0.0,
+      -0.021
+    ],
+    "local_upper": [
+      0.27930000000000005,
+      -0.07070000000000001,
+      0.10793963161615348,
+      6.283185307179586,
+      0.0
+    ],
+    "rates": [
+      0.023333333333333334,
+      0.023333333333333334,
+      0.023333333333333334,
+      0.41887902047863906,
+      0.0033333333333333335
+    ],
+    "control_dt_s": 0.02,
+    "workspace_evidence_id": "unqualified-diagnostic:0042c9067f9107dd821d9399327ed9d925f13d3aa049150c9402bc30a8e13f2a"
+  },
+  "max_decisions": 2000,
+  "geometry_source": "existing experimental colliders",
+  "lift_speed_fraction": 0.25,
+  "target_finger_clearance_m": 0.0,
+  "lift_rise_heights": 1.5,
+  "probe": {
+    "status": "EXECUTED_SIMULATION",
+    "category": "LOCAL_ACTION_SETTLED",
+    "owner": "DETERMINISTIC_QUALIFICATION",
+    "phase": "GRASPING",
+    "validation": {
+      "status": "ACCEPTED",
+      "samples": 1,
+      "command_scale": 1.0,
+      "joint_target": [
+        0.24747084608893105,
+        0.058822964949486814,
+        -1.327572326972846,
+        0.0,
+        0.0,
+        1.2566370614359172
+      ],
+      "scope": "nominal joint-linear sweep with simulated scene and rigid held-object approximation"
+    },
+    "trace": [
+      {
+        "time_s": 5.5799999999996075,
+        "position": [
+          0.2474633710325002,
+          0.05891972650178595,
+          -1.3275730337698224,
+          2.0363004479143188e-08,
+          -2.2623947327786e-08,
+          1.256637104922316
+        ],
+        "command": [
+          0.24747084608893105,
+          0.058822964949486814,
+          -1.327572326972846,
+          0.0,
+          0.0,
+          1.2566370614359172
+        ],
+        "actuator_force": [
+          -0.00015850051420329692,
+          3.3294466212235,
+          -1.80312315478659e-05,
+          -1.3305057496634966e-06,
+          1.3829044671994019e-06,
+          -9.070847468706233e-07
+        ],
+        "tcp_m": [
+          0.22679924026646417,
+          -0.08820137760878967,
+          0.07591972650178598
+        ]
+      }
+    ],
+    "motion_applied": true,
+    "requested_duration_s": 0.02,
+    "elapsed_sim_s": 0.019999999999997797,
+    "settling_intervals": 0,
+    "transformation": "none",
+    "training_eligible": false,
+    "camera_captures": 1,
+    "camera_reuses": 1,
+    "finger_tracking_error_m": [
+      2.0363004479143188e-08,
+      -2.2623947327786e-08
+    ],
+    "settling_mode": "position",
+    "simulation_diagnostics": {
+      "pad_contacts": [
+        false,
+        false
+      ],
+      "neighbor_displacement_mm": {},
+      "source": "privileged safety/evaluation; excluded from actor"
+    }
+  },
+  "grasp_geometry": {
+    "part": "head",
+    "geom": "white_pawn_e2_head",
+    "radius_m": 0.008,
+    "head_edge_fraction": null,
+    "effective_radius_m": 0.008,
+    "pad_center_height_offset_m": 0.0,
+    "tcp_z_m": 0.042,
+    "aperture_m": -0.010047780000000008,
+    "closing_target_m": -0.01441028000000001,
+    "closing_interference_m": 0.0013625000000000002,
+    "model_load_estimate": {
+      "factor": 2.5,
+      "weight_N": 0.1962,
+      "friction_lower_bound": 1.2,
+      "finger_gain_N_per_m": 150.0,
+      "estimated_normal_load_N": 0.20437500000000003,
+      "vertical_capacity_per_normal_N": 1.2,
+      "estimated_horizontal_load_N": 0.20437500000000003
+    },
+    "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+  },
+  "initial_bilateral_contact": true,
+  "grasp_hold": {
+    "confirmed": true,
+    "samples": [
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 1
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 2
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 3
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 4
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 5
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 6
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 7
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 8
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 9
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 10
+      }
+    ],
+    "required_consecutive": 10
+  },
+  "measured_lift_m": 0.044786043451802135,
+  "feedback_source": "simulation evaluation only; camera-only outcome verifier still unqualified",
+  "decisions": 640,
+  "elapsed_wall_s": 62.3121164999975,
+  "camera_captures": 643,
+  "camera_reuses": 640,
+  "final_pad_contacts": [
+    true,
+    true
+  ]
+}

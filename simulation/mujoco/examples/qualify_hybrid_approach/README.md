@@ -147,3 +147,120 @@ the [M1 audit](../../../../docs/camera-rl/hybrid-m1-audit.md) and the
 [hybrid M2 result](../../../../docs/camera-rl/hybrid-m2-qualification.md).
 See also the [M4 diagnostic report](../../../../docs/camera-rl/hybrid-m4-supervision.md)
 and [ADR S031](../../../docs/adrs/S031-local-proposal-supervision.md).
+
+## Lateral-entry diagnostic bounds
+
+The deterministic local diagnostic includes the verified lateral approach endpoint
+in its declared XY bounds, with one diagnostic control interval of margin. This
+numeric box does not establish clearance: full-path/step collision checks,
+tracking and runtime feedback remain mandatory. It does not grant an RL lease.
+See [S046](../../../docs/adrs/S046-lateral-entry-grasp-diagnostic-envelope.md).
+
+## Upper-head edge diagnostic
+
+`--head-edge-fraction .5 --grasp-part head --closing-load-factor 1.5`
+opts into contact near the upper half of the existing spherical head, at the
+lower pad edge. Pad height/orientation come from scratch forward kinematics at
+the issued command; source XY still comes from the camera. This changes a grasp
+proposal, not collider dimensions or physics. `--diagnostic-wrist-rad 0` can test
+a different bounded wrist angle. The diagnostic screens wrist alignment,
+centering above the source, descent, closure and lift before each stage.
+
+The load estimate includes the downward normal component and horizontal
+friction load. Unsupported contact latitudes, force/travel/envelope violations,
+collisions and runtime faults stop the test. No automatic policy admission is
+created. Inspect `local-report.json`, `local-decisions.jsonl` and
+`camera-local-*.png` in the fresh output directory. Test this contract with:
+
+```powershell
+& $py -B -m pytest simulation/mujoco/tests/test_local_supervisor.py -q
+```
+
+See [S047](../../../docs/adrs/S047-upper-sphere-pad-edge-grasp-diagnostic.md).
+
+After closure, the diagnostic holds the issued command and requires bilateral
+contact plus settled feedback for `dwell_steps` consecutive decisions, within a
+budget of twice that window. `initial_bilateral_contact` is separate from
+`grasp_success`; a brief contact no longer counts as a sustained grasp. Inspect
+`grasp_hold` and the `HOLD_CLOSE` trace before interpreting a lift attempt.
+These are simulation-only outcome checks, not actor inputs or hardware grasp
+verification. See [S048](../../../docs/adrs/S048-settled-grasp-hold-before-lift.md).
+
+While closing in `GRASPING`, the mechanically coupled fingers may encounter the
+selected piece one pad first. The supervisor accepts that loaded tracking only
+with correct direction, bounded velocity and compiled force limits; arm/wrist
+tracking and all forbidden-contact checks remain active. Partial contact never
+counts as grasp success and is not allowed for lifting. See
+[S051](../../../docs/adrs/S051-partial-contact-during-coupled-finger-closure.md).
+
+`--lift-rise-heights 1.5` optionally requests lift travel of 1.5 compiled piece
+heights above the pick TCP, or the approach height if greater. It remains inside
+the declared envelope and all path/runtime checks. The success criterion stays
+at a **measured** one-piece-height rise with retained bilateral contact and
+settled feedback; additional commanded travel cannot itself declare success.
+Without this option the historical target remains unchanged. Record this option
+when comparing trials. See [S052](../../../docs/adrs/S052-diagnostic-lift-travel-margin.md).
+
+`--target-finger-clearance-m 0` is a separate experimental near-contact margin
+for the selected piece versus moving finger hulls. Every other pair retains the
+default 1 mm margin. It still rejects hull touching/penetration and checks the
+complete sweep, including carried-object geometry; runtime forbidden-contact
+handling remains unchanged. This option cannot be used by an admitted RL
+supervisor. Report the chosen margin when comparing outcomes; a zero-margin
+diagnostic does not qualify the original 1 mm experiment or a hardware margin.
+See [S049](../../../docs/adrs/S049-selected-finger-near-contact-clearance.md).
+
+## Controlled contact-solver comparison
+
+`prepare_solver.py` copies a verified prepared fixture and changes only its
+friction cone and `impratio` in a fresh bundle. The source files, camera,
+geometry, masses, friction coefficients, actuators and collision masks are
+preserved. NoSlip must already be disabled. This is an experimental physics
+comparison, not a new default or an RL launcher.
+
+```powershell
+# $config is an existing prepared environment.json; $py is defined above.
+$case = Join-Path 'simulation/mujoco/examples/qualify_hybrid_approach/runs' ('solver-' + [guid]::NewGuid().ToString('N'))
+& $py -B simulation/mujoco/examples/qualify_hybrid_approach/prepare_solver.py `
+  --config $config --output $case --cone elliptic --impratio 10
+$solverConfig = Join-Path $case 'environment.json'
+& $py -u -B simulation/mujoco/examples/qualify_hybrid_approach/run.py `
+  --config $solverConfig --configured-approach --local-diagnostic --grasp-part head `
+  --closing-load-factor 2.5 --target-finger-clearance-m 0 --lift-speed-fraction .25 `
+  --max-local-decisions 2000 --seed 970000
+& $py -B -m pytest simulation/mujoco/tests/test_solver_fixture.py `
+  simulation/mujoco/tests/test_collision.py simulation/mujoco/tests/test_local_supervisor.py -q
+```
+
+`solver-provenance.json` records input/output hashes and actual compiled solver
+settings. The diagnostic creates its own fresh run with reports, traces and
+camera images. Compare pyramidal/1, elliptic/1 and elliptic/10 with identical
+remaining arguments and seeds. A completed process, bilateral contact or a
+changed solver is not lift success: inspect `lift_success`, measured rise,
+retained contacts and all failure fields. See
+[S050](../../../docs/adrs/S050-controlled-grasp-contact-solver-comparison.md) and
+[MuJoCo's slip guidance](https://mujoco.readthedocs.io/en/3.15.0/modeling.html#preventing-slip).
+
+The isolated native physical regression uses three distinct seeds and the
+explicit elliptic/10 fixture, load 2.5, selected-finger margin zero and requested
+lift of 1.5 piece heights. It does not qualify crowded operation or RL admission:
+
+```powershell
+$env:ATOM_NATIVE_GRASP_CONFIG = (Resolve-Path $solverConfig).Path
+& $py -B -m pytest simulation/mujoco/tests/test_native_grasp.py -q
+```
+
+To use the exact approach configuration of a prepared planner-started reach
+fixture (entry offsets, preshape, live registration and corridor screen), pass
+`--configured-approach`. This calls the existing native handoff and saves
+`handoff.json`; it uses the fixture's candidate budget and the handoff's timing,
+instead of `--max-candidates` and `--speed-fraction`. It requires a local
+diagnostic and does not load or train a policy. For example:
+
+```powershell
+# Set $config to your prepared planner-started environment.json first.
+& $py -u -B simulation/mujoco/examples/qualify_hybrid_approach/run.py `
+  --config $config --configured-approach --local-diagnostic --grasp-part head `
+  --head-edge-fraction .5 --diagnostic-wrist-rad 0 --closing-load-factor 1.5 `
+  --lift-speed-fraction .25 --max-local-decisions 1000 --seed 970000
+```

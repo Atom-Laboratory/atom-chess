@@ -15,7 +15,7 @@ from .supervision import MoveTask
 
 class LocalSupervisor:
     def __init__(self, scene, task, limits, *, handoff=None, workspace_artifact=None,
-                 observer=None, settle_timeout_s=2.):
+                 observer=None, settle_timeout_s=2., target_finger_clearance_m=None):
         if not isinstance(task, MoveTask) or not isinstance(limits, LocalLimits):
             raise ValueError('Existing task and validated local limits required')
         task.validate()
@@ -23,7 +23,9 @@ class LocalSupervisor:
                 or task.target_square != scene.task_target):
             raise ValueError('Task differs from prepared physical/visual fixture')
         self.scene, self.sim, self.task, self.limits = scene, scene.sim, task, limits
-        self.control = AutonomousControl(scene)
+        if handoff is not None and target_finger_clearance_m is not None:
+            raise ValueError('Alternate finger margin is restricted to deterministic diagnostics')
+        self.control = AutonomousControl(scene, target_finger_clearance_m=target_finger_clearance_m)
         if not self.scene.motion.has_wrist or len(self.sim.names) != 6:
             raise ValueError('Six-command wrist-aware model required')
         if (not np.array_equal(limits.command_lower, self.sim.lower)
@@ -122,7 +124,7 @@ class LocalSupervisor:
         return dict(status='STOPPED', category=category, detail=detail,
                     reconciliation_required=True, motion_applied=False, training_eligible=False)
 
-    def _preconditions(self, frame=None):
+    def _preconditions(self, frame=None, *, phase=None):
         if self.failed:
             return None, dict(status='REJECTED', category='RECONCILIATION_REQUIRED', motion_applied=False)
         now = time.monotonic()
@@ -169,11 +171,11 @@ class LocalSupervisor:
             self.board_homography = homography.copy()
         self.sequence = frame.sequence
         self.last_frame = frame
-        if not self._tracking_ok(self.scene.command):
+        if not self._tracking_ok(self.scene.command, phase=phase):
             return None, self._fault('START_NOT_TRACKING_ISSUED_COMMAND')
         return frame, None
 
-    def _tracking_ok(self, command):
+    def _tracking_ok(self, command, *, phase=None):
         sim = self.sim
         error = sim.data.qpos[sim.qadr]-command
         if not np.isfinite(error).all() or not np.isfinite(sim.data.qvel).all():
@@ -184,7 +186,9 @@ class LocalSupervisor:
         if np.all(abs(error[3:5]) <= tolerance[3:5]):
             return True
         gains = sim.model.actuator_gainprm[3:5, 0]
-        if (not self.feedback.grip_contacts(self.task.piece_id)
+        loaded = (any(self.feedback.pad_contacts(self.task.piece_id)) if phase == 'GRASPING'
+                  else self.feedback.grip_contacts(self.task.piece_id))
+        if (not loaded
                 or not np.all(sim.model.actuator_forcelimited[3:5]) or np.any(gains <= 0)):
             return False
         force_caps = np.max(abs(sim.model.actuator_forcerange[3:5]), axis=1)
@@ -206,7 +210,7 @@ class LocalSupervisor:
 
     def _execute(self, end, validation, *, owner, phase):
         # A slow native/sweep check must not reuse a frame captured before it.
-        frame, invalid = self._preconditions(self.last_frame)
+        frame, invalid = self._preconditions(self.last_frame, phase=phase)
         if invalid:
             return invalid
         if owner == 'RL' and (self.handoff.owner != 'RL'
@@ -266,7 +270,7 @@ class LocalSupervisor:
                 result = self._fault(failure['category'], failure)
                 result.update(motion_applied=True, trace=trace)
                 return result
-            if (self._tracking_ok(end)
+            if (self._tracking_ok(end, phase=phase)
                     and np.all(abs(state['velocity']) <= sim.speed/self.scene.dwell)):
                 break
         else:
@@ -281,7 +285,9 @@ class LocalSupervisor:
                     camera_captures=self.camera_captures, camera_reuses=self.camera_reuses,
                     finger_tracking_error_m=(state['position'][3:5]-end[3:5]).tolist(),
                     settling_mode=('position' if np.all(abs(state['position'][3:5]-end[3:5])
-                        <= sim.speed[3:5]*sim.model.opt.timestep) else 'bilateral_force_limited_finger_contact'),
+                        <= sim.speed[3:5]*sim.model.opt.timestep) else
+                        ('selected_piece_contact_loaded_closure' if phase == 'GRASPING'
+                         else 'bilateral_force_limited_finger_contact')),
                     simulation_diagnostics=dict(pad_contacts=self.feedback.pad_contacts(self.task.piece_id),
                         neighbor_displacement_mm=guard.displacements_mm(),
                         source='privileged safety/evaluation; excluded from actor'))
@@ -290,7 +296,7 @@ class LocalSupervisor:
         """Learned-policy entry point: only the existing admitted lease can act."""
         if self.handoff is None:
             return dict(status='REJECTED', category='RL_LEASE_REQUIRED', motion_applied=False)
-        frame, failure = self._preconditions()
+        frame, failure = self._preconditions(phase=self.handoff.execution.state)
         if failure:
             return failure
         decoded = self.handoff.propose(proposal, command=self.scene.command,
@@ -309,7 +315,7 @@ class LocalSupervisor:
             return dict(status='REJECTED', category='PHASE_NOT_AUTHORIZED', motion_applied=False)
         if self.decisions >= self.max_decisions:
             return self._fault('QUALIFICATION_BUDGET_EXHAUSTED')
-        frame, failure = self._preconditions()
+        frame, failure = self._preconditions(phase=phase)
         if failure:
             return failure
         self.decisions += 1
