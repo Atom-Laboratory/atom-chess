@@ -6,6 +6,13 @@ and IK. The opt-in M4 local diagnostic additionally attempts guarded descent,
 closure and lift. It does **not** train or invoke an RL policy, qualify an entire
 contact manipulation workspace, or qualify carried-object transport.
 
+The low-level controller now computes static gravity feedforward from the
+validated issued command on a scratch model state. It no longer reads live
+`qfrc_bias` to construct commands. Simulator joint/contact feedback remains
+privileged safety/verification data; static masses and servo mapping remain
+experimental. Trials predating [S055](../../../docs/adrs/S055-command-derived-gravity-feedforward.md)
+used the historical controller and retain that provenance.
+
 ## Prerequisites and Windows commands
 
 Run PowerShell from the repository root, not your Windows home directory.
