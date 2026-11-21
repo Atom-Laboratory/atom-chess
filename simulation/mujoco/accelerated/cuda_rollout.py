@@ -9,6 +9,12 @@ def apply_tape(tape:wp.array2d[wp.float32],ctrl:wp.array2d[wp.float32],cursor:wp
 
 
 @wp.kernel
+def apply_candidates(tapes:wp.array3d[wp.float32],ctrl:wp.array2d[wp.float32],cursor:wp.array[wp.int32]):
+    world,actuator=wp.tid()
+    ctrl[world,actuator]=tapes[world,cursor[0],actuator]
+
+
+@wp.kernel
 def record_state(qpos:wp.array2d[wp.float32],qvel:wp.array2d[wp.float32],
                  out_qpos:wp.array3d[wp.float32],out_qvel:wp.array3d[wp.float32],
                  overflow:wp.array[wp.int32],flags:wp.array[wp.int32],cursor:wp.array[wp.int32],nq:int,nv:int):

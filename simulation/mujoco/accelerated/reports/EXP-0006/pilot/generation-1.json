@@ -1,0 +1,434 @@
+[
+  {
+    "generation": 1,
+    "index": 0,
+    "parameters": [
+      3.0324873428475883,
+      0.1379675585629791,
+      0.3473266892229198
+    ],
+    "geometry_valid": true,
+    "duration_s": 14.836,
+    "source_xy_m": [
+      0.2625,
+      -0.08820000000000001
+    ],
+    "target_source": "camera-derived reference diagnostic",
+    "native_ik": true,
+    "geometry": {
+      "part": "head",
+      "geom": "white_pawn_e2_head",
+      "radius_m": 0.008,
+      "head_edge_fraction": null,
+      "effective_radius_m": 0.008,
+      "pad_center_height_offset_m": 0.0,
+      "tcp_z_m": 0.042,
+      "aperture_m": -0.010047780000000008,
+      "closing_target_m": -0.014700485601851944,
+      "closing_interference_m": 0.0016527056018519357,
+      "model_load_estimate": {
+        "factor": 3.0324873428475883,
+        "weight_N": 0.1962,
+        "friction_lower_bound": 1.2,
+        "finger_gain_N_per_m": 150.0,
+        "estimated_normal_load_N": 0.24790584027779033,
+        "vertical_capacity_per_normal_N": 1.2,
+        "estimated_horizontal_load_N": 0.24790584027779033
+      },
+      "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+    },
+    "sweep_samples": 512,
+    "selected_finger_margin_m": 0.0,
+    "outcome": {
+      "world": 0,
+      "hold_duration_sim_s": 1.0,
+      "maximum_rise_m": 0.04452043083515107,
+      "minimum_held_rise_m": 0.04411016461458146,
+      "maximum_hold_slip_m": 0.0003103502094745636,
+      "bilateral_hold": true,
+      "maximum_hold_linear_speed_m_s": 0.00031145158573053777,
+      "maximum_hold_angular_speed_rad_s": 5.517442332347855e-05,
+      "maximum_upright_angle_rad": 0.00314553314819932,
+      "forbidden_contact": false,
+      "success": true
+    }
+  },
+  {
+    "generation": 1,
+    "index": 1,
+    "parameters": [
+      2.853165917178155,
+      0.1595331951779997,
+      0.29017776254540384
+    ],
+    "geometry_valid": true,
+    "duration_s": 16.636,
+    "source_xy_m": [
+      0.2625,
+      -0.08820000000000001
+    ],
+    "target_source": "camera-derived reference diagnostic",
+    "native_ik": true,
+    "geometry": {
+      "part": "head",
+      "geom": "white_pawn_e2_head",
+      "radius_m": 0.008,
+      "head_edge_fraction": null,
+      "effective_radius_m": 0.008,
+      "pad_center_height_offset_m": 0.0,
+      "tcp_z_m": 0.042,
+      "aperture_m": -0.010047780000000008,
+      "closing_target_m": -0.014602755424862104,
+      "closing_interference_m": 0.0015549754248620946,
+      "model_load_estimate": {
+        "factor": 2.853165917178155,
+        "weight_N": 0.1962,
+        "friction_lower_bound": 1.2,
+        "finger_gain_N_per_m": 150.0,
+        "estimated_normal_load_N": 0.2332463137293142,
+        "vertical_capacity_per_normal_N": 1.2,
+        "estimated_horizontal_load_N": 0.2332463137293142
+      },
+      "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+    },
+    "sweep_samples": 512,
+    "selected_finger_margin_m": 0.0,
+    "outcome": {
+      "world": 1,
+      "hold_duration_sim_s": 1.0,
+      "maximum_rise_m": 0.04392475691642701,
+      "minimum_held_rise_m": 0.043474667342566845,
+      "maximum_hold_slip_m": 0.0003122389316558838,
+      "bilateral_hold": true,
+      "maximum_hold_linear_speed_m_s": 0.00031233878689818084,
+      "maximum_hold_angular_speed_rad_s": 5.1709936087718233e-05,
+      "maximum_upright_angle_rad": 0.003201875602826476,
+      "forbidden_contact": false,
+      "success": true
+    }
+  },
+  {
+    "generation": 1,
+    "index": 2,
+    "parameters": [
+      3.0854638763930806,
+      0.2021408769422305,
+      0.33407601076668686
+    ],
+    "geometry_valid": true,
+    "duration_s": 14.484,
+    "source_xy_m": [
+      0.2625,
+      -0.08820000000000001
+    ],
+    "target_source": "camera-derived reference diagnostic",
+    "native_ik": true,
+    "geometry": {
+      "part": "head",
+      "geom": "white_pawn_e2_head",
+      "radius_m": 0.008,
+      "head_edge_fraction": null,
+      "effective_radius_m": 0.008,
+      "pad_center_height_offset_m": 0.0,
+      "tcp_z_m": 0.042,
+      "aperture_m": -0.010047780000000008,
+      "closing_target_m": -0.014729357812634238,
+      "closing_interference_m": 0.0016815778126342293,
+      "model_load_estimate": {
+        "factor": 3.0854638763930806,
+        "weight_N": 0.1962,
+        "friction_lower_bound": 1.2,
+        "finger_gain_N_per_m": 150.0,
+        "estimated_normal_load_N": 0.2522366718951344,
+        "vertical_capacity_per_normal_N": 1.2,
+        "estimated_horizontal_load_N": 0.2522366718951344
+      },
+      "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+    },
+    "sweep_samples": 512,
+    "selected_finger_margin_m": 0.0,
+    "outcome": {
+      "world": 2,
+      "hold_duration_sim_s": 1.0,
+      "maximum_rise_m": 0.04440369141306817,
+      "minimum_held_rise_m": 0.043986365767382976,
+      "maximum_hold_slip_m": 0.0003103576600551605,
+      "bilateral_hold": true,
+      "maximum_hold_linear_speed_m_s": 0.0003111820260528475,
+      "maximum_hold_angular_speed_rad_s": 5.806954504805617e-05,
+      "maximum_upright_angle_rad": 0.0031832056120038033,
+      "forbidden_contact": false,
+      "success": true
+    }
+  },
+  {
+    "generation": 1,
+    "index": 3,
+    "parameters": [
+      3.1980133525429477,
+      0.3204168618923725,
+      0.27212763963992626
+    ],
+    "geometry_valid": true,
+    "duration_s": 16.488,
+    "source_xy_m": [
+      0.2625,
+      -0.08820000000000001
+    ],
+    "target_source": "camera-derived reference diagnostic",
+    "native_ik": true,
+    "geometry": {
+      "part": "head",
+      "geom": "white_pawn_e2_head",
+      "radius_m": 0.008,
+      "head_edge_fraction": null,
+      "effective_radius_m": 0.008,
+      "pad_center_height_offset_m": 0.0,
+      "tcp_z_m": 0.042,
+      "aperture_m": -0.010047780000000008,
+      "closing_target_m": -0.014790697277135915,
+      "closing_interference_m": 0.0017429172771359065,
+      "model_load_estimate": {
+        "factor": 3.1980133525429477,
+        "weight_N": 0.1962,
+        "friction_lower_bound": 1.2,
+        "finger_gain_N_per_m": 150.0,
+        "estimated_normal_load_N": 0.261437591570386,
+        "vertical_capacity_per_normal_N": 1.2,
+        "estimated_horizontal_load_N": 0.261437591570386
+      },
+      "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+    },
+    "sweep_samples": 1024,
+    "selected_finger_margin_m": 0.0,
+    "outcome": {
+      "world": 3,
+      "hold_duration_sim_s": 1.0,
+      "maximum_rise_m": 0.04370934573020875,
+      "minimum_held_rise_m": 0.04324632567372262,
+      "maximum_hold_slip_m": 0.00031040236353874207,
+      "bilateral_hold": true,
+      "maximum_hold_linear_speed_m_s": 0.000310593779431656,
+      "maximum_hold_angular_speed_rad_s": 5.422704271040857e-05,
+      "maximum_upright_angle_rad": 0.0031832056120038033,
+      "forbidden_contact": false,
+      "success": true
+    }
+  },
+  {
+    "generation": 1,
+    "index": 4,
+    "parameters": [
+      2.7078513128967594,
+      0.1855635260534082,
+      0.3050984585812053
+    ],
+    "geometry_valid": true,
+    "duration_s": 15.654,
+    "source_xy_m": [
+      0.2625,
+      -0.08820000000000001
+    ],
+    "target_source": "camera-derived reference diagnostic",
+    "native_ik": true,
+    "geometry": {
+      "part": "head",
+      "geom": "white_pawn_e2_head",
+      "radius_m": 0.008,
+      "head_edge_fraction": null,
+      "effective_radius_m": 0.008,
+      "pad_center_height_offset_m": 0.0,
+      "tcp_z_m": 0.042,
+      "aperture_m": -0.010047780000000008,
+      "closing_target_m": -0.014523558965528741,
+      "closing_interference_m": 0.001475778965528734,
+      "model_load_estimate": {
+        "factor": 2.7078513128967594,
+        "weight_N": 0.1962,
+        "friction_lower_bound": 1.2,
+        "finger_gain_N_per_m": 150.0,
+        "estimated_normal_load_N": 0.2213668448293101,
+        "vertical_capacity_per_normal_N": 1.2,
+        "estimated_horizontal_load_N": 0.2213668448293101
+      },
+      "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+    },
+    "sweep_samples": 256,
+    "selected_finger_margin_m": 0.0,
+    "outcome": {
+      "world": 4,
+      "hold_duration_sim_s": 1.0,
+      "maximum_rise_m": 0.044090688796901104,
+      "minimum_held_rise_m": 0.04365168196167886,
+      "maximum_hold_slip_m": 0.00031225383281707764,
+      "bilateral_hold": true,
+      "maximum_hold_linear_speed_m_s": 0.0003130272962152958,
+      "maximum_hold_angular_speed_rad_s": 5.528554902411997e-05,
+      "maximum_upright_angle_rad": 0.003107404103502631,
+      "forbidden_contact": false,
+      "success": true
+    }
+  },
+  {
+    "generation": 1,
+    "index": 5,
+    "parameters": [
+      2.7981201185468736,
+      0.25204158627241835,
+      0.32408255052046603
+    ],
+    "geometry_valid": true,
+    "duration_s": 14.450000000000001,
+    "source_xy_m": [
+      0.2625,
+      -0.08820000000000001
+    ],
+    "target_source": "camera-derived reference diagnostic",
+    "native_ik": true,
+    "geometry": {
+      "part": "head",
+      "geom": "white_pawn_e2_head",
+      "radius_m": 0.008,
+      "head_edge_fraction": null,
+      "effective_radius_m": 0.008,
+      "pad_center_height_offset_m": 0.0,
+      "tcp_z_m": 0.042,
+      "aperture_m": -0.010047780000000008,
+      "closing_target_m": -0.014572755464608055,
+      "closing_interference_m": 0.0015249754646080463,
+      "model_load_estimate": {
+        "factor": 2.7981201185468736,
+        "weight_N": 0.1962,
+        "friction_lower_bound": 1.2,
+        "finger_gain_N_per_m": 150.0,
+        "estimated_normal_load_N": 0.22874631969120693,
+        "vertical_capacity_per_normal_N": 1.2,
+        "estimated_horizontal_load_N": 0.22874631969120693
+      },
+      "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+    },
+    "sweep_samples": 512,
+    "selected_finger_margin_m": 0.0,
+    "outcome": {
+      "world": 5,
+      "hold_duration_sim_s": 1.0,
+      "maximum_rise_m": 0.04429380652513444,
+      "minimum_held_rise_m": 0.04386784193124711,
+      "maximum_hold_slip_m": 0.0003122091293334961,
+      "bilateral_hold": true,
+      "maximum_hold_linear_speed_m_s": 0.000312605407088995,
+      "maximum_hold_angular_speed_rad_s": 5.964072988717817e-05,
+      "maximum_upright_angle_rad": 0.00322043732739985,
+      "forbidden_contact": false,
+      "success": true
+    }
+  },
+  {
+    "generation": 1,
+    "index": 6,
+    "parameters": [
+      3.132123054923705,
+      0.2655395664852097,
+      0.2794862539428939
+    ],
+    "geometry_valid": true,
+    "duration_s": 16.332,
+    "source_xy_m": [
+      0.2625,
+      -0.08820000000000001
+    ],
+    "target_source": "camera-derived reference diagnostic",
+    "native_ik": true,
+    "geometry": {
+      "part": "head",
+      "geom": "white_pawn_e2_head",
+      "radius_m": 0.008,
+      "head_edge_fraction": null,
+      "effective_radius_m": 0.008,
+      "pad_center_height_offset_m": 0.0,
+      "tcp_z_m": 0.042,
+      "aperture_m": -0.010047780000000008,
+      "closing_target_m": -0.014754787064933427,
+      "closing_interference_m": 0.0017070070649334195,
+      "model_load_estimate": {
+        "factor": 3.132123054923705,
+        "weight_N": 0.1962,
+        "friction_lower_bound": 1.2,
+        "finger_gain_N_per_m": 150.0,
+        "estimated_normal_load_N": 0.2560510597400129,
+        "vertical_capacity_per_normal_N": 1.2,
+        "estimated_horizontal_load_N": 0.2560510597400129
+      },
+      "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+    },
+    "sweep_samples": 512,
+    "selected_finger_margin_m": 0.0,
+    "outcome": {
+      "world": 6,
+      "hold_duration_sim_s": 1.0,
+      "maximum_rise_m": 0.043804895701074,
+      "minimum_held_rise_m": 0.043348432155513164,
+      "maximum_hold_slip_m": 0.00031040608882904053,
+      "bilateral_hold": true,
+      "maximum_hold_linear_speed_m_s": 0.0003109399403911084,
+      "maximum_hold_angular_speed_rad_s": 5.439755113911815e-05,
+      "maximum_upright_angle_rad": 0.003164425492286682,
+      "forbidden_contact": false,
+      "success": true
+    }
+  },
+  {
+    "generation": 1,
+    "index": 7,
+    "parameters": [
+      2.984278027639578,
+      0.2027662783062922,
+      0.3478800418914601
+    ],
+    "geometry_valid": true,
+    "duration_s": 14.0,
+    "source_xy_m": [
+      0.2625,
+      -0.08820000000000001
+    ],
+    "target_source": "camera-derived reference diagnostic",
+    "native_ik": true,
+    "geometry": {
+      "part": "head",
+      "geom": "white_pawn_e2_head",
+      "radius_m": 0.008,
+      "head_edge_fraction": null,
+      "effective_radius_m": 0.008,
+      "pad_center_height_offset_m": 0.0,
+      "tcp_z_m": 0.042,
+      "aperture_m": -0.010047780000000008,
+      "closing_target_m": -0.014674211525063577,
+      "closing_interference_m": 0.0016264315250635703,
+      "model_load_estimate": {
+        "factor": 2.984278027639578,
+        "weight_N": 0.1962,
+        "friction_lower_bound": 1.2,
+        "finger_gain_N_per_m": 150.0,
+        "estimated_normal_load_N": 0.24396472875953554,
+        "vertical_capacity_per_normal_N": 1.2,
+        "estimated_horizontal_load_N": 0.24396472875953554
+      },
+      "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+    },
+    "sweep_samples": 512,
+    "selected_finger_margin_m": 0.0,
+    "outcome": {
+      "world": 7,
+      "hold_duration_sim_s": 1.0,
+      "maximum_rise_m": 0.04452212584223687,
+      "minimum_held_rise_m": 0.044112068237923976,
+      "maximum_hold_slip_m": 0.000310361385345459,
+      "bilateral_hold": true,
+      "maximum_hold_linear_speed_m_s": 0.00031169463181868196,
+      "maximum_hold_angular_speed_rad_s": 5.991398211335763e-05,
+      "maximum_upright_angle_rad": 0.00314553314819932,
+      "forbidden_contact": false,
+      "success": true
+    }
+  }
+]

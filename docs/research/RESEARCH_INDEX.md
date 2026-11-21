@@ -37,6 +37,8 @@ full filenames and preserve their history. New decisions continue after S052.
 | [S055](../../simulation/docs/adrs/S055-command-derived-gravity-feedforward.md) | Command-derived gravity support | Accepted; canonical held-lift passed | EXP-0004 | Sensor/control boundary |
 | [S056](../../simulation/docs/adrs/S056-matched-robot-physics-benchmark.md) | Matched physics benchmarks | Accepted; bounded measurements | EXP-0005 | Acceleration results |
 | [S057](../../simulation/docs/adrs/S057-recorded-physics-and-sustained-lift.md) | Full transitions and dedicated lifted hold | Accepted; CPU/GPU replay measured | EXP-0004 | Verification and datasets |
+| [S058](../../simulation/docs/adrs/S058-bounded-isolated-cem-grasp-pilot.md) | Bounded Stage A CEM | Accepted; short pilot and CPU winner replay passed | EXP-0006 | Grasp optimization |
+| [S059](../../simulation/docs/adrs/S059-shared-model-grasp-geometry.md) | Shared geometry without rendering imports | Accepted; unchanged extraction tested | EXP-0006 | Reproducible infrastructure |
 
 The legacy architecture/report catalog is being consolidated without rewriting
 historical conclusions; original documents remain authoritative for their scope.
@@ -50,6 +52,7 @@ historical conclusions; original documents remain authoritative for their scope.
 | [EXP-0003](experiments/EXP-0003-robot-physics-parity.md) | Does unchanged robot forward/step physics agree? | S054 | 2026-11-21 | Two states passed; full contact-rich rollout pending | [Raw parity report](../../simulation/mujoco/accelerated/reports/EXP-0003/robot-forward-step.json) |
 | [EXP-0004](experiments/EXP-0004-canonical-held-lift-and-gpu-replay.md) | Does the corrected controller lift/hold and replay? | S054/S055/S057 | 2026-11-21 | Canonical 1.02 s hold; tape passed at 1/16 worlds | [Raw replay reports](../../simulation/mujoco/accelerated/reports/EXP-0004) |
 | [EXP-0005](experiments/EXP-0005-physics-batching-benchmark.md) | When does GPU batching help fixed-control robot physics? | S056 | 2026-11-21 | 1–1024 worlds measured; 1024 GPU median approximately 11.43× six-thread CPU | [Raw reports and figure](../../simulation/mujoco/accelerated/reports/EXP-0005) |
+| [EXP-0006](experiments/EXP-0006-isolated-cem-command-search.md) | Can bounded CEM find physically verified isolated command plans? | S058/S059 | 2026-11-21 | 7/8 then 8/8; checkpoint continuation 8/8; CPU winner verified; independent entry trial stopped on camera age | [Raw candidate results](../../simulation/mujoco/accelerated/reports/EXP-0006) |
 
 ## D. Research findings
 

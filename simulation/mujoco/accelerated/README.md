@@ -128,3 +128,62 @@ The GPU follows recorded canonical controls; this is not autonomous camera
 perception or policy inference. Identical worlds are not independent trials.
 Robot self pairs checked by the planner remain separate from engine masks.
 Fresh outputs include GPU trajectory NPZ, reports, source copies and failure logs.
+
+## Isolated Stage A CEM pilot
+
+`cem.py` optimizes three command parameters: closing-load factor, fraction of
+compiled finger closing speed, and fraction of the existing local vertical
+rate. Each member includes close, settle, lift and one-second hold from an
+executed near-grasp entry. Source XY is frozen from the camera-derived native
+diagnostic. Friction, mass, gain, geometry and camera are not optimized.
+
+Prerequisites: a verified isolated elliptic/10 fixture and a successful canonical
+recorded hold run containing `local-report.json`, `physics-transitions.npz` and
+its JSON hash sidecar. The config must match that recording. Example for the
+retained local fixture, from the repository root:
+
+```powershell
+$gpuPy = '.\simulation\mujoco\accelerated\.venv\Scripts\python.exe'
+$config = 'simulation/mujoco/examples/qualify_hybrid_approach/runs/solver-comparison-daeb5509116a43e5a1f770f39e44367d/elliptic10/environment.json'
+$reference = 'simulation/mujoco/examples/qualify_hybrid_approach/runs/canonical-recorded-hold-73d79eb2045643e3a3f9851c7cf6ca19'
+& $gpuPy -u -B simulation/mujoco/accelerated/cem.py --config $config --reference $reference `
+  --population 8 --generations 2 --max-simulations 16 --max-duration-s 40 `
+  --max-wall-s 300 --max-gpu-mib 2048 --seed 970300
+& $gpuPy -B -m pytest simulation/mujoco/accelerated/tests/test_cem.py -q
+```
+
+Complete nominal closure/carried-lift sweeps and compiled limits filter
+candidates before GPU simulation. Physical validity and held-lift success rank
+ahead of height/time. A best GPU result is independently replayed on canonical
+CPU; a scalar score cannot declare success. Invalid paths, failed grasps and
+budget/dependency errors remain recorded. The original 1 mm margin remains for
+all pairs except the explicit selected-piece/moving-finger near-contact margin.
+
+Fresh EXP-0006 outputs contain generation JSON, raw candidate CSV, distribution
+and RNG checkpoints, accepted control tapes, best candidate NPZ, CPU result and
+source snapshots. `--resume <checkpoint-N.json>` continues a matching verified
+distribution in a fresh output, not a physics process or a neural policy.
+
+This pilot does not render every world or train RL. The native diagnostic Watch
+remains the visual reference. It does not optimize approach/wrist/height yet,
+randomize task starts, solve occupied-board entry or qualify a camera-only
+outcome verifier. Identical initial states are not generalization evidence. See
+[S058](../../docs/adrs/S058-bounded-isolated-cem-grasp-pilot.md).
+
+To test frozen winning parameters on a new camera-localized, physically captured
+reference, generate another recorded canonical hold with a different seed, then:
+
+```powershell
+& $gpuPy -u -B simulation/mujoco/accelerated/evaluate_candidate.py --config $config `
+  --reference $newReferenceRun --winner (Join-Path $cemRun 'report.json') --max-wall-s 180
+```
+
+`$newReferenceRun` is a distinct successful recorded native diagnostic;
+`$cemRun` is a completed CEM run with canonical winner verification. This command
+does not optimize again. It transfers three command parameters and derives XY
+from the new signed camera reference. Its fresh output stores GPU/CPU outcomes,
+input hashes and the complete candidate NPZ. Passing one new entry is a small
+held-out test, not a reliability or crowded-operation claim. Current checkpoint
+identity also binds the exact reference report/handoff; earlier prototype
+checkpoints without those fields require their preserved executed source or a
+fresh search, rather than silently continuing with different input evidence.

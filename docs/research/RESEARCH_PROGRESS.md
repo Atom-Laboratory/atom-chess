@@ -7,7 +7,8 @@ Updated: 2026-11-21. This file is the continuation entry point.
 Phase 0 historical evidence consolidation and Phase 1 native GPU smoke passed.
 Phase 2 forward/step screen and recorded canonical grasp/hold replay passed in
 their limited scopes. Phase 3 physics-only benchmarks ran through 1024 worlds.
-Phase 4 bounded CEM pilot is next. No learned grasp policy, independent GPU
+Phase 4 bounded isolated CEM pilot and checkpoint continuation passed. Frozen
+candidate evaluation on new camera entries is in progress. No learned policy, independent GPU
 generalization or end-to-end RL acceleration is established.
 
 ## Last measured result
@@ -59,6 +60,13 @@ kernel and primitive contact smoke passed; robot parity is still pending.
    Camera-only outcome verification remains unqualified.
 6. Implement bounded isolated CEM, replay winners independently on CPU, then
    assess randomized states and occupied-board geometry.
+
+Current CEM: population 8 ×2 generations, 7/8 then 8/8 physically valid held
+lifts, followed by a checkpoint-resumed generation with 8/8. Canonical winner
+replay passed. A later hash-bound population 4 ×2 also passed. These are command
+search evaluations from one entry, not a neural policy or a reliability sample.
+Frozen-parameter held-out evaluation is next; the first seed-970201 native entry
+stopped on camera age during descent, and the same-seed headless retry is active.
 7. Demonstrations, shared-policy training and curriculum follow measured gates.
 
 Native audit is read-only. Its generic scenario tool changed solver/integrator

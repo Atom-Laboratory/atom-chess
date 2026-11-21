@@ -21,6 +21,7 @@ def bounded_run(script, arguments, *, experiment, output=None, sources=(), max_w
     revision=subprocess.run(['git','rev-parse','HEAD'],cwd=script.parents[3],capture_output=True,
                             text=True,timeout=10,check=True).stdout.strip()
     metadata=dict(request or {},experiment=experiment,source_commit=revision,
+        worker_arguments=list(arguments),max_wall_s=max_wall_s,python_executable=sys.executable,
         source_sha256={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in snapshot.iterdir()})
     (output/'request.json').write_text(json.dumps(metadata,indent=2)+'\n',encoding='utf-8')
     command=[sys.executable,'-u','-B',str(snapshot/script.name),'--worker','--output',str(output),*arguments]
