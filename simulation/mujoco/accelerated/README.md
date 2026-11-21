@@ -15,6 +15,7 @@ canonical MuJoCo 3.17.0 release rather than upgrading the reference physics.
 ```powershell
 uv venv --python .\simulation\mujoco\.venv\Scripts\python.exe simulation/mujoco/accelerated/.venv
 uv pip sync --python simulation/mujoco/accelerated/.venv/Scripts/python.exe simulation/mujoco/accelerated/requirements-windows-py312.lock
+uv pip install --python simulation/mujoco/accelerated/.venv/Scripts/python.exe --no-deps -e simulation/mujoco
 $gpuPy = '.\simulation\mujoco\accelerated\.venv\Scripts\python.exe'
 ```
 
@@ -48,3 +49,24 @@ updates, episodes and resets are absent. A one-world smoke cannot establish
 speedup. See the research experiment record for actual measurements.
 
 See [ADR S053](../../docs/adrs/S053-isolated-native-mjwarp-research-backend.md).
+
+## Robot forward and single-step parity
+
+Set `$config` to a prepared robot `environment.json`. Optionally set `$snapshot`
+to an existing diagnostic `state-final.json`; omitted hidden state is explicitly
+initialized identically, so this does not reconstruct historical contact forces.
+
+```powershell
+& $gpuPy -u -B simulation/mujoco/accelerated/parity.py --config $config `
+  --snapshot $snapshot --max-wall-s 600 --max-gpu-mib 2048
+& $gpuPy -B -m pytest simulation/mujoco/accelerated/tests -q
+```
+
+The fresh EXP-0003 output contains complete comparison integration states,
+stage-specific raw/normalized errors, order-independent contact pair forces,
+single-step error, selected reset isolation, allocation and overflow status.
+The CLI returns a failure status when the screen does not pass. Forward and
+single-step agreement is a limited diagnostic screen; complete contact-rich
+rollout/hold parity is a separate gate. No camera images or simulator truth from
+this qualification enter a deployable actor. See
+[S054](../../docs/adrs/S054-complete-state-cpu-gpu-parity-boundary.md).

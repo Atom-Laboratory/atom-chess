@@ -5,8 +5,9 @@ Updated: 2026-11-21. This file is the continuation entry point.
 ## Current phase
 
 Phase 0 historical evidence consolidation and Phase 1 native GPU smoke passed.
-Phase 2 robot-model parity is next. No GPU speedup or robot-model physics parity
-has yet been established.
+Phase 2 robot forward/single-step comparison passed at two defined states.
+Full trajectory parity and matched throughput benchmarks remain pending; no
+training acceleration or reliable GPU grasp is established.
 
 ## Last measured result
 
@@ -46,7 +47,8 @@ kernel and primitive contact smoke passed; robot parity is still pending.
    no overflow flags, final primitive qpos error 5.344e-9.
 3. Implement matched, repeated throughput benchmarks; smoke timings are not a
    complete pipeline benchmark.
-4. Compare unchanged robot-model forward/step/replay behavior before CEM.
+4. Forward/step screen passed at two states (EXP-0003). Record complete canonical
+   grasp/hold dynamics and compare GPU replay before CEM.
 5. Add explicit lifted-hold verification and camera-only command audit. The
    current low-level bias feedforward reads live simulation qfrc_bias; audit and
    replace that privileged command dependency before camera-only control claims.

@@ -33,6 +33,7 @@ full filenames and preserve their history. New decisions continue after S052.
 | [S051](../../simulation/docs/adrs/S051-partial-contact-during-coupled-finger-closure.md) | Loaded partial contact while closing | Adopted supervision fix | EXP-0001 | Control and findings |
 | [S052](../../simulation/docs/adrs/S052-diagnostic-lift-travel-margin.md) | Lift target versus measured rise | Explicit diagnostic parameter | EXP-0001 | Lift verification |
 | [S053](../../simulation/docs/adrs/S053-isolated-native-mjwarp-research-backend.md) | Version-matched isolated MJWarp backend | Accepted design; performance/parity unverified | EXP-0002 | Parallel acceleration |
+| [S054](../../simulation/docs/adrs/S054-complete-state-cpu-gpu-parity-boundary.md) | Full state reset and CPU/GPU comparison | Accepted; limited forward/step screen passed | EXP-0003 | Physics validation |
 
 The legacy architecture/report catalog is being consolidated without rewriting
 historical conclusions; original documents remain authoritative for their scope.
@@ -43,6 +44,7 @@ historical conclusions; original documents remain authoritative for their scope.
 | --- | --- | --- | --- | --- | --- |
 | [EXP-0001](experiments/EXP-0001-canonical-baseline.md) | What is the measured CPU reach/grasp baseline? | S039–S052 | 2026-11-21 | Reach 8/8 paired, 16/16 additional; isolated deterministic lift observed; crowded entry unresolved | [Baseline package](../../simulation/mujoco/reports/training-diagnostics/crowded-reach-20261121/README.md) |
 | [EXP-0002](experiments/EXP-0002-native-gpu-environment.md) | Can the measured SM120 host execute pinned native MJWarp? | S053 | 2026-11-21 | CUDA kernel and primitive contact passed at 1/16 worlds; robot parity unverified | [Raw smoke reports](../../simulation/mujoco/accelerated/reports/EXP-0002) |
+| [EXP-0003](experiments/EXP-0003-robot-physics-parity.md) | Does unchanged robot forward/step physics agree? | S054 | 2026-11-21 | Two states passed; full contact-rich rollout pending | [Raw parity report](../../simulation/mujoco/accelerated/reports/EXP-0003/robot-forward-step.json) |
 
 ## D. Research findings
 
