@@ -70,3 +70,36 @@ single-step agreement is a limited diagnostic screen; complete contact-rich
 rollout/hold parity is a separate gate. No camera images or simulator truth from
 this qualification enter a deployable actor. See
 [S054](../../docs/adrs/S054-complete-state-cpu-gpu-parity-boundary.md).
+
+## Matched physics benchmark
+
+```powershell
+& $gpuPy -u -B simulation/mujoco/accelerated/benchmark.py --config $config `
+  --snapshot $snapshot --worlds 1 16 32 64 --max-worlds 64 `
+  --steps 128 --repeats 3 --threads 6 --max-gpu-mib 2048 --max-wall-s 900
+```
+
+Use the same verified held-pawn snapshot for CPU and GPU. This compares native
+CPU batches with one/six threads against graph-captured GPU physics. Full resets,
+warmup, compilation and three or more raw repetitions are separate. The process
+is bounded; fresh EXP-0005 outputs contain `samples.csv`, summaries, final states,
+health and source snapshots. Failed capacity/numerical checks stop the run.
+
+This workload excludes camera, planning, policy inference/optimization and
+rendering. It measures world-steps/s, **not** episodes/s or full RL speedup.
+Identical initial states do not test randomized-world generalization. Expand
+batch size only after observing memory and stability. See
+[S056](../../docs/adrs/S056-matched-robot-physics-benchmark.md).
+
+To regenerate scientific figures from retained benchmark run directories, use
+the canonical Python environment with its diagnostics/Matplotlib extra:
+
+```powershell
+& .\simulation\mujoco\.venv\Scripts\python.exe -B simulation/mujoco/accelerated/plot_benchmarks.py `
+  --runs $smallRun $largeRun $largestRun --output $freshFigureDirectory
+```
+
+The three input variables are completed EXP-0005 run directories, each containing
+`report.json` and `samples.csv`. The output must not already exist. It contains
+combined unsmoothed CSV, figure-source hashes and FIG-0003 in SVG/PDF/PNG. The
+figure identifies different durations/repeat counts and min–max variability.

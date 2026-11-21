@@ -45,6 +45,7 @@ historical conclusions; original documents remain authoritative for their scope.
 | [EXP-0001](experiments/EXP-0001-canonical-baseline.md) | What is the measured CPU reach/grasp baseline? | S039–S052 | 2026-11-21 | Reach 8/8 paired, 16/16 additional; isolated deterministic lift observed; crowded entry unresolved | [Baseline package](../../simulation/mujoco/reports/training-diagnostics/crowded-reach-20261121/README.md) |
 | [EXP-0002](experiments/EXP-0002-native-gpu-environment.md) | Can the measured SM120 host execute pinned native MJWarp? | S053 | 2026-11-21 | CUDA kernel and primitive contact passed at 1/16 worlds; robot parity unverified | [Raw smoke reports](../../simulation/mujoco/accelerated/reports/EXP-0002) |
 | [EXP-0003](experiments/EXP-0003-robot-physics-parity.md) | Does unchanged robot forward/step physics agree? | S054 | 2026-11-21 | Two states passed; full contact-rich rollout pending | [Raw parity report](../../simulation/mujoco/accelerated/reports/EXP-0003/robot-forward-step.json) |
+| [EXP-0005](experiments/EXP-0005-physics-batching-benchmark.md) | When does GPU batching help fixed-control robot physics? | S056 | 2026-11-21 | 1–1024 worlds measured; 1024 GPU median approximately 11.43× six-thread CPU | [Raw reports and figure](../../simulation/mujoco/accelerated/reports/EXP-0005) |
 
 ## D. Research findings
 
@@ -63,6 +64,7 @@ historical conclusions; original documents remain authoritative for their scope.
 | TAB-0001 [REPORT-TABLE] | Reach success counts and median mean-pad gap, mm | EXP-0001, reach-evaluation.csv | Paired and additional evaluation, not grasp |
 | FIG-0001 [REPORT-FIGURE] | Fixed-camera view at rejected crowded descent boundary | EXP-0001, camera-crowded-rejected-descent.png | Negative result, no descent execution |
 | FIG-0002 [REPORT-FIGURE] | Isolated closure viewed by the fixed camera | EXP-0001, camera-isolated-closure.png | Occluded contact; not visual lift verification |
+| FIG-0003 [REPORT-FIGURE] | Repeated CPU/GPU fixed-control physics throughput and allocation pool | EXP-0005, unsmoothed samples and SVG/PDF/PNG | Physics only; not training throughput |
 
 ## F. Open scientific questions
 

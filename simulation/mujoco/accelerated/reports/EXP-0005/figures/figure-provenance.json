@@ -1,0 +1,23 @@
+{
+  "experiment": "EXP-0005",
+  "figure": "FIG-0003",
+  "sources": [
+    {
+      "path": "simulation\\mujoco\\accelerated\\reports\\EXP-0005\\small",
+      "report_sha256": "20e6fcc17decd08a3f633faed7c336d87da3afa8a7bc6ec8b98b3ab4fd201f20",
+      "samples_sha256": "3ef49df7d65c792f54896243a3a77cb5eeec5f4f085fdd9e0531372bd9b37cd1"
+    },
+    {
+      "path": "simulation\\mujoco\\accelerated\\reports\\EXP-0005\\large",
+      "report_sha256": "0bf0b47a8b416cf35585acc1a7e323574235125cf59345630978a1b3c926bc36",
+      "samples_sha256": "380dbb67cb38c3defd4681ff3603ebcb9b7dbe7c2f1e6f08e2a4549130e7cec9"
+    },
+    {
+      "path": "simulation\\mujoco\\accelerated\\reports\\EXP-0005\\1024",
+      "report_sha256": "d5f1c7fa0e9a268209db58c196fa8d4a5b5950b54e843bb8c3c3ffce7d81dae6",
+      "samples_sha256": "dcbf0dd7e8b88f4bc37b7fc58686a5486a760c98eaf2698efc2c6708b83b57a2"
+    }
+  ],
+  "script_sha256": "7716b601d967569dee8f253626c8f740296dfafccfe14d85e8d4c4e114cef79e",
+  "postprocessing": "SVG trailing whitespace normalized without changing geometry or measurements"
+}
