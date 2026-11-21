@@ -15,7 +15,7 @@ from .supervision import MoveTask
 
 class LocalSupervisor:
     def __init__(self, scene, task, limits, *, handoff=None, workspace_artifact=None,
-                 observer=None, settle_timeout_s=2.):
+                 observer=None, settle_timeout_s=2., target_finger_clearance_m=None):
         if not isinstance(task, MoveTask) or not isinstance(limits, LocalLimits):
             raise ValueError('Existing task and validated local limits required')
         task.validate()
@@ -23,7 +23,9 @@ class LocalSupervisor:
                 or task.target_square != scene.task_target):
             raise ValueError('Task differs from prepared physical/visual fixture')
         self.scene, self.sim, self.task, self.limits = scene, scene.sim, task, limits
-        self.control = AutonomousControl(scene)
+        if handoff is not None and target_finger_clearance_m is not None:
+            raise ValueError('Alternate finger margin is restricted to deterministic diagnostics')
+        self.control = AutonomousControl(scene, target_finger_clearance_m=target_finger_clearance_m)
         if not self.scene.motion.has_wrist or len(self.sim.names) != 6:
             raise ValueError('Six-command wrist-aware model required')
         if (not np.array_equal(limits.command_lower, self.sim.lower)

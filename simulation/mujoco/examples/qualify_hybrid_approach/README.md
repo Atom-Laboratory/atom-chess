@@ -186,6 +186,15 @@ budget of twice that window. `initial_bilateral_contact` is separate from
 These are simulation-only outcome checks, not actor inputs or hardware grasp
 verification. See [S048](../../../docs/adrs/S048-settled-grasp-hold-before-lift.md).
 
+`--target-finger-clearance-m 0` is a separate experimental near-contact margin
+for the selected piece versus moving finger hulls. Every other pair retains the
+default 1 mm margin. It still rejects hull touching/penetration and checks the
+complete sweep, including carried-object geometry; runtime forbidden-contact
+handling remains unchanged. This option cannot be used by an admitted RL
+supervisor. Report the chosen margin when comparing outcomes; a zero-margin
+diagnostic does not qualify the original 1 mm experiment or a hardware margin.
+See [S049](../../../docs/adrs/S049-selected-finger-near-contact-clearance.md).
+
 To use the exact approach configuration of a prepared planner-started reach
 fixture (entry offsets, preshape, live registration and corridor screen), pass
 `--configured-approach`. This calls the existing native handoff and saves

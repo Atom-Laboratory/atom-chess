@@ -58,9 +58,15 @@ class SweptChecker:
                                                      else 2*radius)
 
     def interval(self, start, end, *, allowed=(), configure=None, extra_coefficients=None,
-                 prune_spheres=False):
+                 prune_spheres=False, pair_clearances=None):
         allowed = {frozenset(pair) for pair in allowed}
         pairs = [p for p in self.pairs if frozenset(p) not in allowed]
+        margins = {} if pair_clearances is None else pair_clearances
+        known = {frozenset(pair) for pair in self.pairs}
+        if any(key not in known or not math.isfinite(value) or value < 0
+               for key, value in margins.items()):
+            raise ValueError('Pair clearances require known pairs and finite nonnegative margins')
+        clearances = np.array([margins.get(frozenset(pair), self.clearance) for pair in pairs])
         coefficients = self.coefficients if extra_coefficients is None else extra_coefficients
         indices = np.asarray(pairs, dtype=int).reshape(-1, 2)
         pair_coefficients = coefficients[indices].sum(axis=1)
@@ -93,16 +99,17 @@ class SweptChecker:
                 active = indices[remaining]
                 centers = self.data.geom_xpos[active]
                 distance = np.linalg.norm(centers[:, 0]-centers[:, 1], axis=1)
-                bound = radii[remaining]+pair_travel[remaining]+self.clearance
+                bound = radii[remaining]+pair_travel[remaining]+clearances[remaining]
                 relevant = unbounded[remaining] | ~np.isfinite(distance) | (distance <= bound+1e-9)
                 remaining = remaining[relevant]
             for index in remaining:
                 first, second = pairs[index]
-                limit = float(pair_travel[index]+self.clearance)
+                limit = float(pair_travel[index]+clearances[index])
                 distance = float(mujoco.mj_geomDistance(self.model, self.data, first, second, limit+1e-6, None))
-                if not math.isfinite(distance) or distance <= self.clearance:
+                if not math.isfinite(distance) or distance <= clearances[index]:
                     return dict(status='collision', geoms=[self.model.geom(first).name, self.model.geom(second).name],
-                                distance_m=distance, joint_position=((a+b)/2).tolist())
+                                distance_m=distance, clearance_m=float(clearances[index]),
+                                joint_position=((a+b)/2).tolist())
                 if distance <= limit:
                     uncertain.append(index)
             if not uncertain:

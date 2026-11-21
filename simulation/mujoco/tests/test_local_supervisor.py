@@ -405,3 +405,18 @@ def test_lift_without_bilateral_grip_stops_before_motion(supervisor):
     result = supervisor.qualification_step([0.]*5, phase='LIFTING')
     assert result['category'] == 'GRIP_LOST_DURING_LIFT'
     assert not result['motion_applied'] and supervisor.sim.data.time == before
+
+
+def test_diagnostic_target_margin_is_scoped_to_selected_piece_and_moving_finger_hulls(supervisor):
+    control = AutonomousControl(supervisor.scene, target_finger_clearance_m=0.)
+    assert control.pair_clearances
+    selected = supervisor.sim.model.body('white_pawn_e2').id
+    finger_bodies = {supervisor.sim.model.geom(f'finger_{i}_pad').bodyid[0] for i in (1, 2)}
+    for pair, margin in control.pair_clearances.items():
+        geoms = [supervisor.sim.model.geom(g) for g in pair]
+        assert margin == 0.
+        assert any(g.bodyid[0] == selected for g in geoms)
+        assert any(g.bodyid[0] in finger_bodies and g.name.endswith('_collision_hull') for g in geoms)
+    with pytest.raises(ValueError, match='restricted to deterministic'):
+        LocalSupervisor(supervisor.scene, supervisor.task, supervisor.limits,
+                        handoff=object(), target_finger_clearance_m=0.)

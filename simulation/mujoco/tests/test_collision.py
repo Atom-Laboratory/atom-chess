@@ -32,6 +32,33 @@ def test_unresolved_intervals_fail_closed():
     assert value.interval([-.1], [.1])['status'] == 'unresolved'
 
 
+@pytest.mark.parametrize('prune', [False, True])
+def test_pair_margin_allows_near_contact_but_retains_penetration_and_swept_checks(prune):
+    near = checker(.0205)
+    assert near.interval([0.], [0.], prune_spheres=prune)['status'] == 'collision'
+    assert near.interval([0.], [0.], pair_clearances={frozenset((0, 1)):0.}, prune_spheres=prune) is None
+    touching = checker(.0195)
+    assert touching.interval([0.], [0.], pair_clearances={frozenset((0, 1)):0.}, prune_spheres=prune)['status'] == 'collision'
+    crossed = checker(0.)
+    assert crossed.interval([-.1], [.1], pair_clearances={frozenset((0, 1)):0.}, prune_spheres=prune)['status'] == 'collision'
+
+
+def test_pair_margin_leaves_unlisted_pairs_at_default_clearance():
+    model = mujoco.MjModel.from_xml_string('''<mujoco><worldbody>
+      <geom name="first" type="sphere" size=".01" pos="0 .0205 0"/>
+      <geom name="second" type="sphere" size=".01" pos="0 -.0205 0"/>
+      <body><joint type="slide" axis="1 0 0"/><geom type="sphere" size=".01" mass="1"/></body>
+      </worldbody></mujoco>''')
+    value = SweptChecker(model, np.zeros(1), [0], [(0, 2), (1, 2)])
+    first = {frozenset((0, 2)):0.}
+    result = value.interval([0.], [0.], pair_clearances=first, prune_spheres=True)
+    assert result['geoms'][0] == 'second' and result['clearance_m'] == .001
+    assert value.interval([0.], [0.], pair_clearances={**first, frozenset((1, 2)):0.}) is None
+    for bad in ({frozenset((0, 1)):0.}, {frozenset((0, 2)):-.001}, {frozenset((0, 2)):float('nan')}):
+        with pytest.raises(ValueError, match='known pairs'):
+            value.interval([0.], [0.], pair_clearances=bad)
+
+
 @pytest.mark.parametrize('offset,depth', [(0., 16), (.04, 16), (.04, 0)])
 def test_sphere_pruning_preserves_clear_blocked_and_unresolved_outcomes(offset, depth):
     plain, optimized = checker(offset), checker(offset)

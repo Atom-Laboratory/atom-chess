@@ -32,6 +32,7 @@ def main():
     parser.add_argument('--lift-speed-fraction', type=float, default=1.)
     parser.add_argument('--head-edge-fraction', type=float)
     parser.add_argument('--diagnostic-wrist-rad', type=float)
+    parser.add_argument('--target-finger-clearance-m', type=float)
     args = parser.parse_args()
     if args.local_diagnostic and args.plan_only:
         parser.error('--local-diagnostic requires actual approach execution')
@@ -44,6 +45,9 @@ def main():
         parser.error('--head-edge-fraction requires local head diagnostic, load factor and fraction in [0, 1)')
     if args.diagnostic_wrist_rad is not None and not args.local_diagnostic:
         parser.error('--diagnostic-wrist-rad requires --local-diagnostic')
+    if args.target_finger_clearance_m is not None and (not args.local_diagnostic
+            or not np.isfinite(args.target_finger_clearance_m) or not 0 <= args.target_finger_clearance_m <= .001):
+        parser.error('--target-finger-clearance-m requires local diagnostic and a margin in [0, .001]')
     output = args.output or new_run('examples/qualify_hybrid_approach/runs')
     output.mkdir(parents=True, exist_ok=False)
     sources = [*sorted(Path(__file__).resolve().parent.glob('*.py')),
@@ -58,6 +62,7 @@ def main():
         closing_load_factor=args.closing_load_factor,
         lift_speed_fraction=args.lift_speed_fraction,
         head_edge_fraction=args.head_edge_fraction, diagnostic_wrist_rad=args.diagnostic_wrist_rad,
+        target_finger_clearance_m=args.target_finger_clearance_m,
         source_sha256={str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in sources},
         libraries={key: dict(path=configuration[key], sha256=hashlib.sha256(
             Path(configuration[key]).read_bytes()).hexdigest()) for key in ('motion_library', 'vision_library')})
@@ -126,7 +131,8 @@ def main():
                                              closing_load_factor=args.closing_load_factor,
                                              lift_speed_fraction=args.lift_speed_fraction,
                                              head_edge_fraction=args.head_edge_fraction,
-                                             diagnostic_wrist_rad=args.diagnostic_wrist_rad)
+                                             diagnostic_wrist_rad=args.diagnostic_wrist_rad,
+                                             target_finger_clearance_m=args.target_finger_clearance_m)
             (output/'local-report.json').write_text(json.dumps(diagnostic, indent=2), encoding='utf-8')
             print(f'[ATOM M4] {diagnostic["status"]} | {output / "local-report.json"}', flush=True)
             final_status = diagnostic['status']

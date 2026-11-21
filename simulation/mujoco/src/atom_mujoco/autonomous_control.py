@@ -37,7 +37,7 @@ def control_rates(base):
 
 
 class AutonomousControl:
-    def __init__(self, base):
+    def __init__(self, base, *, target_finger_clearance_m=None):
         self.base = base
         self.sim = sim = base.sim
         self.model = model = sim.model
@@ -60,6 +60,17 @@ class AutonomousControl:
         self.allowed_pairs = {frozenset(pair) for pair in self.allowed}
         self.pad_ids = pads
         self.checker = SweptChecker(model, sim.data.qpos, sim.joint_ids, self.pairs)
+        self.pair_clearances = {}
+        if target_finger_clearance_m is not None:
+            if not np.isfinite(target_finger_clearance_m) or not 0 <= target_finger_clearance_m <= self.checker.clearance:
+                raise ValueError('Target finger margin must be between zero and the default clearance')
+            finger_bodies = set(model.geom_bodyid[pads])
+            finger_hulls = [g for g in base.collision.robot if model.geom_bodyid[g] in finger_bodies
+                            and (model.geom(g).name or '').endswith('_collision_hull')]
+            if not finger_hulls:
+                raise ValueError('Selected finger margin requires full moving-finger hulls')
+            self.pair_clearances = {frozenset((hull, geom)): float(target_finger_clearance_m)
+                                    for hull in finger_hulls for geom in geoms}
 
     def commanded_tcp(self, command):
         self.scratch.qpos[:] = self.model.qpos0
@@ -143,7 +154,7 @@ class AutonomousControl:
         start = sim.data.qpos[sim.qadr].copy()
         failure = checker.interval(start, end, allowed=self.allowed,
                                    configure=configure, extra_coefficients=coefficients,
-                                   prune_spheres=True)
+                                   prune_spheres=True, pair_clearances=self.pair_clearances)
         if failure:
             return None, dict(status='SWEEP_REJECTED', failure=failure, samples=checker.samples)
         return end, dict(status='ACCEPTED', samples=checker.samples, command_scale=scale,

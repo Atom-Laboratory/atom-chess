@@ -116,7 +116,7 @@ def hold_grasp(supervisor, identity, dwell, record):
 
 def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisions=1000,
                          grasp_part='stem', closing_load_factor=None, lift_speed_fraction=1.,
-                         head_edge_fraction=None, diagnostic_wrist_rad=None):
+                         head_edge_fraction=None, diagnostic_wrist_rad=None, target_finger_clearance_m=None):
     if not np.isfinite(lift_speed_fraction) or not 0 < lift_speed_fraction <= 1:
         raise ValueError('Lift speed fraction must be in (0, 1]')
     sim = scene.sim
@@ -136,13 +136,15 @@ def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisio
     task = MoveTask('local-diagnostic-'+uuid.uuid4().hex, scene.config['piece'],
         scene.config['source'], scene.task_target, 0,
         max_decisions*scene.config['max_perception_age_s'])
-    supervisor = LocalSupervisor(scene, task, limits, observer=observer)
+    supervisor = LocalSupervisor(scene, task, limits, observer=observer,
+                                 target_finger_clearance_m=target_finger_clearance_m)
     supervisor.begin_qualification(plan, approach, max_decisions=max_decisions)
     report = dict(schema=1, status='DIAGNOSTIC_STARTED', owner='DETERMINISTIC_QUALIFICATION',
         training_eligible=False, local_manipulation_workspace_qualified=False,
         visual_grasp_verified=False, grasp_success=False, lift_success=False, stages=[],
         limits=vars(limits), max_decisions=max_decisions, geometry_source='existing experimental colliders')
     report['lift_speed_fraction'] = lift_speed_fraction
+    report['target_finger_clearance_m'] = target_finger_clearance_m
     started = time.perf_counter()
     body = sim.model.body(scene.config['piece']).id
     initial_z = float(sim.data.xpos[body, 2])  # Independent evaluation, never a target.
