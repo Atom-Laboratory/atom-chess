@@ -155,3 +155,40 @@ in its declared XY bounds, with one diagnostic control interval of margin. This
 numeric box does not establish clearance: full-path/step collision checks,
 tracking and runtime feedback remain mandatory. It does not grant an RL lease.
 See [S046](../../../docs/adrs/S046-lateral-entry-grasp-diagnostic-envelope.md).
+
+## Upper-head edge diagnostic
+
+`--head-edge-fraction .5 --grasp-part head --closing-load-factor 1.5`
+opts into contact near the upper half of the existing spherical head, at the
+lower pad edge. Pad height/orientation come from scratch forward kinematics at
+the issued command; source XY still comes from the camera. This changes a grasp
+proposal, not collider dimensions or physics. `--diagnostic-wrist-rad 0` can test
+a different bounded wrist angle. The diagnostic screens wrist alignment,
+centering above the source, descent, closure and lift before each stage.
+
+The load estimate includes the downward normal component and horizontal
+friction load. Unsupported contact latitudes, force/travel/envelope violations,
+collisions and runtime faults stop the test. No automatic policy admission is
+created. Inspect `local-report.json`, `local-decisions.jsonl` and
+`camera-local-*.png` in the fresh output directory. Test this contract with:
+
+```powershell
+& $py -B -m pytest simulation/mujoco/tests/test_local_supervisor.py -q
+```
+
+See [S047](../../../docs/adrs/S047-upper-sphere-pad-edge-grasp-diagnostic.md).
+
+To use the exact approach configuration of a prepared planner-started reach
+fixture (entry offsets, preshape, live registration and corridor screen), pass
+`--configured-approach`. This calls the existing native handoff and saves
+`handoff.json`; it uses the fixture's candidate budget and the handoff's timing,
+instead of `--max-candidates` and `--speed-fraction`. It requires a local
+diagnostic and does not load or train a policy. For example:
+
+```powershell
+# Set $config to your prepared planner-started environment.json first.
+& $py -u -B simulation/mujoco/examples/qualify_hybrid_approach/run.py `
+  --config $config --configured-approach --local-diagnostic --grasp-part head `
+  --head-edge-fraction .5 --diagnostic-wrist-rad 0 --closing-load-factor 1.5 `
+  --lift-speed-fraction .25 --max-local-decisions 1000 --seed 970000
+```

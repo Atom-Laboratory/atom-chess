@@ -24,15 +24,26 @@ def main():
     parser.add_argument('--plan-only', action='store_true')
     parser.add_argument('--speed-fraction', type=float, default=.25)
     parser.add_argument('--local-diagnostic', action='store_true')
+    parser.add_argument('--configured-approach', action='store_true',
+                        help='Use the same configured native handoff as planner-started reach')
     parser.add_argument('--max-local-decisions', type=int, default=1000)
     parser.add_argument('--grasp-part', choices=('stem', 'head'), default='stem')
     parser.add_argument('--closing-load-factor', type=float)
     parser.add_argument('--lift-speed-fraction', type=float, default=1.)
+    parser.add_argument('--head-edge-fraction', type=float)
+    parser.add_argument('--diagnostic-wrist-rad', type=float)
     args = parser.parse_args()
     if args.local_diagnostic and args.plan_only:
         parser.error('--local-diagnostic requires actual approach execution')
+    if args.configured_approach and not args.local_diagnostic:
+        parser.error('--configured-approach requires --local-diagnostic')
     if args.max_local_decisions <= 0:
         parser.error('--max-local-decisions must be positive')
+    if args.head_edge_fraction is not None and (not args.local_diagnostic or args.grasp_part != 'head'
+            or args.closing_load_factor is None or not 0 <= args.head_edge_fraction < 1):
+        parser.error('--head-edge-fraction requires local head diagnostic, load factor and fraction in [0, 1)')
+    if args.diagnostic_wrist_rad is not None and not args.local_diagnostic:
+        parser.error('--diagnostic-wrist-rad requires --local-diagnostic')
     output = args.output or new_run('examples/qualify_hybrid_approach/runs')
     output.mkdir(parents=True, exist_ok=False)
     sources = [*sorted(Path(__file__).resolve().parent.glob('*.py')),
@@ -42,9 +53,11 @@ def main():
         config_sha256=hashlib.sha256(args.config.read_bytes()).hexdigest(),
         mujoco_version=mujoco.__version__, speed_fraction=args.speed_fraction,
         local_diagnostic=args.local_diagnostic, max_local_decisions=args.max_local_decisions,
+        configured_approach=args.configured_approach,
         grasp_part=args.grasp_part,
         closing_load_factor=args.closing_load_factor,
         lift_speed_fraction=args.lift_speed_fraction,
+        head_edge_fraction=args.head_edge_fraction, diagnostic_wrist_rad=args.diagnostic_wrist_rad,
         source_sha256={str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in sources},
         libraries={key: dict(path=configuration[key], sha256=hashlib.sha256(
             Path(configuration[key]).read_bytes()).hexdigest()) for key in ('motion_library', 'vision_library')})
@@ -86,17 +99,24 @@ def main():
         observe('VALIDATING APPROACH — NO RL')
         print(f'[ATOM M2] Planning | output {output}', flush=True)
         started = time.perf_counter()
-        planner = ApproachPlanner(scene)
-        plan = planner.plan(max_candidates=args.max_candidates)
-        (output/'plan.json').write_text(json.dumps(plan, indent=2), encoding='utf-8')
-        observe(plan['status'], f'{len(plan["candidates"])} candidate configurations examined')
-        print(f'[ATOM M2] {plan["status"]} | {time.perf_counter()-started:.2f}s', flush=True)
-        if args.plan_only:
-            result = dict(status='PLANNED_ONLY', approach_executed=False, training_eligible=False)
+        if args.configured_approach:
+            from atom_mujoco.approach_handoff import approach_handoff
+            handoff = dict(horizon=64)
+            approach_handoff(scene, handoff, observer=observe)
+            plan, result = handoff['plan'], handoff['execution']
+            (output/'handoff.json').write_text(json.dumps(handoff, indent=2), encoding='utf-8')
         else:
-            from atom_mujoco.approach_execution import execute_approach
-            result = execute_approach(scene, plan, observer=observe, speed_fraction=args.speed_fraction,
-                                      retreat=not args.local_diagnostic)
+            planner = ApproachPlanner(scene)
+            plan = planner.plan(max_candidates=args.max_candidates)
+            observe(plan['status'], f'{len(plan["candidates"])} candidate configurations examined')
+            if args.plan_only:
+                result = dict(status='PLANNED_ONLY', approach_executed=False, training_eligible=False)
+            else:
+                from atom_mujoco.approach_execution import execute_approach
+                result = execute_approach(scene, plan, observer=observe, speed_fraction=args.speed_fraction,
+                                          retreat=not args.local_diagnostic)
+        (output/'plan.json').write_text(json.dumps(plan, indent=2), encoding='utf-8')
+        print(f'[ATOM M2] {plan["status"]} | {time.perf_counter()-started:.2f}s', flush=True)
         (output/'report.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
         final_status = result['status']
         if args.local_diagnostic and result.get('approach_complete'):
@@ -104,7 +124,9 @@ def main():
             diagnostic = run_local_diagnostic(scene, plan, result, output, observer=observe,
                                              max_decisions=args.max_local_decisions, grasp_part=args.grasp_part,
                                              closing_load_factor=args.closing_load_factor,
-                                             lift_speed_fraction=args.lift_speed_fraction)
+                                             lift_speed_fraction=args.lift_speed_fraction,
+                                             head_edge_fraction=args.head_edge_fraction,
+                                             diagnostic_wrist_rad=args.diagnostic_wrist_rad)
             (output/'local-report.json').write_text(json.dumps(diagnostic, indent=2), encoding='utf-8')
             print(f'[ATOM M4] {diagnostic["status"]} | {output / "local-report.json"}', flush=True)
             final_status = diagnostic['status']

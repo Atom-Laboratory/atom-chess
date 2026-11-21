@@ -312,6 +312,37 @@ def test_diagnostic_bounds_include_verified_lateral_start_and_source_neighborhoo
         np.testing.assert_allclose(upper, source+.0175)
 
 
+def test_upper_head_edge_uses_command_geometry_and_tilted_contact_load(supervisor):
+    import importlib.util
+    path = Path(__file__).resolve().parents[1]/'examples/qualify_hybrid_approach/local_diagnostic.py'
+    spec = importlib.util.spec_from_file_location('upper_edge_diagnostic', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    command = supervisor.scene.command.copy()
+    center = module.grasp_geometry(supervisor.sim, 'white_pawn_e2', .018, 'head', 1.5)
+    edge = module.grasp_geometry(supervisor.sim, 'white_pawn_e2', .018, 'head', 1.5,
+                                head_edge_fraction=.5, command=command)
+    assert edge['tcp_z_m']-center['tcp_z_m'] == pytest.approx(.006+.5*.008)
+    assert edge['effective_radius_m'] == pytest.approx(.008*np.sqrt(.75))
+    load = edge['model_load_estimate']
+    capacity = load['friction_lower_bound']*np.sqrt(.75)-.5
+    assert load['estimated_normal_load_N'] == pytest.approx(1.5*load['weight_N']/(2*capacity))
+    horizontal = load['estimated_normal_load_N']*(np.sqrt(.75)+load['friction_lower_bound']*.5)
+    assert load['estimated_horizontal_load_N'] == pytest.approx(horizontal)
+    assert edge['closing_interference_m'] == pytest.approx(horizontal/load['finger_gain_N_per_m'])
+    # Live robot/object positions are not used to choose this target.
+    supervisor.sim.data.qpos[:] += .01
+    unchanged = module.grasp_geometry(supervisor.sim, 'white_pawn_e2', .018, 'head', 1.5,
+                                     head_edge_fraction=.5, command=command)
+    assert unchanged == edge
+    with pytest.raises(ValueError, match='cannot support weight'):
+        module.grasp_geometry(supervisor.sim, 'white_pawn_e2', .018, 'head', 1.5,
+                              head_edge_fraction=.9, command=command)
+    with pytest.raises(ValueError, match='Upper head edge requires'):
+        module.grasp_geometry(supervisor.sim, 'white_pawn_e2', .018, 'stem', 1.5,
+                              head_edge_fraction=.5, command=command)
+
+
 def test_contact_closure_is_not_confused_with_arm_tracking_failure(supervisor):
     sim = supervisor.sim
     target = supervisor.scene.command.copy()
