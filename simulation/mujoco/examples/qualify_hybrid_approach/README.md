@@ -13,6 +13,11 @@ privileged safety/verification data; static masses and servo mapping remain
 experimental. Trials predating [S055](../../../docs/adrs/S055-command-derived-gravity-feedforward.md)
 used the historical controller and retain that provenance.
 
+Static grasp geometry/preload is shared through `atom_mujoco.grasp_geometry`;
+it does not import camera rendering or Pillow. The visual example and headless
+candidate search use the same unchanged equations. See
+[S059](../../../docs/adrs/S059-shared-model-grasp-geometry.md).
+
 ## Prerequisites and Windows commands
 
 Run PowerShell from the repository root, not your Windows home directory.
