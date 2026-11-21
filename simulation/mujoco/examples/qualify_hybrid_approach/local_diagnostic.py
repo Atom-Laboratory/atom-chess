@@ -114,14 +114,21 @@ def hold_grasp(supervisor, identity, dwell, record):
     return dict(confirmed=False, samples=samples, required_consecutive=dwell)
 
 
+def lifted_hold_valid(sample, minimum_rise_m, maximum_slip_m):
+    return bool(sample['rise_m']>=minimum_rise_m and sample['vertical_slip_m']<=maximum_slip_m
+                and sample['bilateral_contact'] and sample['settled'])
+
+
 def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisions=1000,
                          grasp_part='stem', closing_load_factor=None, lift_speed_fraction=1.,
                          head_edge_fraction=None, diagnostic_wrist_rad=None, target_finger_clearance_m=None,
-                         lift_rise_heights=None):
+                         lift_rise_heights=None, lift_hold_s=0., max_lift_slip_m=.003):
     if not np.isfinite(lift_speed_fraction) or not 0 < lift_speed_fraction <= 1:
         raise ValueError('Lift speed fraction must be in (0, 1]')
     if lift_rise_heights is not None and (not np.isfinite(lift_rise_heights) or lift_rise_heights < 1):
         raise ValueError('Diagnostic lift travel must be at least one piece height')
+    if not np.isfinite([lift_hold_s,max_lift_slip_m]).all() or not 0<=lift_hold_s<=10 or not 0<=max_lift_slip_m<=.01:
+        raise ValueError('Lift hold must be 0..10 s with a slip threshold 0..10 mm')
     sim = scene.sim
     control = AutonomousControl(scene)
     source = np.asarray(plan['source_xy_m'])
@@ -149,6 +156,7 @@ def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisio
     report['lift_speed_fraction'] = lift_speed_fraction
     report['target_finger_clearance_m'] = target_finger_clearance_m
     report['lift_rise_heights'] = lift_rise_heights
+    report['lift_hold_s'],report['max_lift_slip_m']=lift_hold_s,max_lift_slip_m
     started = time.perf_counter()
     body = sim.model.body(scene.config['piece']).id
     initial_z = float(sim.data.xpos[body, 2])  # Independent evaluation, never a target.
@@ -197,6 +205,7 @@ def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisio
                    ('CLOSE', np.array([*source, pick_z, wrist, grasp]), 'GRASPING'),
                    ('LIFT', np.array([*source, lift_z, wrist, grasp]), 'LIFTING')]
         for name, target, phase in targets:
+            if sim.step_observer is not None:sim.step_observer.phase=name
             screen = supervisor.screen_target(target[:3], target[4], target[3])
             stage = dict(name=name, target=target.tolist(), screen=screen)
             report['stages'].append(stage)
@@ -224,6 +233,7 @@ def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisio
                     return finish()
             Image.fromarray(scene.render()).save(output/f'camera-local-{name.lower()}.png')
             if name == 'CLOSE':
+                if sim.step_observer is not None:sim.step_observer.phase='HOLD_CLOSE'
                 report['initial_bilateral_contact'] = bool(supervisor.feedback.grip_contacts(scene.config['piece']))
                 report['grasp_hold'] = hold_grasp(supervisor, scene.config['piece'], scene.dwell, record)
                 report['grasp_success'] = report['grasp_hold']['confirmed']
@@ -234,6 +244,24 @@ def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisio
         report['lift_success'] = bool(report['grasp_success'] and report['measured_lift_m'] >= scene.piece_height
             and supervisor.feedback.grip_contacts(scene.config['piece'])
             and supervisor.feedback.settled(scene.config['piece']))
+        if report['lift_success'] and lift_hold_s>0:
+            if sim.step_observer is not None:sim.step_observer.phase='LIFT_HOLD'
+            hold_start=float(sim.data.time);peak_z=float(sim.data.xpos[body,2]);samples=[]
+            report['lift_hold']=dict(confirmed=False,samples=samples)
+            while float(sim.data.time)-hold_start<lift_hold_s:
+                result=supervisor.qualification_step([0.]*5,phase='LIFTING')
+                record('LIFT_HOLD',[0.]*5,result)
+                height=float(sim.data.xpos[body,2]);peak_z=max(peak_z,height)
+                sample=dict(elapsed_sim_s=float(sim.data.time)-hold_start,rise_m=height-initial_z,
+                    vertical_slip_m=peak_z-height,bilateral_contact=bool(supervisor.feedback.grip_contacts(scene.config['piece'])),
+                    settled=bool(supervisor.feedback.settled(scene.config['piece'])))
+                samples.append(sample)
+                if (result['status']!='EXECUTED_SIMULATION'
+                        or not lifted_hold_valid(sample,scene.piece_height,max_lift_slip_m)):
+                    report['lift_hold']['failure']=result
+                    report['lift_success']=False;report['status']='LIFT_HOLD_NOT_CONFIRMED'
+                    return finish()
+            report['lift_hold']['confirmed']=True
         report['status'] = 'SIMULATED_LIFT_DIAGNOSTIC' if report['lift_success'] else 'LIFT_NOT_CONFIRMED'
         report['feedback_source'] = 'simulation evaluation only; camera-only outcome verifier still unqualified'
         report['decisions'] = supervisor.decisions

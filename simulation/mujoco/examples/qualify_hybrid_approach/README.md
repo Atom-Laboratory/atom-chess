@@ -219,6 +219,26 @@ See [S049](../../../docs/adrs/S049-selected-finger-near-contact-clearance.md).
 
 ## Controlled contact-solver comparison
 
+Add `--lift-hold-s 1 --record-physics` to verify one simulated second of lifted
+holding and record every actual physics transition. The unchanged target is
+guarded by the supervisor; bilateral contact, minimum rise and settled feedback
+must persist, with no more than 3 mm vertical drop from the interval's peak.
+Inspect `lift_hold.samples`; successful movement alone does not qualify holding.
+The default hold duration zero preserves historical short-lift semantics.
+
+`physics-transitions.npz` stores privileged complete before/after integration
+states and stage labels; its JSON sidecar contains model hash, dimensions and
+SHA-256. It is saved before the completed Watch wait and on failures where
+possible. The recorder caps at 100,000 physics transitions. These arrays are
+for replay/evaluation, never actor inputs or target coordinates. They add host
+overhead and are excluded from physics throughput comparisons. Verify with:
+
+```powershell
+& $py -B -m pytest simulation/mujoco/tests/test_physics_recording.py -q
+```
+
+See [S057](../../../docs/adrs/S057-recorded-physics-and-sustained-lift.md).
+
 `prepare_solver.py` copies a verified prepared fixture and changes only its
 friction cone and `impratio` in a fresh bundle. The source files, camera,
 geometry, masses, friction coefficients, actuators and collision masks are

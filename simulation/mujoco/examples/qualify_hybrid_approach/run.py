@@ -34,6 +34,8 @@ def main():
     parser.add_argument('--diagnostic-wrist-rad', type=float)
     parser.add_argument('--target-finger-clearance-m', type=float)
     parser.add_argument('--lift-rise-heights', type=float)
+    parser.add_argument('--lift-hold-s',type=float,default=0.)
+    parser.add_argument('--record-physics',action='store_true')
     args = parser.parse_args()
     if args.local_diagnostic and args.plan_only:
         parser.error('--local-diagnostic requires actual approach execution')
@@ -52,6 +54,10 @@ def main():
     if args.lift_rise_heights is not None and (not args.local_diagnostic
             or not np.isfinite(args.lift_rise_heights) or args.lift_rise_heights < 1):
         parser.error('--lift-rise-heights requires local diagnostic and travel of at least one piece height')
+    if not np.isfinite(args.lift_hold_s) or not 0<=args.lift_hold_s<=10:
+        parser.error('--lift-hold-s must be in [0, 10]')
+    if args.lift_hold_s>0 and not args.local_diagnostic:
+        parser.error('--lift-hold-s requires --local-diagnostic')
     output = args.output or new_run('examples/qualify_hybrid_approach/runs')
     output.mkdir(parents=True, exist_ok=False)
     sources = [*sorted(Path(__file__).resolve().parent.glob('*.py')),
@@ -68,6 +74,7 @@ def main():
         head_edge_fraction=args.head_edge_fraction, diagnostic_wrist_rad=args.diagnostic_wrist_rad,
         target_finger_clearance_m=args.target_finger_clearance_m,
         lift_rise_heights=args.lift_rise_heights,
+        lift_hold_s=args.lift_hold_s,record_physics=args.record_physics,
         source_sha256={str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in sources},
         libraries={key: dict(path=configuration[key], sha256=hashlib.sha256(
             Path(configuration[key]).read_bytes()).hexdigest()) for key in ('motion_library', 'vision_library')})
@@ -78,9 +85,13 @@ def main():
                                           for g in range(scene.sim.model.ngeom)),
         gravity_m_s2=scene.sim.model.opt.gravity.tolist())
     (output/'provenance.json').write_text(json.dumps(provenance, indent=2), encoding='utf-8')
-    handle = None
+    handle = recording = None
     try:
         scene.reset(seed=args.seed)
+        if args.record_physics:
+            from atom_mujoco.physics_recording import PhysicsRecording
+            scene.sim.step_observer=recording=PhysicsRecording(scene.sim)
+            recording.phase='NATIVE_APPROACH'
         from PIL import Image
         Image.fromarray(scene.render()).save(output/'camera-initial.png')
         if not args.headless:
@@ -138,7 +149,7 @@ def main():
                                              head_edge_fraction=args.head_edge_fraction,
                                              diagnostic_wrist_rad=args.diagnostic_wrist_rad,
                                              target_finger_clearance_m=args.target_finger_clearance_m,
-                                             lift_rise_heights=args.lift_rise_heights)
+                                             lift_rise_heights=args.lift_rise_heights,lift_hold_s=args.lift_hold_s)
             (output/'local-report.json').write_text(json.dumps(diagnostic, indent=2), encoding='utf-8')
             print(f'[ATOM M4] {diagnostic["status"]} | {output / "local-report.json"}', flush=True)
             final_status = diagnostic['status']
@@ -148,6 +159,8 @@ def main():
             ctrl=scene.sim.data.ctrl.tolist(), time_s=float(scene.sim.data.time),
             source='privileged diagnostic snapshot; excluded from actor')), encoding='utf-8')
         print(json.dumps({key: value for key, value in result.items() if key != 'segments'}), flush=True)
+        if recording is not None:
+            recording.save(output/'physics-transitions.npz');scene.sim.step_observer=None;recording=None
         observe(final_status)
         if handle is not None:
             print('[ATOM M2] Report saved. Close MuJoCo to exit.', flush=True)
@@ -159,6 +172,8 @@ def main():
             physical_state_requires_review=True), indent=2), encoding='utf-8')
         raise
     finally:
+        if recording is not None:
+            recording.save(output/'physics-transitions.npz');scene.sim.step_observer=None
         if handle is not None:
             handle.close()
         scene.close()
