@@ -1,0 +1,378 @@
+{
+  "schema": 1,
+  "seed": 970201,
+  "first_attempt": {
+    "reference": "simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\canonical-reference-970201-1f3d48af9feb494ea45f54ee4605e2cb",
+    "status": "BASELINE_EXECUTION_REJECTED_OR_FAILED",
+    "failure": "PERCEPTION_EXPIRED_DURING_EXECUTION",
+    "lift_success": false
+  },
+  "retry": {
+    "reference": "simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\canonical-reference-970201-headless-ad248b4d06c54f79a2147914ba221661",
+    "status": "SIMULATED_LIFT_DIAGNOSTIC",
+    "lift_success": true,
+    "lift_hold": {
+      "confirmed": true,
+      "samples": [
+        {
+          "elapsed_sim_s": 0.019999999999988916,
+          "rise_m": 0.04485758063188226,
+          "vertical_slip_m": 0.0,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.03999999999997783,
+          "rise_m": 0.04490586635859933,
+          "vertical_slip_m": 0.0,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.05999999999996675,
+          "rise_m": 0.044935010064973996,
+          "vertical_slip_m": 0.0,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.07999999999995566,
+          "rise_m": 0.04495114458909201,
+          "vertical_slip_m": 0.0,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.09999999999994458,
+          "rise_m": 0.04495884885711823,
+          "vertical_slip_m": 0.0,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.1199999999999335,
+          "rise_m": 0.04496122282909351,
+          "vertical_slip_m": 0.0,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.1399999999999224,
+          "rise_m": 0.04496027149605611,
+          "vertical_slip_m": 9.513330374022466E-07,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.15999999999991132,
+          "rise_m": 0.04495726127113257,
+          "vertical_slip_m": 3.961557960938111E-06,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.17999999999990024,
+          "rise_m": 0.04495298175285145,
+          "vertical_slip_m": 8.241076242060386E-06,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.19999999999988916,
+          "rise_m": 0.04494792166864896,
+          "vertical_slip_m": 1.3301160444553761E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.21999999999987807,
+          "rise_m": 0.04494238225927355,
+          "vertical_slip_m": 1.8840569819961184E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.239999999999867,
+          "rise_m": 0.04493654875592368,
+          "vertical_slip_m": 2.467407316983361E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.2599999999998559,
+          "rise_m": 0.044930534897070634,
+          "vertical_slip_m": 3.068793202287701E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.2799999999998448,
+          "rise_m": 0.04492441046534365,
+          "vertical_slip_m": 3.6812363749860744E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.29999999999983373,
+          "rise_m": 0.04491821825458912,
+          "vertical_slip_m": 4.300457450438777E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.31999999999982265,
+          "rise_m": 0.04491198450065738,
+          "vertical_slip_m": 4.923832843613252E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.33999999999981156,
+          "rise_m": 0.04490572528550195,
+          "vertical_slip_m": 5.5497543591562226E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.3599999999998005,
+          "rise_m": 0.0448994504660485,
+          "vertical_slip_m": 6.177236304501232E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.3799999999997894,
+          "rise_m": 0.044893166083455435,
+          "vertical_slip_m": 6.805674563807596E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.3999999999997783,
+          "rise_m": 0.044886875840136634,
+          "vertical_slip_m": 7.434698895687764E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.4199999999997672,
+          "rise_m": 0.04488058200512897,
+          "vertical_slip_m": 8.064082396454231E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.43999999999975614,
+          "rise_m": 0.04487428596900399,
+          "vertical_slip_m": 8.693686008952317E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.45999999999974506,
+          "rise_m": 0.044867988583963306,
+          "vertical_slip_m": 9.32342451302054E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.479999999999734,
+          "rise_m": 0.044861690372270474,
+          "vertical_slip_m": 9.953245682303713E-05,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.4999999999997229,
+          "rise_m": 0.04485539165398897,
+          "vertical_slip_m": 0.00010583117510454265,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.5199999999997118,
+          "rise_m": 0.0448490926252659,
+          "vertical_slip_m": 0.00011213020382760952,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.5399999999997007,
+          "rise_m": 0.04484279340630762,
+          "vertical_slip_m": 0.00011842942278589286,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.5599999999996896,
+          "rise_m": 0.04483649407078108,
+          "vertical_slip_m": 0.00012472875831243124,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.5799999999996786,
+          "rise_m": 0.04483019466383209,
+          "vertical_slip_m": 0.00013102816526142091,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.5999999999996675,
+          "rise_m": 0.04482389521189824,
+          "vertical_slip_m": 0.00013732761719527364,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.6199999999996564,
+          "rise_m": 0.04481759573309997,
+          "vertical_slip_m": 0.00014362709599353984,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.6399999999996453,
+          "rise_m": 0.044811296237812145,
+          "vertical_slip_m": 0.00014992659128136576,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.6599999999996342,
+          "rise_m": 0.0448049967326339,
+          "vertical_slip_m": 0.0001562260964596135,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.6799999999996231,
+          "rise_m": 0.044798697220541986,
+          "vertical_slip_m": 0.0001625256085515253,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.699999999999612,
+          "rise_m": 0.044792397704972134,
+          "vertical_slip_m": 0.0001688251241213773,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.719999999999601,
+          "rise_m": 0.044786098187143616,
+          "vertical_slip_m": 0.00017512464194989474,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.7399999999995899,
+          "rise_m": 0.04477979866782694,
+          "vertical_slip_m": 0.00018142416126656902,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.7599999999995788,
+          "rise_m": 0.044773499148298285,
+          "vertical_slip_m": 0.0001877236807952265,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.7799999999995677,
+          "rise_m": 0.04476719962727849,
+          "vertical_slip_m": 0.00019402320181502453,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.7999999999995566,
+          "rise_m": 0.0447609001062846,
+          "vertical_slip_m": 0.00020032272280891272,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.8199999999995455,
+          "rise_m": 0.04475460058514369,
+          "vertical_slip_m": 0.0002066222439498222,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.8399999999995345,
+          "rise_m": 0.04474830106459017,
+          "vertical_slip_m": 0.00021292176450334044,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.8599999999995234,
+          "rise_m": 0.04474200154339386,
+          "vertical_slip_m": 0.00021922128569965005,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.8799999999995123,
+          "rise_m": 0.04473570202200189,
+          "vertical_slip_m": 0.0002255208070916226,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.8999999999995012,
+          "rise_m": 0.044729402500761226,
+          "vertical_slip_m": 0.0002318203283322856,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.9199999999994901,
+          "rise_m": 0.044723102979486964,
+          "vertical_slip_m": 0.00023811984960654675,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.939999999999479,
+          "rise_m": 0.04471680345891792,
+          "vertical_slip_m": 0.00024441937017559423,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.959999999999468,
+          "rise_m": 0.04471050393741306,
+          "vertical_slip_m": 0.0002507188916804487,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.9799999999994569,
+          "rise_m": 0.04470420441627296,
+          "vertical_slip_m": 0.00025701841282055327,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 0.9999999999994458,
+          "rise_m": 0.04469790489519129,
+          "vertical_slip_m": 0.00026331793390221847,
+          "bilateral_contact": true,
+          "settled": true
+        },
+        {
+          "elapsed_sim_s": 1.0199999999994347,
+          "rise_m": 0.04469160537480921,
+          "vertical_slip_m": 0.0002696174542843044,
+          "bilateral_contact": true,
+          "settled": true
+        }
+      ]
+    }
+  },
+  "scope": "Same-seed retry; not two independent seeds. First attempt failure remains in end-to-end evidence."
+}

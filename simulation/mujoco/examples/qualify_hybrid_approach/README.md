@@ -6,6 +6,18 @@ and IK. The opt-in M4 local diagnostic additionally attempts guarded descent,
 closure and lift. It does **not** train or invoke an RL policy, qualify an entire
 contact manipulation workspace, or qualify carried-object transport.
 
+The low-level controller now computes static gravity feedforward from the
+validated issued command on a scratch model state. It no longer reads live
+`qfrc_bias` to construct commands. Simulator joint/contact feedback remains
+privileged safety/verification data; static masses and servo mapping remain
+experimental. Trials predating [S055](../../../docs/adrs/S055-command-derived-gravity-feedforward.md)
+used the historical controller and retain that provenance.
+
+Static grasp geometry/preload is shared through `atom_mujoco.grasp_geometry`;
+it does not import camera rendering or Pillow. The visual example and headless
+candidate search use the same unchanged equations. See
+[S059](../../../docs/adrs/S059-shared-model-grasp-geometry.md).
+
 ## Prerequisites and Windows commands
 
 Run PowerShell from the repository root, not your Windows home directory.
@@ -211,6 +223,26 @@ diagnostic does not qualify the original 1 mm experiment or a hardware margin.
 See [S049](../../../docs/adrs/S049-selected-finger-near-contact-clearance.md).
 
 ## Controlled contact-solver comparison
+
+Add `--lift-hold-s 1 --record-physics` to verify one simulated second of lifted
+holding and record every actual physics transition. The unchanged target is
+guarded by the supervisor; bilateral contact, minimum rise and settled feedback
+must persist, with no more than 3 mm vertical drop from the interval's peak.
+Inspect `lift_hold.samples`; successful movement alone does not qualify holding.
+The default hold duration zero preserves historical short-lift semantics.
+
+`physics-transitions.npz` stores privileged complete before/after integration
+states and stage labels; its JSON sidecar contains model hash, dimensions and
+SHA-256. It is saved before the completed Watch wait and on failures where
+possible. The recorder caps at 100,000 physics transitions. These arrays are
+for replay/evaluation, never actor inputs or target coordinates. They add host
+overhead and are excluded from physics throughput comparisons. Verify with:
+
+```powershell
+& $py -B -m pytest simulation/mujoco/tests/test_physics_recording.py -q
+```
+
+See [S057](../../../docs/adrs/S057-recorded-physics-and-sustained-lift.md).
 
 `prepare_solver.py` copies a verified prepared fixture and changes only its
 friction cone and `impratio` in a fresh bundle. The source files, camera,

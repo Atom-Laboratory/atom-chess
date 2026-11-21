@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "experiment": "EXP-0006",
+  "status": "FROZEN_CANDIDATE_EVALUATION_PASSED",
+  "scope": "frozen parameters, new camera-localized isolated entry; no optimization or learned policy",
+  "winner_sha256": "fb27abf78e5c01e037016c5dd2dcd130d52c2c2058cd930595a7c82666f8441c",
+  "parameters": [
+    3.1340608053876595,
+    0.1424853982558736,
+    0.3524658923520227
+  ],
+  "reference_sha256": "9153ba4dfd45cf7a6885545d94904632b3af0cd73c553a0879c9cbb124fb622c",
+  "recording_sha256": "130aa8f18cf5de339089bfcdf4918ebc5547e08834a495f9c14434eab5ab2a73",
+  "geometry": {
+    "duration_s": 14.624,
+    "source_xy_m": [
+      0.26355,
+      -0.08715
+    ],
+    "target_source": "camera-derived reference diagnostic",
+    "native_ik": true,
+    "geometry": {
+      "part": "head",
+      "geom": "white_pawn_e2_head",
+      "radius_m": 0.008,
+      "head_edge_fraction": null,
+      "effective_radius_m": 0.008,
+      "pad_center_height_offset_m": 0.0,
+      "tcp_z_m": 0.042,
+      "aperture_m": -0.010047780000000008,
+      "closing_target_m": -0.014755843138936285,
+      "closing_interference_m": 0.0017080631389362747,
+      "model_load_estimate": {
+        "factor": 3.1340608053876595,
+        "weight_N": 0.1962,
+        "friction_lower_bound": 1.2,
+        "finger_gain_N_per_m": 150.0,
+        "estimated_normal_load_N": 0.2562094708404412,
+        "vertical_capacity_per_normal_N": 1.2,
+        "estimated_horizontal_load_N": 0.2562094708404412
+      },
+      "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+    },
+    "sweep_samples": 512,
+    "selected_finger_margin_m": 0.0
+  },
+  "outcomes": {
+    "gpu": {
+      "world": 0,
+      "hold_duration_sim_s": 1.0,
+      "maximum_rise_m": 0.0445700642147948,
+      "minimum_held_rise_m": 0.04416274842414157,
+      "maximum_hold_slip_m": 0.0003103204071521759,
+      "bilateral_hold": true,
+      "maximum_hold_linear_speed_m_s": 0.00031091642449609935,
+      "maximum_hold_angular_speed_rad_s": 3.7801066355314106e-05,
+      "maximum_upright_angle_rad": 0.0018593198619782925,
+      "forbidden_contact": false,
+      "success": true
+    },
+    "cpu": {
+      "world": 0,
+      "hold_duration_sim_s": 1.0,
+      "maximum_rise_m": 0.0445700212698629,
+      "minimum_held_rise_m": 0.044161936478079936,
+      "maximum_hold_slip_m": 0.00031108669351859186,
+      "bilateral_hold": true,
+      "maximum_hold_linear_speed_m_s": 0.0003119486813934593,
+      "maximum_hold_angular_speed_rad_s": 2.083972253133176e-05,
+      "maximum_upright_angle_rad": 0.0018940269497888585,
+      "forbidden_contact": false,
+      "success": true
+    }
+  },
+  "health": {
+    "overflow": [
+      0
+    ],
+    "nacon": 2,
+    "nefc": [
+      9
+    ],
+    "naconmax": 128,
+    "njmax": 512,
+    "warp_pool_bytes": 16233907
+  },
+  "cumulative_flags": [
+    0
+  ],
+  "target_xy_source": "signed new camera reference; not transferred simulator object coordinates",
+  "process_wall_s": 13.008680800005095,
+  "request_sha256": "cbf4045e7ccee0647a8895b757abbe34b0b55163e15de5ae9284d13b53f8a462"
+}

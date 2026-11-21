@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "transitions": 11030,
+  "signature": 16383,
+  "state_width": 123,
+  "model_sha256": "a88b0cdb6c2ac529d443f2bc695d4b94cf8306c2debd81838d06eda6f0790da7",
+  "mujoco_version": "3.17.0",
+  "numeric_dtype": "float64",
+  "sha256": "40056f5e570ade042bc6851adec69d9e665f931b21f5b1b1191a2c9c15d88007",
+  "source": "privileged evaluation/replay only; excluded from policy observations and targets",
+  "unfinished_transition": false,
+  "max_transitions": 100000
+}

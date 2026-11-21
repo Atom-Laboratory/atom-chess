@@ -1,0 +1,275 @@
+{
+  "schema": 1,
+  "status": "BASELINE_EXECUTION_REJECTED_OR_FAILED",
+  "owner": "DETERMINISTIC_QUALIFICATION",
+  "training_eligible": false,
+  "local_manipulation_workspace_qualified": false,
+  "visual_grasp_verified": false,
+  "grasp_success": false,
+  "lift_success": false,
+  "stages": [
+    {
+      "name": "DESCEND",
+      "target": [
+        0.26355,
+        -0.08715,
+        0.042,
+        1.2566370614359172,
+        -0.010047780000000008
+      ],
+      "screen": {
+        "status": "PATH_SCREENED",
+        "category": "ACCEPTED",
+        "detail": {
+          "status": "ACCEPTED",
+          "samples": 91,
+          "command_scale": 1.0,
+          "joint_target": [
+            0.26192056284771076,
+            0.025,
+            -1.081107029072788,
+            -0.010047780000000006,
+            -0.010047780000000006,
+            1.2566370614359172
+          ],
+          "scope": "nominal joint-linear sweep with simulated scene and rigid held-object approximation"
+        },
+        "motion_applied": false,
+        "execution_authorized": false,
+        "scope": "diagnostic only; no timing approval"
+      },
+      "failure": {
+        "status": "STOPPED",
+        "category": "PERCEPTION_EXPIRED_DURING_EXECUTION",
+        "detail": {
+          "category": "PERCEPTION_EXPIRED_DURING_EXECUTION"
+        },
+        "reconciliation_required": true,
+        "motion_applied": true,
+        "training_eligible": false,
+        "trace": [
+          {
+            "time_s": 11.400000000000476,
+            "position": [
+              0.26192056284771154,
+              0.02500000000000003,
+              -1.081107029072791,
+              -0.009658221739163829,
+              -0.009658221739163827,
+              1.2566370614359204
+            ],
+            "command": [
+              0.26192056284771076,
+              0.025,
+              -1.081107029072788,
+              -0.009733333333333294,
+              -0.009733333333333294,
+              1.2566370614359172
+            ],
+            "actuator_force": [
+              0.0,
+              3.3354,
+              0.0,
+              -0.0021069890597773533,
+              -0.0021069890597782415,
+              -4.973799150320701e-14
+            ],
+            "tcp_m": [
+              0.2635499999999996,
+              -0.08714999999999982,
+              0.04200000000000005
+            ]
+          },
+          {
+            "time_s": 11.402000000000477,
+            "position": [
+              0.26192056284771154,
+              0.02500000000000003,
+              -1.081107029072791,
+              -0.009661747247104176,
+              -0.009661747247104174,
+              1.2566370614359204
+            ],
+            "command": [
+              0.26192056284771076,
+              0.025,
+              -1.081107029072788,
+              -0.009733333333333294,
+              -0.009733333333333294,
+              1.2566370614359172
+            ],
+            "actuator_force": [
+              0.0,
+              3.3354000000000017,
+              0.0,
+              -0.0019241430834990858,
+              -0.0019241430834988638,
+              -5.684341886080802e-14
+            ],
+            "tcp_m": [
+              0.2635499999999996,
+              -0.08714999999999982,
+              0.04200000000000005
+            ]
+          }
+        ],
+        "camera_captures": 148,
+        "camera_reuses": 147
+      }
+    }
+  ],
+  "limits": {
+    "command_lower": [
+      -2.0,
+      -0.1,
+      -2.0,
+      -0.021,
+      -0.021,
+      0.0
+    ],
+    "command_upper": [
+      2.0,
+      0.2,
+      4.0,
+      0.0,
+      0.0,
+      6.283185307179586
+    ],
+    "local_lower": [
+      0.2280833333333334,
+      -0.10465,
+      0.0319396316161535,
+      0.0,
+      -0.021
+    ],
+    "local_upper": [
+      0.28105,
+      -0.06965,
+      0.10793963161615348,
+      6.283185307179586,
+      0.0
+    ],
+    "rates": [
+      0.023333333333333334,
+      0.023333333333333334,
+      0.023333333333333334,
+      0.41887902047863906,
+      0.0033333333333333335
+    ],
+    "control_dt_s": 0.02,
+    "workspace_evidence_id": "unqualified-diagnostic:92151014ba0cdfa9f433ab867d02bb015078611fe5ab2a43a6d8336e23c00d74"
+  },
+  "max_decisions": 2000,
+  "geometry_source": "existing experimental colliders",
+  "lift_speed_fraction": 0.25,
+  "target_finger_clearance_m": 0.0,
+  "lift_rise_heights": 1.5,
+  "lift_hold_s": 1.0,
+  "max_lift_slip_m": 0.003,
+  "probe": {
+    "status": "EXECUTED_SIMULATION",
+    "category": "LOCAL_ACTION_SETTLED",
+    "owner": "DETERMINISTIC_QUALIFICATION",
+    "phase": "GRASPING",
+    "validation": {
+      "status": "ACCEPTED",
+      "samples": 1,
+      "command_scale": 1.0,
+      "joint_target": [
+        0.25417302751311766,
+        0.058822964949486814,
+        -1.3194028103777815,
+        0.0,
+        0.0,
+        1.2566370614359172
+      ],
+      "scope": "nominal joint-linear sweep with simulated scene and rigid held-object approximation"
+    },
+    "trace": [
+      {
+        "time_s": 5.599999999999605,
+        "position": [
+          0.254165629333487,
+          0.058919725884906904,
+          -1.3194035419166794,
+          2.0248831316401217e-08,
+          -2.2486897238458064e-08,
+          1.256637104674736
+        ],
+        "command": [
+          0.25417302751311766,
+          0.058822964949486814,
+          -1.3194028103777815,
+          0.0,
+          0.0,
+          1.2566370614359172
+        ],
+        "actuator_force": [
+          -0.00015705795620135632,
+          3.3294464843367315,
+          -1.850060073138593e-05,
+          -1.3227600826908993e-06,
+          1.3746286136212295e-06,
+          -9.018744719924143e-07
+        ],
+        "tcp_m": [
+          0.22854925102279844,
+          -0.08715137708738077,
+          0.07591972588490692
+        ]
+      }
+    ],
+    "motion_applied": true,
+    "requested_duration_s": 0.02,
+    "elapsed_sim_s": 0.019999999999997797,
+    "settling_intervals": 0,
+    "transformation": "none",
+    "training_eligible": false,
+    "camera_captures": 1,
+    "camera_reuses": 1,
+    "finger_tracking_error_m": [
+      2.0248831316401217e-08,
+      -2.2486897238458064e-08
+    ],
+    "settling_mode": "position",
+    "simulation_diagnostics": {
+      "pad_contacts": [
+        false,
+        false
+      ],
+      "neighbor_displacement_mm": {},
+      "source": "privileged safety/evaluation; excluded from actor"
+    }
+  },
+  "grasp_geometry": {
+    "part": "head",
+    "geom": "white_pawn_e2_head",
+    "radius_m": 0.008,
+    "head_edge_fraction": null,
+    "effective_radius_m": 0.008,
+    "pad_center_height_offset_m": 0.0,
+    "tcp_z_m": 0.042,
+    "aperture_m": -0.010047780000000008,
+    "closing_target_m": -0.01441028000000001,
+    "closing_interference_m": 0.0013625000000000002,
+    "model_load_estimate": {
+      "factor": 2.5,
+      "weight_N": 0.1962,
+      "friction_lower_bound": 1.2,
+      "finger_gain_N_per_m": 150.0,
+      "estimated_normal_load_N": 0.20437500000000003,
+      "vertical_capacity_per_normal_N": 1.2,
+      "estimated_horizontal_load_N": 0.20437500000000003
+    },
+    "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+  },
+  "decisions": 147,
+  "elapsed_wall_s": 21.04611140000634,
+  "camera_captures": 148,
+  "camera_reuses": 147,
+  "measured_lift_m": -5.124407494172534e-08,
+  "final_pad_contacts": [
+    false,
+    false
+  ]
+}

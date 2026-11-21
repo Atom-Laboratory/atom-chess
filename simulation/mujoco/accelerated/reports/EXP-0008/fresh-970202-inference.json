@@ -1,0 +1,45 @@
+{
+  "checkpoint_sha256": "f56f6e2d0c0e36539cc78748393b8e5d39b6578692b5fbe13ef668ff01ee9428",
+  "context_source": "signed native-camera source XY + issued actuator command history + logical task",
+  "excluded_actor_fields": [
+    "actual qpos",
+    "qvel",
+    "object pose",
+    "contacts",
+    "reward",
+    "outcome"
+  ],
+  "context": [
+    {
+      "source_xy_m": [
+        0.26355,
+        -0.08785000000000001
+      ],
+      "issued_command": [
+        0.2586931951032211,
+        0.0316708,
+        -1.0791476280024859,
+        -0.010097780000000006,
+        -0.010097780000000006,
+        1.2566370614359172
+      ],
+      "squares": [
+        0.5714285714285714,
+        0.14285714285714285,
+        0.5714285714285714,
+        0.42857142857142855
+      ]
+    }
+  ],
+  "reference_sha256": [
+    "7c28b98c97d638bf9e43a6430acf3f45f553e0c7b976417e0dceed5052974ad7"
+  ],
+  "parameters": [
+    [
+      2.939033269882202,
+      0.23826700448989868,
+      0.3166656792163849
+    ]
+  ],
+  "source_sha256": "556147ecb3db1671cbc1427c2c68749314b50ad388f03f074aaed99e6d147b96"
+}

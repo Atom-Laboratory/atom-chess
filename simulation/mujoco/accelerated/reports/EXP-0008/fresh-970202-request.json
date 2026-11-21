@@ -1,0 +1,36 @@
+{
+  "kind": "frozen-policy-independent-evaluation",
+  "references": 1,
+  "experiment": "EXP-0008",
+  "source_commit": "d4738b4a6018c174a202eafa3ee9216e82ccb22d",
+  "worker_arguments": [
+    "--config",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\solver-comparison-daeb5509116a43e5a1f770f39e44367d\\elliptic10\\environment.json",
+    "--checkpoint",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0008\\RUN-shared-parameter-resume-2644d927be2b4f83936aee61708f8862\\policy.pt",
+    "--references",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\canonical-reference-970202-efbc93c959ff41d2b7a4659920b3307f",
+    "--gpu-python",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\.venv\\Scripts\\python.exe",
+    "--max-gpu-mib",
+    "2048",
+    "--max-wall-s",
+    "150.0"
+  ],
+  "max_wall_s": 180.0,
+  "python_executable": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\.venv\\Scripts\\python.exe",
+  "source_sha256": {
+    "batch.py": "e437c12e081f5615bf23ac44e13a047462086aee26badcc5c3c87c732f5a38a9",
+    "cem.py": "2ac6356b8c03faa1fd86590473dcdf707f270ef2f4563366fc43648c15969864",
+    "cem_core.py": "071e0e403f65d5bc742adfd2444131846a89aa5408e7ee66ebf4f29caf98cfe1",
+    "cuda_rollout.py": "a6d4c3c771de8b2f525637aa682400f6b3d635bc5160df1a63d4086a23e26660",
+    "demonstrations.py": "1b0cf7a8c9084ffdc0a6bbda08af6bde593e00a26fd6d74fc543664fdc65a791",
+    "evaluate_parameters.py": "d61173589bf0fab8bb7d991fc483fe5b55f87b64abe2def17ba0d554e3dd4f51",
+    "evaluate_policy.py": "556147ecb3db1671cbc1427c2c68749314b50ad388f03f074aaed99e6d147b96",
+    "experiment.py": "7734ea08d4b01a344f23a97838bd00514e9666b7ef323a4bf252a018812b0c25",
+    "outcomes.py": "5b6f0d85d1e6193b0b406ddc0eba51bdfb2920a2dc6fc9e0c633a9ab470953fb",
+    "parameter_policy.py": "1222b1762a971bee68b6dd22900bf27b62b4099c90d13473bbb4e079d40b25a9",
+    "replay.py": "4a8860dab4c9941999335c2b904b945e6c8cd57c0bf54ccc13be5b11547e63c3",
+    "tapes.py": "7581b80c4b70ab33495e9170301dc29da618deb209e8f6393a3c3cd34b4f80d7"
+  }
+}

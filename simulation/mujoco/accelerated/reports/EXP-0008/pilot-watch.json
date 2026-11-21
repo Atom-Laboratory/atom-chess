@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "experiment": "EXP-0007",
+  "status": "WATCH_REPLAY_EXITED",
+  "scope": "bounded CPU physics replay, not live optimization or RL",
+  "demonstration": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0008\\RUN-shared-parameter-pilot-997924736f9a4b7b89f699d265629d24\\policy-demonstration",
+  "demonstration_report_sha256": "d60d80d41b4c0530b2e447b53d876ff9d722a544a93419b650db879168a1e535",
+  "repeats_requested": 2,
+  "speed": 1.0,
+  "user_may_close_early": true,
+  "completed_repeats": 2,
+  "interrupted": false,
+  "process_wall_s": 34.54804860000149,
+  "request_sha256": "2cf3741c92af5f97a98a859861dbb709fc85b36f272a2ab872530d866d620e6b"
+}

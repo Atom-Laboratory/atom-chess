@@ -1,0 +1,679 @@
+{
+  "schema": 1,
+  "status": "SIMULATED_LIFT_DIAGNOSTIC",
+  "owner": "DETERMINISTIC_QUALIFICATION",
+  "training_eligible": false,
+  "local_manipulation_workspace_qualified": false,
+  "visual_grasp_verified": false,
+  "grasp_success": true,
+  "lift_success": true,
+  "stages": [
+    {
+      "name": "DESCEND",
+      "target": [
+        0.2625,
+        -0.08820000000000001,
+        0.042,
+        1.2566370614359172,
+        -0.010047780000000008
+      ],
+      "screen": {
+        "status": "PATH_SCREENED",
+        "category": "ACCEPTED",
+        "detail": {
+          "status": "ACCEPTED",
+          "samples": 91,
+          "command_scale": 1.0,
+          "joint_target": [
+            0.2574247401398159,
+            0.025,
+            -1.0856561878393396,
+            -0.010047780000000006,
+            -0.010047780000000006,
+            1.2566370614359172
+          ],
+          "scope": "nominal joint-linear sweep with simulated scene and rigid held-object approximation"
+        },
+        "motion_applied": false,
+        "execution_authorized": false,
+        "scope": "diagnostic only; no timing approval"
+      }
+    },
+    {
+      "name": "CLOSE",
+      "target": [
+        0.2625,
+        -0.08820000000000001,
+        0.042,
+        1.2566370614359172,
+        -0.01441028000000001
+      ],
+      "screen": {
+        "status": "PATH_SCREENED",
+        "category": "ACCEPTED",
+        "detail": {
+          "status": "ACCEPTED",
+          "samples": 1,
+          "command_scale": 1.0,
+          "joint_target": [
+            0.2574247401398159,
+            0.025,
+            -1.0856561878393396,
+            -0.014410280000000011,
+            -0.014410280000000011,
+            1.2566370614359172
+          ],
+          "scope": "nominal joint-linear sweep with simulated scene and rigid held-object approximation"
+        },
+        "motion_applied": false,
+        "execution_authorized": false,
+        "scope": "diagnostic only; no timing approval"
+      }
+    },
+    {
+      "name": "LIFT",
+      "target": [
+        0.2625,
+        -0.08820000000000001,
+        0.09,
+        1.2566370614359172,
+        -0.01441028000000001
+      ],
+      "screen": {
+        "status": "PATH_SCREENED",
+        "category": "ACCEPTED",
+        "detail": {
+          "status": "ACCEPTED",
+          "samples": 127,
+          "command_scale": 1.0,
+          "joint_target": [
+            0.2574247401398159,
+            0.073,
+            -1.0856561878393396,
+            -0.014410280000000011,
+            -0.014410280000000011,
+            1.2566370614359172
+          ],
+          "scope": "nominal joint-linear sweep with simulated scene and rigid held-object approximation"
+        },
+        "motion_applied": false,
+        "execution_authorized": false,
+        "scope": "diagnostic only; no timing approval"
+      }
+    }
+  ],
+  "limits": {
+    "command_lower": [
+      -2.0,
+      -0.1,
+      -2.0,
+      -0.021,
+      -0.021,
+      0.0
+    ],
+    "command_upper": [
+      2.0,
+      0.2,
+      4.0,
+      0.0,
+      0.0,
+      6.283185307179586
+    ],
+    "local_lower": [
+      0.2270333333333334,
+      -0.10570000000000002,
+      0.0319396316161535,
+      0.0,
+      -0.021
+    ],
+    "local_upper": [
+      0.28,
+      -0.07070000000000001,
+      0.10793963161615347,
+      6.283185307179586,
+      0.0
+    ],
+    "rates": [
+      0.023333333333333334,
+      0.023333333333333334,
+      0.023333333333333334,
+      0.41887902047863906,
+      0.0033333333333333335
+    ],
+    "control_dt_s": 0.02,
+    "workspace_evidence_id": "unqualified-diagnostic:67c26a850958e3ef92bc3837b549ea9bbfdde35da9e7a82271be25631d9586be"
+  },
+  "max_decisions": 2000,
+  "geometry_source": "existing experimental colliders",
+  "lift_speed_fraction": 0.25,
+  "target_finger_clearance_m": 0.0,
+  "lift_rise_heights": 1.5,
+  "lift_hold_s": 1.0,
+  "max_lift_slip_m": 0.003,
+  "probe": {
+    "status": "EXECUTED_SIMULATION",
+    "category": "LOCAL_ACTION_SETTLED",
+    "owner": "DETERMINISTIC_QUALIFICATION",
+    "phase": "GRASPING",
+    "validation": {
+      "status": "ACCEPTED",
+      "samples": 1,
+      "command_scale": 1.0,
+      "joint_target": [
+        0.24810356201807027,
+        0.0588229649494868,
+        -1.3230407697600879,
+        0.0,
+        0.0,
+        1.2566370614359172
+      ],
+      "scope": "nominal joint-linear sweep with simulated scene and rigid held-object approximation"
+    },
+    "trace": [
+      {
+        "time_s": 5.5799999999996075,
+        "position": [
+          0.2480960853219441,
+          0.05891972650178595,
+          -1.3230414960254968,
+          2.04213183098179e-08,
+          -2.2683910943882414e-08,
+          1.2566371050507201
+        ],
+        "command": [
+          0.24810356201807027,
+          0.0588229649494868,
+          -1.3230407697600879,
+          0.0,
+          0.0,
+          1.2566370614359172
+        ],
+        "actuator_force": [
+          -0.00015864121870379222,
+          3.3294466212235,
+          -1.842690380726708e-05,
+          -1.3341737203097797e-06,
+          1.3866106726203425e-06,
+          -9.097496800336557e-07
+        ],
+        "tcp_m": [
+          0.22749923725755322,
+          -0.08820138316605862,
+          0.07591972650178598
+        ]
+      }
+    ],
+    "motion_applied": true,
+    "requested_duration_s": 0.02,
+    "elapsed_sim_s": 0.019999999999997797,
+    "settling_intervals": 0,
+    "transformation": "none",
+    "training_eligible": false,
+    "camera_captures": 1,
+    "camera_reuses": 1,
+    "finger_tracking_error_m": [
+      2.04213183098179e-08,
+      -2.2683910943882414e-08
+    ],
+    "settling_mode": "position",
+    "simulation_diagnostics": {
+      "pad_contacts": [
+        false,
+        false
+      ],
+      "neighbor_displacement_mm": {},
+      "source": "privileged safety/evaluation; excluded from actor"
+    }
+  },
+  "grasp_geometry": {
+    "part": "head",
+    "geom": "white_pawn_e2_head",
+    "radius_m": 0.008,
+    "head_edge_fraction": null,
+    "effective_radius_m": 0.008,
+    "pad_center_height_offset_m": 0.0,
+    "tcp_z_m": 0.042,
+    "aperture_m": -0.010047780000000008,
+    "closing_target_m": -0.01441028000000001,
+    "closing_interference_m": 0.0013625000000000002,
+    "model_load_estimate": {
+      "factor": 2.5,
+      "weight_N": 0.1962,
+      "friction_lower_bound": 1.2,
+      "finger_gain_N_per_m": 150.0,
+      "estimated_normal_load_N": 0.20437500000000003,
+      "vertical_capacity_per_normal_N": 1.2,
+      "estimated_horizontal_load_N": 0.20437500000000003
+    },
+    "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+  },
+  "initial_bilateral_contact": true,
+  "grasp_hold": {
+    "confirmed": true,
+    "samples": [
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 1
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 2
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 3
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 4
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 5
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 6
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 7
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 8
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 9
+      },
+      {
+        "bilateral_contact": true,
+        "settled": true,
+        "consecutive": 10
+      }
+    ],
+    "required_consecutive": 10
+  },
+  "measured_lift_m": 0.04468683004124598,
+  "lift_hold": {
+    "confirmed": true,
+    "samples": [
+      {
+        "elapsed_sim_s": 0.019999999999988916,
+        "rise_m": 0.044852807654560685,
+        "vertical_slip_m": 0.0,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.03999999999997783,
+        "rise_m": 0.04490109333232425,
+        "vertical_slip_m": 0.0,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.05999999999996675,
+        "rise_m": 0.044930236989750925,
+        "vertical_slip_m": 0.0,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.07999999999995566,
+        "rise_m": 0.044946371464937414,
+        "vertical_slip_m": 0.0,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.09999999999994458,
+        "rise_m": 0.044954075684068735,
+        "vertical_slip_m": 0.0,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.1199999999999335,
+        "rise_m": 0.04495644960720293,
+        "vertical_slip_m": 0.0,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.1399999999999224,
+        "rise_m": 0.04495549822539053,
+        "vertical_slip_m": 9.51381812400176e-07,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.15999999999991132,
+        "rise_m": 0.044952487951766144,
+        "vertical_slip_m": 3.96165543678495e-06,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.17999999999990024,
+        "rise_m": 0.044948208384863346,
+        "vertical_slip_m": 8.241222339583354e-06,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.19999999999988916,
+        "rise_m": 0.0449431482521215,
+        "vertical_slip_m": 1.3301355081429822e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.21999999999987807,
+        "rise_m": 0.044937608794290894,
+        "vertical_slip_m": 1.8840812912035432e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.239999999999867,
+        "rise_m": 0.04493177524257106,
+        "vertical_slip_m": 2.4674364631868673e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.2599999999998559,
+        "rise_m": 0.04492576133543386,
+        "vertical_slip_m": 3.068827176906652e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.2799999999998448,
+        "rise_m": 0.04491963685550889,
+        "vertical_slip_m": 3.6812751694037527e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.29999999999983373,
+        "rise_m": 0.0449134445966426,
+        "vertical_slip_m": 4.300501056032913e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.31999999999982265,
+        "rise_m": 0.04490721079468537,
+        "vertical_slip_m": 4.923881251756024e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.33999999999981156,
+        "rise_m": 0.04490095153159066,
+        "vertical_slip_m": 5.5498075612267495e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.3599999999998005,
+        "rise_m": 0.04489467666428409,
+        "vertical_slip_m": 6.177294291884183e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.3799999999997894,
+        "rise_m": 0.04488839223392387,
+        "vertical_slip_m": 6.805737327905681e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.3999999999997783,
+        "rise_m": 0.04488210194292382,
+        "vertical_slip_m": 7.434766427910633e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.4199999999997672,
+        "rise_m": 0.04487580806032062,
+        "vertical_slip_m": 8.064154688230962e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.43999999999975614,
+        "rise_m": 0.0448695119766857,
+        "vertical_slip_m": 8.693763051723091e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.45999999999974506,
+        "rise_m": 0.044863214544220535,
+        "vertical_slip_m": 9.323506298239415e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.479999999999734,
+        "rise_m": 0.044856916285188515,
+        "vertical_slip_m": 9.9533322014414e-05,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.4999999999997229,
+        "rise_m": 0.044850617519652976,
+        "vertical_slip_m": 0.00010583208754995355,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.5199999999997118,
+        "rise_m": 0.04484431844376085,
+        "vertical_slip_m": 0.00011213116344208074,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.5399999999997007,
+        "rise_m": 0.044838019177718354,
+        "vertical_slip_m": 0.0001184304294845756,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.5599999999996896,
+        "rise_m": 0.044831719795192286,
+        "vertical_slip_m": 0.00012472981201064326,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.5799999999996786,
+        "rise_m": 0.044825420341328255,
+        "vertical_slip_m": 0.00013102926587467423,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.5999999999996675,
+        "rise_m": 0.044819120842563766,
+        "vertical_slip_m": 0.00013732876463916355,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.6199999999996564,
+        "rise_m": 0.04481282131701902,
+        "vertical_slip_m": 0.00014362829018391143,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.6399999999996453,
+        "rise_m": 0.04480652177506884,
+        "vertical_slip_m": 0.0001499278321340919,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.6599999999996342,
+        "rise_m": 0.044800222223312126,
+        "vertical_slip_m": 0.00015622738389080293,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.6799999999996231,
+        "rise_m": 0.04479392266472541,
+        "vertical_slip_m": 0.00016252694247752275,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.699999999999612,
+        "rise_m": 0.0447876231027444,
+        "vertical_slip_m": 0.00016882650445852743,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.719999999999601,
+        "rise_m": 0.04478132353858812,
+        "vertical_slip_m": 0.00017512606861480595,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.7399999999995899,
+        "rise_m": 0.04477502397302694,
+        "vertical_slip_m": 0.00018142563417598845,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.7599999999995788,
+        "rise_m": 0.04476872440733704,
+        "vertical_slip_m": 0.00018772519986588743,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.7799999999995677,
+        "rise_m": 0.04476242484023874,
+        "vertical_slip_m": 0.00019402476696418758,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.7999999999995566,
+        "rise_m": 0.04475612527324919,
+        "vertical_slip_m": 0.00020032433395374138,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.8199999999995455,
+        "rise_m": 0.04474982570619531,
+        "vertical_slip_m": 0.00020662390100761874,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.8399999999995345,
+        "rise_m": 0.044743526139811564,
+        "vertical_slip_m": 0.00021292346739136547,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.8599999999995234,
+        "rise_m": 0.04473722657286718,
+        "vertical_slip_m": 0.00021922303433574708,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.8799999999995123,
+        "rise_m": 0.044730927005809294,
+        "vertical_slip_m": 0.00022552260139363511,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.8999999999995012,
+        "rise_m": 0.04472462743898486,
+        "vertical_slip_m": 0.000231822168218071,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.9199999999994901,
+        "rise_m": 0.04471832787220872,
+        "vertical_slip_m": 0.00023812173499421219,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.939999999999479,
+        "rise_m": 0.04471202830621992,
+        "vertical_slip_m": 0.00024442130098301096,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.959999999999468,
+        "rise_m": 0.04470572873937644,
+        "vertical_slip_m": 0.00025072086782648717,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.9799999999994569,
+        "rise_m": 0.04469942917297936,
+        "vertical_slip_m": 0.00025702043422357046,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 0.9999999999994458,
+        "rise_m": 0.04469312960672208,
+        "vertical_slip_m": 0.0002633200004808489,
+        "bilateral_contact": true,
+        "settled": true
+      },
+      {
+        "elapsed_sim_s": 1.0199999999994347,
+        "rise_m": 0.04468683004124598,
+        "vertical_slip_m": 0.0002696195659569467,
+        "bilateral_contact": true,
+        "settled": true
+      }
+    ]
+  },
+  "feedback_source": "simulation evaluation only; camera-only outcome verifier still unqualified",
+  "decisions": 691,
+  "elapsed_wall_s": 82.74381060000451,
+  "camera_captures": 694,
+  "camera_reuses": 691,
+  "final_pad_contacts": [
+    true,
+    true
+  ]
+}

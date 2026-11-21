@@ -1,0 +1,27 @@
+{
+  "gpu_rollout_wall_s": 4.516173299998627,
+  "health": {
+    "overflow": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "nacon": 8,
+    "nefc": [
+      9,
+      9,
+      9,
+      9
+    ],
+    "naconmax": 512,
+    "njmax": 512,
+    "warp_pool_bytes": 20844060
+  },
+  "cumulative_flags": [
+    0,
+    0,
+    0,
+    0
+  ]
+}

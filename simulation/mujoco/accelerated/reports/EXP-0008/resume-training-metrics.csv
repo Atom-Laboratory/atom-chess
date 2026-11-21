@@ -1,0 +1,2 @@
+update,macro_episodes_this_run,maximum_macro_episode_budget,physical_successes,population,reward_mean,evaluation_wall_s,policy_update_wall_s,loss,policy_loss,value_loss,base_gaussian_entropy,approximate_kl,clip_fraction,optimizer_epochs
+4,4,4,4,4,9.495455741882324,17.87265099999786,0.278264799999306,42.10409927368164,-0.06447497010231018,84.33365631103516,-1.7461798191070557,0.011244148015975952,0.25,2

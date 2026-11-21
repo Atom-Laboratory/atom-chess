@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "status": "GPU_CONTACT_SMOKE_PASSED",
+  "experiment": "EXP-0002",
+  "scope": "primitive contact and CUDA execution only; not robot parity or training throughput",
+  "versions": {
+    "mujoco": "3.17.0",
+    "mujoco-warp": "3.17.0",
+    "warp-lang": "1.19.0",
+    "numpy": "2.5.4"
+  },
+  "hardware_before": {
+    "name": "NVIDIA GeForce RTX 5070 Ti",
+    "driver": "617.14",
+    "compute_capability": "12.0",
+    "total_mib": "16303",
+    "free_mib": "10127",
+    "utilization_percent": "32"
+  },
+  "hardware_after": {
+    "name": "NVIDIA GeForce RTX 5070 Ti",
+    "driver": "617.14",
+    "compute_capability": "12.0",
+    "total_mib": "16303",
+    "free_mib": "9867",
+    "utilization_percent": "84"
+  },
+  "device": {
+    "name": "NVIDIA GeForce RTX 5070 Ti",
+    "arch": 120
+  },
+  "os": "Windows-10-10.0.19045-SP0",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "cpu_logical": 12,
+  "ram_total_bytes": 34305548288,
+  "worlds": 1,
+  "steps": 500,
+  "budgets": {
+    "max_wall_s": 180.0,
+    "max_gpu_mib": 2048
+  },
+  "cuda_kernel_wall_s": 3.339705699996557,
+  "first_gpu_step_compile_wall_s": 61.00597290000587,
+  "gpu_physics_wall_s": 0.17143940000096336,
+  "cpu_single_world_wall_s": 0.033747100009350106,
+  "aggregate_gpu_physics_steps_per_s": 2916.482442176013,
+  "final_qpos_max_abs_error_m": 5.344135739840383e-09,
+  "final_gpu_qpos": [
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  ],
+  "capacities": {
+    "naconmax": 64,
+    "njmax": 256
+  },
+  "peak_nacon": 1,
+  "final_nefc_max": 4,
+  "overflow": [
+    0
+  ],
+  "warp_pool_high_bytes": 55104,
+  "total_worker_wall_s": 69.40273760000127,
+  "source_sha256": {
+    "probe.py": "4d6e9e749da27cc15e781767cedd9c62ea1673214b37e533ee780962e8d2ac09",
+    "kernels.py": "45da4df50cb19e8f8c4f1f18b09756fb3d9b2b56d58c6f00a86aa76e87d3ba31"
+  },
+  "lock_sha256": "ef12153b604d1b612889d04d24ef8f81760f15883a306c9184d4f30d30865611"
+}

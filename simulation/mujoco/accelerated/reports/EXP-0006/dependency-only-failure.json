@@ -1,0 +1,5 @@
+{
+  "status": "FAILED",
+  "error": "No module named 'PIL'",
+  "traceback": "Traceback (most recent call last):\n  File \"F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0006\\RUN-cem-pilot-cccb75e376a244e7877fbd3a536c19d3\\source\\cem.py\", line 200, in main\n    try:worker(args)\n        ^^^^^^^^^^^^\n  File \"F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0006\\RUN-cem-pilot-cccb75e376a244e7877fbd3a536c19d3\\source\\cem.py\", line 112, in worker\n    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen importlib._bootstrap_external>\", line 999, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 488, in _call_with_frames_removed\n  File \"F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0006\\RUN-cem-pilot-cccb75e376a244e7877fbd3a536c19d3\\source\\local_diagnostic.py\", line 8, in <module>\n    from PIL import Image\nModuleNotFoundError: No module named 'PIL'\n"
+}

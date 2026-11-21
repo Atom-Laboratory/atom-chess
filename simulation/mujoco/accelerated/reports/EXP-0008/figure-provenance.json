@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "figure": "FIG-0004",
+  "sources": {
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0008\\RUN-shared-parameter-pilot-997924736f9a4b7b89f699d265629d24\\report.json": "d33bdeab7940c662158cb914c04444e49e77b8b80bc4ab4cc5b9fb3d237cef6b",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0008\\RUN-shared-parameter-pilot-997924736f9a4b7b89f699d265629d24\\bc-metrics.csv": "990a45f144279eb889d0ab576edc848593c1a73351f8d6ef40f686aeed83fcc4",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0008\\RUN-shared-parameter-pilot-997924736f9a4b7b89f699d265629d24\\training-metrics.csv": "4e59deb0c0d6ee561ed8acfea12e66389d5d0de6ac571ac91454f39ea6ab34c8",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0008\\RUN-shared-parameter-pilot-997924736f9a4b7b89f699d265629d24\\episodes.csv": "23a59aa414328bf083a6699db2a74f5db4510bca9e04771f48fe062bab53d77d",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0008\\RUN-shared-parameter-resume-2644d927be2b4f83936aee61708f8862\\report.json": "b99e64d403e52712f8f370e284b7e00d457f3e11b5a82c9c005ed7500a10565f",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0008\\RUN-shared-parameter-resume-2644d927be2b4f83936aee61708f8862\\training-metrics.csv": "514cd289b778128897d451f678fc696c5c072030329766e2373a2ff8a3209c41",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0008\\RUN-shared-parameter-resume-2644d927be2b4f83936aee61708f8862\\episodes.csv": "332f8b0721bd50ae36a42790f80f9fc556a3e2e0ab213800dfe22e2ab6ff37f4"
+  },
+  "source_sha256": "9a19cb87ea3cd4be2bb85b291843cca627b08db96912187752dade1c6f0b823e",
+  "smoothing": false,
+  "scope": "one training entry; one excluded validation entry; no independent reliability claim or error bars"
+}

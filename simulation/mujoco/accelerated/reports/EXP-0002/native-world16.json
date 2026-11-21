@@ -1,0 +1,226 @@
+{
+  "schema": 1,
+  "status": "GPU_CONTACT_SMOKE_PASSED",
+  "experiment": "EXP-0002",
+  "scope": "primitive contact and CUDA execution only; not robot parity or training throughput",
+  "versions": {
+    "mujoco": "3.17.0",
+    "mujoco-warp": "3.17.0",
+    "warp-lang": "1.19.0",
+    "numpy": "2.5.4"
+  },
+  "hardware_before": {
+    "name": "NVIDIA GeForce RTX 5070 Ti",
+    "driver": "617.14",
+    "compute_capability": "12.0",
+    "total_mib": "16303",
+    "free_mib": "10115",
+    "utilization_percent": "36"
+  },
+  "hardware_after": {
+    "name": "NVIDIA GeForce RTX 5070 Ti",
+    "driver": "617.14",
+    "compute_capability": "12.0",
+    "total_mib": "16303",
+    "free_mib": "9825",
+    "utilization_percent": "44"
+  },
+  "device": {
+    "name": "NVIDIA GeForce RTX 5070 Ti",
+    "arch": 120
+  },
+  "os": "Windows-10-10.0.19045-SP0",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "cpu_logical": 12,
+  "ram_total_bytes": 34305548288,
+  "worlds": 16,
+  "steps": 500,
+  "budgets": {
+    "max_wall_s": 180.0,
+    "max_gpu_mib": 2048
+  },
+  "cuda_kernel_wall_s": 0.03154739999445155,
+  "first_gpu_step_compile_wall_s": 1.3338279999879887,
+  "gpu_physics_wall_s": 0.15778330000466667,
+  "cpu_single_world_wall_s": 0.004259100009221584,
+  "aggregate_gpu_physics_steps_per_s": 50702.450764836256,
+  "final_qpos_max_abs_error_m": 5.344135739840383e-09,
+  "final_gpu_qpos": [
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009632812812924385,
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  ],
+  "capacities": {
+    "naconmax": 1024,
+    "njmax": 256
+  },
+  "final_nacon": 16,
+  "final_nefc_max": 4,
+  "overflow": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "warp_pool_high_bytes": 711909,
+  "execution_wall_s": 2.5372432000003755,
+  "source_sha256": {
+    "probe.py": "259f40bc4c3a5eac11b929e346d5ede0f4b45224dafce57da6ff7d3a4c8432ba",
+    "kernels.py": "45da4df50cb19e8f8c4f1f18b09756fb3d9b2b56d58c6f00a86aa76e87d3ba31"
+  },
+  "lock_sha256": "ef12153b604d1b612889d04d24ef8f81760f15883a306c9184d4f30d30865611",
+  "process_wall_s": 9.511440499991295
+}

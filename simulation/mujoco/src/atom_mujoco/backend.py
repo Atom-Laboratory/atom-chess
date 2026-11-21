@@ -19,6 +19,7 @@ class Simulation:
                 raise ValueError('Bundle integrity check failed')
         self.model = mujoco.MjModel.from_xml_path(str((bundle/'model.xml').resolve()))
         self.data = mujoco.MjData(self.model)
+        self.step_observer = None  # Optional privileged replay recorder, never a controller.
         self.names = [j['name'] for j in self.manifest['joints']]
         self.lower = np.array([j['lower'] for j in self.manifest['joints']])
         self.upper = np.array([j['upper'] for j in self.manifest['joints']])
@@ -82,7 +83,9 @@ class Simulation:
             delta = self.speed * self.model.opt.timestep
             self.reference += np.clip(value-self.reference, -delta, delta)
             self.data.ctrl[:] = self.reference
+            if self.step_observer is not None:self.step_observer.before_step()
             mujoco.mj_step(self.model, self.data)
+            if self.step_observer is not None:self.step_observer.after_step()
             if stop_when is not None and stop_when():
                 break
         mujoco.mj_forward(self.model, self.data)

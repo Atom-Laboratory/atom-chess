@@ -1,0 +1,134 @@
+{
+  "schema": 1,
+  "experiment": "EXP-0006",
+  "status": "CEM_CPU_VERIFIED_CANDIDATE",
+  "scope": "isolated Stage A fixed camera-derived entry; not learned policy or crowded/full manipulation",
+  "identity": {
+    "model_sha256": "a88b0cdb6c2ac529d443f2bc695d4b94cf8306c2debd81838d06eda6f0790da7",
+    "recording_sha256": "40056f5e570ade042bc6851adec69d9e665f931b21f5b1b1191a2c9c15d88007",
+    "config_sha256": "f5edacce9aab33feaee038c013d3d5125dbb6dba4c329c8cfadf6d8d987a813b",
+    "motion_library_sha256": "d35706504d48addf0fb756e49f283268e487976882d1926c2b387961933b6f35"
+  },
+  "seed": 970300,
+  "parameter_names": [
+    "closing_load_factor",
+    "closing_speed_fraction",
+    "lift_rate_fraction"
+  ],
+  "bounds": {
+    "lower": [
+      1.5,
+      0.1,
+      0.1
+    ],
+    "upper": [
+      4.0,
+      0.5,
+      0.5
+    ]
+  },
+  "population": 8,
+  "generations": 2,
+  "total_gpu_simulations": 16,
+  "best": {
+    "generation": 1,
+    "index": 7,
+    "parameters": [
+      2.984278027639578,
+      0.2027662783062922,
+      0.3478800418914601
+    ],
+    "geometry_valid": true,
+    "duration_s": 14.0,
+    "source_xy_m": [
+      0.2625,
+      -0.08820000000000001
+    ],
+    "target_source": "camera-derived reference diagnostic",
+    "native_ik": true,
+    "geometry": {
+      "part": "head",
+      "geom": "white_pawn_e2_head",
+      "radius_m": 0.008,
+      "head_edge_fraction": null,
+      "effective_radius_m": 0.008,
+      "pad_center_height_offset_m": 0.0,
+      "tcp_z_m": 0.042,
+      "aperture_m": -0.010047780000000008,
+      "closing_target_m": -0.014674211525063577,
+      "closing_interference_m": 0.0016264315250635703,
+      "model_load_estimate": {
+        "factor": 2.984278027639578,
+        "weight_N": 0.1962,
+        "friction_lower_bound": 1.2,
+        "finger_gain_N_per_m": 150.0,
+        "estimated_normal_load_N": 0.24396472875953554,
+        "vertical_capacity_per_normal_N": 1.2,
+        "estimated_horizontal_load_N": 0.24396472875953554
+      },
+      "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+    },
+    "sweep_samples": 512,
+    "selected_finger_margin_m": 0.0,
+    "outcome": {
+      "world": 7,
+      "hold_duration_sim_s": 1.0,
+      "maximum_rise_m": 0.04452212584223687,
+      "minimum_held_rise_m": 0.044112068237923976,
+      "maximum_hold_slip_m": 0.000310361385345459,
+      "bilateral_hold": true,
+      "maximum_hold_linear_speed_m_s": 0.00031169463181868196,
+      "maximum_hold_angular_speed_rad_s": 5.991398211335763e-05,
+      "maximum_upright_angle_rad": 0.00314553314819932,
+      "forbidden_contact": false,
+      "success": true
+    }
+  },
+  "canonical_winner": {
+    "world": 0,
+    "hold_duration_sim_s": 1.0,
+    "maximum_rise_m": 0.04452181078110576,
+    "minimum_held_rise_m": 0.04411022945770017,
+    "maximum_hold_slip_m": 0.00031186018144106764,
+    "bilateral_hold": true,
+    "maximum_hold_linear_speed_m_s": 0.0003127161030249883,
+    "maximum_hold_angular_speed_rad_s": 4.5659186695327625e-05,
+    "maximum_upright_angle_rad": 0.003223184754498413,
+    "forbidden_contact": false,
+    "success": true
+  },
+  "distribution": {
+    "mean": [
+      2.9871830687033816,
+      0.18760673616195728,
+      0.3384082631842582
+    ],
+    "std": [
+      0.08136610735768403,
+      0.04675625786964631,
+      0.012
+    ],
+    "best": [
+      2.984278027639578,
+      0.2027662783062922,
+      0.3478800418914601
+    ],
+    "generation": 2,
+    "rng": {
+      "bit_generator": "PCG64",
+      "state": {
+        "state": 111664386702337922073906352391200566028,
+        "inc": 261922642694918835288203104551908677859
+      },
+      "has_uint32": 0,
+      "uinteger": 0
+    }
+  },
+  "limitations": [
+    "No initial-state randomization or held-out task generalization in this pilot.",
+    "GPU engine contacts do not replace independent planner self-collision sweeps.",
+    "Vision provides frozen target XY; no live multiworld camera pipeline or RL training."
+  ],
+  "process_wall_s": 45.95453319999797,
+  "request_sha256": "51dd3eb36e33d6f6966971cf6a4dd97b6c6913d779f285aa49126935e1990eaf"
+}

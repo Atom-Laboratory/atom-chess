@@ -1,0 +1,251 @@
+{
+  "scope": "Selected historical reach report aggregates recomputed from raw records; no raw-log or tensor re-execution",
+  "reports": [
+    {
+      "path": "simulation/mujoco/runs/ppo-fine-tuned-v6/baseline.json",
+      "sha256": "4360dd4acc56380251e8493437451dfb8488e5e547221515bd2f791d9d535d26",
+      "episodes": 8,
+      "successes": 7,
+      "median_best_distance_m": 0.017070842594981418,
+      "mean_episode_return": 4.462889952360301,
+      "records": [
+        {
+          "seed": 910000,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.017495351755507517,
+          "episode_return": 16.644034687970244,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910001,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.017146009150318862,
+          "episode_return": 12.009591500831906,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910002,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.017006206628778747,
+          "episode_return": 14.824920496398548,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910003,
+          "success": false,
+          "objective": "reach",
+          "best_pad_distance_m": 0.05178114819991807,
+          "episode_return": -62.575693810094215,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910004,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.01703356885938639,
+          "episode_return": 14.73648459638764,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910005,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.017096358125509324,
+          "episode_return": 12.079950517730719,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910006,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.017024997291204262,
+          "episode_return": 17.24873888842924,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910007,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.01704532706445351,
+          "episode_return": 10.73509274122833,
+          "bilateral_contact": false,
+          "lifted": false
+        }
+      ]
+    },
+    {
+      "path": "simulation/mujoco/runs/ppo-fine-tuned-v6/report.json",
+      "sha256": "2924b6769743c46c484e14567efb820ec80ff346e74afa2fa16201da1df83388",
+      "episodes": 8,
+      "successes": 7,
+      "median_best_distance_m": 0.01729157565374282,
+      "mean_episode_return": 4.424944307707747,
+      "records": [
+        {
+          "seed": 910000,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.017287939786357023,
+          "episode_return": 16.694336857580492,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910001,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.01717813535861852,
+          "episode_return": 11.999290646150765,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910002,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.01735761603120236,
+          "episode_return": 14.709553358502802,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910003,
+          "success": false,
+          "objective": "reach",
+          "best_pad_distance_m": 0.05177284918581154,
+          "episode_return": -62.57612195365029,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910004,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.017084377078556492,
+          "episode_return": 14.721820905336482,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910005,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.017295211521128617,
+          "episode_return": 12.016881412890886,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910006,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.017344039564829657,
+          "episode_return": 17.14227246548129,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 910007,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.017188324848003887,
+          "episode_return": 10.691520769369554,
+          "bilateral_contact": false,
+          "lifted": false
+        }
+      ]
+    },
+    {
+      "path": "simulation/mujoco/runs/eval-independent-920000/report.json",
+      "sha256": "ec4056d15b4a75da540e2efecbc7bb534ab92cbf1a439c4e2b89da2b1983e817",
+      "episodes": 8,
+      "successes": 5,
+      "median_best_distance_m": 0.017274572668619106,
+      "mean_episode_return": -10.751543011493968,
+      "records": [
+        {
+          "seed": 920000,
+          "success": false,
+          "objective": "reach",
+          "best_pad_distance_m": 0.029380351527505552,
+          "episode_return": -60.124200138684756,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 920001,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.017258576466517336,
+          "episode_return": 13.84489781989965,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 920002,
+          "success": false,
+          "objective": "reach",
+          "best_pad_distance_m": 0.025455391432401716,
+          "episode_return": -49.36076908692149,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 920003,
+          "success": false,
+          "objective": "reach",
+          "best_pad_distance_m": 0.035244365320626185,
+          "episode_return": -46.98434496180461,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 920004,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.017290568870720873,
+          "episode_return": 16.73394649177864,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 920005,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.01709453633709968,
+          "episode_return": 15.06938504403026,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 920006,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.01692837143352678,
+          "episode_return": 13.008703090523023,
+          "bilateral_contact": false,
+          "lifted": false
+        },
+        {
+          "seed": 920007,
+          "success": true,
+          "objective": "reach",
+          "best_pad_distance_m": 0.017016126589510128,
+          "episode_return": 11.800037649227544,
+          "bilateral_contact": false,
+          "lifted": false
+        }
+      ]
+    }
+  ]
+}
