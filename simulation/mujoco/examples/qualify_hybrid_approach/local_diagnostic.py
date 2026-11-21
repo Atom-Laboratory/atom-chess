@@ -116,9 +116,12 @@ def hold_grasp(supervisor, identity, dwell, record):
 
 def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisions=1000,
                          grasp_part='stem', closing_load_factor=None, lift_speed_fraction=1.,
-                         head_edge_fraction=None, diagnostic_wrist_rad=None, target_finger_clearance_m=None):
+                         head_edge_fraction=None, diagnostic_wrist_rad=None, target_finger_clearance_m=None,
+                         lift_rise_heights=None):
     if not np.isfinite(lift_speed_fraction) or not 0 < lift_speed_fraction <= 1:
         raise ValueError('Lift speed fraction must be in (0, 1]')
+    if lift_rise_heights is not None and (not np.isfinite(lift_rise_heights) or lift_rise_heights < 1):
+        raise ValueError('Diagnostic lift travel must be at least one piece height')
     sim = scene.sim
     control = AutonomousControl(scene)
     source = np.asarray(plan['source_xy_m'])
@@ -145,6 +148,7 @@ def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisio
         limits=vars(limits), max_decisions=max_decisions, geometry_source='existing experimental colliders')
     report['lift_speed_fraction'] = lift_speed_fraction
     report['target_finger_clearance_m'] = target_finger_clearance_m
+    report['lift_rise_heights'] = lift_rise_heights
     started = time.perf_counter()
     body = sim.model.body(scene.config['piece']).id
     initial_z = float(sim.data.xpos[body, 2])  # Independent evaluation, never a target.
@@ -187,6 +191,8 @@ def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisio
                         ('CENTER_ABOVE', np.array([*source, current[2], wrist, aperture]), 'GRASPING')]
         lift_z = (max(plan['target_tcp_m'][2], pick_z+1.5*scene.piece_height)
                   if head_edge_fraction is not None else plan['target_tcp_m'][2])
+        if lift_rise_heights is not None:
+            lift_z = max(plan['target_tcp_m'][2], pick_z+lift_rise_heights*scene.piece_height)
         targets += [('DESCEND', np.array([*source, pick_z, wrist, aperture]), 'GRASPING'),
                    ('CLOSE', np.array([*source, pick_z, wrist, grasp]), 'GRASPING'),
                    ('LIFT', np.array([*source, lift_z, wrist, grasp]), 'LIFTING')]

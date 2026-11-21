@@ -33,6 +33,7 @@ def main():
     parser.add_argument('--head-edge-fraction', type=float)
     parser.add_argument('--diagnostic-wrist-rad', type=float)
     parser.add_argument('--target-finger-clearance-m', type=float)
+    parser.add_argument('--lift-rise-heights', type=float)
     args = parser.parse_args()
     if args.local_diagnostic and args.plan_only:
         parser.error('--local-diagnostic requires actual approach execution')
@@ -48,6 +49,9 @@ def main():
     if args.target_finger_clearance_m is not None and (not args.local_diagnostic
             or not np.isfinite(args.target_finger_clearance_m) or not 0 <= args.target_finger_clearance_m <= .001):
         parser.error('--target-finger-clearance-m requires local diagnostic and a margin in [0, .001]')
+    if args.lift_rise_heights is not None and (not args.local_diagnostic
+            or not np.isfinite(args.lift_rise_heights) or args.lift_rise_heights < 1):
+        parser.error('--lift-rise-heights requires local diagnostic and travel of at least one piece height')
     output = args.output or new_run('examples/qualify_hybrid_approach/runs')
     output.mkdir(parents=True, exist_ok=False)
     sources = [*sorted(Path(__file__).resolve().parent.glob('*.py')),
@@ -63,6 +67,7 @@ def main():
         lift_speed_fraction=args.lift_speed_fraction,
         head_edge_fraction=args.head_edge_fraction, diagnostic_wrist_rad=args.diagnostic_wrist_rad,
         target_finger_clearance_m=args.target_finger_clearance_m,
+        lift_rise_heights=args.lift_rise_heights,
         source_sha256={str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in sources},
         libraries={key: dict(path=configuration[key], sha256=hashlib.sha256(
             Path(configuration[key]).read_bytes()).hexdigest()) for key in ('motion_library', 'vision_library')})
@@ -132,7 +137,8 @@ def main():
                                              lift_speed_fraction=args.lift_speed_fraction,
                                              head_edge_fraction=args.head_edge_fraction,
                                              diagnostic_wrist_rad=args.diagnostic_wrist_rad,
-                                             target_finger_clearance_m=args.target_finger_clearance_m)
+                                             target_finger_clearance_m=args.target_finger_clearance_m,
+                                             lift_rise_heights=args.lift_rise_heights)
             (output/'local-report.json').write_text(json.dumps(diagnostic, indent=2), encoding='utf-8')
             print(f'[ATOM M4] {diagnostic["status"]} | {output / "local-report.json"}', flush=True)
             final_status = diagnostic['status']

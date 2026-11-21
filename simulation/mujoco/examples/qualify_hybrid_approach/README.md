@@ -193,6 +193,14 @@ tracking and all forbidden-contact checks remain active. Partial contact never
 counts as grasp success and is not allowed for lifting. See
 [S051](../../../docs/adrs/S051-partial-contact-during-coupled-finger-closure.md).
 
+`--lift-rise-heights 1.5` optionally requests lift travel of 1.5 compiled piece
+heights above the pick TCP, or the approach height if greater. It remains inside
+the declared envelope and all path/runtime checks. The success criterion stays
+at a **measured** one-piece-height rise with retained bilateral contact and
+settled feedback; additional commanded travel cannot itself declare success.
+Without this option the historical target remains unchanged. Record this option
+when comparing trials. See [S052](../../../docs/adrs/S052-diagnostic-lift-travel-margin.md).
+
 `--target-finger-clearance-m 0` is a separate experimental near-contact margin
 for the selected piece versus moving finger hulls. Every other pair retains the
 default 1 mm margin. It still rejects hull touching/penetration and checks the
@@ -232,6 +240,15 @@ changed solver is not lift success: inspect `lift_success`, measured rise,
 retained contacts and all failure fields. See
 [S050](../../../docs/adrs/S050-controlled-grasp-contact-solver-comparison.md) and
 [MuJoCo's slip guidance](https://mujoco.readthedocs.io/en/3.15.0/modeling.html#preventing-slip).
+
+The isolated native physical regression uses three distinct seeds and the
+explicit elliptic/10 fixture, load 2.5, selected-finger margin zero and requested
+lift of 1.5 piece heights. It does not qualify crowded operation or RL admission:
+
+```powershell
+$env:ATOM_NATIVE_GRASP_CONFIG = (Resolve-Path $solverConfig).Path
+& $py -B -m pytest simulation/mujoco/tests/test_native_grasp.py -q
+```
 
 To use the exact approach configuration of a prepared planner-started reach
 fixture (entry offsets, preshape, live registration and corridor screen), pass
