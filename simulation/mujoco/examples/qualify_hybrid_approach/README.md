@@ -147,3 +147,11 @@ the [M1 audit](../../../../docs/camera-rl/hybrid-m1-audit.md) and the
 [hybrid M2 result](../../../../docs/camera-rl/hybrid-m2-qualification.md).
 See also the [M4 diagnostic report](../../../../docs/camera-rl/hybrid-m4-supervision.md)
 and [ADR S031](../../../docs/adrs/S031-local-proposal-supervision.md).
+
+## Lateral-entry diagnostic bounds
+
+The deterministic local diagnostic includes the verified lateral approach endpoint
+in its declared XY bounds, with one diagnostic control interval of margin. This
+numeric box does not establish clearance: full-path/step collision checks,
+tracking and runtime feedback remain mandatory. It does not grant an RL lease.
+See [S046](../../../docs/adrs/S046-lateral-entry-grasp-diagnostic-envelope.md).

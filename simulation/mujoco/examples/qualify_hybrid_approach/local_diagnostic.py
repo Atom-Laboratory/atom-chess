@@ -52,6 +52,13 @@ def grasp_geometry(sim, identity, surface_z, part, closing_load_factor=None):
     return result
 
 
+def diagnostic_xy_bounds(source, entry, half_width, step_travel):
+    """Include the verified lateral start; this is a bound, not a clearance proof."""
+    source, entry, step_travel = map(np.asarray, (source, entry, step_travel))
+    return (np.minimum(source-half_width, entry-step_travel),
+            np.maximum(source+half_width, entry+step_travel))
+
+
 def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisions=1000,
                          grasp_part='stem', closing_load_factor=None, lift_speed_fraction=1.):
     if not np.isfinite(lift_speed_fraction) or not 0 < lift_speed_fraction <= 1:
@@ -63,10 +70,13 @@ def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisio
     drop = plan['derived_geometry']['tool_drop_m']
     lower_z = scene.surface_z+drop+control.checker.clearance
     upper_z = plan['target_tcp_m'][2]+scene.piece_height
+    rates = control.rates*.25/1.875
+    lower_xy, upper_xy = diagnostic_xy_bounds(source, np.asarray(plan['target_tcp_m'])[:2],
+                                             half, rates[:2]*sim.dt)
     limits = LocalLimits(tuple(sim.lower), tuple(sim.upper),
-        (*list(source-half), lower_z, sim.lower[-1], sim.lower[3]),
-        (*list(source+half), upper_z, sim.upper[-1], sim.upper[3]),
-        tuple(control.rates*.25/1.875), sim.dt, 'unqualified-diagnostic:'+plan['signature'])
+        (*list(lower_xy), lower_z, sim.lower[-1], sim.lower[3]),
+        (*list(upper_xy), upper_z, sim.upper[-1], sim.upper[3]),
+        tuple(rates), sim.dt, 'unqualified-diagnostic:'+plan['signature'])
     task = MoveTask('local-diagnostic-'+uuid.uuid4().hex, scene.config['piece'],
         scene.config['source'], scene.task_target, 0,
         max_decisions*scene.config['max_perception_age_s'])

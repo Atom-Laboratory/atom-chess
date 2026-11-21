@@ -294,6 +294,24 @@ def test_grasp_diagnostic_reads_real_mujoco_geometry_types(supervisor):
         module.grasp_geometry(supervisor.sim, 'white_pawn_e2', surface, 'head', .5)
 
 
+@pytest.mark.parametrize('offset', [[0., 0.], [-.035, .035], [.035, -.035]])
+def test_diagnostic_bounds_include_verified_lateral_start_and_source_neighborhood(offset):
+    import importlib.util
+    path = Path(__file__).resolve().parents[1]/'examples/qualify_hybrid_approach/local_diagnostic.py'
+    spec = importlib.util.spec_from_file_location('lateral_diagnostic', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    source = np.array([.26, -.08])
+    entry = source+offset
+    travel = np.array([.0004, .0004])
+    lower, upper = module.diagnostic_xy_bounds(source, entry, .0175, travel)
+    assert np.all(lower <= entry-travel) and np.all(upper >= entry+travel)
+    assert np.all(lower <= source-.0175) and np.all(upper >= source+.0175)
+    if offset == [0., 0.]:
+        np.testing.assert_allclose(lower, source-.0175)
+        np.testing.assert_allclose(upper, source+.0175)
+
+
 def test_contact_closure_is_not_confused_with_arm_tracking_failure(supervisor):
     sim = supervisor.sim
     target = supervisor.scene.command.copy()
