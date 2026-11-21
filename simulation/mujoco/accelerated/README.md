@@ -187,3 +187,60 @@ held-out test, not a reliability or crowded-operation claim. Current checkpoint
 identity also binds the exact reference report/handoff; earlier prototype
 checkpoints without those fields require their preserved executed source or a
 fresh search, rather than silently continuing with different input evidence.
+
+## Verified camera/command demonstrations and Watch
+
+Use the **canonical** environment for RGB export and native Watch; it already
+contains Pillow. `$config`, `$reference` and `$candidate` must be matching,
+successful EXP-0006 inputs, not arbitrary model bundles. Run from the repository
+root. This retained example exports the additional isolated entry:
+
+```powershell
+$py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+$config = 'simulation/mujoco/examples/qualify_hybrid_approach/runs/solver-comparison-daeb5509116a43e5a1f770f39e44367d/elliptic10/environment.json'
+$reference = 'simulation/mujoco/examples/qualify_hybrid_approach/runs/canonical-reference-970201-headless-ad248b4d06c54f79a2147914ba221661'
+$candidate = 'simulation/mujoco/accelerated/runs/EXP-0006/RUN-heldout-frozen-970201-744ed6f8acaf40ae8043933750e74540'
+& $py -u -B simulation/mujoco/accelerated/demonstrations.py `
+  --config $config --reference $reference --candidate $candidate
+& $py -B -m pytest simulation/mujoco/accelerated/tests/test_demonstrations.py -q
+```
+
+The default opens a **separate process** with two finite physical replay cycles
+after export. Its overlay says **REPLAY — NOT RL TRAINING**. `--headless` exports
+without Watch. `--watch-repeats 4 --watch-speed 1` requests four real-time cycles;
+display speed never changes physics timestep. Each subprocess has a wall budget.
+Do not open Watch after destroying an offscreen renderer in the same process:
+the initial combined attempt crashed natively on this Windows host after export.
+
+`--stride 50` means one RGB/action chunk per 50 physics steps (0.1 s in this
+fixture), **not** 50 environments or episodes. `--max-frames 512` and
+`--image-size 96` bound output; RGB is rendered with the original camera then
+resized. Three full-resolution images are retained. Fresh EXP-0007 outputs contain:
+
+| Artifact | Content and boundary |
+| --- | --- |
+| `actor.npz` | Pre-action RGB, previously issued actuator command, signed camera source XY, source/target task and planned phase; no measured state/contact |
+| `actions.npz` | Exact subsequent actuator command chunks, `start_step`, `valid_steps`; ignore padded tail commands |
+| `privileged.npz` | Initial complete state, full command tape, pre-frame integration states, actual trajectory and contact/safety outcomes; excluded from actor input |
+| `frame-metrics.csv` | Frame/step/phase, post-interval rise and contacts for analysis |
+| `report.json` | Physical success, exact CPU replay comparison, source/model/reference/camera identities and artifact hashes |
+| `watch/` | Default separate-process Watch log and report; presentation failures do not rewrite the export's physical outcome |
+
+To replay a completed export without re-rendering the dataset, use its **full
+fresh-run directory** from the exporter output:
+
+```powershell
+$demo = 'simulation/mujoco/accelerated/runs/EXP-0007/RUN-demonstration-970200-6b62b8d8e83d49c28d94ff6b6f713456'
+& $py -u -B simulation/mujoco/accelerated/watch_demonstration.py `
+  --config $config --demonstration $demo --repeats 4 --speed 1 --max-wall-s 180
+```
+
+Watch starts from the complete recorded near-grasp state and executes every
+command with `mj_step`; it does not attach or reposition the piece during the
+motion. It exits after the finite replay or when the user closes the window.
+An export is accepted only after matching CPU re-execution and unchanged physical
+criteria. The current dataset has two isolated entries; frames are correlated.
+Split future training/test data by reference/run. The configured camera can be
+occluded by the robot; these images alone do not establish a visual grasp verifier.
+No BC/RL accuracy, crowded-board success or hardware readiness follows from export.
+See [S060](../../docs/adrs/S060-camera-command-demonstration-boundary.md).

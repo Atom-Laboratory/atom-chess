@@ -41,6 +41,7 @@ full filenames and preserve their history. New decisions continue after S052.
 | [S057](../../simulation/docs/adrs/S057-recorded-physics-and-sustained-lift.md) | Full transitions and dedicated lifted hold | Accepted; CPU/GPU replay measured | EXP-0004 | Verification and datasets |
 | [S058](../../simulation/docs/adrs/S058-bounded-isolated-cem-grasp-pilot.md) | Bounded Stage A CEM | Accepted; short pilot and CPU winner replay passed | EXP-0006 | Grasp optimization |
 | [S059](../../simulation/docs/adrs/S059-shared-model-grasp-geometry.md) | Shared geometry without rendering imports | Accepted; unchanged extraction tested | EXP-0006 | Reproducible infrastructure |
+| [S060](../../simulation/docs/adrs/S060-camera-command-demonstration-boundary.md) | Causal camera/command demonstrations and separate Watch | Accepted; two isolated CPU re-executions exported | EXP-0007 | Demonstrations and observation boundary |
 
 The legacy architecture/report catalog is being consolidated without rewriting
 historical conclusions; original documents remain authoritative for their scope.
@@ -55,6 +56,7 @@ historical conclusions; original documents remain authoritative for their scope.
 | [EXP-0004](experiments/EXP-0004-canonical-held-lift-and-gpu-replay.md) | Does the corrected controller lift/hold and replay? | S054/S055/S057 | 2026-11-21 | Canonical 1.02 s hold; tape passed at 1/16 worlds | [Raw replay reports](../../simulation/mujoco/accelerated/reports/EXP-0004) |
 | [EXP-0005](experiments/EXP-0005-physics-batching-benchmark.md) | When does GPU batching help fixed-control robot physics? | S056 | 2026-11-21 | 1–1024 worlds measured; 1024 GPU median approximately 11.43× six-thread CPU | [Raw reports and figure](../../simulation/mujoco/accelerated/reports/EXP-0005) |
 | [EXP-0006](experiments/EXP-0006-isolated-cem-command-search.md) | Can bounded CEM find physically verified isolated command plans? | S058/S059 | 2026-11-21 | 7/8 then 8/8; resumed 8/8; frozen CPU/GPU candidate passed one new entry after failed first attempt | [Raw candidate results](../../simulation/mujoco/accelerated/reports/EXP-0006) |
+| [EXP-0007](experiments/EXP-0007-camera-command-demonstrations.md) | Can physical experts be exported without actor state leakage? | S060 | 2026-11-21 | Two exact CPU trajectory re-executions, 161+147 causal RGB/action chunks | [Raw demonstration reports](../../simulation/mujoco/accelerated/reports/EXP-0007) |
 
 ## D. Research findings
 

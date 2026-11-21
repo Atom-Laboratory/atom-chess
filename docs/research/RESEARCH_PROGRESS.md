@@ -71,7 +71,13 @@ Frozen-parameter evaluation passed on the completed seed-970201 headless retry:
 CPU minimum held rise 44.162 mm, maximum hold drop .311 mm, bilateral hold 1 s,
 no forbidden engine contact. The first watched entry stopped on camera age
 during descent. These are two attempts of one seed, not independent trials.
-7. Demonstrations, shared-policy training and curriculum follow measured gates.
+7. Two isolated demonstrations exported after exact canonical re-execution:
+   seeds 970200/970201, 161/147 RGB-action chunks. Actor inputs contain only
+   camera, signed camera geometry, task/phase and issued commands; actual state/
+   contact data are separate. The first combined export/Watch process crashed
+   natively after successful export; presentation moved to a separate worker.
+   See EXP-0007. Shared-policy training, independent generalization and crowded
+   curriculum are not yet qualified.
 
 Native audit is read-only. Its generic scenario tool changed solver/integrator
 in an attached copy and crashed; that output is a tooling limitation, not parity
