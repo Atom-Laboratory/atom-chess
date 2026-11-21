@@ -8,7 +8,8 @@ Phase 0 historical evidence consolidation and Phase 1 native GPU smoke passed.
 Phase 2 forward/step screen and recorded canonical grasp/hold replay passed in
 their limited scopes. Phase 3 physics-only benchmarks ran through 1024 worlds.
 Phase 4 bounded isolated CEM pilot and checkpoint continuation passed. Frozen
-candidate evaluation on new camera entries is in progress. No learned policy, independent GPU
+candidate evaluation passed on one additional camera entry after a failed first
+entry attempt and a same-seed headless retry. No learned grasp policy, broad
 generalization or end-to-end RL acceleration is established.
 
 ## Last measured result
@@ -46,7 +47,8 @@ Measured host: RTX 5070 Ti, SM120, 16,303 MiB VRAM, driver 617.14; Windows 10 Pr
 19045; Ryzen 5 3600X (6/12), approximately 32 GiB RAM. Existing Torch
 2.14.1+cu130 lists sm_120. Installed isolated stack: MuJoCo/MJWarp 3.17.0 and
 Warp 1.19.0, reporting bundled CUDA 13.4 and driver 13.4. An actual CUDA array
-kernel and primitive contact smoke passed; robot parity is still pending.
+kernel and primitive contact smoke passed. Robot forward/single-step and recorded
+held-lift replay passed in the scopes recorded in EXP-0003/0004.
 
 ## Next actions and gates
 
@@ -65,8 +67,10 @@ Current CEM: population 8 ×2 generations, 7/8 then 8/8 physically valid held
 lifts, followed by a checkpoint-resumed generation with 8/8. Canonical winner
 replay passed. A later hash-bound population 4 ×2 also passed. These are command
 search evaluations from one entry, not a neural policy or a reliability sample.
-Frozen-parameter held-out evaluation is next; the first seed-970201 native entry
-stopped on camera age during descent, and the same-seed headless retry is active.
+Frozen-parameter evaluation passed on the completed seed-970201 headless retry:
+CPU minimum held rise 44.162 mm, maximum hold drop .311 mm, bilateral hold 1 s,
+no forbidden engine contact. The first watched entry stopped on camera age
+during descent. These are two attempts of one seed, not independent trials.
 7. Demonstrations, shared-policy training and curriculum follow measured gates.
 
 Native audit is read-only. Its generic scenario tool changed solver/integrator

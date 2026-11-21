@@ -1,0 +1,31 @@
+{
+  "config": "simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\solver-comparison-daeb5509116a43e5a1f770f39e44367d\\elliptic10\\environment.json",
+  "reference": "simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\canonical-reference-970201-headless-ad248b4d06c54f79a2147914ba221661",
+  "winner": "simulation\\mujoco\\accelerated\\runs\\EXP-0006\\RUN-cem-resume-bc41aaef5fd24edbae04445d15707a7a\\report.json",
+  "experiment": "EXP-0006",
+  "source_commit": "1b2d8d24124ed95f73bab6af14937c402ee8bf3b",
+  "worker_arguments": [
+    "--config",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\solver-comparison-daeb5509116a43e5a1f770f39e44367d\\elliptic10\\environment.json",
+    "--reference",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\canonical-reference-970201-headless-ad248b4d06c54f79a2147914ba221661",
+    "--winner",
+    "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0006\\RUN-cem-resume-bc41aaef5fd24edbae04445d15707a7a\\report.json",
+    "--max-gpu-mib",
+    "2048"
+  ],
+  "max_wall_s": 180.0,
+  "python_executable": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\.venv\\Scripts\\python.exe",
+  "source_sha256": {
+    "batch.py": "e437c12e081f5615bf23ac44e13a047462086aee26badcc5c3c87c732f5a38a9",
+    "cem.py": "2ac6356b8c03faa1fd86590473dcdf707f270ef2f4563366fc43648c15969864",
+    "cem_core.py": "071e0e403f65d5bc742adfd2444131846a89aa5408e7ee66ebf4f29caf98cfe1",
+    "cuda_rollout.py": "a6d4c3c771de8b2f525637aa682400f6b3d635bc5160df1a63d4086a23e26660",
+    "evaluate_candidate.py": "b9ff968ffe2a59b4a508500e744ef7b2d68b4f176ce68cba92fe3c0f2c0f8ea1",
+    "experiment.py": "7734ea08d4b01a344f23a97838bd00514e9666b7ef323a4bf252a018812b0c25",
+    "outcomes.py": "5b6f0d85d1e6193b0b406ddc0eba51bdfb2920a2dc6fc9e0c633a9ab470953fb",
+    "replay.py": "4a8860dab4c9941999335c2b904b945e6c8cd57c0bf54ccc13be5b11547e63c3",
+    "requirements-windows-py312.lock": "ef12153b604d1b612889d04d24ef8f81760f15883a306c9184d4f30d30865611",
+    "tapes.py": "7581b80c4b70ab33495e9170301dc29da618deb209e8f6393a3c3cd34b4f80d7"
+  }
+}

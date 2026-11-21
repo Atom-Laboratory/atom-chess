@@ -13,8 +13,10 @@ outcomes, but must not supply target coordinates to the deployable actor.
 [VERIFIED-RESULT] Contact-free planner-started reach now passes the retained
 small full-board test sets. A deterministic isolated pawn lift passed one watched
 trial and three additional physical regression seeds. Neither establishes
-occupied-board manipulation, a learned grasp, extended lifted holding, GPU
-parity or real-robot readiness. Details: [EXP-0001](experiments/EXP-0001-canonical-baseline.md).
+occupied-board manipulation, a learned grasp or real-robot readiness. Dedicated
+held lifts and CPU/GPU recorded replays were subsequently measured in EXP-0004;
+a frozen candidate passed one additional isolated camera entry in EXP-0006.
+Details: [EXP-0001](experiments/EXP-0001-canonical-baseline.md).
 
 ## B. ADR catalog
 
@@ -52,7 +54,7 @@ historical conclusions; original documents remain authoritative for their scope.
 | [EXP-0003](experiments/EXP-0003-robot-physics-parity.md) | Does unchanged robot forward/step physics agree? | S054 | 2026-11-21 | Two states passed; full contact-rich rollout pending | [Raw parity report](../../simulation/mujoco/accelerated/reports/EXP-0003/robot-forward-step.json) |
 | [EXP-0004](experiments/EXP-0004-canonical-held-lift-and-gpu-replay.md) | Does the corrected controller lift/hold and replay? | S054/S055/S057 | 2026-11-21 | Canonical 1.02 s hold; tape passed at 1/16 worlds | [Raw replay reports](../../simulation/mujoco/accelerated/reports/EXP-0004) |
 | [EXP-0005](experiments/EXP-0005-physics-batching-benchmark.md) | When does GPU batching help fixed-control robot physics? | S056 | 2026-11-21 | 1–1024 worlds measured; 1024 GPU median approximately 11.43× six-thread CPU | [Raw reports and figure](../../simulation/mujoco/accelerated/reports/EXP-0005) |
-| [EXP-0006](experiments/EXP-0006-isolated-cem-command-search.md) | Can bounded CEM find physically verified isolated command plans? | S058/S059 | 2026-11-21 | 7/8 then 8/8; checkpoint continuation 8/8; CPU winner verified; independent entry trial stopped on camera age | [Raw candidate results](../../simulation/mujoco/accelerated/reports/EXP-0006) |
+| [EXP-0006](experiments/EXP-0006-isolated-cem-command-search.md) | Can bounded CEM find physically verified isolated command plans? | S058/S059 | 2026-11-21 | 7/8 then 8/8; resumed 8/8; frozen CPU/GPU candidate passed one new entry after failed first attempt | [Raw candidate results](../../simulation/mujoco/accelerated/reports/EXP-0006) |
 
 ## D. Research findings
 
@@ -61,8 +63,9 @@ historical conclusions; original documents remain authoritative for their scope.
 - **RF-0002 [VERIFIED-RESULT]:** a bilateral-only tracking exception can prevent
   coupled-finger closure at first unilateral contact. S051 corrected that
   phase-specific supervision defect; this does not relax lift contact requirements.
-- **RF-0003 [UNVERIFIED-HYPOTHESIS]:** GPU batching may improve evaluated candidate
-  throughput. No acceleration number exists yet.
+- **RF-0003 [VERIFIED-RESULT]:** fixed-control physics at 1024 worlds reached
+  11.43× six-thread CPU throughput (EXP-0005). End-to-end candidate/RL speedup
+  remains unmeasured; isolated CEM feasibility is measured separately (EXP-0006).
 
 ## E. Figures and tables catalog
 
@@ -89,11 +92,11 @@ needed before transferring a policy to the actual assembled arm?
 | 2. Related work | Official MuJoCo/MJWarp references; previous RL reading guides |
 | 3. Robotic system and simulation | CAD/proxy limitations, model hashes, S046–S052 |
 | 4. Methodology | Camera/native planner handoff, metrics and controlled comparisons |
-| 5. Parallel acceleration | S053, EXP-0002; measured benchmarks pending |
-| 6. Grasp optimization | Bounded CEM design and experiments pending parity |
+| 5. Parallel acceleration | S053/S054/S056, EXP-0002–0005; physics-only measurements |
+| 6. Grasp optimization | S058/S059, EXP-0006; bounded isolated CEM and frozen-entry test |
 | 7. Reinforcement Learning | Existing reach PPO baseline; learned grasp pending |
 | 8. Experiments | EXP catalog, seeds, raw artifacts and reproduction commands |
 | 9. Results | TAB-0001, FIG-0001/2 and verified isolated lift scope |
 | 10. Discussion | Contact/control/geometry causes remain separate |
-| 11. Limitations | No crowded grasp, extended hold, GPU parity or hardware validation yet |
+| 11. Limitations | No crowded grasp, broad policy generalization or hardware validation yet |
 | 12. Conclusions | State only measured outcomes; no inferred speedup or reliability |

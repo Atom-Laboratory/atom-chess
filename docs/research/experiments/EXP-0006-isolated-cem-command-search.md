@@ -59,8 +59,22 @@ An independently seeded native reference attempt (970201) stopped during
 descent with `PERCEPTION_EXPIRED_DURING_EXECUTION`, before creating a verified
 near-grasp entry. The frozen-parameter evaluator correctly rejected it. That
 pipeline failure remains archived and must not be silently omitted from a future
-end-to-end success denominator. A same-seed headless retry investigates execution
-timing; graphics contention is a hypothesis, not a demonstrated cause.
+end-to-end success denominator. A same-seed headless retry completed the native
+entry and held lift with the same physics, camera-age limit and source estimate.
+Graphics contention is a hypothesis, not a demonstrated cause of the first failure.
+
+Frozen parameters from the resumed winner were then evaluated without optimization
+on that new reference. Both GPU and canonical CPU passed: minimum held rise
+44.163/44.162 mm, maximum hold drop .310/.311 mm, one-second bilateral hold,
+no forbidden engine contact and no cumulative GPU capacity flags. Source XY
+[.26355, -.08715] m came from the new signed camera plan, rather than the
+original [.26250, -.08820] m or simulator object coordinates. The complete
+evaluation process took 13.01 s. See `frozen-970201.json` and
+`entry-970201-attempts.json` in the archived results.
+
+This is one additional isolated entry, conditional on the successful retry.
+There were two entry attempts for the same seed, one failed and one successful;
+do not report a first-attempt end-to-end success rate of 100%.
 
 ## Artifacts, reproduction and limitations
 
@@ -72,7 +86,7 @@ Source snapshots capture precommit CEM code over 2d1bf19. Shared physical source
 and runtime hashes are recorded in later reports. Original prototype checkpoints
 predating stricter reference binding remain attributable to their executed source.
 
-No held-out task success is claimed here yet. Start variation is approximately
+The additional frozen-candidate test is small. Start variation is approximately
 the prepared fixture's 1 mm jitter, not arbitrary board movement. Occupied-board
 entry, generic transfers, camera-only outcome verification, demonstration actor
 observations, BC/RL and hardware calibration remain open. CEM success does not
