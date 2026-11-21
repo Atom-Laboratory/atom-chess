@@ -1,0 +1,343 @@
+{
+  "schema": 1,
+  "experiment": "EXP-0008",
+  "status": "STAGE_A_PARAMETER_POLICY_PILOT_COMPLETED",
+  "identity": {
+    "schema": "stage-a-camera-command-macro-v1",
+    "model_sha256": "a88b0cdb6c2ac529d443f2bc695d4b94cf8306c2debd81838d06eda6f0790da7",
+    "config_sha256": "f5edacce9aab33feaee038c013d3d5125dbb6dba4c329c8cfadf6d8d987a813b",
+    "training_demo_sha256": "3ad29ac9541ac8542edfbbfe895e2ecae8ba74c9e2145967cba9e15925088826",
+    "validation_demo_sha256": "08981b383c1f9468d8dbe37b6dd82362581515c3862d39d988a3b701b8c90dcc",
+    "expert_sha256": "7cbb6171108abc240b0bd308636df09867049e17ba9edddf86aa4e0f39c688d7",
+    "seed": 970400,
+    "sources": {
+      "train_parameters.py": "c0d3f78b7eebf838a3d59f3604458258e472f8b89e6b6d1498731621bfac9f2c",
+      "parameter_policy.py": "1222b1762a971bee68b6dd22900bf27b62b4099c90d13473bbb4e079d40b25a9",
+      "evaluate_parameters.py": "d61173589bf0fab8bb7d991fc483fe5b55f87b64abe2def17ba0d554e3dd4f51",
+      "demonstrations.py": "1b0cf7a8c9084ffdc0a6bbda08af6bde593e00a26fd6d74fc543664fdc65a791",
+      "cem.py": "2ac6356b8c03faa1fd86590473dcdf707f270ef2f4563366fc43648c15969864",
+      "cem_core.py": "071e0e403f65d5bc742adfd2444131846a89aa5408e7ee66ebf4f29caf98cfe1",
+      "batch.py": "e437c12e081f5615bf23ac44e13a047462086aee26badcc5c3c87c732f5a38a9",
+      "tapes.py": "7581b80c4b70ab33495e9170301dc29da618deb209e8f6393a3c3cd34b4f80d7",
+      "outcomes.py": "5b6f0d85d1e6193b0b406ddc0eba51bdfb2920a2dc6fc9e0c633a9ab470953fb",
+      "cuda_rollout.py": "a6d4c3c771de8b2f525637aa682400f6b3d635bc5160df1a63d4086a23e26660",
+      "replay.py": "4a8860dab4c9941999335c2b904b945e6c8cd57c0bf54ccc13be5b11547e63c3",
+      "requirements-windows-py312.lock": "ef12153b604d1b612889d04d24ef8f81760f15883a306c9184d4f30d30865611"
+    },
+    "device": "cpu",
+    "torch_version": "2.14.1+cu130",
+    "mujoco_version": "3.17.0"
+  },
+  "scope": "shared contextual-bandit PPO over three planner parameters; not sequential visual servoing or hardware admission",
+  "algorithm": "BC mean warm-start + clipped PPO, gamma=0, tanh Normal, actor/critic 12-64-64-(3/1)",
+  "actor_features": [
+    "camera-derived source XY",
+    "issued entry command",
+    "logical source/target squares"
+  ],
+  "learned_parameters": 10247,
+  "device": "cpu",
+  "resumed_from": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\accelerated\\runs\\EXP-0008\\RUN-shared-parameter-pilot-997924736f9a4b7b89f699d265629d24\\policy.pt",
+  "completed_updates": 4,
+  "updates_this_run": 1,
+  "training_macro_episodes": 4,
+  "training_episode_budget": 4,
+  "evaluation_macro_episodes": 4,
+  "before": [
+    {
+      "index": 0,
+      "reference": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\canonical-recorded-hold-73d79eb2045643e3a3f9851c7cf6ca19",
+      "recording_sha256": "40056f5e570ade042bc6851adec69d9e665f931b21f5b1b1191a2c9c15d88007",
+      "parameters": [
+        2.948118209838867,
+        0.23597338795661926,
+        0.3120647370815277
+      ],
+      "geometry_valid": true,
+      "geometry": {
+        "duration_s": 15.028,
+        "source_xy_m": [
+          0.2625,
+          -0.08820000000000001
+        ],
+        "target_source": "camera-derived reference diagnostic",
+        "native_ik": true,
+        "geometry": {
+          "part": "head",
+          "geom": "white_pawn_e2_head",
+          "radius_m": 0.008,
+          "head_edge_fraction": null,
+          "effective_radius_m": 0.008,
+          "pad_center_height_offset_m": 0.0,
+          "tcp_z_m": 0.042,
+          "aperture_m": -0.010047780000000008,
+          "closing_target_m": -0.014654504424362192,
+          "closing_interference_m": 0.001606724424362183,
+          "model_load_estimate": {
+            "factor": 2.948118209838867,
+            "weight_N": 0.1962,
+            "friction_lower_bound": 1.2,
+            "finger_gain_N_per_m": 150.0,
+            "estimated_normal_load_N": 0.24100866365432744,
+            "vertical_capacity_per_normal_N": 1.2,
+            "estimated_horizontal_load_N": 0.24100866365432744
+          },
+          "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+        },
+        "sweep_samples": 512,
+        "selected_finger_margin_m": 0.0
+      },
+      "duration_s": 15.028,
+      "outcome": {
+        "world": 0,
+        "hold_duration_sim_s": 1.0,
+        "maximum_rise_m": 0.04417800960149705,
+        "minimum_held_rise_m": 0.04374642726983964,
+        "maximum_hold_slip_m": 0.000310409814119339,
+        "bilateral_hold": true,
+        "maximum_hold_linear_speed_m_s": 0.0003118752792943269,
+        "maximum_hold_angular_speed_rad_s": 5.74460718780756e-05,
+        "maximum_upright_angle_rad": 0.003201875602826476,
+        "forbidden_contact": false,
+        "success": true
+      },
+      "cpu_outcome": {
+        "world": 0,
+        "hold_duration_sim_s": 1.0,
+        "maximum_rise_m": 0.04417864594267806,
+        "minimum_held_rise_m": 0.043745365961306695,
+        "maximum_hold_slip_m": 0.0003121031123060475,
+        "bilateral_hold": true,
+        "maximum_hold_linear_speed_m_s": 0.0003128959805502426,
+        "maximum_hold_angular_speed_rad_s": 4.286099301810724e-05,
+        "maximum_upright_angle_rad": 0.0031635264529008495,
+        "forbidden_contact": false,
+        "success": true
+      }
+    },
+    {
+      "index": 1,
+      "reference": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\canonical-reference-970201-headless-ad248b4d06c54f79a2147914ba221661",
+      "recording_sha256": "130aa8f18cf5de339089bfcdf4918ebc5547e08834a495f9c14434eab5ab2a73",
+      "parameters": [
+        2.9480814933776855,
+        0.23596715927124023,
+        0.31204405426979065
+      ],
+      "geometry_valid": true,
+      "geometry": {
+        "duration_s": 15.028,
+        "source_xy_m": [
+          0.26355,
+          -0.08715
+        ],
+        "target_source": "camera-derived reference diagnostic",
+        "native_ik": true,
+        "geometry": {
+          "part": "head",
+          "geom": "white_pawn_e2_head",
+          "radius_m": 0.008,
+          "head_edge_fraction": null,
+          "effective_radius_m": 0.008,
+          "pad_center_height_offset_m": 0.0,
+          "tcp_z_m": 0.042,
+          "aperture_m": -0.010047780000000008,
+          "closing_target_m": -0.01465448441389085,
+          "closing_interference_m": 0.0016067044138908387,
+          "model_load_estimate": {
+            "factor": 2.9480814933776855,
+            "weight_N": 0.1962,
+            "friction_lower_bound": 1.2,
+            "finger_gain_N_per_m": 150.0,
+            "estimated_normal_load_N": 0.2410056620836258,
+            "vertical_capacity_per_normal_N": 1.2,
+            "estimated_horizontal_load_N": 0.2410056620836258
+          },
+          "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+        },
+        "sweep_samples": 512,
+        "selected_finger_margin_m": 0.0
+      },
+      "duration_s": 15.028,
+      "outcome": {
+        "world": 1,
+        "hold_duration_sim_s": 1.0,
+        "maximum_rise_m": 0.04417958673629062,
+        "minimum_held_rise_m": 0.04374800440463321,
+        "maximum_hold_slip_m": 0.000310409814119339,
+        "bilateral_hold": true,
+        "maximum_hold_linear_speed_m_s": 0.0003118636377621442,
+        "maximum_hold_angular_speed_rad_s": 3.9118116546887904e-05,
+        "maximum_upright_angle_rad": 0.0018269814318045974,
+        "forbidden_contact": false,
+        "success": true
+      },
+      "cpu_outcome": {
+        "world": 0,
+        "hold_duration_sim_s": 1.0,
+        "maximum_rise_m": 0.04417998149380843,
+        "minimum_held_rise_m": 0.04374670234782817,
+        "maximum_hold_slip_m": 0.0003121026143643596,
+        "bilateral_hold": true,
+        "maximum_hold_linear_speed_m_s": 0.00031289433327115723,
+        "maximum_hold_angular_speed_rad_s": 2.2838025748140227e-05,
+        "maximum_upright_angle_rad": 0.0017963095682771272,
+        "forbidden_contact": false,
+        "success": true
+      }
+    }
+  ],
+  "after": [
+    {
+      "index": 0,
+      "reference": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\canonical-recorded-hold-73d79eb2045643e3a3f9851c7cf6ca19",
+      "recording_sha256": "40056f5e570ade042bc6851adec69d9e665f931b21f5b1b1191a2c9c15d88007",
+      "parameters": [
+        2.9392409324645996,
+        0.23829251527786255,
+        0.3166761100292206
+      ],
+      "geometry_valid": true,
+      "geometry": {
+        "duration_s": 14.832,
+        "source_xy_m": [
+          0.2625,
+          -0.08820000000000001
+        ],
+        "target_source": "camera-derived reference diagnostic",
+        "native_ik": true,
+        "geometry": {
+          "part": "head",
+          "geom": "white_pawn_e2_head",
+          "radius_m": 0.008,
+          "head_edge_fraction": null,
+          "effective_radius_m": 0.008,
+          "pad_center_height_offset_m": 0.0,
+          "tcp_z_m": 0.042,
+          "aperture_m": -0.010047780000000008,
+          "closing_target_m": -0.014649666308193214,
+          "closing_interference_m": 0.0016018863081932071,
+          "model_load_estimate": {
+            "factor": 2.9392409324645996,
+            "weight_N": 0.1962,
+            "friction_lower_bound": 1.2,
+            "finger_gain_N_per_m": 150.0,
+            "estimated_normal_load_N": 0.24028294622898105,
+            "vertical_capacity_per_normal_N": 1.2,
+            "estimated_horizontal_load_N": 0.24028294622898105
+          },
+          "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+        },
+        "sweep_samples": 512,
+        "selected_finger_margin_m": 0.0
+      },
+      "duration_s": 14.832,
+      "outcome": {
+        "world": 0,
+        "hold_duration_sim_s": 1.0,
+        "maximum_rise_m": 0.044224575730227825,
+        "minimum_held_rise_m": 0.043796044411324855,
+        "maximum_hold_slip_m": 0.00031040608882904053,
+        "bilateral_hold": true,
+        "maximum_hold_linear_speed_m_s": 0.0003119190805591643,
+        "maximum_hold_angular_speed_rad_s": 5.788127600681037e-05,
+        "maximum_upright_angle_rad": 0.00322043732739985,
+        "forbidden_contact": false,
+        "success": true
+      },
+      "cpu_outcome": {
+        "world": 0,
+        "hold_duration_sim_s": 1.0,
+        "maximum_rise_m": 0.044226145636290334,
+        "minimum_held_rise_m": 0.043795892839112546,
+        "maximum_hold_slip_m": 0.0003121396418389183,
+        "bilateral_hold": true,
+        "maximum_hold_linear_speed_m_s": 0.0003129400367306921,
+        "maximum_hold_angular_speed_rad_s": 4.353449386859483e-05,
+        "maximum_upright_angle_rad": 0.0032110369803162,
+        "forbidden_contact": false,
+        "success": true
+      }
+    },
+    {
+      "index": 1,
+      "reference": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\canonical-reference-970201-headless-ad248b4d06c54f79a2147914ba221661",
+      "recording_sha256": "130aa8f18cf5de339089bfcdf4918ebc5547e08834a495f9c14434eab5ab2a73",
+      "parameters": [
+        2.9392075538635254,
+        0.2382853627204895,
+        0.31665346026420593
+      ],
+      "geometry_valid": true,
+      "geometry": {
+        "duration_s": 14.832,
+        "source_xy_m": [
+          0.26355,
+          -0.08715
+        ],
+        "target_source": "camera-derived reference diagnostic",
+        "native_ik": true,
+        "geometry": {
+          "part": "head",
+          "geom": "white_pawn_e2_head",
+          "radius_m": 0.008,
+          "head_edge_fraction": null,
+          "effective_radius_m": 0.008,
+          "pad_center_height_offset_m": 0.0,
+          "tcp_z_m": 0.042,
+          "aperture_m": -0.010047780000000008,
+          "closing_target_m": -0.014649648116855632,
+          "closing_interference_m": 0.0016018681168556217,
+          "model_load_estimate": {
+            "factor": 2.9392075538635254,
+            "weight_N": 0.1962,
+            "friction_lower_bound": 1.2,
+            "finger_gain_N_per_m": 150.0,
+            "estimated_normal_load_N": 0.24028021752834325,
+            "vertical_capacity_per_normal_N": 1.2,
+            "estimated_horizontal_load_N": 0.24028021752834325
+          },
+          "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+        },
+        "sweep_samples": 512,
+        "selected_finger_margin_m": 0.0
+      },
+      "duration_s": 14.832,
+      "outcome": {
+        "world": 1,
+        "hold_duration_sim_s": 1.0,
+        "maximum_rise_m": 0.044225374279349014,
+        "minimum_held_rise_m": 0.043796842960446045,
+        "maximum_hold_slip_m": 0.00031040608882904053,
+        "bilateral_hold": true,
+        "maximum_hold_linear_speed_m_s": 0.00031190234585665166,
+        "maximum_hold_angular_speed_rad_s": 3.7596670154016465e-05,
+        "maximum_upright_angle_rad": 0.0017605233006179333,
+        "forbidden_contact": false,
+        "success": true
+      },
+      "cpu_outcome": {
+        "world": 0,
+        "hold_duration_sim_s": 1.0,
+        "maximum_rise_m": 0.044227625652003486,
+        "minimum_held_rise_m": 0.04379737372164565,
+        "maximum_hold_slip_m": 0.0003121391225753972,
+        "bilateral_hold": true,
+        "maximum_hold_linear_speed_m_s": 0.000312938349352621,
+        "maximum_hold_angular_speed_rad_s": 2.352647135500155e-05,
+        "maximum_upright_angle_rad": 0.0018478686031385512,
+        "forbidden_contact": false,
+        "success": true
+      }
+    }
+  ],
+  "checkpoint_sha256": "f56f6e2d0c0e36539cc78748393b8e5d39b6578692b5fbe13ef668ff01ee9428",
+  "limitations": [
+    "One training reference and one excluded validation reference; no reliability/generalization claim.",
+    "Frozen signed camera geometry; simulator truth only reset/reward/safety/evaluation.",
+    "No low-level trajectory policy, occupied-board entry, placement or camera-only success verification.",
+    "GPU physics subprocess and CPU/optional-CUDA PyTorch updates; no end-to-end acceleration claim."
+  ],
+  "process_wall_s": 65.40961219999008,
+  "request_sha256": "c700a8dd6939ae05238a92924fb76f97ff4b5114925c120c9587704f30792f42"
+}

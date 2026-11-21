@@ -244,3 +244,109 @@ Split future training/test data by reference/run. The configured camera can be
 occluded by the robot; these images alone do not establish a visual grasp verifier.
 No BC/RL accuracy, crowded-board success or hardware readiness follows from export.
 See [S060](../../docs/adrs/S060-camera-command-demonstration-boundary.md).
+
+## Shared Stage A BC/PPO parameter-policy pilot
+
+This experimental learner uses **ac:vision-derived features**, not raw RGB or
+measured object/joint positions. One shared PyTorch MLP actor/critic selects the
+same three parameters as CEM; native ac:motion generates and screens the resulting
+trajectory. Each independent GPU world executes one complete close/lift/hold
+macro action. It is a contextual bandit (gamma=0), not sequential visual servoing.
+The existing reach/temporal camera PPO launchers remain separate.
+
+Use the canonical Python for PyTorch and the isolated GPU Python for physics.
+No Torch install or driver change is needed in the GPU environment. The following
+complete block uses retained local verified fixtures; these ignored run archives
+must exist. A fresh clone must first reproduce the reference/CEM/export steps
+above. Run from the repository root:
+
+```powershell
+$py = '.\simulation\mujoco\.venv\Scripts\python.exe'
+$gpuPy = '.\simulation\mujoco\accelerated\.venv\Scripts\python.exe'
+$config = 'simulation/mujoco/examples/qualify_hybrid_approach/runs/solver-comparison-daeb5509116a43e5a1f770f39e44367d/elliptic10/environment.json'
+$trainReference = 'simulation/mujoco/examples/qualify_hybrid_approach/runs/canonical-recorded-hold-73d79eb2045643e3a3f9851c7cf6ca19'
+$validationReference = 'simulation/mujoco/examples/qualify_hybrid_approach/runs/canonical-reference-970201-headless-ad248b4d06c54f79a2147914ba221661'
+$trainDemo = 'simulation/mujoco/accelerated/runs/EXP-0007/RUN-demonstration-970200-6b62b8d8e83d49c28d94ff6b6f713456'
+$validationDemo = 'simulation/mujoco/accelerated/runs/EXP-0007/RUN-demonstration-970201-headless-303fa156cbfb4b008bb0c9a1b033f3a7'
+$expert = 'simulation/mujoco/accelerated/runs/EXP-0006/RUN-cem-bound-reference-9a4e243004dd43359c6d5c4db64c6898/report.json'
+& $py -u -B simulation/mujoco/accelerated/train_parameters.py `
+  --config $config --training-reference $trainReference --validation-reference $validationReference `
+  --training-demo $trainDemo --validation-demo $validationDemo --expert $expert `
+  --gpu-python $gpuPy --updates 3 --population 8 --max-wall-s 600
+& $py -B -m pytest simulation/mujoco/accelerated/tests/test_parameter_policy.py -q
+```
+
+`--population 8` means eight independent physics worlds sampling **one shared
+policy**, not eight networks. `--updates 3` bounds training to 24 complete macro
+episodes, plus four deterministic pre/post evaluation episodes. `--bc-epochs 100`
+fits the actor mean to the verified expert before PPO; `--ppo-epochs 4` caps gradient
+passes over each batch. `--stagnation-updates 3` uses training reward only.
+Neither optimizer epochs nor macro episodes are low-level physics steps.
+
+The small network defaults to CPU (`--device cuda` is available); batched physics
+runs on CUDA regardless. This initial process/host boundary deliberately preserves
+the environments and is included in wall time. It is not an end-to-end GPU-resident
+training-speed claim. Each batch also has `--batch-wall-s` and `--max-gpu-mib` budgets.
+
+After a successful final training-reference action, the default exports its
+demonstration and opens a bounded separate Watch replay. Its overlay identifies
+**replay**, rather than live optimizer sampling. `--headless` suppresses that
+presentation. Unsafe/rejected final actions are reported instead of replayed as
+successful. This does not render every parallel environment.
+
+Fresh EXP-0008 runs retain `bc-metrics.csv`, `training-metrics.csv`, `episodes.csv`,
+every batch's action requests/geometric failures/physics NPZ and reports, exact
+source snapshots, and `checkpoint-N.pt`/`policy.pt` with model, Adam and Torch RNG.
+`before/` and `after/` contain separate GPU/CPU physical outcomes for training and
+excluded validation references. Validation never controls gradients or stopping.
+To continue, repeat the same full block with `--resume <prior-run>/policy.pt` and
+a fresh output; identity checks bind inputs, schema, source and device. Continuation
+restores optimizer/RNG but starts fresh independent physics episodes.
+
+The actor sees 12 features: camera source XY, six issued entry actuator commands,
+and four encoded source/target square coordinates. It is a 64/64 Tanh MLP, not a
+CNN. Three tanh-Gaussian action outputs select load, closure-rate and lift-rate.
+The critic predicts immediate macro reward. Failed geometry, forbidden contacts
+or failed held lifts receive -100; success receives 10 minus duration/slip costs.
+PPO uses clipped likelihood ratios, value loss and explicitly labeled base-Gaussian
+entropy. Loss reduction never substitutes for the physical success checks.
+
+Only one training reference and one excluded validation reference are currently
+available in this recipe. This tests integration and shared updates, not learned
+generalization or a reliability rate. Camera geometry is frozen at entry. Arbitrary
+approach/height/wrist discovery, crowded entry, online visual success verification,
+transfer/placement and hardware calibration remain open. See
+[S061](../../docs/adrs/S061-shared-parameter-policy-stage-a.md).
+
+Frozen-policy evaluation on another **successfully camera-localized recorded
+native entry**, without BC or PPO updates:
+
+```powershell
+$policy = 'simulation/mujoco/accelerated/reports/EXP-0008/policy-update-4.pt'
+$newReference = 'simulation/mujoco/examples/qualify_hybrid_approach/runs/canonical-reference-970202-efbc93c959ff41d2b7a4659920b3307f'
+& $py -u -B simulation/mujoco/accelerated/evaluate_policy.py `
+  --config $config --checkpoint $policy --references $newReference --gpu-python $gpuPy --max-wall-s 180
+```
+
+This adapter reads camera XY from the signed native reference and **only the
+issued control command** from its command-history recording. It never queries
+measured joint/object coordinates for actor inference; a regression test changes
+all actual qpos/qvel while requiring identical actor context. The same command
+history can be logged by a hardware controller. Physical state initializes the
+evaluation world separately. Fresh outputs contain `inference.json`, exact
+parameter requests and GPU/CPU outcome reports. `--references` accepts up to
+sixteen declared entries. A recorded successful entry is a conditional starting
+fixture, not proof that the policy can independently approach or acquire it.
+
+Regenerate unsmoothed training figures with canonical Python/Matplotlib:
+
+```powershell
+$pilotRun = 'simulation/mujoco/accelerated/runs/EXP-0008/RUN-shared-parameter-pilot-997924736f9a4b7b89f699d265629d24'
+$resumeRun = 'simulation/mujoco/accelerated/runs/EXP-0008/RUN-shared-parameter-resume-2644d927be2b4f83936aee61708f8862'
+$figureOutput = Join-Path 'simulation/mujoco/accelerated/runs/EXP-0008' ('RUN-figure-' + [guid]::NewGuid().ToString('N'))
+& $py -B simulation/mujoco/accelerated/plot_parameters.py --runs $pilotRun $resumeRun --output $figureOutput
+```
+
+The fresh folder contains FIG-0004 in SVG/PDF/PNG plus source hashes. Curves use
+raw BC/PPO/episode CSV and CPU evaluation reports; no smoothing, confidence
+interval or independent-reliability inference is added to this tiny pilot.

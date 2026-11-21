@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "experiment": "EXP-0008",
+  "status": "PARAMETER_BATCH_EVALUATED",
+  "model_sha256": "a88b0cdb6c2ac529d443f2bc695d4b94cf8306c2debd81838d06eda6f0790da7",
+  "actions_sha256": "2d948fc21e19df6f90d32c03b45c0d94390236014e855c53af8f6cf2185dffc2",
+  "records": [
+    {
+      "index": 0,
+      "reference": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\qualify_hybrid_approach\\runs\\canonical-reference-970202-efbc93c959ff41d2b7a4659920b3307f",
+      "recording_sha256": "3ac02ec4aa0e47d9332801f54b28fd1fd01e2be4bdc7f3e746187cbc718c755f",
+      "parameters": [
+        2.939033269882202,
+        0.23826700448989868,
+        0.3166656792163849
+      ],
+      "geometry_valid": true,
+      "geometry": {
+        "duration_s": 14.832,
+        "source_xy_m": [
+          0.26355,
+          -0.08785000000000001
+        ],
+        "target_source": "camera-derived reference diagnostic",
+        "native_ik": true,
+        "geometry": {
+          "part": "head",
+          "geom": "white_pawn_e2_head",
+          "radius_m": 0.008,
+          "head_edge_fraction": null,
+          "effective_radius_m": 0.008,
+          "pad_center_height_offset_m": 0.0,
+          "tcp_z_m": 0.042,
+          "aperture_m": -0.010047780000000008,
+          "closing_target_m": -0.014649553132085808,
+          "closing_interference_m": 0.0016017731320858003,
+          "model_load_estimate": {
+            "factor": 2.939033269882202,
+            "weight_N": 0.1962,
+            "friction_lower_bound": 1.2,
+            "finger_gain_N_per_m": 150.0,
+            "estimated_normal_load_N": 0.24026596981287004,
+            "vertical_capacity_per_normal_N": 1.2,
+            "estimated_horizontal_load_N": 0.24026596981287004
+          },
+          "assumptions": "experimental Coulomb/static-servo approximation; not measured hardware force"
+        },
+        "sweep_samples": 512,
+        "selected_finger_margin_m": 0.0
+      },
+      "duration_s": 14.832,
+      "outcome": {
+        "world": 0,
+        "hold_duration_sim_s": 1.0,
+        "maximum_rise_m": 0.04422044447496799,
+        "minimum_held_rise_m": 0.04379191688135532,
+        "maximum_hold_slip_m": 0.00031040608882904053,
+        "bilateral_hold": true,
+        "maximum_hold_linear_speed_m_s": 0.0003119304310530424,
+        "maximum_hold_angular_speed_rad_s": 9.620709897717461e-05,
+        "maximum_upright_angle_rad": 0.005725612863898277,
+        "forbidden_contact": false,
+        "success": true
+      },
+      "cpu_outcome": {
+        "world": 0,
+        "hold_duration_sim_s": 1.0,
+        "maximum_rise_m": 0.044223163619751406,
+        "minimum_held_rise_m": 0.04379290464122622,
+        "maximum_hold_slip_m": 0.0003121434116195865,
+        "bilateral_hold": true,
+        "maximum_hold_linear_speed_m_s": 0.000312948503332237,
+        "maximum_hold_angular_speed_rad_s": 8.518742899651496e-05,
+        "maximum_upright_angle_rad": 0.005618066980314208,
+        "forbidden_contact": false,
+        "success": true
+      }
+    }
+  ],
+  "telemetry": {
+    "gpu_rollout_wall_s": 3.530458200009889,
+    "health": {
+      "overflow": [
+        0
+      ],
+      "nacon": 2,
+      "nefc": [
+        9
+      ],
+      "naconmax": 128,
+      "njmax": 512,
+      "warp_pool_bytes": 16248051
+    },
+    "cumulative_flags": [
+      0
+    ]
+  },
+  "verify_cpu": true,
+  "scope": "frozen neural policy on declared camera references; no optimization or training",
+  "process_wall_s": 21.975707300007343,
+  "request_sha256": "51cf89240b9500f572449dcc48466a497dd42f71d518b9a2c173f83c1eeb8414",
+  "policy_checkpoint_sha256": "f56f6e2d0c0e36539cc78748393b8e5d39b6578692b5fbe13ef668ff01ee9428",
+  "actor_context_source": "inference.json"
+}
