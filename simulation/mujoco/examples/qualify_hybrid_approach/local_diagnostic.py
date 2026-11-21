@@ -94,6 +94,26 @@ def diagnostic_xy_bounds(source, entry, half_width, step_travel):
             np.maximum(source+half_width, entry+step_travel))
 
 
+def hold_grasp(supervisor, identity, dwell, record):
+    """Evaluate sustained simulation contact; never feed this into a command."""
+    if type(dwell) is not int or dwell <= 0:
+        raise ValueError('Positive integer dwell required')
+    streak, samples = 0, []
+    for _ in range(2*dwell):
+        action = [0.]*5
+        result = supervisor.qualification_step(action, phase='GRASPING')
+        record('HOLD_CLOSE', action, result)
+        if result['status'] != 'EXECUTED_SIMULATION':
+            return dict(confirmed=False, failure=result, samples=samples, required_consecutive=dwell)
+        contact = bool(supervisor.feedback.grip_contacts(identity))
+        settled = bool(supervisor.feedback.settled(identity))
+        streak = streak+1 if contact and settled else 0
+        samples.append(dict(bilateral_contact=contact, settled=settled, consecutive=streak))
+        if streak >= dwell:
+            return dict(confirmed=True, samples=samples, required_consecutive=dwell)
+    return dict(confirmed=False, samples=samples, required_consecutive=dwell)
+
+
 def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisions=1000,
                          grasp_part='stem', closing_load_factor=None, lift_speed_fraction=1.,
                          head_edge_fraction=None, diagnostic_wrist_rad=None):
@@ -196,10 +216,11 @@ def run_local_diagnostic(scene, plan, approach, output, *, observer, max_decisio
                     return finish()
             Image.fromarray(scene.render()).save(output/f'camera-local-{name.lower()}.png')
             if name == 'CLOSE':
-                report['grasp_success'] = bool(supervisor.feedback.grip_contacts(scene.config['piece'])
-                                              and supervisor.feedback.settled(scene.config['piece']))
+                report['initial_bilateral_contact'] = bool(supervisor.feedback.grip_contacts(scene.config['piece']))
+                report['grasp_hold'] = hold_grasp(supervisor, scene.config['piece'], scene.dwell, record)
+                report['grasp_success'] = report['grasp_hold']['confirmed']
                 if not report['grasp_success']:
-                    report['status'] = 'GRASP_NOT_CONFIRMED_IN_SIMULATION'
+                    report['status'] = 'GRASP_HOLD_NOT_CONFIRMED_IN_SIMULATION'
                     return finish()
         report['measured_lift_m'] = float(sim.data.xpos[body, 2])-initial_z
         report['lift_success'] = bool(report['grasp_success'] and report['measured_lift_m'] >= scene.piece_height

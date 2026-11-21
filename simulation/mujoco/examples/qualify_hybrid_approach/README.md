@@ -178,6 +178,14 @@ created. Inspect `local-report.json`, `local-decisions.jsonl` and
 
 See [S047](../../../docs/adrs/S047-upper-sphere-pad-edge-grasp-diagnostic.md).
 
+After closure, the diagnostic holds the issued command and requires bilateral
+contact plus settled feedback for `dwell_steps` consecutive decisions, within a
+budget of twice that window. `initial_bilateral_contact` is separate from
+`grasp_success`; a brief contact no longer counts as a sustained grasp. Inspect
+`grasp_hold` and the `HOLD_CLOSE` trace before interpreting a lift attempt.
+These are simulation-only outcome checks, not actor inputs or hardware grasp
+verification. See [S048](../../../docs/adrs/S048-settled-grasp-hold-before-lift.md).
+
 To use the exact approach configuration of a prepared planner-started reach
 fixture (entry offsets, preshape, live registration and corridor screen), pass
 `--configured-approach`. This calls the existing native handoff and saves

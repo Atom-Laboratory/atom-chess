@@ -343,6 +343,32 @@ def test_upper_head_edge_uses_command_geometry_and_tilted_contact_load(superviso
                               head_edge_fraction=.5, command=command)
 
 
+@pytest.mark.parametrize('contacts,confirmed,count', [
+    ([True, False, True, True, True], True, 5),
+    ([True, False, True, False, True, False], False, 6),
+])
+def test_grasp_hold_requires_consecutive_settled_contacts(contacts, confirmed, count):
+    import importlib.util
+    path = Path(__file__).resolve().parents[1]/'examples/qualify_hybrid_approach/local_diagnostic.py'
+    spec = importlib.util.spec_from_file_location('hold_diagnostic', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    supervisor = SimpleNamespace(qualification_step=Mock(return_value={'status':'EXECUTED_SIMULATION'}),
+        feedback=SimpleNamespace(grip_contacts=Mock(side_effect=contacts), settled=Mock(return_value=True)))
+    record = Mock()
+    result = module.hold_grasp(supervisor, 'white_pawn_e2', 3, record)
+    assert result['confirmed'] is confirmed
+    assert supervisor.qualification_step.call_count == count
+    assert record.call_count == count
+    for call in supervisor.qualification_step.call_args_list:
+        assert call.args == ([0.]*5,) and call.kwargs == {'phase':'GRASPING'}
+    supervisor.qualification_step.reset_mock()
+    supervisor.qualification_step.return_value = {'status':'STOPPED', 'category':'TEST_FAULT'}
+    result = module.hold_grasp(supervisor, 'white_pawn_e2', 3, record)
+    assert not result['confirmed'] and result['failure']['category'] == 'TEST_FAULT'
+    assert supervisor.qualification_step.call_count == 1
+
+
 def test_contact_closure_is_not_confused_with_arm_tracking_failure(supervisor):
     sim = supervisor.sim
     target = supervisor.scene.command.copy()
