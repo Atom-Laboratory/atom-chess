@@ -1,0 +1,520 @@
+{
+  "schema": 1,
+  "mujoco_version": "3.17.0",
+  "image_size": [
+    1920,
+    1440
+  ],
+  "camera_distance_m": 1.05,
+  "executable_sha256": "f035ad0995190fdd9c8afa730c4f817dba440da9217fd9af34387a97894736b7",
+  "layout_provenance": "experimental simulated 280mm board; measure real installation",
+  "geometry_only": false,
+  "layout_sha256": "f43edd499846a4db6c1f815b19812fb94f1895a65dedae6979ed8ce1a9051274",
+  "source_model_sha256": "2b439e465a9f048ed49df4d681a965650a5a1347f728c2b04cba9c4a935b6b59",
+  "results": [
+    {
+      "case": "empty-265-65",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "a11e4ee5d0dfc2906159c5efafcf8b78ace6fabd02c7970c92e36f02f7e5d0e3",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 0,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:5c9fa2c5839f8b42"
+    },
+    {
+      "case": "empty-265-75",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "4c0b9e05a31355b4ab7ee3f0f05eea146dee00f364e8004fc39a6e4452996bab",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 0,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:e36741b0a74d8ab0"
+    },
+    {
+      "case": "empty-265-85",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "c13ae72458a13e7e1a1c536fe2d23a22b4d3404b6945dc15da9b600f432e1c3f",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 0,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:afd608a98a999f7f"
+    },
+    {
+      "case": "empty-270-65",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "fd17b9bebaf5ecc2e5e8f6df4880f37df97b153b6b738241258b9b38803ad2b3",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 0,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:004d8ed86839e3cb"
+    },
+    {
+      "case": "empty-270-75",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "4138b3fb84d6f3436f56eb3793d916012a789a743d329ec9a7cd3771cb9d2f5f",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 0,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:741985e70ac88a95"
+    },
+    {
+      "case": "empty-270-85",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "5eebcdd4f0a7c404c5c87be25c56ea009d8ea8ac612983846d01bc835d760575",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 0,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:5aaa5caab6f49df6"
+    },
+    {
+      "case": "empty-275-65",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "ff608a635cd64fcf94fcd8be9efd82ac4a720c70327cc28cd5eed4d97368786a",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 0,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:9c96b682a57e5f69"
+    },
+    {
+      "case": "empty-275-75",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "6f01522bb7de26dbfad0fe530b996ea3ccd474e02292176e3be921373f922b42",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 0,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:e9c738dcfcac9da1"
+    },
+    {
+      "case": "empty-275-85",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "4f5df0658537bd36f25d9335794983013b32031c38e8abed88d2ce795ceb85eb",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 0,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:8f3691ccc972ac56"
+    },
+    {
+      "case": "initial-265-65",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "d1e19d1fdd873280f682decc5c801f4bea215202888f12336546fe72e769fcd7",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:5c9fa2c5839f8b42"
+    },
+    {
+      "case": "initial-265-75",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "b03139eb075b7b36ecfc2cd96aed5f44d7776ca9cad9390bad6c0f6a3a6943d1",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:e36741b0a74d8ab0"
+    },
+    {
+      "case": "initial-265-85",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "6bf042a853e5e9f664257f605a5ccc82458fa523d620fc417a1d5377a95ec238",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:afd608a98a999f7f"
+    },
+    {
+      "case": "initial-270-65",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "f0708db1c6f30a39611c9609e1cfdfac5878c023e933796ac4299e7afa4ef8a3",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:004d8ed86839e3cb"
+    },
+    {
+      "case": "initial-270-75",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "9e210189ac75f4d76f9857d10ab385bd37c9920bb233c2da4b3e5e802a951300",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:741985e70ac88a95"
+    },
+    {
+      "case": "initial-270-85",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "4795d382c47a6c9ea2ecaeef4604549776c47fb157b07f979a191c1e188447d2",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:5aaa5caab6f49df6"
+    },
+    {
+      "case": "initial-275-65",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "0a926e73a5589918a22869e77fd10e7c81512a07fc0ce5e92b4e7ee43eef683b",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:9c96b682a57e5f69"
+    },
+    {
+      "case": "initial-275-75",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "011dcd381a4f6d42b929131eb83c58ed5073f820c61df65efc19552922a1a4f7",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:e9c738dcfcac9da1"
+    },
+    {
+      "case": "initial-275-85",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "7cc4c4ebeef3a9e2a2ce58aa04ce0527883c0677f1873fc721d06228bcf30d7b",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:8f3691ccc972ac56"
+    },
+    {
+      "case": "offset-265-65",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "6b4d8972a17d9002f84d299ead2452e89aa701f1bf0304f63027c6e6bd6fcb1f",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:5c9fa2c5839f8b42"
+    },
+    {
+      "case": "offset-265-75",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "f59a1f46972135f3a0d0975b1f724e204b772c0b920fc28a4e77a24e0b06bf30",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:e36741b0a74d8ab0"
+    },
+    {
+      "case": "offset-265-85",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "5c19e00bf5d01b14cd6a7f1354f870551e72de559304752de2b328a0a4025a15",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:afd608a98a999f7f"
+    },
+    {
+      "case": "offset-270-65",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "f7c2c7f419b6fe1069c26b706741846f530c46c08d94f8c533f70e9190269f52",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:004d8ed86839e3cb"
+    },
+    {
+      "case": "offset-270-75",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "1f092fd660fa2e935d9a0753be3c4a390f15bb715de167be69410afdf632a5b9",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:741985e70ac88a95"
+    },
+    {
+      "case": "offset-270-85",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "23d76c5c2d0fceb5f7cd83a3c613c75fe20988d56f2a137d779f60881bcda235",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:5aaa5caab6f49df6"
+    },
+    {
+      "case": "offset-275-65",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "2a462487c130d6665a4f449671cfe0b354d8e72536f9629dea3ed86bbf392c47",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:9c96b682a57e5f69"
+    },
+    {
+      "case": "offset-275-75",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "df6ddf87acdc98542b489f8791e22c952b33891ea952268ffecf4c2c89e43131",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:e9c738dcfcac9da1"
+    },
+    {
+      "case": "offset-275-85",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "38b28e3b845e9a473638a17fb9d2304eb0eae67b11d86209348f43b7ead16a07",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 32,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:8f3691ccc972ac56"
+    },
+    {
+      "case": "relocated-265-65",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "001e431f087bdcd3bc057d674becda621d8541311a92b556060709ed96316ab0",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 2,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:5c9fa2c5839f8b42"
+    },
+    {
+      "case": "relocated-265-75",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "4cb3ae8b6bcd4531798c961c5411813397ba8beae3e9bac918e5e880e1c881cc",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 2,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:e36741b0a74d8ab0"
+    },
+    {
+      "case": "relocated-265-85",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "a0e78be3c71c069ba252742cc4cd90e64b96db9d77745bbce809a5d8c45e4306",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 2,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:afd608a98a999f7f"
+    },
+    {
+      "case": "relocated-270-65",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "d69cdb2f4ea75c08e76a48f21433451457391864bc296f897508d00a0175ceb4",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 2,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:004d8ed86839e3cb"
+    },
+    {
+      "case": "relocated-270-75",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "400743e4089fac01d1777f3e8cc3f264fae8e0aac8642a8d353b4b516cddc239",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 2,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:741985e70ac88a95"
+    },
+    {
+      "case": "relocated-270-85",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "a7d417aca5d3efaa5b99173a5736d93c070dd841240f9dee6293fe18cb88a2c7",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 2,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:5aaa5caab6f49df6"
+    },
+    {
+      "case": "relocated-275-65",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "10676171d80480d8e320680202a34b5a78b308bbd219a366e0ff35017c78a06b",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 2,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:9c96b682a57e5f69"
+    },
+    {
+      "case": "relocated-275-75",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "e117d3eb1f963e003b4f1a9d94a8a8a0eff61308400bc1e37583228bba6a4b44",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 2,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:e9c738dcfcac9da1"
+    },
+    {
+      "case": "relocated-275-85",
+      "orientation": "unknown",
+      "detected": false,
+      "image_sha256": "efebb3a3e9e6798dfbfb6f36a8a2119653bb79e55cdaccfdfc0c8041fcf557af",
+      "foreground_status": "reference_unavailable",
+      "foreground": {
+        "expected": 2,
+        "matched": 0,
+        "unmatched_squares": [],
+        "error_mm_by_square": {}
+      },
+      "empty_board_image_id": "fnv1a64:8f3691ccc972ac56"
+    }
+  ]
+}

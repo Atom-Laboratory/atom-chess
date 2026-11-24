@@ -11,7 +11,12 @@ endif()
 
 # ROS2/ament packaging is optional for the MVP. The reusable motion core must
 # build on a plain Linux SBC without requiring a ROS2 installation.
-find_package(ament_cmake QUIET)
+# A repository build consumes motion as an ordinary CMake target. Discovering
+# ament just because ROS was sourced must not turn that build into an export of
+# motion without its acchess dependency. Standalone ROS packaging is separate.
+if(PROJECT_IS_TOP_LEVEL)
+  find_package(ament_cmake QUIET)
+endif()
 
 add_library(${PROJECT_NAME} STATIC
   src/motion_planner.cpp
@@ -86,7 +91,7 @@ endif()
 
 # Keep ROS2 package export/install support when ament is available, but do not
 # make ROS2 a prerequisite for the SBC-hosted MVP core.
-if(ament_cmake_FOUND)
+if(PROJECT_IS_TOP_LEVEL AND ament_cmake_FOUND)
   ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
   ament_export_include_directories(include)
 
@@ -105,4 +110,13 @@ if(ament_cmake_FOUND)
   )
 
   ament_package()
+endif()
+
+option(ACMOTION_NATIVE_RUNTIME "Build the camera-RL motion C ABI" OFF)
+if(ACMOTION_NATIVE_RUNTIME)
+  add_library(motion_runtime SHARED runtime/motion_runtime.cpp)
+  target_link_libraries(motion_runtime PRIVATE motion)
+  set_target_properties(motion_runtime PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 endif()

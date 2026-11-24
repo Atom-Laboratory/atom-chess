@@ -1,0 +1,181 @@
+{
+  "mode": "smoke",
+  "seed": 7,
+  "requested_steps": 128,
+  "episodes": 1,
+  "environment": {
+    "environment_version": 1,
+    "configuration": {
+      "schema": 1,
+      "bundle": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece",
+      "vision_library": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p038-core\\bin\\Release\\acvision_runtime.dll",
+      "motion_library": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p038-core\\bin\\Release\\motion_runtime.dll",
+      "layout": "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\reference-layout.json",
+      "piece": "white_pawn_e2",
+      "source": "e4",
+      "target": "e5",
+      "initial_command": [
+        -1.5,
+        0.12,
+        -1.5,
+        0,
+        0
+      ],
+      "camera": {
+        "lookat": [
+          0.245,
+          0.0,
+          0.012
+        ],
+        "distance": 1.05,
+        "azimuth": 270,
+        "elevation": -75,
+        "width": 1920,
+        "height": 1440
+      },
+      "control_repeat": 5,
+      "dwell_steps": 10,
+      "horizon": 240,
+      "max_perception_age_s": 1.0,
+      "model_status": "experimental model geometry; fingertip contact proxies",
+      "reward_weights": {
+        "approach": 0.2,
+        "grasp": 2.0,
+        "lift": 3.0,
+        "transport": 2.0,
+        "placement": 3.0,
+        "success": 10.0,
+        "failure": -5.0,
+        "time": -0.01,
+        "action": -0.001
+      }
+    },
+    "files": {
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p038-core\\bin\\Release\\acvision.dll": "1c5227c6f96ce1ac67cccb5af40132f1eeff1fb656ab0903ff7ab46146b40dbe",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p038-core\\bin\\Release\\acvision_runtime.dll": "a9e40e4666c285a259b71368d59cfdb9014687ce8f89c29b6fad1ee8ae8fa49a",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p038-core\\bin\\Release\\motion_runtime.dll": "7ed8a82e7d023430b20fbc7c813cc80b64d8aeda3348e0e5169bcc2eacd9f578",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\build\\p038-core\\bin\\Release\\opencv_world4120.dll": "0455560c75bc456b5f758c94af653b6f0397ed8a28b9605cf52c62e7c8f18781",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\examples\\train_camera_manipulation.py": "b04539cadb012980cc48b3e45d30f2cf5150d2ce41f0d6f2756c352bf2a76097",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\bishop_visual_lod.obj": "5290c994933b0df5749230ebbf61276fb90496b7b1b2aafb740cac3abdef1da9",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\environment.json": "487ff5b8765dab9ca40fc39dbf184b3c702203ee420cf4620f90859ccfd53bf5",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\gripper_back.stl": "4f582b4950315ab9c77b12fc23022a9b3ba59bc6f7f6c9bb2d3a3c31738bf7a4",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\gripper_hand1.stl": "e60d1aeb67c59edb023a3bfcedad1afb7288a2022c884b918956137159063b5a",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\gripper_hand2.stl": "ff9404c16c6e9fdd919a28ffbf61835c8aab4618bab61e461aac5b3a5fa0edc9",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\king_visual_lod.obj": "45359667806ef172b558c70dc23e1b0bb6eac7e46bfdfeff418e7adfb0af5349",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\knight_visual_lod.obj": "469333354e29639584840aaf6ac077a33fcf199d2de21ab89dfdf59290921f01",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\manifest.json": "38adebe81d9acf72bde10c7d7359e77c2ba8dcd4f4222056f2ddd9703428c4b8",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\marker-0.png": "5d207e3aba499e6cc21729755e00fecdf3ad8d25c870088488487fa40333e911",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\marker-1.png": "1ee29d5335b3ecc5014edb2a87e5e2742be515846f7d0a0c0b1454d2a07c6d24",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\marker-2.png": "9dc17bf61040b0ad642f10f697061da9bf5ab0ff713995e0f8f2733569d399f7",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\marker-3.png": "7b4575c7a35ed8495bcaa7912d7ab12c6b08d83e3afaef9ac566f49ba2ac3100",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\mesh_0.stl": "8c2ee6b9b9d26f0750106270a6ef3f7ce6ad18726cab4a9f6b64287377f199d2",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\mesh_1.stl": "f6fab8b6ca0b782020fdc266d1ea30b21e40ba1ff6a255e159e33dfc72e69728",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\mesh_2.stl": "5fa613e90968f957d2eae04a3644d65353e9941a90754c4c972949f7166cbd11",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\mesh_3.stl": "a9e87a8a7004474e7d09adcd1cdb30056f2cbb0627850fe8f8d36009dad3056d",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\model.xml": "36f9706e8b013916a08df8c6a2d246a4b842fd968f4b3d0e95143fd105fccf8e",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\pawn_visual_lod.obj": "fde2c9b4b5e9237b86013fc01ac7ca11041330188de122f5b42f063e4e418b07",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\queen_visual_lod.obj": "c3b825b8eda82f25636409adc8c9b59d8af9ae64eb151b4a0f4bf24d1ecced1d",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\reference-layout.json": "008f7958239b7d5c582ebe5893264f448fb7191a87df9af31d4e467b2d7ff2f5",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\runs\\p038-single-piece\\rook_visual_lod.obj": "ac4ab980cad4d4eeaa4f2e5154fedcde47b6ab11bf8305b68866f144e46e8931",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\src\\atom_mujoco\\backend.py": "b36814ccf95fad104e8b9c1c20f735536cb586cf99c26f5058fd7d6d8de811f7",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\src\\atom_mujoco\\camera_manipulation_env.py": "23a3c6268a66a208e09497b6ce0add6623d8a63adde86f55109be75db9351021",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\src\\atom_mujoco\\camera_policy.py": "f5c56b86f66fd16e5f6f2957d3ff7b6d25e64390e61d75b04e4b984b2c1e19d2",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\src\\atom_mujoco\\camera_reward.py": "0a6b70dee46b2ace8e0bd12e68b89023fe84e7e36aa989bd1b1bd05d568f8394",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\src\\atom_mujoco\\collision.py": "4771efe7d09f366e604abe4663f9b5605154d953da7e4f31c782cabeaebafaac",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\src\\atom_mujoco\\motion_controller.py": "2df7624978d8e2f137fea5fd4c5c2026ec1b09e6f76627db815693aa9c957132",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\src\\atom_mujoco\\native_motion.py": "af3afc7608ee5a5f10f8c2e60fc384bbd0550121489e20828a8119b28d360c87",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\src\\atom_mujoco\\native_vision.py": "de5fc5746427943f7c56f6f1e188eea6de8cd94609e1a57b8df6e4911a50a887",
+      "F:\\Users\\EHD\\Github\\Atom\\atom-chess\\simulation\\mujoco\\src\\atom_mujoco\\visual_verification.py": "ccca11f359a26201558a1f4fa6fd6596fa38665017af4a2acea021cd62d0f27c"
+    },
+    "geometry": [
+      220.00000000000006,
+      144.53919242563666,
+      -2.0,
+      2.0,
+      -2.675062980040568,
+      3.324937019959432,
+      -100.0,
+      200.0,
+      -0.675062980040568,
+      40.00000000000001,
+      0.0,
+      17.0,
+      -0.021,
+      0.0
+    ],
+    "nominal_world_poses": [
+      [
+        0.2625,
+        -0.0175,
+        0.09775,
+        100.0
+      ],
+      [
+        0.2625,
+        -0.0175,
+        0.03075,
+        100.0
+      ],
+      [
+        0.2625,
+        -0.0175,
+        0.03075,
+        0.0
+      ],
+      [
+        0.2625,
+        -0.0175,
+        0.09775,
+        0.0
+      ],
+      [
+        0.2625,
+        0.0175,
+        0.09775,
+        0.0
+      ],
+      [
+        0.2625,
+        0.0175,
+        0.03075,
+        0.0
+      ],
+      [
+        0.2625,
+        0.0175,
+        0.03075,
+        100.0
+      ],
+      [
+        0.2625,
+        0.0175,
+        0.09775,
+        100.0
+      ]
+    ],
+    "gripper_openings": [
+      -0.012047780000000008,
+      -0.012047780000000008,
+      -0.01554778000000001,
+      -0.01554778000000001,
+      -0.01554778000000001,
+      -0.01554778000000001,
+      -0.012047780000000008,
+      -0.012047780000000008
+    ],
+    "residual_bounds": [
+      0.002,
+      0.002,
+      0.00225,
+      0.001
+    ],
+    "runtime": {
+      "torch": "2.14.1+cu130",
+      "numpy": "2.5.4"
+    },
+    "signature": "bc141b0bc10f130741c048ec0c4504dc9e03107a6b68f00d834cd63c1019a4f0"
+  },
+  "resume": null,
+  "actor": "PPO MultiInputPolicy, P037 RGB/task/commands plus perception-valid mask",
+  "reward": "separate simulation oracle; visual candidates reported separately"
+}

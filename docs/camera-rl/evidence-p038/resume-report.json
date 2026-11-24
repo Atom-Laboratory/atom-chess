@@ -1,0 +1,100 @@
+{
+  "baseline": {
+    "episodes": 1,
+    "success_rate": 1.0,
+    "grasp_rate": 1.0,
+    "placement_rate": 1.0,
+    "failure_rate": 0.0,
+    "records": [
+      {
+        "seed": 100007,
+        "return_value": 19.660792735794942,
+        "success": true,
+        "failure": null,
+        "grasp": true,
+        "lift": true,
+        "placement": true,
+        "collisions": 0,
+        "reward_components": {
+          "approach": 1.116919208410394e-06,
+          "time": -0.01,
+          "action": -0.0,
+          "success": 10.0
+        },
+        "reward_source": "simulation_oracle",
+        "placement_error_m": 0.00036407797941265295,
+        "stable_release_frames": 22,
+        "perception_failure": null,
+        "visual_state": "SOURCE_APPARENTLY_ABSENT",
+        "visual_confirmed": false,
+        "episode_reward_components": {
+          "approach": 0.5807927357949406,
+          "time": -0.9200000000000006,
+          "action": 0.0,
+          "grasp": 2.0,
+          "lift": 3.0,
+          "transport": 2.0,
+          "placement": 3.0,
+          "success": 10.0
+        },
+        "phase": "RETRACT",
+        "episode_steps": 92,
+        "episode_wall_s": 6.597605899999962
+      }
+    ]
+  },
+  "trained_steps": 32,
+  "total_policy_steps": 160,
+  "weights_before": "0fa587fa6fb391b500d819377059ca7bfcca454bd385e1f117dabd8d4605ccae",
+  "weights_after": "6fe004fbfd89d6c8da7c0e487413f7228043194b21b9ec523aa7ac10846971de",
+  "training_episodes": [],
+  "checkpoint_sha256": "1d7f80d1409f1be6782795a4d7893eb1c3d6187329cb636ec5134fd872442b5e",
+  "residual": {
+    "episodes": 1,
+    "success_rate": 1.0,
+    "grasp_rate": 1.0,
+    "placement_rate": 1.0,
+    "failure_rate": 0.0,
+    "records": [
+      {
+        "seed": 100007,
+        "return_value": 19.660568017929194,
+        "success": true,
+        "failure": null,
+        "grasp": true,
+        "lift": true,
+        "placement": true,
+        "collisions": 0,
+        "reward_components": {
+          "approach": -5.828739348956447e-08,
+          "time": -0.01,
+          "action": -3.569115186110139e-06,
+          "success": 10.0
+        },
+        "reward_source": "simulation_oracle",
+        "placement_error_m": 0.00035279068419381636,
+        "stable_release_frames": 22,
+        "perception_failure": null,
+        "visual_state": "SOURCE_APPARENTLY_ABSENT",
+        "visual_confirmed": false,
+        "episode_reward_components": {
+          "approach": 0.5809509676192931,
+          "time": -0.9200000000000006,
+          "action": -0.0003829496901016683,
+          "grasp": 2.0,
+          "lift": 3.0,
+          "transport": 2.0,
+          "placement": 3.0,
+          "success": 10.0
+        },
+        "phase": "RETRACT",
+        "episode_steps": 92,
+        "episode_wall_s": 5.942588399999977
+      }
+    ]
+  },
+  "checkpoint_reload_verified": true,
+  "wall_time_s": 20.440632599999844,
+  "status": "completed",
+  "interpretation": "Cycle execution evidence. Physical and visual qualification remain experimental."
+}

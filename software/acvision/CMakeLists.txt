@@ -12,7 +12,7 @@ if(PROJECT_IS_TOP_LEVEL)
 endif()
 
 # ==========================================
-# Configurações Globais (Modern C++)
+# ConfiguraÃ§Ãµes Globais (Modern C++)
 # ==========================================
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -27,7 +27,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # ==========================================
-# Dependências
+# DependÃªncias
 # ==========================================
 find_package(OpenCV REQUIRED)
 
@@ -49,6 +49,8 @@ target_sources(acvision
             include/camera/camera.hpp
             include/board_vision/board_vision.hpp
             include/board_observation/board_observation.hpp
+            include/board_reference/board_reference.hpp
+            include/piece_location/piece_location.hpp
             include/piece_detector/piece_detector.hpp
             include/piece_detector/piece_detector_config.hpp
             include/homography/homography.hpp
@@ -75,6 +77,8 @@ endif()
 # AUTOMATIC TARGET GENERATION (Apps Folder)
 # ==========================================
 set(APP_LIST
+    "generate_board_reference"
+    "perception_image"
     "board_demo"
     "benchmark_piece_detector"
     "color_calibrator"
@@ -99,6 +103,26 @@ foreach(app ${APP_LIST})
         endif()
     endif()
 endforeach()
+
+# Build identity covers actual bridge/core sources, including uncommitted edits.
+# Reconfigure automatically when any input changes; no Git/network dependency.
+file(GLOB_RECURSE perception_identity_inputs CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+list(APPEND perception_identity_inputs
+    "${CMAKE_CURRENT_SOURCE_DIR}/apps/perception_image.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/apps/perception_offline.hpp")
+list(SORT perception_identity_inputs)
+set(perception_identity "")
+foreach(input IN LISTS perception_identity_inputs)
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${input}")
+    file(SHA256 "${input}" digest)
+    file(RELATIVE_PATH relative "${CMAKE_CURRENT_SOURCE_DIR}" "${input}")
+    string(APPEND perception_identity "${relative}:${digest}\n")
+endforeach()
+string(SHA256 perception_source_sha256 "${perception_identity}")
+target_compile_definitions(perception_image PRIVATE
+    ACVISION_SOURCE_SHA256="${perception_source_sha256}")
 
 # ==========================================
 # AUTOMATIC TARGET GENERATION (Simulation Folder)
@@ -149,6 +173,7 @@ if(BUILD_TESTING)
     endif()
 
     set(TEST_LIST
+        test_perception_offline
         test_piece_detector
         test_board_geometry
         test_camera_min_max
@@ -192,4 +217,24 @@ if(TARGET benchmark_piece_detector)
     target_compile_definitions(benchmark_piece_detector PRIVATE
         ACVISION_DATASET_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/dataset"
     )
+endif()
+
+# Optional in-memory RGB adapter for camera/policy integration.
+option(ACVISION_NATIVE_RUNTIME "Build the persistent RGB C ABI adapter" OFF)
+if(ACVISION_NATIVE_RUNTIME)
+    add_library(acvision_runtime SHARED runtime/native_runtime.cpp)
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+        "${CMAKE_CURRENT_SOURCE_DIR}/runtime/native_runtime.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/runtime/native_runtime.h")
+    target_link_libraries(acvision_runtime PRIVATE acvision)
+    file(SHA256 "${CMAKE_CURRENT_SOURCE_DIR}/runtime/native_runtime.cpp" runtime_cpp_sha)
+    file(SHA256 "${CMAKE_CURRENT_SOURCE_DIR}/runtime/native_runtime.h" runtime_h_sha)
+    string(SHA256 runtime_source_sha "${perception_source_sha256}:${runtime_cpp_sha}:${runtime_h_sha}")
+    target_compile_definitions(acvision_runtime PRIVATE ACVISION_SOURCE_SHA256="${runtime_source_sha}")
+    if(WIN32)
+        add_custom_command(TARGET acvision_runtime POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                $<TARGET_RUNTIME_DLLS:acvision_runtime> $<TARGET_FILE_DIR:acvision_runtime>
+            COMMAND_EXPAND_LISTS)
+    endif()
 endif()
